@@ -1,28 +1,71 @@
 == README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Rails 4, Ruby 2(?), Postgres
 
-Things you may want to cover:
+Overview of Original Site's Menus
 
-* Ruby version
+Looks like a given user can have more than one "team" and we need to keep track of payments in that scenario
 
-* System dependencies
+Administrative
+* KOPools
+  - Indexes Pools
+  - Create New Pool - One for each year basically
+* NFL Matchups
+  - Select a week
+  - Indexes NFL Matchups for that week
+  - Matchup: Date, Time, Team A, Team B.  One of A or B is Home Team ("AT:<home team>")
+  - Create Matchup asks you for Week ID, Date/Time, Home Team, Away Team
+* NFL Weeks
+  - Week: Start Date, End Date, Pick Deadline, Default Team
+  - Create Week presumably lets you create one
+* NFL Teams
+  - Team: Conf (NFC/AFC), Division(North,South,East,West), Team Name, Abbreviation, Home Location(Stadium Name), Logo
+* Participants
+  - Participant: pool_id, first_name, last_name, address1, address2, city, state, zip, favorite_team_id, phone, cell, paid_at, comments
+* Participants / Payments
+  - Participant has many pool_entries
+  - pool_entry has many payments
+  - payment has date, pool_entry_id, amount
+* Missing Picks
+  - Participant.name, phone, nickname
+* Email Missing Picks
+  - Without Confirmation (?!) Automatically sends an email to everyone
 
-* Configuration
+Contact Us
+* Simple form with name, email, phone, subject, and message.  Presumably emails the administrator
 
-* Database creation
+My Picks
+* Show you your weekly picks.  Your username (pool name?), "Round 1", Your pick
 
-* Database initialization
+Pool Entries
+* Since a given user can have many pools, shows you your pools and whether any payments are due
 
-* How to run the test suite
+Round X
+* Shows you the current stats for the given round
+"Still Standing":   # and percentage
+"Knocked Out": # and percentage
+"Missing Picks" # and percentage.
 
-* Services (job queues, cache servers, search engines, etc.)
+Then lists the still-standing pools (sequence and Pool.name)
+Then lists the knocked-out pools (sequence, Pool.name, week-knocked-out, team-who-lost)
 
-* Deployment instructions
+Rules
+Just a summary page of the rules.
 
-* ...
+Hyperlink at top of screen to change your password
+
+Ability to Logoff
+
+Home page has the current round, the default pick (team name and icon), and some pictures that Dave can update.
+Would be nice to use "ActiveAdmin" if that has been maintained so that dave can edit some of these pages himself.
+Probably requires a page model.
 
 
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
+
+MODELS
+
+Pool name:string 
+PoolUsers
+User 
+PoolUserPayments
+Round round_number:integer

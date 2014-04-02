@@ -20,7 +20,7 @@ Administrative
   - Create Week presumably lets you create one
 * NFL Teams
   - Team: Conf (NFC/AFC), Division(North,South,East,West), Team Name, Abbreviation, Home Location(Stadium Name), Logo
-* Participants
+* Participants (Users)
   - Participant: pool_id, first_name, last_name, address1, address2, city, state, zip, favorite_team_id, phone, cell, paid_at, comments
 * Participants / Payments
   - Participant has many pool_entries

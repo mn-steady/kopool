@@ -4,10 +4,10 @@ describe Pick do
 
   it { should belong_to :week }
   it { should belong_to :nfl_team }
+  it { should belong_to :pool_entry }
+  it { should validate_uniqueness_of(:pool_entry_id).scoped_to(:week_id)}
 
   it { should validate_presence_of :team_id }
-
-  pending "should not allow more than one pick per pool_entry_per_week"
 
   pending "should allow more than one pick for two different pool entries"
 

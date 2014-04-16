@@ -3,8 +3,8 @@ require 'spec_helper'
 describe Matchup do
 
   it { should belong_to :week }
-  it { should have_one :home_team }
-  it { should have_one :away_team }
+  it { should belong_to :home_team }
+  it { should belong_to :away_team }
 
   # pending how we want to deal with winning_teams and complete
   it { should have_one :winning_team }

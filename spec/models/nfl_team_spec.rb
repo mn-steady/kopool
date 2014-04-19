@@ -5,5 +5,5 @@ describe NflTeam do
   it { should validate_presence_of :conference }
   it { should validate_presence_of :division }
 
-  pending "add some examples to (or delete) #{__FILE__}"
+  pending "Add more NflTeam tests"
 end

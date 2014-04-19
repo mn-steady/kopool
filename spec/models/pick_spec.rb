@@ -15,7 +15,7 @@ describe Pick do
 
   pending "should be locked_in automatically at the week deadline"
 
-  pending "should record auto_pcked when auto-picked"
+  pending "should record auto_picked when auto-picked"
 
   pending "cannot be changed if locked in"
 

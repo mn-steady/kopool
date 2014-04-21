@@ -6,6 +6,16 @@ Overview of Original Site's Menus
 
 Looks like a given user can have more than one "team" and we need to keep track of payments in that scenario
 
+
+==Running Tests
+bundle exec rspec
+
+For inline docs:
+bundle exec rspec --format d
+
+For HTML output of docs:
+bundle exec rspec --format h
+
 Administrative
 * KOPools
   - Indexes Pools
@@ -64,8 +74,8 @@ Probably requires a page model.
 
 MODELS
 
-Pool name:string 
+Pool name:string
 PoolUsers
-User 
+User
 PoolUserPayments
 Round round_number:integer

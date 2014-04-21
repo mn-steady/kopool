@@ -10,5 +10,5 @@ describe Week do
   it { should validate_presence_of :end_date }
   it { should validate_presence_of :deadline }
 
-  pending "Add more!"
+  pending "Add more Week tests"
 end

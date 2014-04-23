@@ -17,21 +17,31 @@ describe PicksController do
   end
 
   describe "POST create" do
-  	context "with valid input" do
-  		it "redirects to the My Picks page"
-  		it "saves the pick"
-  		it "sets the flash success message"
-  	end
+
+  	context "with a valid pool entry"
+
+	  	context "with valid input" do
+	  		it "redirects to the My Picks page"
+	  		it "saves the pick"
+	  		it "sets the flash success message"
+	  	end
 
 
-  	context "with invalid input" do # i.e. after deadline
-  		it "does not create a new pick"
+	  	context "with invalid input" do # i.e. after deadline (should I create separate tests?)
+	  		it "does not create a new pick"
 
-  		# A previously saved pick is not overwritten if you try to change after the deadline
-  		it "does not invalidate an already saved pick" 
-  		it "redirects to the matchup page"
-  		it "sets a flash danger message"
-  	end
+	  		# A previously saved pick is not overwritten if you try to change after the deadline
+	  		it "does not invalidate an already saved pick" 
+	  		it "redirects to the matchup page"
+	  		it "sets a flash danger message"
+	  	end
+
+	  end
+
+	  context "with an invalid pool entry" do
+	  	it "does not save the pick for a knocked out pool entry"
+	  	it "does not save the pick for an unpaid pool entry"
+	  end
   end
 
   describe "GET missing_picks" do

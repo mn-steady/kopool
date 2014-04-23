@@ -10,6 +10,9 @@ gem 'turbolinks'
 gem 'jbuilder', '~> 1.2'
 gem 'devise'
 gem 'haml-rails'
+gem 'factory_girl'
+gem 'factory_girl_rails'
+gem 'faker'
 
 group :doc do
   gem 'sdoc', require: false
@@ -25,7 +28,4 @@ end
 
 group :test do
 	gem 'shoulda-matchers'
-	gem 'factory_girl'
-	gem 'factory_girl_rails'
-	gem 'faker'
 end

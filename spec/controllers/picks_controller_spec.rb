@@ -38,9 +38,16 @@ describe PicksController do
 
 	  end
 
-	  context "with an invalid pool entry" do
-	  	it "does not save the pick for a knocked out pool entry"
-	  	it "does not save the pick for an unpaid pool entry"
+	  context "with a knocked out pool entry" do
+	  	it "does not save the pick"
+	  	it "redirects to the matchup page"
+	  	it "sets a flash danger message"
+	  end
+
+	  context "with an unpaid pool entry" do
+	  	it "does not save the pick"
+	  	it "redirects to the matchup page"
+	  	it "sets a flash danger message"
 	  end
   end
 

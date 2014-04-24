@@ -11,6 +11,10 @@
 # sense as we add more routes to our application.
 @kopool.config(['$routeProvider', ($routeProvider) ->
   $routeProvider.
+   when('/nfl_teams', {
+      templateUrl: '../templates/nfl_teams/index.html',
+      controller: 'NflTeamIndexCtrl'
+    }).
     otherwise({
       templateUrl: '<%= asset_path("home.html") %>'
       controller: 'HomeCtrl'

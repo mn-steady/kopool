@@ -1,10 +1,26 @@
-== README
+README for KoPool
+-----------------
 
 Rails 4, Ruby 2(?), Postgres
 
 Overview of Original Site's Menus
 
 Looks like a given user can have more than one "team" and we need to keep track of payments in that scenario
+
+
+Installation
+
+
+Useful Blog Posts
+-----------------
+##Blog Posts that have proven useful
+- [Getting Started with Angular and Rails 4](http://www.honeybadger.io/blog/2013/12/11/beginners-guide-to-angular-js-rails)
+- [How to Integrate Angular with Rails 4](https://shellycloud.com/blog/2013/10/how-to-integrate-angularjs-with-rails-4) Has good CoffeeScript examples as well as CSRF and turbolinks issues resolved.
+- [Angular JS, Rails, and HAML](http://www.amberbit.com/blog/2014/1/20/angularjs-templates-in-ruby-on-rails-assets-pipeline/)
+- [4 lessons learned doing angular on rails](http://gaslight.co/blog/4-lessons-learned-doing-angular-on-rails)
+- [Angular and HTML5 localStorage](http://www.amitavroy.com/justread/content/articles/html5-local-storage-angular-js)
+- [Angular and HTML5 datastore](http://stackoverflow.com/questions/17888884/service-retrieves-data-from-datastore-but-does-not-update-ui)
+
 
 
 ==Running Tests

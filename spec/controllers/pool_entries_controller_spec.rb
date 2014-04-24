@@ -2,13 +2,19 @@ require 'spec_helper'
 
 describe PoolEntriesController do
 	describe "GET new" do
-		context "with logged in user" do
+
+		context "without logged in user" do
+				it "redirects to the new user session path"
+				it "sets the flash notice message"
+		end
+
+		context "with open registration" do
 			it "sets @pool_entry to a new pool entry"
 		end
 
-		context "without logged in user" do
-			it "redirects to the new user session path"
-			it "sets the flash notice message"
+		context "with closed registration" do 
+			it "does not set @pool_entry to a new pool entry"
+			it "sets flash danger message"
 		end
 	end
 

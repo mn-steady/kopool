@@ -1,0 +1,6 @@
+%a index
+
+%ul :ng-repeat="nflteam in nfl_teams"
+  %li
+    %a :ng-click="viewNflTeam(nflteam.id)"
+      {{ nflteam.name }}

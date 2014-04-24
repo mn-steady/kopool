@@ -1,0 +1,3 @@
+class PoolEntriesController < ApplicationController
+
+end

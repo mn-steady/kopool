@@ -38,13 +38,13 @@ describe PicksController do
 
 	  end
 
-	  context "with a knocked out pool entry" do
-	  	it "does not save the pick"
-	  	it "redirects to the matchup page"
-	  	it "sets a flash danger message"
+	  context "with an unpaid pool entry" do
+	  	it "does save the pick"
+	  	it "redirects to the My Picks page"
+	  	it "sets a flash warning message about the unpaid balance"
 	  end
 
-	  context "with an unpaid pool entry" do
+	  context "with a knocked out pool entry" do
 	  	it "does not save the pick"
 	  	it "redirects to the matchup page"
 	  	it "sets a flash danger message"

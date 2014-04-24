@@ -18,7 +18,7 @@ describe PicksController do
 
   describe "POST create" do
 
-  	context "with a valid pool entry"
+  	context "with a valid pool entry" do
 
 	  	context "with valid input" do
 	  		it "redirects to the My Picks page"
@@ -31,7 +31,7 @@ describe PicksController do
 	  		it "does not create a new pick"
 
 	  		# A previously saved pick is not overwritten if you try to change after the deadline
-	  		it "does not invalidate an already saved pick" 
+	  		it "does not invalidate an already saved pick"
 	  		it "redirects to the matchup page"
 	  		it "sets a flash danger message"
 	  	end

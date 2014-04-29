@@ -10,6 +10,11 @@ describe SeasonsController do
 			expect(response).to redirect_to new_user_session_path
 		end
 
-		it "sets the @season variable"
+		it "sets the @season variable" do
+			@user = create(:user)
+			sign_in :user, @user
+			get :new
+			expect(assigns(:season)).to be_instance_of(Season)
+		end
 	end
 end

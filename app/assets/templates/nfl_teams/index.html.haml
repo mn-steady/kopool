@@ -1,8 +1,8 @@
-%a index
+%a Nfl Teams Index
 
-%ul
-  ng-repeat="nflteam in nfl_teams"
-  %li
-    %a
-      ng-click="viewNflTeam(nflteam.id)"
-      {{ nflteam.name }}
+%br
+{{simple_variable}}
+
+
+%ul{"ng-repeat" => "nfl_team in nfl_teams"}
+  %li {{ nfl_team.name }}

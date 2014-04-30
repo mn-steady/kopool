@@ -11,10 +11,13 @@
 # might seem somewhat awkward, but it will make more
 # sense as we add more routes to our application.
 @kopool.config(['$routeProvider', ($routeProvider) ->
+
+  console.log("routeprovider: " + $routeProvider)
+
   $routeProvider.
    when('/nfl_teams', {
-      templateUrl: '../templates/nfl_teams/index.html',
-      controller: 'NflTeamIndexCtrl'
+      templateUrl: '<%= asset_path("nfl_teams/index.html") %>',
+      controller: 'NflTeamsCtrl'
     }).
     otherwise({
       templateUrl: '<%= asset_path("home.html") %>'
@@ -23,7 +26,7 @@
 ])
 
 
-@kopool.config ('$httpProvider') ->
-  authToken = $("meta[name=\"csrf-token\"]").attr("content")
-  $httpProvider.defaults.headers.common["X-CSRF-TOKEN"] = authToken
+# @kopool.config ('$httpProvider') ->
+#   authToken = $("meta[name=\"csrf-token\"]").attr("content")
+#   $httpProvider.defaults.headers.common["X-CSRF-TOKEN"] = authToken
 

@@ -219,16 +219,99 @@
 	},
 	"buffers":
 	[
+		{
+			"file": "config/routes.rb",
+			"settings":
+			{
+				"buffer_size": 148,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/controllers/pages_controller.rb",
+			"settings":
+			{
+				"buffer_size": 69,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/views/layouts/application.html.erb",
+			"settings":
+			{
+				"buffer_size": 269,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/assets/javascripts/angular/controllers/HomeCtrl.js.coffee",
+			"settings":
+			{
+				"buffer_size": 88,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/assets/javascripts/main.js.coffee.erb",
+			"settings":
+			{
+				"buffer_size": 969,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/assets/javascripts/angular/services/nflTeamService.js.coffee",
+			"settings":
+			{
+				"buffer_size": 421,
+				"line_ending": "Unix",
+				"name": "angular.module('koPool').factory 'NtlTeam', ($reso"
+			}
+		},
+		{
+			"file": "app/assets/javascripts/angular/controllers/NflTeamCtrl.js.coffee",
+			"settings":
+			{
+				"buffer_size": 303,
+				"line_ending": "Unix",
+				"name": "@nflteams.controller 'NflTeamIndexCtrl', ['$scope'"
+			}
+		},
+		{
+			"file": "app/assets/templates/nfl_teams/index.html.haml",
+			"settings":
+			{
+				"buffer_size": 128,
+				"line_ending": "Unix",
+				"name": "%a index"
+			}
+		},
+		{
+			"file": "app/assets/templates/home.html.haml",
+			"settings":
+			{
+				"buffer_size": 124,
+				"line_ending": "Unix"
+			}
+		}
 	],
 	"build_system": "",
 	"command_palette":
 	{
-		"height": 392.0,
+		"height": 307.0,
 		"selected_items":
 		[
 			[
 				"mark",
 				"Markdown Preview: Python Markdown: Preview in Browser"
+			],
+			[
+				"par",
+				"Package Control: List Packages"
+			],
+			[
+				"pa",
+				"Package Control: Install Package"
 			],
 			[
 				"markdo",
@@ -280,6 +363,39 @@
 	},
 	"file_history":
 	[
+		"/Users/cclogicimac/rails_projects/kopool/app/views/pages/index.html.haml",
+		"/Users/cclogicimac/rails_projects/kopool/Gemfile",
+		"/Users/cclogicimac/rails_projects/kopool/spec/models/user_spec.rb",
+		"/Users/cclogicimac/rails_projects/kopool/spec/models/matchup_spec.rb",
+		"/Users/cclogicimac/rails_projects/kopool/spec/models/nfl_team_spec.rb",
+		"/Users/cclogicimac/rails_projects/kopool/spec/models/week_spec.rb",
+		"/Users/cclogicimac/rails_projects/kopool/spec/controllers/picks_controller_spec.rb",
+		"/Users/cclogicimac/rails_projects/kopool/spec/models/pick_spec.rb",
+		"/Users/cclogicimac/rails_projects/kopool/spec/models/season_spec.rb",
+		"/Users/cclogicimac/rails_projects/kopool/README.md",
+		"/Users/cclogicimac/rails_projects/kopool/app/assets/javascripts/application.js",
+		"/Users/cclogicimac/rails_projects/kopool/app/assets/javascripts/main.js.coffee.erb",
+		"/Users/cclogicimac/rails_projects/kopool/app/assets/templates/home.html.haml",
+		"/Users/cclogicimac/rails_projects/kopool/config/initializers/haml.rb",
+		"/Users/cclogicimac/rails_projects/kopool/config/routes.rb",
+		"/Users/cclogicimac/rails_projects/kopool/db/schema.rb",
+		"/Users/cclogicimac/rails_projects/kopool/.gitignore",
+		"/Users/cclogicimac/rails_projects/kopool/README.rdoc",
+		"/Users/cclogicimac/rails_projects/kopool/app/models/pool_entry.rb",
+		"/Users/cclogicimac/rails_projects/kopool/app/models/user.rb",
+		"/Users/cclogicimac/rails_projects/kopool/testresults.html",
+		"/Users/cclogicimac/rails_projects/kopool/app/models/nfl_team.rb",
+		"/Users/cclogicimac/rails_projects/kopool/spec/models/pool_entry_spec.rb",
+		"/Users/cclogicimac/rails_projects/kopool/app/models/matchup.rb",
+		"/Users/cclogicimac/rails_projects/kopool/app/models/pick.rb",
+		"/Users/cclogicimac/rails_projects/kopool/config/application.rb",
+		"/Users/cclogicimac/rails_projects/kopool/db/migrate/20140419151120_add_admin_to_users.rb",
+		"/Users/cclogicimac/rails_projects/kopool/spec/models/payment_spec.rb",
+		"/Users/cclogicimac/rails_projects/kopool/app/controllers/picks_controller.rb",
+		"/Users/cclogicimac/rails_projects/kopool/db/migrate/20140409012748_create_weeks.rb",
+		"/Users/cclogicimac/rails_projects/kopool/db/migrate/20140409013329_create_matchups.rb",
+		"/Users/cclogicimac/rails_projects/kopool/db/migrate/20140409012922_create_pool_entries.rb",
+		"/Users/cclogicimac/rails_projects/kopool/sublime-project",
 		"/Users/cclogicimac/rails_projects/SentryLink/spec/models/device_spec.rb",
 		"/Users/cclogicimac/rails_projects/SentryLink/app/concerns/roleable.rb",
 		"/Users/cclogicimac/rails_projects/SentryLink/spec/factories/roles.rb",
@@ -374,40 +490,7 @@
 		"/Users/cclogicimac/rails_projects/SentryLink/config/appsignal.yml",
 		"/Users/cclogicimac/rails_projects/SentryLink/.elasticbeanstalk/config",
 		"/Users/cclogicimac/rails_projects/SentryLink/.elasticbeanstalk/optionsettings.prod-aws",
-		"/Users/cclogicimac/rails_projects/SentryLink/.ebextensions/database.config",
-		"/Users/cclogicimac/rails_projects/SentryLink/config/environments/production.rb",
-		"/Users/cclogicimac/rails_projects/SentryLink/config/environments/prod-aws.rb",
-		"/Users/cclogicimac/Downloads/application.yml",
-		"/Users/cclogicimac/rails_projects/SentryLink/config/initializers/timezone.rb",
-		"/Users/cclogicimac/rails_projects/SentryLink/config/application.yml",
-		"/Users/cclogicimac/rails_projects/SentryLink/app/views/notifications/_notification.html.haml",
-		"/Users/cclogicimac/rails_projects/SentryLink/app/views/notifications/_simple_listing.html.erb",
-		"/Users/cclogicimac/rails_projects/SentryLink/app/presenters/violation_detail_presenter.rb",
-		"/Users/cclogicimac/rails_projects/SentryLink/app/views/violations/show.html.haml",
-		"/Users/cclogicimac/rails_projects/SentryLink/db/migrate/20140318160813_add_fields_to_vehicle_tag.rb",
-		"/Users/cclogicimac/rails_projects/SentryLink/app/models/notification.rb",
-		"/Users/cclogicimac/rails_projects/SentryLink/app/models/activity_feed_item.rb",
-		"/Users/cclogicimac/rails_projects/SentryLink/db/migrate/20140318134957_add_muni_attributes_for_pp.rb",
-		"/Users/cclogicimac/rails_projects/SentryLink/app/views/notifications/njticket1.html.erb",
-		"/Users/cclogicimac/rails_projects/SentryLink/app/views/notifications/njticket1.pdf.erb",
-		"/Users/cclogicimac/rails_projects/SentryLink/app/models/violation_picture.rb",
-		"/Users/cclogicimac/rails_projects/SentryLink/app/models/parking_picture.rb",
-		"/Users/cclogicimac/rails_projects/SentryLink/app/assets/stylesheets/application.css",
-		"/Users/cclogicimac/rails_projects/SentryLink/config/application.rb",
-		"/Users/cclogicimac/rails_projects/SentryLink/config/environments/development.rb",
-		"/Users/cclogicimac/rails_projects/SentryLink/app/views/notifications/njticket2.html.erb",
-		"/Users/cclogicimac/rails_projects/SentryLink/app/views/notifications/njticket2.pdf.erb",
-		"/Users/cclogicimac/rails_projects/SentryLink/app/models/reports/daily_occupancy_rate_report.rb",
-		"/Users/cclogicimac/rails_projects/SentryLink/app/views/reports/daily_occupancy_rate_reports/index.pdf.prawn",
-		"/Users/cclogicimac/rails_projects/SentryLink/app/views/reports/daily_occupancy_rate_reports/_form.html.haml",
-		"/Users/cclogicimac/rails_projects/SentryLink/app/assets/javascripts/models/rate_block.coffee",
-		"/Users/cclogicimac/rails_projects/SentryLink/app/controllers/reports/daily_occupancy_rate_reports_controller.rb",
-		"/Users/cclogicimac/rails_projects/SentryLink/app/views/reports/daily_occupancy_rate_reports/index.html.haml",
-		"/Users/cclogicimac/rails_projects/SentryLink/spec/javascripts/models/meter_edit_meter_group_spec.coffee",
-		"/Users/cclogicimac/rails_projects/SentryLink/spec/javascripts/minimum_rate_block_price/drill_down_municipalities_view_spec.coffee",
-		"/Users/cclogicimac/rails_projects/SentryLink/app/controllers/rate_blocks_controller.rb",
-		"/Users/cclogicimac/rails_projects/SentryLink/app/assets/javascripts/models/rate_block_updator.coffee",
-		"/Users/cclogicimac/rails_projects/SentryLink/app/assets/javascripts/use_cases/update_rate_block.coffee"
+		"/Users/cclogicimac/rails_projects/SentryLink/.ebextensions/database.config"
 	],
 	"find":
 	{
@@ -486,9 +569,14 @@
 	},
 	"find_state":
 	{
-		"case_sensitive": false,
+		"case_sensitive": true,
 		"find_history":
 		[
+			"restaurants",
+			"sentryView",
+			"respond_to",
+			"belong_to",
+			"DateTime",
 			"purge_photos",
 			"raise",
 			"to change",
@@ -611,12 +699,7 @@
 			"Priority",
 			"priority",
 			"endTimeString",
-			"startTimeString",
-			"startDateString",
-			"validDaysString",
-			"priority",
-			"computePriority",
-			"priority"
+			"startTimeString"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -649,8 +732,246 @@
 	"groups":
 	[
 		{
+			"selected": 4,
 			"sheets":
 			[
+				{
+					"buffer": 0,
+					"file": "config/routes.rb",
+					"settings":
+					{
+						"buffer_size": 148,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								147,
+								147
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Ruby/Ruby.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "app/controllers/pages_controller.rb",
+					"settings":
+					{
+						"buffer_size": 69,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								65,
+								65
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Ruby/Ruby.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "app/views/layouts/application.html.erb",
+					"settings":
+					{
+						"buffer_size": 269,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								214,
+								214
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Rails/HTML (Rails).tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "app/assets/javascripts/angular/controllers/HomeCtrl.js.coffee",
+					"settings":
+					{
+						"buffer_size": 88,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								88,
+								88
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/CoffeeScript/CoffeeScript.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "app/assets/javascripts/main.js.coffee.erb",
+					"settings":
+					{
+						"buffer_size": 969,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								693,
+								693
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/CoffeeScript/CoffeeScript.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "app/assets/javascripts/angular/services/nflTeamService.js.coffee",
+					"settings":
+					{
+						"buffer_size": 421,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								318,
+								318
+							]
+						],
+						"settings":
+						{
+							"auto_name": "angular.module('koPool').factory 'NtlTeam', ($reso",
+							"syntax": "Packages/CoffeeScript/CoffeeScript.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "app/assets/javascripts/angular/controllers/NflTeamCtrl.js.coffee",
+					"settings":
+					{
+						"buffer_size": 303,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								299,
+								299
+							]
+						],
+						"settings":
+						{
+							"auto_name": "@nflteams.controller 'NflTeamIndexCtrl', ['$scope'",
+							"syntax": "Packages/CoffeeScript/CoffeeScript.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "app/assets/templates/nfl_teams/index.html.haml",
+					"settings":
+					{
+						"buffer_size": 128,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								68,
+								68
+							]
+						],
+						"settings":
+						{
+							"auto_name": "%a index",
+							"syntax": "Packages/Rails/Ruby Haml.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "app/assets/templates/home.html.haml",
+					"settings":
+					{
+						"buffer_size": 124,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								6,
+								6
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Rails/Ruby Haml.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
 			]
 		}
 	],
@@ -699,6 +1020,70 @@
 		"height": 0.0,
 		"selected_items":
 		[
+			[
+				"pickcon",
+				"spec/controllers/picks_controller_spec.rb"
+			],
+			[
+				"seasonspe",
+				"spec/models/season_spec.rb"
+			],
+			[
+				"pickspe",
+				"spec/models/pick_spec.rb"
+			],
+			[
+				"pickconspe",
+				"spec/controllers/picks_controller_spec.rb"
+			],
+			[
+				"weekspe",
+				"spec/models/week_spec.rb"
+			],
+			[
+				"nflteamspe",
+				"spec/models/nfl_team_spec.rb"
+			],
+			[
+				"matchup_",
+				"spec/models/matchup_spec.rb"
+			],
+			[
+				"matchup",
+				"app/models/matchup.rb"
+			],
+			[
+				"poolenspe",
+				"spec/models/pool_entry_spec.rb"
+			],
+			[
+				"poolen",
+				"app/models/pool_entry.rb"
+			],
+			[
+				"userspe",
+				"spec/models/user_spec.rb"
+			],
+			[
+				"match",
+				"app/models/matchup.rb"
+			],
+			[
+				"pick",
+				"app/models/pick.rb"
+			],
+			[
+				"user",
+				"app/models/user.rb"
+			],
+			[
+				"nfl",
+				"app/models/nfl_team.rb"
+			],
+			[
+				"schema",
+				"db/schema.rb"
+			],
 			[
 				"test.log",
 				"log/test.log"
@@ -850,10 +1235,6 @@
 			[
 				"tokenspe",
 				"spec/api/v1/token_authentication_spec.rb"
-			],
-			[
-				"user",
-				"app/models/user.rb"
 			],
 			[
 				"tokenauth",
@@ -1150,66 +1531,6 @@
 			[
 				"notifipdf",
 				"app/views/notifications/notification.pdf.erb"
-			],
-			[
-				"presenterviolation",
-				"app/presenters/violation_detail_presenter.rb"
-			],
-			[
-				"issweb",
-				"lib/iss_webservice.rb"
-			],
-			[
-				"makevio",
-				"app/models/make_violation_payment.rb"
-			],
-			[
-				"municipality",
-				"app/models/municipality_attribute.rb"
-			],
-			[
-				"notifica",
-				"app/models/notification_printing.rb"
-			],
-			[
-				"vehicletag",
-				"app/models/vehicle_tag.rb"
-			],
-			[
-				"vehicletags",
-				"spec/factories/vehicle_tags.rb"
-			],
-			[
-				"vehicl",
-				"app/models/vehicle_owner.rb"
-			],
-			[
-				"parkinpicspec",
-				"spec/models/parking_picture_spec.rb"
-			],
-			[
-				"lib.coffee",
-				"app/assets/javascripts/lib.coffee"
-			],
-			[
-				"conaduserco",
-				"app/controllers/admin/users_controller.rb"
-			],
-			[
-				"viewuserprefer",
-				"app/assets/javascripts/views/user_preferences.coffee"
-			],
-			[
-				"javauserrole",
-				"app/assets/javascripts/routers/user_role.coffee"
-			],
-			[
-				"appmodelsuserpref",
-				"app/assets/javascripts/models/user_preference.coffee"
-			],
-			[
-				"appassetsuserpref",
-				"app/assets/javascripts/routers/user_preference.coffee"
 			]
 		],
 		"width": 0.0

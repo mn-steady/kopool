@@ -40,13 +40,34 @@ describe SeasonsController do
 				expect(response).to redirect_to season_path(Season.first)
 			end
 
-			it "sets a flash success message"
+			it "sets a flash success message" do
+				@season = attributes_for(:season)
+				post :create, season: @season
+				expect(flash[:success]).to be_present
+			end
 		end
 
 		context "with invalid input" do
-			it "does not save the season"
-			it "renders the new template"
-			it "sets the flash danger method"
+
+			before do
+				@user = create(:user)
+				sign_in :user, @user
+			end
+
+			it "does not save the season" do
+				post :create, season: { name: "Test Season" }
+				expect(Season.count).to eq(0)
+			end
+
+			it "renders the new template" do
+				post :create, season: { name: "Test Season" }
+				expect(response).to render_template :new
+			end
+
+			it "sets the flash danger method" do
+				post :create, season: { name: "Test Season" }
+				expect(flash[:danger]).to be_present
+			end
 		end
 	end
 end

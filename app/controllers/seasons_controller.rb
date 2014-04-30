@@ -7,8 +7,13 @@ class SeasonsController < ApplicationController
 
 	def create
 		@season = Season.new(season_params)
-		@season.save
-		redirect_to season_path(@season)
+		if @season.save
+			flash[:success] = "Season Created! Have a fantastic year of football!"
+			redirect_to season_path(@season)
+		else
+			flash[:danger] = "Looks like the input wasn't quite right. Please fix it and try again."
+			render :new
+		end
 	end
 
 	def show

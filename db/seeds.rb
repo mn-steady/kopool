@@ -5,3 +5,6 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+
+NflTeam.find_or_create_by(name: "Denver Broncos", conference: "NFC", division: "West")
+NflTeam.find_or_create_by(name: "Minnesota Vikins", conference: "NFC", division: "North")

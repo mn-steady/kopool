@@ -4,5 +4,5 @@ Kopool::Application.routes.draw do
 
   root 'pages#index'
 
-  resources :seasons, only: [:new]
+  resources :seasons, only: [:new, :create, :show]
 end

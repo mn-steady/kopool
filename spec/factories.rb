@@ -6,4 +6,10 @@ FactoryGirl.define do
 		password "password"
 		password_confirmation "password"
 	end
+
+	factory :season do
+		year { Faker::Number.number(4) }
+		name { Faker::Lorem.words(2).to_s }
+		entry_fee { Faker::Number.number(2) }
+	end
 end

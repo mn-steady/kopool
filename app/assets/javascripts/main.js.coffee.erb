@@ -15,9 +15,13 @@
   console.log("routeprovider: " + $routeProvider)
 
   $routeProvider.
-   when('/nfl_teams', {
+    when('/nfl_teams', {
       templateUrl: '<%= asset_path("nfl_teams/index.html") %>',
       controller: 'NflTeamsCtrl'
+    }).
+    when('/weeks', {
+      templateUrl: '<%= asset_path("weeks/index.html") %>',
+      controller: 'WeeksCtrl'
     }).
     otherwise({
       templateUrl: '<%= asset_path("home.html") %>'

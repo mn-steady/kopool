@@ -24,6 +24,10 @@
       templateUrl: '<%= asset_path("weeks/index.html") %>',
       controller: 'WeeksCtrl'
     }).
+    when('/seasons/:season_id/weeks', {
+      templateUrl: '<%= asset_path("weeks/index.html") %>',
+      controller: 'WeeksCtrl'
+    }).
     otherwise({
       templateUrl: '<%= asset_path("home.html") %>'
       controller: 'HomeCtrl'

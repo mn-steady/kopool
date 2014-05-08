@@ -1,4 +1,4 @@
-@kopoo.controller 'WeeksCtrl', ['$scope', '$location', '$http', ($scope, $location, $http)
+@kopool.controller 'WeeksCtrl', ['$scope', '$location', '$http', ($scope, $location, $http) ->
   console.log("WeeksCtrl")
 
   $scope.weeks = []

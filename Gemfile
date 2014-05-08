@@ -13,6 +13,7 @@ gem 'haml-rails'
 gem 'factory_girl'
 gem 'factory_girl_rails'
 gem 'faker'
+gem 'bootstrap-sass', '~> 3.1.1'
 
 group :doc do
   gem 'sdoc', require: false

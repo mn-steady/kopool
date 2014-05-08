@@ -95,3 +95,12 @@ PoolUsers
 User
 PoolUserPayments
 Round round_number:integer
+
+
+ToDo week of May 5th
+
+Jack:
+* Try to get Devise working through AngularJS according to http://jes.al/2013/08/authentication-with-rails-devise-and-angularjs/
+
+Dad:
+* CRUD for NFL teams including images.

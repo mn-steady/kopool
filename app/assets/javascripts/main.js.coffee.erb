@@ -7,7 +7,7 @@
 # Angular about the existence of our application.
 # I added a lot of code here for Devise integration
 @kopool = angular.module("kopool", ["sessionServie","recordService", "$strap.directives"])
-  .config["$httpProvider", ($httpProvider) ->
+  .config(["$httpProvider", ($httpProvider) ->
     $httpProvider.defaults.headers.common["X-CSRF-Token"] = $("meta[name=csrf-token]").attr("content")
 
     interceptor = ["$location", "$rootScope", "$q", ($location, $rootScope, $q) ->
@@ -16,8 +16,8 @@
 
       error(response) ->
         if response.status is 401
-          $rootScope.$broadcast("event:unauthorized"
-          $location.path "/users/login"
+          $rootScope.$broadcast "event:unauthorized"
+          $location.path "/users/sign_in"
           return response
         $q.reject response
 
@@ -25,7 +25,7 @@
         promise.then success, error
     ]
     $httpProvider.responseInterceptors.push(interceptor);
-]
+])
 
 # This routing directive tells Angular about the default
 # route for our application. The term "otherwise" here

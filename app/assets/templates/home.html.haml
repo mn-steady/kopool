@@ -1,6 +1,6 @@
 .jumbotron
   .container
-    %h1 KO Pool 
+    %h1 KO Pool
     %p We are using the {{controller}}
     %p
       %a.btn.btn-primary.btn-lg{role: "button"} Register »
@@ -9,9 +9,9 @@
   .row
     .col-md-4
       %h2 NFL Teams
-      %p Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
+      %p Using an ng-click here just for demonstration purposes. It is really better to use the static routes such as #/nfl_teams. Tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
       %p
-        %a.btn.btn-primary{href: "#/nfl_teams", role: "button"} NFL Teams »
+        %a.btn.btn-primary{"ng-click" => "go('/nfl_teams')", role: "button"} NFL Teams »
     .col-md-4
       %h2 Weeks
       %p Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.

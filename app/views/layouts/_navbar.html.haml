@@ -12,8 +12,8 @@
     .navbar-collapse.collapse
       %form.navbar-form.navbar-right{role: "form"}
         .form-group
-          %input.form-control{"ng-model" => "username", placeholder: "Email", type: "text"}/
+          %input.form-control{"ng-model" => "login_user.email", placeholder: "Email", type: "text"}/
         .form-group
-          %input.form-control{placeholder: "Password", type: "password"}/
-        %button.btn.btn-success{"ng-click"=>"go('/nfl_teams')", type: "submit"} Sign in
+          %input.form-control{"ng-model" => "login_user.password", placeholder: "Password", type: "password"}/
+        %button.btn.btn-success{"ng-click"=>"login()", type: "submit"} Sign in
     / /.navbar-collapse

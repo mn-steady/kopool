@@ -5,7 +5,27 @@
 # This line is related to our Angular app, not to our
 # HomeCtrl specifically. This is basically how we tell
 # Angular about the existence of our application.
-@kopool = angular.module('kopool', ['ngRoute'])
+# I added a lot of code here for Devise integration
+@kopool = angular.module("kopool", ["ngRoute", "sessionService"])
+  .config(["$httpProvider", ($httpProvider) ->
+    $httpProvider.defaults.headers.common["X-CSRF-Token"] = $("meta[name=csrf-token]").attr("content")
+
+    interceptor = ["$location", "$rootScope", "$q", ($location, $rootScope, $q) ->
+      success = (response) ->
+        response
+
+      error = (response) ->
+        if response.status is 401
+          $rootScope.$broadcast "event:unauthorized"
+          $location.path "/users/sign_in"
+          return response
+        $q.reject response
+
+      (promise) ->
+        promise.then success, error
+    ]
+    $httpProvider.responseInterceptors.push(interceptor);
+])
 
 # This routing directive tells Angular about the default
 # route for our application. The term "otherwise" here
@@ -27,6 +47,14 @@
     when('/seasons/:season_id/weeks', {
       templateUrl: '<%= asset_path("weeks/index.html") %>',
       controller: 'WeeksCtrl'
+    }).
+    when('/users/login', {
+      templateUrl:'/users/login.html',
+      controller: 'UsersCtrl'
+    }).
+    when('/users/register', {
+      templateUrl:'/users/register.html',
+      controller: 'UsersCtrl'
     }).
     otherwise({
       templateUrl: '<%= asset_path("home.html") %>'

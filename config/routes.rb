@@ -1,6 +1,6 @@
 Kopool::Application.routes.draw do
   mount JasmineRails::Engine => '/specs' if defined?(JasmineRails)
-  devise_for :users
+  devise_for :users, :controllers => {:sessions => "sessions"}
 
   root 'pages#index'
 

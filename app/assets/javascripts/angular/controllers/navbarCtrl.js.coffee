@@ -1,5 +1,7 @@
-@kopool.controller 'navbarCtrl', ['$scope', '$location', '$http', ($scope, $location, $http) ->
+@kopool.controller 'navbarCtrl', ['$scope', '$location', '$http', '$cookieStore', ($scope, $location, $http, $cookieStore) ->
   $scope.controller = 'navbarCtrl'
+
+  console.log("In navbarCtrl")
 
   $scope.login_user = {email: null, password: null}
   $scope.login_error = {message: null, errors: {}}
@@ -34,8 +36,8 @@
     ).success((data, status) ->
       if status is 201 or status is 204 or status is 200
         parameters.error_entity.message = parameters.success_message
-        $scope.reset_users()
-        $location.path("nfl_teams")
+        console.log("Back to submit function")
+        $scope.reset_users(data.user)
       else
         if data.error
           parameters.error_entity.message = data.error
@@ -58,11 +60,20 @@
     $scope.login_error.errors = {}
     return
 
-  $scope.reset_users = ->
+  $scope.reset_users = (current_user) ->
+    $cookieStore.put('loggedin', 'true')
+    $scope.current_user = current_user
     $scope.login_user.email = null
     $scope.login_user.password = null
     return
 
+  $scope.display_name = ->
+    console.log "In display name function"
+    console.log $cookieStore.get('loggedin')
+    if $scope.current_user?
+      $scope.current_user.email
+    else
+      "KO Pool"
 
   # Just demonstrating an alternate means of navigation.  Better to use anchor tags.
   $scope.go = ( path ) ->

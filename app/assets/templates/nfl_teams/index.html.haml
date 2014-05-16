@@ -1,8 +1,14 @@
 %a Nfl Teams Index
 
 %br
-{{simple_variable}}
+Click a team row for more information
 
-
-%ul{"ng-repeat" => "nfl_team in nfl_teams"}
-  %li {{ nfl_team.name }}
+%table.table.table-bordered{"ng-controller" => "NflTeamsCtrl"}
+  %tbody{"ng-repeat" => "nfl_team in nfl_teams", "ng-click" => "selectTeam(nfl_team)", "ng-switch" => "on=isSelected(nfl_team)"}
+    %tr
+      %td{"colspan" => "3"} {{ nfl_team.name }}
+    %tr{"ng-switch-when" => 'true'}
+      %td {{ nfl_team.conference }}
+      %td {{ nfl_team.division }}
+      %td
+        %a.btn.btn-primary{"ng-click" => "go('/nfl_teams')", role: "button"} Edit

@@ -6,7 +6,7 @@
 # HomeCtrl specifically. This is basically how we tell
 # Angular about the existence of our application.
 # I added a lot of code here for Devise integration
-@kopool = angular.module("kopool", ["ngRoute", "ngCookies"])
+@kopool = angular.module("kopool", ["ngRoute", "ngResource", "ngCookies"])
   .config(["$httpProvider", ($httpProvider) ->
     $httpProvider.defaults.headers.common["X-CSRF-Token"] = $("meta[name=csrf-token]").attr("content")
     interceptor = ["$location", "$rootScope", "$q", ($location, $rootScope, $q) ->
@@ -67,4 +67,23 @@
 # @kopool.config ('$httpProvider') ->
 #   authToken = $("meta[name=\"csrf-token\"]").attr("content")
 #   $httpProvider.defaults.headers.common["X-CSRF-TOKEN"] = authToken
+
+# @kopool.factory 'NflTeam', ($resource) ->
+#   class NflTeam
+#     constructor: (NflTeamId) ->
+#       console.log("(Main.NflTeam.Constructor)")
+#       @service = $resource('./nfl_teams/:id',
+#         {task_list_id: taskListId, id: '@id'})
+
+#     create: (attrs) ->
+#       console.log("(Main.NflTeam.create)")
+#       new @service(nfl_team: attrs).$save (nfl_team) ->
+#         attrs.id = nfl_team.id
+#       attrs
+
+#     all: ->
+#       console.log("(Main.NflTeam.all)")
+#       @service.query()
+
+
 

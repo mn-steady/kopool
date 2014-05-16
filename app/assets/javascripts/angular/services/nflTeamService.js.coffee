@@ -1,5 +1,5 @@
 angular.module('kopool').factory 'NflTeam', ($resource) ->
-  $resource('./nfl_teams.json/:id')
+  $resource('./nfl_teams/:id.json')
 
   # $scope.nfl_teams = NflTeam.query()
 

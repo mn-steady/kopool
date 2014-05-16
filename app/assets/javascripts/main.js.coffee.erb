@@ -1,5 +1,6 @@
 #= depend_on_asset "home.html"
 #= depend_on_asset "nfl_teams/index.html"
+#= depend_on_asset "nfl_teams/edit.html"
 #= depend_on_asset "weeks/index.html"
 
 # This line is related to our Angular app, not to our
@@ -39,6 +40,10 @@
   $routeProvider.
     when('/nfl_teams', {
       templateUrl: '<%= asset_path("nfl_teams/index.html") %>',
+      controller: 'NflTeamsCtrl'
+    }).
+    when('/nfl_teams/:id', {
+      templateUrl: '<%= asset_path("nfl_teams/edit.html") %>',
       controller: 'NflTeamsCtrl'
     }).
     when('/weeks', {

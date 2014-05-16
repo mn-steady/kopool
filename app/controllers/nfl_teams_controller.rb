@@ -18,4 +18,23 @@ class NflTeamsController < ApplicationController
 
   end
 
+  def show
+
+    if is_admin_user
+      Rails.logger.debug("(NflTeamsController.show) is admin")
+      @nfl_team = NflTeam.where(id: params[:id]).first
+
+      respond_to do | format |
+        format.json {render json: @nfl_team}
+      end
+    else
+      Rails.logger.debug("(NflTeamsController.show) unauthorized")
+      respond_to do | format |
+        format.json { render :json => [], :status => :unauthorized }
+      end
+    end
+
+  end
+
+
 end

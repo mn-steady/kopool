@@ -1,5 +1,8 @@
 angular.module('kopool').factory 'NflTeam', ($resource) ->
-  $resource('./nfl_teams/:id.json')
+  $resource('./nfl_teams/:id.json', {}, { save: { method: 'PATCH', url: './nfl_teams/:id.json' }})
+
+  # Why the hell isn't the PATCH sending the ID?
+  # url: './nfl_teams/:id.json'}
 
   # $scope.nfl_teams = NflTeam.query()
 

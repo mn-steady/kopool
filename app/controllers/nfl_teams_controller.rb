@@ -37,4 +37,33 @@ class NflTeamsController < ApplicationController
   end
 
 
+  def update
+
+    if is_admin_user
+      Rails.logger.debug("(NflTeamsController.update) is admin")
+      @nfl_team = NflTeam.where(id: params[:id]).first
+
+      # Todo setup the permitted attributes for Rails 4
+      @nfl_team.update_attributes(params)
+
+      if @nfl_team.save()
+        respond_to do | format |
+          format.json {render json: @nfl_team}
+        end
+      else
+        Rails.logger.error("TODO return a server errror")
+        respond_to do | format |
+          format.json { render :json => [], :status => :unauthorized }
+        end
+      end
+
+    else
+      Rails.logger.debug("(NflTeamsController.update) unauthorized")
+      respond_to do | format |
+        format.json { render :json => [], :status => :unauthorized }
+      end
+    end
+
+  end
+
 end

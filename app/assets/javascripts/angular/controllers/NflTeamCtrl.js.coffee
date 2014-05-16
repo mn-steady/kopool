@@ -37,5 +37,9 @@
   $scope.isSelected = (team) ->
     $scope.selectedTeam == team
 
+  $scope.save = (team) ->
+    console.log("NflTeamsCtrl.save...")
+    console.log("Saving Team id " + team.id)
+    NflTeam.save(team)
 
 ]

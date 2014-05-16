@@ -17,18 +17,30 @@ class ApplicationController < ActionController::Base
   	end
   end
 
+  def is_admin_user
+    return false if current_user.nil?
+    return current_user.admin?
+  end
+
+  def is_any_user
+    return false if current_user.nil?
+    return user_signed_in?
+  end
+
   def require_admin
     Rails.logger.debug("require_admin method in application controller")
   	unless current_user.admin?
+      Rails.logger.debug("NOT an admin")
   		flash[:danger] = "You are not authorized to do that. Contact the commish if you have any questions."
   		redirect_to root_path
   	end
+    Rails.logger.debug("Are an admin")
   end
 
   protected
 
   def verified_request?
-    Rails.logger.debug("verified_request called #{form_authenticity_token}. Token: #{request.headers['X-XSRF-TOKEN']}")
+    Rails.logger.debug("verified_request called f_a_t:#{form_authenticity_token}. X-XSRF-TOKEN:#{request.headers['X-XSRF-TOKEN']}")
     super || form_authenticity_token == request.headers['X-XSRF-TOKEN']
   end
 end

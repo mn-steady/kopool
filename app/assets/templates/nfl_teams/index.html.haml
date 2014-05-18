@@ -1,4 +1,4 @@
-%a Nfl Teams Index
+%h3 NFL Teams Index
 
 %br
 Click a team row for more information
@@ -12,3 +12,7 @@ Click a team row for more information
       %td {{ nfl_team.division }}
       %td
         %a.btn.btn-primary{"ng-href" => "#/nfl_teams/{{nfl_team.id}}", role: "button"} Edit
+        %a.btn.btn-danger{"ng-href" => "#/nfl_teams/{{nfl_team.id}}/delete", role: "button"} Delete
+
+
+%a.btn.btn-primary{"ng-href" => "#/nfl_teams/new", role: "button"} Create New Team

@@ -21,7 +21,10 @@
   team_id = $routeParams.id
 
   # See page 180 in the book for this stuff... You could also setup two controllers (e.g. EditNflTeamsController...)
-  if team_id?
+  if team_id? and team_id == "new"
+    console.log("...Creating a new team")
+    $scope.nfl_team = new NflTeama
+  else if team_id?
     console.log("...Looking up a single team")
     $scope.nfl_team = NflTeam.get({id: team_id})
   else
@@ -39,7 +42,13 @@
 
   $scope.save = (team) ->
     console.log("NflTeamsCtrl.save...")
-    console.log("Saving Team id " + team.id)
-    NflTeam.save(team)
+    if team.id?
+      console.log("Saving Team id " + team.id)
+      NflTeam.save(team)
+    else
+      console.log("First-time save need POST new id")
+      NflTeam.new(team)
+    $location.path ('/nfl_teams')
+
 
 ]

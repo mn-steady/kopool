@@ -42,6 +42,15 @@
       templateUrl: '<%= asset_path("nfl_teams/index.html") %>',
       controller: 'NflTeamsCtrl'
     }).
+    when('/nfl_teams/:id/delete', {
+      templateUrl: '<%= asset_path("nfl_teams/index.html") %>',
+      controller: 'NflTeamsCtrl',
+      resolve: { nfl_team: NflTeam = ($route, NflTeam) ->
+        console.log("Deleting team id " + $route.current.params.id)
+        NflTeam.delete($route.current.params.id)
+        $location.path ('/nfl_teams')
+      }
+    }).
     when('/nfl_teams/:id', {
       templateUrl: '<%= asset_path("nfl_teams/edit.html") %>',
       controller: 'NflTeamsCtrl'

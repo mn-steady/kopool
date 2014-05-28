@@ -6,7 +6,7 @@
 # HomeCtrl specifically. This is basically how we tell
 # Angular about the existence of our application.
 # I added a lot of code here for Devise integration
-@kopool = angular.module("kopool", ["ngRoute", "ngCookies", "sessionService"])
+@kopool = angular.module("kopool", ["ngRoute", "ngCookies"])
   .config(["$httpProvider", ($httpProvider) ->
     $httpProvider.defaults.headers.common["X-CSRF-Token"] = $("meta[name=csrf-token]").attr("content")
     interceptor = ["$location", "$rootScope", "$q", ($location, $rootScope, $q) ->

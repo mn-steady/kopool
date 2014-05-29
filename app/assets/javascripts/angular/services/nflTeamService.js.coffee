@@ -1,16 +1,5 @@
 angular.module('kopool').factory 'NflTeam', ($resource) ->
-  class NflTeam
-    constructor: (nflTeamId) ->
-      @service = $resource('/nfl_teams/:id',
-          {nfl_team_id: nflTeamId, id: '@id'})
+  #./nfl_teams/:id.json
+  $resource('http://localhost:3000/nfl_teams/:id.json', {id: '@id'}, { save: { method: 'PATCH', url: './nfl_teams/:id.json' }, new: { method: 'POST', url: './nfl_teams.json' }, remove: { method: 'DELETE', url: './nfl_teams/:id.json' } })
 
-    create: (attrs) ->
-      new @service(nflTeam: attrs).$save (nflTeam) ->
-        attrs.id = nflTeam.id
-      attrs
-
-    all: ->
-      @service.query()
-
-    # To get all nflteams:
-    # $scope.nflTeams = NflTeam().all
+#, delete: { method: 'DELETE', url: './nfl_teams/:id.json' }

@@ -1,0 +1,21 @@
+%h2 Edit an Nfl Team
+
+%a.btn.btn-primary{"ng-href" => "#/nfl_teams", role: "button"} View All Teams
+
+%br
+This page is under development
+%br
+
+%label Name
+%input{"type" => "text", "ng-model" => "nfl_team.name"}
+%br
+
+%label Conference
+%input{"type" => "text", "ng-model" => "nfl_team.conference"}
+%br
+
+%label Division
+%input{"type" => "text", "ng-model" => "nfl_team.division"}
+%br
+
+%button.btn.btn-success{"ng-click"=>"save(nfl_team)", type: "submit"} Save

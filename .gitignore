@@ -20,3 +20,4 @@ sublime-*
 
 spec/tmp
 spec/tmp/assets
+spec/tmp/assets/jasmine-specs.js

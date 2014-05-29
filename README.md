@@ -26,6 +26,10 @@ Useful Blog Posts
 ==Running Tests
 bundle exec rspec
 
+RAILS_ENV=test bundle exec rake spec:javascript
+
+
+
 For inline docs:
 bundle exec rspec --format d
 

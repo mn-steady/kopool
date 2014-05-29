@@ -25,7 +25,7 @@ end
 
 group :development, :test do
   gem 'rspec-rails', '~> 3.0.0.beta'
-  gem 'jasmine-rails'
+  gem 'jasmine-rails', '~> 0.9.0'
   gem 'pry'
 end
 

@@ -12,7 +12,7 @@ Click a team row for more information
       %td {{ nfl_team.division }}
       %td
         %a.btn.btn-primary{"ng-href" => "#/nfl_teams/{{nfl_team.id}}", role: "button"} Edit
-        %a.btn.btn-danger{"ng-href" => "#/nfl_teams/{{nfl_team.id}}/delete", role: "button"} Delete
+        %a.btn.btn-danger{"ng-href" => "#/nfl_teams/{{nfl_team.id}}?action=delete", role: "button"} Delete
 
 
 %a.btn.btn-primary{"ng-href" => "#/nfl_teams/new", role: "button"} Create New Team

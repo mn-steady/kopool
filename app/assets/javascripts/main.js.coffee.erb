@@ -42,15 +42,6 @@
       templateUrl: '<%= asset_path("nfl_teams/index.html") %>',
       controller: 'NflTeamsCtrl'
     }).
-    when('/nfl_teams/:id/delete', {
-      templateUrl: '<%= asset_path("nfl_teams/index.html") %>',
-      controller: 'NflTeamsCtrl',
-      resolve: { nfl_team: NflTeam = ($route, NflTeam) ->
-        console.log("Deleting team id " + $route.current.params.id)
-        NflTeam.delete($route.current.params.id)
-        $location.path ('/nfl_teams')
-      }
-    }).
     when('/nfl_teams/:id', {
       templateUrl: '<%= asset_path("nfl_teams/edit.html") %>',
       controller: 'NflTeamsCtrl'
@@ -76,28 +67,6 @@
       controller: 'HomeCtrl'
     })
 ])
-
-
-# @kopool.config ('$httpProvider') ->
-#   authToken = $("meta[name=\"csrf-token\"]").attr("content")
-#   $httpProvider.defaults.headers.common["X-CSRF-TOKEN"] = authToken
-
-# @kopool.factory 'NflTeam', ($resource) ->
-#   class NflTeam
-#     constructor: (NflTeamId) ->
-#       console.log("(Main.NflTeam.Constructor)")
-#       @service = $resource('./nfl_teams/:id',
-#         {task_list_id: taskListId, id: '@id'})
-
-#     create: (attrs) ->
-#       console.log("(Main.NflTeam.create)")
-#       new @service(nfl_team: attrs).$save (nfl_team) ->
-#         attrs.id = nfl_team.id
-#       attrs
-
-#     all: ->
-#       console.log("(Main.NflTeam.all)")
-#       @service.query()
 
 
 

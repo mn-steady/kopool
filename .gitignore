@@ -17,3 +17,6 @@
 
 /vendor/bundle
 sublime-*
+
+spec/tmp
+spec/tmp/assets

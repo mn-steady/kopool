@@ -16,7 +16,8 @@ class WeeksController < ApplicationController
     end
   end
 
-  def close_week_for_picks
-
+  def close_week
+    @week = Week.find(params[:id])
+    @week.close_week_for_picks
   end
 end

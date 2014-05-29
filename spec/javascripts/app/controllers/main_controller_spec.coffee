@@ -1,8 +1,8 @@
 #= require spec_helper
 
-# describe 'MainController', ->
+# describe 'NflTeamsCtrl', ->
 #   beforeEach ->
-#     @controller('MainController', { $scope: @scope })
+#     @controller('NflTeamsCtrl', { $scope: @scope })
 #     # @Task = @model('Task')
 #     # @tasks = [new @Task({ id: 1, name: 'first task' })]
 

@@ -3,7 +3,7 @@
 describe 'HomeCtrl', ->
   beforeEach ->
     @controller('HomeCtrl', { $scope: @scope })
-    @currentController = 'MapController'
+    @currentController = 'HomeCtrl'
     # @Task = @model('Task')
     # @tasks = [new @Task({ id: 1, name: 'first task' })]
 

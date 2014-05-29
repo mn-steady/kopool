@@ -40829,7 +40829,7 @@ return sinon;}.call(typeof window != 'undefined' && window || {}));
       this.controller('HomeCtrl', {
         $scope: this.scope
       });
-      return this.currentController = 'MapController';
+      return this.currentController = 'HomeCtrl';
     });
     return describe('load', function() {
       return it('opens up the home controller', function() {

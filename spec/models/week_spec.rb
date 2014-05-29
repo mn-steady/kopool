@@ -11,4 +11,6 @@ describe Week do
   it { should validate_presence_of :deadline }
 
   pending "Add more Week tests"
+
+  describe "#close_week_for_picks"
 end

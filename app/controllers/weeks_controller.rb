@@ -20,4 +20,9 @@ class WeeksController < ApplicationController
     @week = Week.find(params[:id])
     @week.close_week_for_picks
   end
+
+  def next_week
+    @week = Week.find(params[:id])
+    @week.move_to_next_week
+  end
 end

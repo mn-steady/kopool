@@ -1,4 +1,5 @@
 @kopool.controller 'NflTeamsCtrl', ['$scope', '$location', '$http', '$routeParams', 'NflTeam', ($scope, $location, $http, $routeParams, NflTeam) ->
+  $scope.controller = 'NflTeamsCtrl'
 
   console.log("NflTeamsCtrl")
   console.log("$location:" + $location)

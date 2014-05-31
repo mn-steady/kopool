@@ -1,16 +1,21 @@
 #= require spec_helper
 
-describe 'HomeCtrl', ->
-  beforeEach ->
-    @controller('HomeCtrl', { $scope: @scope })
+describe 'Home Controller', ->
+
+  # NOTE: Keeping this syntax as a sample, but you don't have to inject these! Done for you in spec_helper.coffee
+  beforeEach inject ($rootScope, $location, $controller) ->
+    @scope       = $rootScope.$new()
+    @location    = $location
+
     @currentController = 'HomeCtrl'
-    # @Task = @model('Task')
-    # @tasks = [new @Task({ id: 1, name: 'first task' })]
+    $controller('HomeCtrl', { $scope: @scope, $location: @location })
 
-    # @http.whenGET('/api/tasks').respond(200, @tasks)
-    # @http.flush()
 
-  describe 'load', ->
-    it 'opens up the home controller', ->
+  describe 'HomeCtrl', ->
+    it 'passes a simple jasmine test', ->
       expect(1).toEqual(1)
-      #expect(@scope.controller_source).toBe(@currentController)
+
+    it 'opens up the home controller', ->
+      expect(@scope.controller).toBe(@currentController)
+
+

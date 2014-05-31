@@ -1,4 +1,6 @@
 @kopool.controller('WeeksCtrl', ($scope, $routeParams, $http) ->
+  $scope.controller = 'WeeksCtrl'
+
   console.log("WeeksCtrl")
   console.log($routeParams)
 

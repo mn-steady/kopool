@@ -16,12 +16,12 @@ class WeeksController < ApplicationController
     end
   end
 
-  def close_week
+  def close_week!
     @week = Week.find(params[:id])
-    @week.close_week_for_picks
+    @week.close_week_for_picks!
   end
 
-  def next_week
+  def next_week!
     @week = Week.find(params[:id])
     @week.move_to_next_week
   end

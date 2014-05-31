@@ -1,7 +1,7 @@
 angular.module('NflTeams', ['ngResource', 'RailsApiResource'])
 
     .factory 'NflTeam', (RailsApiResource) ->
-        RailsApiResource('nfl_teams', 0, 'nfl_teams')
+        RailsApiResource('nfl_teams', 'nfl_teams')
 
     .controller 'NflTeamsCtrl', ['$scope', '$location', '$http', '$routeParams', 'NflTeam', ($scope, $location, $http, $routeParams, NflTeam) ->
 
@@ -16,22 +16,19 @@ angular.module('NflTeams', ['ngResource', 'RailsApiResource'])
       console.log("Passed action:" + action)
 
 
-      # See page 180 in the book for this stuff... You could also setup two controllers (e.g. EditNflTeamsController...)
-      # if team_id? and action == "delete"
-      #   console.log("Action is delete")
-      #   $scope.nfl_team = NflTeam.delete({id: team_id})
-      # if team_id? and team_id == "new"
-      #   console.log("...Creating a new team")
-      #   $scope.nfl_team = new NflTeam
-      # else if team_id?
-      #   console.log("...Looking up a single team")
-      #   $scope.nfl_team = NflTeam.get({id: team_id})
-      # else
-      console.log("...All Teams")
-
-      NflTeam.query().then((nfl_teams) ->
-          $scope.nfl_teams = nfl_teams
-      )
+      if team_id? and team_id == "new"
+        console.log("...Creating a new team")
+        $scope.nfl_team = new NflTeam({})
+      else if team_id?
+        console.log("...Looking up a single team")
+        $scope.nfl_team = NflTeam.get(team_id).then((nfl_team) ->
+            $scope.nfl_team = nfl_team
+        )
+      else
+        console.log("...All Teams")
+        NflTeam.query().then((nfl_teams) ->
+            $scope.nfl_teams = nfl_teams
+        )
 
 
       $scope.selectTeam = (team) ->
@@ -45,18 +42,28 @@ angular.module('NflTeams', ['ngResource', 'RailsApiResource'])
         console.log("NflTeamsCtrl.save...")
         if team.id?
           console.log("Saving Team id " + team.id)
-          NflTeam.save(team)
+          NflTeam.save(team).then((nfl_team) ->
+            $scope.nfl_team = nfl_team
+          )
         else
           console.log("First-time save need POST new id")
-          NflTeam.new(team)
+          NflTeam.create(team).then((nfl_team) ->
+            $scope.nfl_team = nfl_team
+          )
         $location.path ('/nfl_teams')
 
-      # $scope.delete = (team) ->
-      #   console.log("NflTeamsCtrl.delete...")
-      #   if team.id?
-      #     console.log("Deleting Team id " + team.id)
-      #     NflTeam.remove(team)
-      #   else
-      #     console.log("Cannot Delete)")
+      $scope.deleteTeam = (team) ->
+        console.log("NflTeamsCtrl.delete...")
+        if team.id?
+          console.log("Deleting Team id " + team.id)
+          NflTeam.remove(team).then((nfl_team) ->
+            # Forcibly reloading the collection refreshes the screen nicely!
+            NflTeam.query().then((nfl_teams) ->
+              $scope.nfl_teams = nfl_teams
+              $location.path ('/nfl_teams')
+            )
+          )
+        else
+          console.log("Cannot Delete)")
 
     ]

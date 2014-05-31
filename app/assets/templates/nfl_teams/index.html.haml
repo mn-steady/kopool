@@ -3,6 +3,11 @@
 %br
 Click a team row for more information
 
+%br
+Controller: {{controller}}
+
+%br
+
 %table.table.table-bordered{"ng-controller" => "NflTeamsCtrl"}
   %tbody{"ng-repeat" => "nfl_team in nfl_teams", "ng-click" => "selectTeam(nfl_team)", "ng-switch" => "on=isSelected(nfl_team)"}
     %tr

@@ -3,11 +3,7 @@
 #= depend_on_asset "nfl_teams/edit.html"
 #= depend_on_asset "weeks/index.html"
 
-# This line is related to our Angular app, not to our
-# HomeCtrl specifically. This is basically how we tell
-# Angular about the existence of our application.
-# I added a lot of code here for Devise integration
-@kopool = angular.module("kopool", ["ngRoute", "ngResource", "ngCookies"])
+@kopool = angular.module("kopool", ["ngRoute", "ngResource", "ngCookies", "NflTeams"])
   .config(["$httpProvider", ($httpProvider) ->
     $httpProvider.defaults.headers.common["X-CSRF-Token"] = $("meta[name=csrf-token]").attr("content")
     interceptor = ["$location", "$rootScope", "$q", ($location, $rootScope, $q) ->
@@ -29,10 +25,7 @@
     $httpProvider.responseInterceptors.push(interceptor);
 ])
 
-# This routing directive tells Angular about the default
-# route for our application. The term "otherwise" here
-# might seem somewhat awkward, but it will make more
-# sense as we add more routes to our application.
+
 @kopool.config(['$routeProvider', ($routeProvider) ->
 
   console.log("routeprovider: " + $routeProvider)

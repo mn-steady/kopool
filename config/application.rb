@@ -29,5 +29,9 @@ module Kopool
        DeviseController.respond_to :html, :json
     end
 
+    config.paperclip_defaults = {
+      :storage => :s3
+    }
+
   end
 end

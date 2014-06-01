@@ -7,7 +7,7 @@ class NflTeamsController < ApplicationController
       @nfl_teams = NflTeam.all
 
       respond_to do | format |
-        format.json {render json: @nfl_teams}
+        format.json {render json: @nfl_teams, :methods => [:logo_url_small]}
       end
     else
       Rails.logger.error("(NflTeamsController.index) unauthorized")
@@ -44,7 +44,9 @@ class NflTeamsController < ApplicationController
       @nfl_team = NflTeam.where(id: params[:id]).first
 
       # Todo setup the permitted attributes for Rails 4
-      @nfl_team.update_attributes(nfl_teams_params)
+      cleaned_params = nfl_teams_params
+      Rails.logger.debug("Cleaned Params: #{cleaned_params}")
+      @nfl_team.update_attributes(cleaned_params)
 
       # TODO: this is redundant
       if @nfl_team.save()
@@ -126,11 +128,13 @@ class NflTeamsController < ApplicationController
 
   end
 
+private
 
   def nfl_teams_params
     # This is totally cheezy but have no access to docs in the car...
-    params.delete_if { |k,v| ['id','created_at','updated_at','format','nfl_team'].include?(k)  }
-    params.permit(:name, :conference, :division, :color, :abbreviation, :home_field, :website, :logo, :wins, :losses, :ties)
+    # params.delete_if { |k,v| ['id','created_at','updated_at','format','nfl_team'].include?(k)  }
+    # params.permit(:name, :conference, :division, :color, :abbreviation, :home_field, :website, :logo, :wins, :losses, :ties, :logo)
+    params.require(:nfl_team).permit(:name, :conference, :division, :color, :abbreviation, :home_field, :website, :logo, :wins, :losses, :ties, :logo)
   end
 
 end

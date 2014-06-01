@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140530021846) do
+ActiveRecord::Schema.define(version: 20140601143218) do
 
   create_table "matchups", force: true do |t|
     t.integer  "week_id"
@@ -33,12 +33,15 @@ ActiveRecord::Schema.define(version: 20140530021846) do
     t.string   "abbreviation"
     t.string   "home_field"
     t.string   "website"
-    t.string   "logo"
     t.integer  "wins"
     t.integer  "losses"
     t.integer  "ties"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "logo_file_name"
+    t.string   "logo_content_type"
+    t.integer  "logo_file_size"
+    t.datetime "logo_updated_at"
   end
 
   create_table "payments", force: true do |t|

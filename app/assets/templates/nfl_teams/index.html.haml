@@ -8,11 +8,14 @@ Controller: {{controller}}
 
 %br
 
-%table.table.table-bordered{"ng-controller" => "NflTeamsCtrl"}
+%table.table.table-striped{"ng-controller" => "NflTeamsCtrl"}
   %tbody{"ng-repeat" => "nfl_team in nfl_teams", "ng-click" => "selectTeam(nfl_team)", "ng-switch" => "on=isSelected(nfl_team)"}
     %tr
+      %td{"width" => "15%"}
+        %img{"src" => "{{nfl_team.logo_url_small}}" }
       %td{"colspan" => "3"} {{ nfl_team.name }}
     %tr{"ng-switch-when" => 'true'}
+      %td
       %td {{ nfl_team.conference }}
       %td {{ nfl_team.division }}
       %td

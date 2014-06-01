@@ -11,10 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140419151120) do
-
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
+ActiveRecord::Schema.define(version: 20140530021846) do
 
   create_table "matchups", force: true do |t|
     t.integer  "week_id"
@@ -105,13 +102,15 @@ ActiveRecord::Schema.define(version: 20140419151120) do
   create_table "weeks", force: true do |t|
     t.integer  "season_id"
     t.integer  "week_number"
-    t.boolean  "open"
+    t.boolean  "open_for_picks",     default: true
     t.datetime "start_date"
     t.datetime "end_date"
     t.datetime "deadline"
     t.integer  "default_team_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "active_for_scoring", default: true
+    t.boolean  "current_week",       default: false
   end
 
 end

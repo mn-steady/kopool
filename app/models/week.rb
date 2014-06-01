@@ -15,8 +15,10 @@ class Week < ActiveRecord::Base
 	def move_to_next_week!
 		season = self.season
 		self.update_attributes(current_week: false)
-		next_week_number = self.week_number + 1
-		next_week = Week.where(season: season).where(week_number: next_week_number).first
-		next_week.update_attributes(current_week: true)
+		unless self.week_number >= 17
+			next_week_number = self.week_number + 1
+			next_week = Week.where(season: season).where(week_number: next_week_number).first
+			next_week.update_attributes(current_week: true)
+		end
 	end
 end

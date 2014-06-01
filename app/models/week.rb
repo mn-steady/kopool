@@ -15,7 +15,8 @@ class Week < ActiveRecord::Base
 	def move_to_next_week!
 		season = self.season
 		self.update_attributes(current_week: false)
-		unless self.week_number >= 17
+		# TODO: Decide what we want to do to end a season
+		unless self.week_number >= 17 # Don't error out if this is the last week in the season
 			next_week_number = self.week_number + 1
 			next_week = Week.where(season: season).where(week_number: next_week_number).first
 			next_week.update_attributes(current_week: true)

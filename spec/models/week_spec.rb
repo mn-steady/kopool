@@ -62,6 +62,15 @@ describe Week do
       week2.move_to_next_week!
       expect(Week.first.current_week).to eq(false)
     end
-    it "should affect only the proper season's week if multiple seasons are in the database"
+    it "should affect only the proper season's week if multiple seasons are in the database" do
+      season1 = create(:season)
+      season2 = create(:season)
+      week1 = Week.create(week_number: 1, start_date: DateTime.new(2014,8,5), end_date: DateTime.new(2014,8,8), deadline: DateTime.new(2014,8,7), season: season1)
+      week2 = Week.create(week_number: 2, start_date: DateTime.new(2014,8,12), end_date: DateTime.new(2014,8,18), deadline: DateTime.new(2014,8,14), season: season1)
+      week1_2 = Week.create(week_number: 1, start_date: DateTime.new(2015,8,5), end_date: DateTime.new(2015,8,8), deadline: DateTime.new(2015,8,7), season: season2, current_week: true)
+      week2_2 = Week.create(week_number: 2, start_date: DateTime.new(2015,8,12), end_date: DateTime.new(2015,8,18), deadline: DateTime.new(2015,8,14), season: season2)
+      week1_2.move_to_next_week!
+      expect(week2.reload.current_week).to eq(false)
+    end
   end
 end

@@ -14,6 +14,8 @@ gem 'factory_girl'
 gem 'factory_girl_rails'
 gem 'faker'
 gem 'bootstrap-sass', '~> 3.1.1'
+gem 'paperclip', '~> 4.1'
+gem 'aws-sdk', '~> 1.5.7'
 
 group :doc do
   gem 'sdoc', require: false

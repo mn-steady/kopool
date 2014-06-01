@@ -9,17 +9,12 @@ class Week < ActiveRecord::Base
 	validates_presence_of :season_id
 
 	def close_week_for_picks!
-		self.open_for_picks = false
-		self.save!
+		self.update_attributes(open_for_picks: false)
 	end
 
 	def move_to_next_week!
 		season = self.season
 		self.update_attributes(current_week: false)
-		# weeks_in_the_season = season.weeks.order(:week_number)
-		# this_week = weeks_in_the_season.index(self)
-		# next_week = weeks_in_the_season[this_week+1]
-		# next_week.current_week = true
 		next_week_number = self.week_number + 1
 		next_week = Week.where(season: season).where(week_number: next_week_number).first
 		next_week.update_attributes(current_week: true)

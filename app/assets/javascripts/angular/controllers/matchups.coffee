@@ -1,7 +1,7 @@
 angular.module('Matchups', ['ngResource', 'RailsApiResource'])
 
 	.factory 'Matchup', (RailsApiResource) ->
-		RailsApiResource('matchups', 'matchups')
+		RailsApiResource('weeks/:parent_id/matchups', 'matchups')
 
 	.controller 'MatchupsCtrl', ['$scope', '$location', '$http', '$routeParams', 'Matchup', ($scope, $location, $http, $routeParams, Matchup) ->
 		$scope.controller = 'MatchupsCtrl'
@@ -9,7 +9,9 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource'])
 		console.log("$location:" + $location)
 		$scope.matchups = []
 
-		Matchup.query().then((matchups) ->
+		week_id = $routeParams.week_id
+
+		Matchup.nested_query(week_id).then((matchups) ->
       $scope.matchups = matchups
       console.log("*** Have matchups***")
     )

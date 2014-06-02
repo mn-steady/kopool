@@ -6,4 +6,10 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource'])
 		$scope.controller = 'MatchupsCtrl'
 		console.log("MatchupsCtrl")
 		console.log("$location:" + $location)
+		$scope.matchups = []
+
+		$http.get("./matchups.json").success((data) ->
+			console.log("matchup data:" + data)
+			$scope.matchups = data
+		)
 	]

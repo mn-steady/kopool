@@ -1,17 +1,24 @@
 <h3>NFL Teams Index</h3>
 <br>
 Click a team row for more information
-<table class='table table-bordered' ng-controller='NflTeamsCtrl'>
+<br>
+Controller: {{controller}}
+<br>
+<table class='table table-striped' ng-controller='NflTeamsCtrl'>
   <tbody ng-click='selectTeam(nfl_team)' ng-repeat='nfl_team in nfl_teams' ng-switch='on=isSelected(nfl_team)'>
     <tr>
+      <td width='15%'>
+        <img src='{{nfl_team.logo_url_small}}'>
+      </td>
       <td colspan='3'>{{ nfl_team.name }}</td>
     </tr>
     <tr ng-switch-when='true'>
+      <td></td>
       <td>{{ nfl_team.conference }}</td>
       <td>{{ nfl_team.division }}</td>
       <td>
         <a class='btn btn-primary' ng-href='#/nfl_teams/{{nfl_team.id}}' role='button'>Edit</a>
-        <a class='btn btn-danger' ng-href='#/nfl_teams/{{nfl_team.id}}?action=delete' role='button'>Delete</a>
+        <a class='btn btn-danger' ng-click='deleteTeam(nfl_team)' role='button'>Delete</a>
       </td>
     </tr>
   </tbody>

@@ -49,10 +49,10 @@ describe Week do
 
     it "should not error out if the passed in week is the last week of the season" do
       season = create(:season)
-      week16 = Week.create(week_number: 16, start_date: DateTime.new(2014,8,5), end_date: DateTime.new(2014,8,8), deadline: DateTime.new(2014,8,7), season: season, current_week: true)
-      week17 = Week.create(week_number: 17, start_date: DateTime.new(2014,8,12), end_date: DateTime.new(2014,8,18), deadline: DateTime.new(2014,8,14), season: season)
+      week16 = Week.create(week_number: 16, start_date: DateTime.new(2014,8,5), end_date: DateTime.new(2014,8,8), deadline: DateTime.new(2014,8,7), season: season)
+      week17 = Week.create(week_number: 17, start_date: DateTime.new(2014,8,12), end_date: DateTime.new(2014,8,18), deadline: DateTime.new(2014,8,14), season: season, current_week: true)
       week17.move_to_next_week!
-      expect(Week.last.current_week).to eq(false)
+      expect(week17.reload.current_week).to eq(false)
     end
     it "should not set current_week to true for a previous week" do
       season = create(:season)

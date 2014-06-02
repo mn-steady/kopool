@@ -23,7 +23,7 @@ class Week < ActiveRecord::Base
 			next_week = Week.where(season: season).where(week_number: next_week_number).first
 			next_week.update_attributes(current_week: true)
 		else
-			Rails.logger.error = "We have reached the end of the season"
+			Rails.logger.debug("We have reached the end of the season")
 		end
 	end
 end

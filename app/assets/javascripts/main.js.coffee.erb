@@ -55,6 +55,10 @@
       templateUrl:'/users/register.html',
       controller: 'UsersCtrl'
     }).
+    when('/matchups', {
+      templateUrl:'/matchups',
+      controller: 'MatchupsCtrl'
+    }).
     otherwise({
       templateUrl: '<%= asset_path("home.html") %>'
       controller: 'HomeCtrl'

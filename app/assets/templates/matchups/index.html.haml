@@ -1,0 +1,13 @@
+%h3 Matchups
+
+%br
+Controller: {{controller}}
+
+%br
+
+%table.table.table-striped{"ng-controller" => "MatchupsCtrl"}
+  %tbody{"ng-repeat" => "matchup in matchups"}
+    %tr
+      %td
+      %td {{ matchup.week_id }}
+      %td {{ matchup.game_time }}

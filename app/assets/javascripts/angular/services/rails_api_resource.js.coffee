@@ -27,6 +27,7 @@ angular.module('RailsApiResource', ['ngResource'])
       # TODO: This could be DRYed up a _LOT_!! Notice that each .then is identical..  Use a response factory?
       Resource.query = (queryJson) ->
         console.log("(RailsApiResource.Resource.query) queryJson="+queryJson)
+
         params = if angular.isObject(queryJson) then queryJson else {}
         console.log("(RailsApiResource.Resource.query) params="+params)
 
@@ -34,6 +35,34 @@ angular.module('RailsApiResource', ['ngResource'])
         $http.get(collectionUrl, {params:angular.extend({}, defaultParams, params)} ).then( (response) ->
           result = []
           console.log("(RailsApiResource.query) response="+response.data)
+
+          if response.data instanceof Array
+            console.log("is an Array")
+            angular.forEach(response.data, (value, key) ->
+              console.log("key:" + key + " value:" + value)
+              result[key] = new Resource(value)
+            )
+          else
+            console.log("is an Object")
+            data_of_interest = eval("response.data."+rootNode)
+            angular.forEach(data_of_interest, (value, key) ->
+              result[key] = new Resource(value)
+            )
+          )
+
+      Resource.nested_query = (parent_id, queryJson) ->
+        console.log("(RailsApiResource.Resource.nested_query) queryJson="+queryJson)
+        if collectionUrl.indexOf(":parent_id") > -1?
+          collectionUrl = collectionUrl.replace(/:parent_id/, parent_id)
+          console.log("Resource will be: " + collectionUrl)
+
+        params = if angular.isObject(queryJson) then queryJson else {}
+        console.log("(RailsApiResource.Resource.nested_query) params="+params)
+
+        #, headers: headers
+        $http.get(collectionUrl, {params:angular.extend({}, defaultParams, params)} ).then( (response) ->
+          result = []
+          console.log("(RailsApiResource.nested_query) response="+response.data)
 
           if response.data instanceof Array
             console.log("is an Array")

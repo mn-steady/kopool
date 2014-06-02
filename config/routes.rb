@@ -9,4 +9,8 @@ Kopool::Application.routes.draw do
   resources :seasons, only: [:new, :create, :show] do
   	resources :weeks, only: [:index]
   end
+
+  resources :weeks do
+    resources :matchups
+  end
 end

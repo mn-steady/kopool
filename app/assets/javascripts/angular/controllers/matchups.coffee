@@ -1,4 +1,5 @@
 angular.module('Matchups', ['ngResource', 'RailsApiResource'])
+
 	.factory 'Matchup', (RailsApiResource) ->
 		RailsApiResource('matchups', 'matchups')
 
@@ -8,8 +9,8 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource'])
 		console.log("$location:" + $location)
 		$scope.matchups = []
 
-		$http.get("./matchups.json").success((data) ->
-			console.log("matchup data:" + data)
-			$scope.matchups = data
-		)
+		Matchup.query().then((matchups) ->
+      $scope.matchups = matchups
+      console.log("*** Have matchups***")
+    )
 	]

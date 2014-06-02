@@ -1,6 +1,28 @@
 %a Weeks Index
 
-%ul{"ng-repeat" => "week in weeks"}
-  %li Week #: {{ week.week_number }}
-  %li Start Date: {{ week.start_date }}
-  %li Deadline: {{ week.deadline }}
+
+%br
+Click a week row for more information
+
+%br
+Controller: {{controller}}
+
+%br
+
+%table.table.table-striped{"ng-controller" => "WeeksCtrl"}
+  %tr
+    %th Week #
+    %th Start Date
+    %th End Date
+    %th Deadline
+    %th Actions
+  %tr{"ng-repeat" => "week in weeks"}
+    %td {{ week.week_number }}
+    %td {{ week.start_date }}
+    %td {{ week.end_date }}
+    %td {{ week.deadline }}
+    %td
+      %a.btn.btn-primary{"ng-href" => "#/weeks/{{week.id}}", role: "button"} Edit
+      %a.btn.btn-danger{"ng-click" => "deleteweek(week)", role: "button"} Delete
+
+%a.btn.btn-primary{"ng-href" => "#/weeks/new", role: "button"} Create New week

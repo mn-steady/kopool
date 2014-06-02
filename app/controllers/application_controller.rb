@@ -27,14 +27,13 @@ class ApplicationController < ActionController::Base
     return user_signed_in?
   end
 
-  def require_admin
-    Rails.logger.debug("require_admin method in application controller")
-  	unless current_user.admin?
-      Rails.logger.debug("NOT an admin")
-  		flash[:danger] = "You are not authorized to do that. Contact the commish if you have any questions."
-  		redirect_to root_path
-  	end
-    Rails.logger.debug("Are an admin")
+  def verify_admin_user
+    unless is_admin_user
+      Rails.logger.debug("Unauthorized - Must be Admin")
+      respond_to do | format |
+        format.json { render :json => [], :status => :unauthorized }
+      end
+    end
   end
 
   protected

@@ -1,6 +1,7 @@
 class NflTeamsController < ApplicationController
 
   before_filter :verify_admin_user, only: [:show, :update, :create, :destroy]
+  before_filter :verify_any_user, only: [:index]
 
   def index
 

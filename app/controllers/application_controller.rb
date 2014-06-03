@@ -37,6 +37,15 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def verify_any_user
+    unless user_signed_in?
+      Rails.logger.debug("Unauthorized - Must be Logged-in")
+      respond_to do | format |
+        format.json { render :json => [], :status => :unauthorized }
+      end
+    end
+  end
+
   protected
 
   def verified_request?

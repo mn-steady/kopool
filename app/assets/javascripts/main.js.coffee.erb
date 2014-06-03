@@ -15,6 +15,7 @@
       error = (response) ->
         console.log("Error interceptor")
         if response.status is 401
+          console.log("(main) UNAUTHORIZED")
           $rootScope.$broadcast "event:unauthorized"
           $location.path "/users/sign_in"
           return response

@@ -47,7 +47,10 @@ angular.module('navbar', ['ngResource', 'RailsApiResource'])
         if status is 201 or status is 204 or status is 200
           parameters.error_entity.message = parameters.success_message
           console.log("(navBarCtrl.submit.success)")
-          $scope.save_user_data(data.user)
+          if parameters.method == "DELETE"
+            $scope.clear_user_loggedout(data.user)
+          else
+            $scope.save_user_data(data.user)
         else
           if data.error
             parameters.error_entity.message = data.error
@@ -68,6 +71,18 @@ angular.module('navbar', ['ngResource', 'RailsApiResource'])
     $scope.reset_messages = ->
       $scope.login_error.message = null
       $scope.login_error.errors = {}
+      return
+
+    $scope.clear_user_loggedout = (user_data) ->
+      console.log("(navbarCtrl.clear_user_loggedout)")
+      $cookieStore.put('authorized', false)
+      $cookieStore.put('username', '')
+      console.log("(navbarCtrl.clear_user_loggedout) saved username:" + $cookieStore.get('username'))
+      $scope.current_user.authorized = false
+      # Clear out the UI fields
+      $scope.login_user.email = null
+      $scope.login_user.password = null
+      console.log("Have set current_user.authorized false")
       return
 
     $scope.save_user_data = (user_data) ->

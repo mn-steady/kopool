@@ -5,7 +5,8 @@ class ApplicationController < ActionController::Base
   after_filter :set_csrf_cookie_for_ng
 
   def set_csrf_cookie_for_ng
-    Rails.logger.debug("set_csrf_cookie_for_ng called #{form_authenticity_token}")
+    Rails.logger.debug("set_csrf_cookie_for_ng called FAT:#{form_authenticity_token}")
+    Rails.logger.debug("protect_against_forgery = #{protect_against_forgery?}")
     cookies['XSRF-TOKEN'] = form_authenticity_token if protect_against_forgery?
   end
 

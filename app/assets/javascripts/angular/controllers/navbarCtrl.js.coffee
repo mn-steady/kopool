@@ -1,6 +1,6 @@
-angular.module('navbar', ['ngResource', 'RailsApiResource'])
+angular.module('navbar', ['ngResource', 'RailsApiResource', 'user'])
 
-  .controller 'navbarCtrl', ['$scope', '$location', '$http', '$cookieStore', ($scope, $location, $http, $cookieStore) ->
+  .controller 'navbarCtrl', ['$scope', '$location', '$http', 'currentUser', '$cookieStore', ($scope, $location, $http, currentUser, $cookieStore) ->
 
     $scope.controller = 'navbarCtrl'
     console.log("In navbarCtrl")
@@ -9,7 +9,7 @@ angular.module('navbar', ['ngResource', 'RailsApiResource'])
 
     $scope.login_logout = ->
       console.log("(navbarCtrl.login_logout)")
-      if $scope.current_user?
+      if currentUser.authorized == true
         console.log("...Logging OUT")
         $scope.logout()
       else
@@ -29,6 +29,8 @@ angular.module('navbar', ['ngResource', 'RailsApiResource'])
         error_entity: $scope.login_error
 
     $scope.logout = ->
+      currentUser.authorized = false
+      currentUser.username = ''
       $scope.submit
         method: "DELETE"
         url: "../users/sign_out.json"
@@ -75,37 +77,34 @@ angular.module('navbar', ['ngResource', 'RailsApiResource'])
 
     $scope.clear_user_loggedout = (user_data) ->
       console.log("(navbarCtrl.clear_user_loggedout)")
-      $cookieStore.put('authorized', false)
-      $cookieStore.put('username', '')
-      console.log("(navbarCtrl.clear_user_loggedout) saved username:" + $cookieStore.get('username'))
-      $scope.current_user.authorized = false
+      currentUser.authorized = false
+      currentUser.username = ''
+      console.log("(navbarCtrl.clear_user_loggedout) cleared username:" + currentUser.username)
+
       # Clear out the UI fields
       $scope.login_user.email = null
       $scope.login_user.password = null
-      console.log("Have set current_user.authorized false")
       return
 
     $scope.save_user_data = (user_data) ->
       console.log("(navbarCtrl.save_user_data)")
-      $cookieStore.put('authorized', true)
-      $cookieStore.put('username', user_data.email)
-      console.log("(navbarCtrl.save_user_data) saved username:" + $cookieStore.get('username'))
-      $scope.current_user = user_data
-      $scope.current_user.authorized = true
+      currentUser.authorized = true
+      currentUser.username = user_data.email
+      console.log("(navbarCtrl.save_user_data) saved username:" + currentUser.username)
+
       # Clear out the UI fields
       $scope.login_user.email = null
       $scope.login_user.password = null
-      console.log("Have set current_user.authorized")
       return
 
     $scope.display_name = ->
-      if $scope.current_user?
-        $scope.current_user.email
+      if currentUser? and currentUser.authorized == true
+        currentUser.username
       else
         "KO Pool"
 
     $scope.button_sign_in_or_out = ->
-      if $scope.current_user?
+      if currentUser.authorized == true
         "Sign Out"
       else
         "Sign In"

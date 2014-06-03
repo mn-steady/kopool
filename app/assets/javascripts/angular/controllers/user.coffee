@@ -1,17 +1,17 @@
 angular.module('user', ['RailsApiResource'])
 
 
-  # .factory('currentUser', ($cookieStore) ->
-  #   {
-  #     token:        $cookieStore.get('token')
-  #     username:     $cookieStore.get('username')
-  #     password:     ''
-  #     authorized:   false
-  #     reset: ->
-  #       @token =    $cookieStore.get('token')
-  #       @username = $cookieStore.get('username')
-  #   }
-  # )
+  .factory('currentUser', ($cookieStore) ->
+    {
+      token:        $cookieStore.get('token')
+      username:     $cookieStore.get('username')
+      password:     ''
+      authorized:   false
+      reset: ->
+        @token =    $cookieStore.get('token')
+        @username = $cookieStore.get('username')
+    }
+  )
 
 
   # # .factory 'Tokens', (SentryLinkTokenResource) ->

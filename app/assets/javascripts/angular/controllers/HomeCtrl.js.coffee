@@ -1,14 +1,13 @@
-@kopool.controller 'HomeCtrl', ['$scope', '$location', '$cookieStore', ($scope, $location, $cookieStore) ->
+@kopool.controller 'HomeCtrl', ['$scope', '$location', 'currentUser', ($scope, $location, currentUser) ->
   $scope.controller = 'HomeCtrl'
 
   console.log("(HomeCtrl)")
 
   $scope.username = ->
-    $cookieStore.get('username')
+    currentUser.username
 
   $scope.authorized = ->
-    $cookieStore.get('authorized')
-
+    currentUser.authorized
 
   # Just demonstrating an alternate means of navigation.  Better to use anchor tags.
   $scope.go = ( path ) ->

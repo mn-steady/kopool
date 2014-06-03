@@ -29,6 +29,7 @@ angular.module('navbar', ['ngResource', 'RailsApiResource', 'user'])
         error_entity: $scope.login_error
 
     $scope.logout = ->
+      console.log("(navbarCtrl.logout)")
       currentUser.authorized = false
       currentUser.username = ''
       $scope.submit

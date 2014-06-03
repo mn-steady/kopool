@@ -1,6 +1,6 @@
 angular.module('navbar', ['ngResource', 'RailsApiResource', 'user'])
 
-  .controller 'navbarCtrl', ['$scope', '$location', '$http', 'currentUser', '$cookieStore', ($scope, $location, $http, currentUser, $cookieStore) ->
+  .controller 'navbarCtrl', ['$scope', '$location', '$http', 'currentUser', 'AuthService', '$cookieStore', ($scope, $location, $http, currentUser, AuthService, $cookieStore) ->
 
     $scope.controller = 'navbarCtrl'
     console.log("In navbarCtrl")
@@ -13,7 +13,7 @@ angular.module('navbar', ['ngResource', 'RailsApiResource', 'user'])
         console.log("...Logging OUT")
         $scope.logout()
       else
-        console.log("...Logging IN")
+        console.log("...Logging IN with username:" + $scope.login_user.email)
         $scope.login()
 
     $scope.login = ->
@@ -53,6 +53,15 @@ angular.module('navbar', ['ngResource', 'RailsApiResource', 'user'])
           if parameters.method == "DELETE"
             $scope.clear_user_loggedout(data.user)
           else
+            # TODO (A1) - Bug in our rails controller... It is, for some reason, defaulting to user 1 even if I
+            # login with nonadmin@example.com.  You can see us asking for nonadmin and it returning the data on admin
+            # may be due to overridden xsrf stuff..
+            #
+            # VERY MUCH DISCUSSION HERE:
+            # http://stackoverflow.com/questions/11845500/rails-devise-authentication-csrf-issue
+            #
+            # AND HERE:
+            # https://gist.github.com/jwo/1255275
             $scope.save_user_data(data.user)
         else
           if data.error
@@ -91,6 +100,7 @@ angular.module('navbar', ['ngResource', 'RailsApiResource', 'user'])
       console.log("(navbarCtrl.save_user_data)")
       currentUser.authorized = true
       currentUser.username = user_data.email
+      AuthService.updateCookies()
       console.log("(navbarCtrl.save_user_data) saved username:" + currentUser.username)
 
       # Clear out the UI fields

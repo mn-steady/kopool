@@ -69,11 +69,12 @@
 ])
 
 
-@kopool.run( ($rootScope, $location) ->
+@kopool.run( ($rootScope, $location, AuthService) ->
   $rootScope.$on('$routeChangeStart', (event, next, current) ->
     console.log("===========> routeChangeStart <===============")
-    # unless AuthService.isAuthenticated() or next.templateUrl is 'tmpl/login.tmpl.html'
-    #   $location.url '/login'
+    console.log("next.templateUrl = " + next.templateUrl)
+    unless AuthService.isAuthenticated() or next.templateUrl is 'tmpl/login.tmpl.html'
+      $location.url '/login'
     )
   )
 

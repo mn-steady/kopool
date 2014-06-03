@@ -16,6 +16,9 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource'])
       console.log("*** Have matchups***")
     )
 
-    $scope.selectMatchup = (matchup) ->
-    	$scope.selectedMatchup = matchup
+		$scope.selectMatchup = (matchup) ->
+			$scope.selectedMatchup = matchup
+
+		$scope.isSelected = (matchup) ->
+			$scope.selectedMatchup == matchup
 	]

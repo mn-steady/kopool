@@ -1,6 +1,26 @@
-<a>Weeks Index</a>
-<ul ng-repeat='week in weeks'>
-  <li>Week #: {{ week.week_number }}</li>
-  <li>Start Date: {{ week.start_date }}</li>
-  <li>Deadline: {{ week.deadline }}</li>
-</ul>
+<h2>Weeks Index for season</h2>
+<br>
+Click a week row for more information
+<br>
+Controller: {{controller}}
+<br>
+<table class='table table-striped' ng-controller='WeeksCtrl'>
+  <tr>
+    <th>Week #</th>
+    <th>Start Date</th>
+    <th>End Date</th>
+    <th>Deadline</th>
+    <th>Actions</th>
+  </tr>
+  <tr ng-repeat='week in weeks'>
+    <td>{{ week.week_number }}</td>
+    <td>{{ week.start_date }}</td>
+    <td>{{ week.end_date }}</td>
+    <td>{{ week.deadline }}</td>
+    <td>
+      <a class='btn btn-primary' ng-href='#/weeks/{{week.id}}' role='button'>Edit</a>
+      <a class='btn btn-danger' ng-click='deleteweek(week)' role='button'>Delete</a>
+    </td>
+  </tr>
+</table>
+<a class='btn btn-primary' ng-href='#/weeks/new' role='button'>Create New week</a>

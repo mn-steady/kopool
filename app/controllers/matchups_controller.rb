@@ -6,7 +6,7 @@ class MatchupsController < ApplicationController
       @matchups = Matchup.where(week: @week)
 
       respond_to do | format |
-        format.json {render json: @matchups}
+        format.json {render :json => @matchups.to_json(include: [{ home_team: { only: :name }}, away_team: {only: :name}] ) }
       end
     else
       Rails.logger.error("(MatchupsController.index) unauthorized")

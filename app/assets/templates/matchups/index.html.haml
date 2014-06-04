@@ -21,7 +21,9 @@ Controller: {{controller}}
 		%tr{"ng-switch-when" => 'true'}
 			%td
 			%td 
-				%a.btn.btn-primary Pick {{ matchup.home_team.name }} to win!
+				%a.btn.btn-success Pick {{ matchup.home_team.name }} to win!
 			%td 
-				%a.btn.btn-primary Pick {{ matchup.away_team.name }} to win!
+				%a.btn.btn-success Pick {{ matchup.away_team.name }} to win!
 			%td
+				%a.btn.btn-primary Edit
+				%a.btn.btn-danger Delete

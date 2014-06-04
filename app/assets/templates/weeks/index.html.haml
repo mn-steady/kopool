@@ -1,5 +1,4 @@
-%h2 Weeks Index for season
-
+%h2 Weeks Index for season {{season_id}}
 
 %br
 Click a week row for more information
@@ -11,18 +10,20 @@ Controller: {{controller}}
 
 %table.table.table-striped{"ng-controller" => "WeeksCtrl"}
   %tr
+    %th Season
     %th Week #
     %th Start Date
     %th End Date
     %th Deadline
     %th Actions
   %tr{"ng-repeat" => "week in weeks"}
+    %td {{ week.season_id }}
     %td {{ week.week_number }}
-    %td {{ week.start_date }}
-    %td {{ week.end_date }}
-    %td {{ week.deadline }}
+    %td {{ week.start_date | date : 'shortDate' }}
+    %td {{ week.end_date | date : 'shortDate' }}
+    %td {{ week.deadline | date : 'shortDate' }}
     %td
       %a.btn.btn-primary{"ng-href" => "#/weeks/{{week.id}}", role: "button"} Edit
       %a.btn.btn-danger{"ng-click" => "deleteweek(week)", role: "button"} Delete
 
-%a.btn.btn-primary{"ng-href" => "#/weeks/new", role: "button"} Create New week
+%a.btn.btn-primary{"ng-href" => "#/seasons/{{season_id}}/weeks/new", role: "button"} Create New week in Season {{season_id}}

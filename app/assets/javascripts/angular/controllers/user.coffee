@@ -52,8 +52,8 @@ angular.module('user', ['RailsApiResource'])
         # !!"" === false // empty string is falsy
         # !!"foo" === true  // non-empty string is truthy
         # !!"false" === true  // ...even if it contains a falsy value
-        console.log ("(user.AuthService.isAuthenticated) currentUser.username=" + currentUser.username)
-        console.log ("(user.AuthService.isAuthenticated) cookieStore.username=" + $cookieStore.get('username'))
+        # console.log ("(user.AuthService.isAuthenticated) currentUser.username=" + currentUser.username)
+        # console.log ("(user.AuthService.isAuthenticated) cookieStore.username=" + $cookieStore.get('username'))
         return !!currentUser.username && !!$cookieStore.get('username')
 
 

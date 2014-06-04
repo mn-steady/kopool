@@ -45,12 +45,16 @@
       templateUrl:'<%= asset_path("matchups/index.html") %>',
       controller: 'MatchupsCtrl'
     }).
-    when('/weeks', {
+    when('/seasons/:season_id/weeks', {
       templateUrl: '<%= asset_path("weeks/index.html") %>',
       controller: 'WeeksCtrl'
     }).
-    when('/seasons/:season_id/weeks', {
+    when('/seasons/:season_id/weeks/new', {
       templateUrl: '<%= asset_path("weeks/index.html") %>',
+      controller: 'WeeksCtrl'
+    }).
+    when('/weeks/:week_id', {
+      templateUrl: '<%= asset_path("weeks/edit.html") %>',
       controller: 'WeeksCtrl'
     }).
     when('/users/login', {

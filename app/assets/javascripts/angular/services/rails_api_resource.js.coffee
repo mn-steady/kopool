@@ -78,9 +78,12 @@ angular.module('RailsApiResource', ['ngResource'])
             )
           )
 
-      Resource.get = (id) ->
+      Resource.get = (id, parent_id) ->
         console.log("Resource.get id="+id)
         singleItemUrl = KOPOOL_CONFIG.PROTOCOL + '://' + KOPOOL_CONFIG.HOSTNAME + '/' + resourceName + '/' + id + '.json'
+        if singleItemUrl.indexOf(":parent_id") > -1?
+          singleItemUrl = singleItemUrl.replace(/:parent_id/, parent_id)
+
         console.log("url will be "+singleItemUrl)
         $http.get(singleItemUrl, {params:defaultParams}).then( (response) ->
           result = []

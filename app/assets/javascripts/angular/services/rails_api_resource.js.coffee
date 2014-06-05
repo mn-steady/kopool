@@ -102,9 +102,12 @@ angular.module('RailsApiResource', ['ngResource'])
             )
           )
 
-      Resource.save = (data) ->
+      Resource.save = (data, parent_id) ->
         console.log("Resource.save")
         singleItemUrl = KOPOOL_CONFIG.PROTOCOL + '://' + KOPOOL_CONFIG.HOSTNAME + '/' + resourceName + '/' + data.id + '.json'
+        if singleItemUrl.indexOf(":parent_id") > -1?
+          singleItemUrl = singleItemUrl.replace(/:parent_id/, parent_id)
+
         console.log("url will be "+singleItemUrl)
         $http.put(singleItemUrl, data, { params:defaultParams }).then( (response) ->
           new Resource(data)

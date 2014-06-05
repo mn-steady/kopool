@@ -41,6 +41,10 @@
       templateUrl: '<%= asset_path("nfl_teams/edit.html") %>',
       controller: 'NflTeamsCtrl'
     }).
+    when('/weeks/:week_id/matchups/:matchup_id', {
+      templateUrl:'<%= asset_path("matchups/edit.html") %>',
+      controller: 'MatchupsCtrl'
+    }).
     when('/weeks/:week_id/matchups', {
       templateUrl:'<%= asset_path("matchups/index.html") %>',
       controller: 'MatchupsCtrl'

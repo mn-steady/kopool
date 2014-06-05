@@ -4,7 +4,7 @@
 #= depend_on_asset "weeks/index.html"
 #= depend_on_asset "matchups/index.html"
 
-@kopool = angular.module("kopool", ["ngRoute", "ngResource", "ngCookies", "NflTeams", "Matchups"])
+@kopool = angular.module("kopool", ["ngRoute", "ngResource", "ngCookies", "user", "navbar", "NflTeams", "Weeks", "Matchups"])
   .config(["$httpProvider", ($httpProvider) ->
     $httpProvider.defaults.headers.common["X-CSRF-Token"] = $("meta[name=csrf-token]").attr("content")
     interceptor = ["$location", "$rootScope", "$q", ($location, $rootScope, $q) ->
@@ -15,6 +15,7 @@
       error = (response) ->
         console.log("Error interceptor")
         if response.status is 401
+          console.log("(main) UNAUTHORIZED")
           $rootScope.$broadcast "event:unauthorized"
           $location.path "/users/sign_in"
           return response
@@ -44,12 +45,16 @@
       templateUrl:'<%= asset_path("matchups/index.html") %>',
       controller: 'MatchupsCtrl'
     }).
-    when('/weeks', {
+    when('/seasons/:season_id/weeks', {
       templateUrl: '<%= asset_path("weeks/index.html") %>',
       controller: 'WeeksCtrl'
     }).
-    when('/seasons/:season_id/weeks', {
+    when('/seasons/:season_id/weeks/new', {
       templateUrl: '<%= asset_path("weeks/index.html") %>',
+      controller: 'WeeksCtrl'
+    }).
+    when('/weeks/:week_id', {
+      templateUrl: '<%= asset_path("weeks/edit.html") %>',
       controller: 'WeeksCtrl'
     }).
     when('/users/login', {
@@ -64,7 +69,20 @@
       templateUrl: '<%= asset_path("home.html") %>'
       controller: 'HomeCtrl'
     })
+
 ])
 
+
+@kopool.run( ($rootScope, $location, AuthService) ->
+  $rootScope.$on('$routeChangeStart', (event, next, current) ->
+    console.log("===========> routeChangeStart <===============")
+    console.log("next.templateUrl = " + next.templateUrl)
+    currently_authenticated = AuthService.isAuthenticated()
+    console.log("currently_authenticated = " + currently_authenticated)
+    # You can put unless AuthService.isAuthenticated() logic here if you need redirection
+    # unless AuthService.isAuthenticated() or next.templateUrl is 'tmpl/login.tmpl.html'
+    #   $location.url '/login'
+    )
+  )
 
 

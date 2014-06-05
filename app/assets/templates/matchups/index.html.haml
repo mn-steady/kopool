@@ -2,6 +2,7 @@
 
 %br
 Controller: {{controller}}
+Week ID: {{week_id}}
 
 %br
 
@@ -25,5 +26,5 @@ Controller: {{controller}}
 			%td 
 				%a.btn.btn-success Pick {{ matchup.away_team.name }} to win!
 			%td
-				%a.btn.btn-primary Edit
+				%a.btn.btn-primary{"ng-href" => "#/weeks/{{week_id}}/matchups/{{matchup.id}}", role: "button"} Edit
 				%a.btn.btn-danger Delete

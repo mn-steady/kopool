@@ -23,6 +23,26 @@
       %input.form-control{"type" => "text", "ng-model" => "nfl_team.division"}
 
   .form-group
+    %label.col-sm-2 Color
+    .col-sm-10
+      %input.form-control{"type" => "text", "ng-model" => "nfl_team.color"}
+
+  .form-group
+    %label.col-sm-2 Abbreviation
+    .col-sm-10
+      %input.form-control{"type" => "text", "ng-model" => "nfl_team.abbreviation"}
+
+  .form-group
+    %label.col-sm-2 Home Field
+    .col-sm-10
+      %input.form-control{"type" => "text", "ng-model" => "nfl_team.home_field"}
+
+  .form-group
+    %label.col-sm-2 Website
+    .col-sm-10
+      %input.form-control{"type" => "text", "ng-model" => "nfl_team.website"}
+
+  .form-group
     %label.col-sm-2 Upload Team Logo
     .col-sm-10
       %input.form-control{"ng-file-select" => "onFileSelect(nfl_team, $files)", type: "file"}

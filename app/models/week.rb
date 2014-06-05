@@ -1,6 +1,7 @@
 class Week < ActiveRecord::Base
 	has_many :matchups
 	belongs_to :season
+	belongs_to :default_team, class_name: :nfl_team
 
 	WEEKS_IN_SEASON = 17
 

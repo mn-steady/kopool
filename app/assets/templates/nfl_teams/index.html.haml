@@ -13,11 +13,14 @@ Controller: {{controller}}
     %tr
       %td{"width" => "15%"}
         %img{"src" => "{{nfl_team.logo_url_small}}" }
-      %td{"colspan" => "3"} {{ nfl_team.name }}
+      %td{"colspan" => "6"} {{ nfl_team.name }}
     %tr{"ng-switch-when" => 'true'}
       %td
       %td {{ nfl_team.conference }}
       %td {{ nfl_team.division }}
+      %td Color: {{ nfl_team.color }}
+      %td Abbreviation: {{ nfl_team.abbreviation }}
+      %td Home Field:{{ nfl_team.home_field }}
       %td
         %a.btn.btn-primary{"ng-href" => "#/nfl_teams/{{nfl_team.id}}", role: "button"} Edit
         %a.btn.btn-danger{"ng-click" => "deleteTeam(nfl_team)", role: "button"} Delete

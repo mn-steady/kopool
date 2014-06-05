@@ -7,7 +7,7 @@ Kopool::Application.routes.draw do
   resources :nfl_teams
 
   resources :seasons, only: [:new, :create, :show] do
-  	resources :weeks, only: [:index]
+  	resources :weeks, only: [:index, :new]
   end
 
   resources :weeks do

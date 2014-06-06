@@ -20,6 +20,8 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource'])
 		$scope.week_id = week_id = $routeParams.week_id
 		$scope.matchup_id = matchup_id = $routeParams.matchup_id
 
+    ## Controller code for loading matchup 
+
 		if matchup_id? and matchup_id == "new"
       console.log("...Creating a new team")
       $scope.matchup = new Matchup({})
@@ -34,13 +36,30 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource'])
         $scope.matchups = matchups
         console.log("*** Have matchups***")
       )
+      ## Selecting Matchups
+    $scope.tieSelected = tie_selected = false
+    $scope.homeSelected = home_selected = false
+    $scope.awaySelected = away_selected = false
+
+    $scope.outcomeCollection = [tie_selected, home_selected, away_selected]
+
+    $scope.selectedIndex = -1
+
+    $scope.selectOutcome = (outcome) ->
+      $scope.selectedOutcome = true
 
 		$scope.selectMatchup = (matchup) ->
 			$scope.selectedMatchup = matchup
 
-		$scope.isSelected = (matchup) ->
-			$scope.selectedMatchup == matchup
+		$scope.isSelected = (outcome) ->
+			$scope.outcome == true
 
+    $scope.selectButton = (outcome) ->
+      if $scope.outcome == true
+        $scope.
+
+
+    ## Save an edited matchup
 		$scope.save = (matchup) ->
         console.log("MatchupsCtrl.save...")
         if matchup.id?

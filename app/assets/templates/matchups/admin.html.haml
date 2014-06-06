@@ -1,0 +1,31 @@
+%h3 Matchups - Admin
+
+%br
+Controller: {{controller}}
+
+%br
+
+%table.table.table-striped{"ng-controller" => "MatchupsCtrl"}
+	%thead
+		%tr
+			%th 
+			%th Home Team
+			%th Away Team
+			%th Game Time
+	%tbody{"ng-repeat" => "matchup in matchups", "ng-click" => "selectMatchup(matchup)", "ng-switch" => "on=isSelected(matchup)"}
+		%tr
+			%td
+				%p 
+				%a{"ng-class" => "{'btn btn-success': isSelectedOutcome}"} Tie Game!
+			%td 
+				%p.team_name {{ matchup.home_team.name}}
+				%a{"ng-class" => "className", "ng-click" => "changeClass()"} Select {{ matchup.home_team.name }} as winner!
+			%td 
+				%p.team_name {{ matchup.away_team.name}}
+				%a{"ng-class" => "className", "ng-click" => "changeClass()"} Select {{ matchup.away_team.name }} as winner!
+			%td 
+				%p {{ matchup.game_time }}
+				%a.btn.btn-info{"ng-href" => "#/weeks/{{week_id}}/matchups/{{matchup.id}}", role: "button"} Edit
+				%a.btn.btn-danger Delete
+				
+				

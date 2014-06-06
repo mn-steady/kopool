@@ -2,7 +2,8 @@
 
 %br
 Controller: {{controller}}
-%div{"ng-repeat" => "outcome in outcomeCollection"}
+%div{"ng-repeat" => "item in outcomeCollection"}
+	%p {{outcome}} Outcome
 %br
 
 %table.table.table-striped{"ng-controller" => "MatchupsCtrl"}

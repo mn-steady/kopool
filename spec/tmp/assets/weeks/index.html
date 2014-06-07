@@ -1,4 +1,4 @@
-<h2>Weeks Index for season</h2>
+<h2>Weeks Index for season {{season_id}}</h2>
 <br>
 Click a week row for more information
 <br>
@@ -6,6 +6,7 @@ Controller: {{controller}}
 <br>
 <table class='table table-striped' ng-controller='WeeksCtrl'>
   <tr>
+    <th>Season</th>
     <th>Week #</th>
     <th>Start Date</th>
     <th>End Date</th>
@@ -13,14 +14,15 @@ Controller: {{controller}}
     <th>Actions</th>
   </tr>
   <tr ng-repeat='week in weeks'>
+    <td>{{ week.season_id }}</td>
     <td>{{ week.week_number }}</td>
-    <td>{{ week.start_date }}</td>
-    <td>{{ week.end_date }}</td>
-    <td>{{ week.deadline }}</td>
+    <td>{{ week.start_date | date : 'shortDate' }}</td>
+    <td>{{ week.end_date | date : 'shortDate' }}</td>
+    <td>{{ week.deadline | date : 'shortDate' }}</td>
     <td>
       <a class='btn btn-primary' ng-href='#/weeks/{{week.id}}' role='button'>Edit</a>
       <a class='btn btn-danger' ng-click='deleteweek(week)' role='button'>Delete</a>
     </td>
   </tr>
 </table>
-<a class='btn btn-primary' ng-href='#/weeks/new' role='button'>Create New week</a>
+<a class='btn btn-primary' ng-href='#/seasons/{{season_id}}/weeks/new' role='button'>Create New week in Season {{season_id}}</a>

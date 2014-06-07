@@ -53,8 +53,8 @@
       templateUrl: '<%= asset_path("weeks/index.html") %>',
       controller: 'WeeksCtrl'
     }).
-    when('/seasons/:season_id/weeks/new', {
-      templateUrl: '<%= asset_path("weeks/index.html") %>',
+    when('/seasons/:season_id/weeks/:id', {
+      templateUrl: '<%= asset_path("weeks/edit.html") %>',
       controller: 'WeeksCtrl'
     }).
     when('/weeks/:week_id', {

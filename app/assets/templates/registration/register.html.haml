@@ -1,0 +1,41 @@
+%h1 Welcome to KOPOOL Registration!
+
+%h3 Registration is now open!
+
+%br
+Let the fun begin
+
+%br
+Controller: {{controller}}
+
+%br
+
+%br
+
+%form.form-horizontal
+
+  .form-group
+    %label.col-sm-2 Email
+    .col-sm-5
+      %input.form-control{"type" => "text", "ng-model" => "registering_user.email", "placeholder"=>"Your Email Address"}
+
+  .form-group
+    %label.col-sm-2 Password
+    .col-sm-5
+      %input.form-control{"type" => "password", "ng-model" => "registering_user.password"}
+
+  .form-group
+    %label.col-sm-2 Confirm Password
+    .col-sm-5
+      %input.form-control{"type" => "password", "ng-model" => "registering_user.password_confirmation"}
+
+  .form-group
+    %label.col-sm-2 How Many Pool Entries?
+    .col-sm-1
+      %input.form-control{"type" => "number", "ng-model" => "registering_user.num_pool_entries"}
+
+
+
+
+
+%a.btn.btn-primary{"ng-href" => "#/register/sign_up/new", role: "button"} Register

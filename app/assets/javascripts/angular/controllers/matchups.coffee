@@ -35,6 +35,33 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource'])
 				console.log("*** Have matchups***")
 			)
 
+		$scope.selectTie = (matchup) ->
+			console.log("Saving matchup outcome as a Tie Game")
+			matchup.tie = true
+			matchup.winning_team_id = null
+			matchup.completed = true
+			Matchup.save(matchup, matchup.week_id).then((matchup) ->
+				$scope.matchup = matchup
+			)
+
+		$scope.selectHomeTeamWin = (matchup) ->
+			console.log("Saving matchup outcome as Home Team Wins")
+			matchup.tie = false
+			matchup.winning_team_id = matchup.home_team_id
+			matchup.completed = true
+			Matchup.save(matchup, matchup.week_id).then((matchup) ->
+				$scope.matchup = matchup
+			)
+
+		$scope.selectAwayTeamWin = (matchup) ->
+			console.log("Saving matchup outcome as Away Team Wins")
+			matchup.tie = false
+			matchup.winning_team_id = matchup.away_team_id
+			matchup.completed = true
+			Matchup.save(matchup, matchup.week_id).then((matchup) ->
+				$scope.matchup = matchup
+			)
+
 		$scope.tieSelected = tie_selected = false
 		$scope.homeSelected = home_selected = false
 		$scope.awaySelected = away_selected = false

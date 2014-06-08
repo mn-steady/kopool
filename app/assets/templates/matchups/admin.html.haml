@@ -17,13 +17,13 @@ Controller: {{controller}}
 		%tr
 			%td
 				%p 
-				%a{"ng-class" => "{'btn btn-success': isSelectedOutcome}"} Tie Game!
+				%a.btn.btn-default{"ng-click" => "selectTie(matchup)"} Tie Game!
 			%td 
 				%p.team_name {{ matchup.home_team.name}}
-				%a{"ng-class" => "className", "ng-click" => "changeClass()"} Select {{ matchup.home_team.name }} as winner!
+				%a.btn.btn-default{"ng-click" => "selectHomeTeamWin(matchup)"} Select {{ matchup.home_team.name }} as winner!
 			%td 
 				%p.team_name {{ matchup.away_team.name}}
-				%a{"ng-class" => "className", "ng-click" => "changeClass()"} Select {{ matchup.away_team.name }} as winner!
+				%a.btn.btn-default{"ng-click" => "selectAwayTeamWin(matchup)"} Select {{ matchup.away_team.name }} as winner!
 			%td 
 				%p {{ matchup.game_time }}
 				%a.btn.btn-info{"ng-href" => "#/weeks/{{week_id}}/matchups/{{matchup.id}}", role: "button"} Edit

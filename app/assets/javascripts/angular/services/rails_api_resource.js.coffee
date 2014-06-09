@@ -120,7 +120,7 @@ angular.module('RailsApiResource', ['ngResource'])
           saveCollectionUrl = saveCollectionUrl.replace(/:parent_id/, parent_id)
 
         console.log("saveCollectionUrl will be: "+saveCollectionUrl)
-        http.put(saveCollectionUrl, data, {params:defaultParams}).then( (response) ->
+        $http.post(saveCollectionUrl, data, {params:defaultParams}).then( (response) ->
           result = []
           console.log("(RailsApiResource.create) response="+response.data)
 

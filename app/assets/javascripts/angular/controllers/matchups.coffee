@@ -58,13 +58,13 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource'])
 			matchup.tie = false
 			matchup.winning_team_id = matchup.away_team_id
 			matchup.completed = true
-			Matchup.save(matchups, matchup.week_id).then((matchup) ->
+			Matchup.save(matchup, matchup.week_id).then((matchup) ->
 				$scope.matchup = matchup
 			)
 
 		$scope.saveWeekOutcomes = (matchups) ->
 			console.log("Saving all outcomes for the week...")
-			Matchup.saveCollection(matchup, matchup.week_id)
+			Matchup.save_collection(matchups, matchups[0].week_id)
 
 		$scope.tieSelected = tie_selected = false
 		$scope.homeSelected = home_selected = false

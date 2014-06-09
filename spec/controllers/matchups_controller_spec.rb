@@ -19,7 +19,7 @@ describe MatchupsController do
 		it "knocks out a pool entry if the selected matchup is a tie" do
 			@pick = Pick.create(pool_entry: @pool_entry, week: @week, team_id: @vikings.id)
 			@matchup.update_attributes(tie: true)
-			post selected_week_matchups_path(week_id: @week.id)
+			post "weeks/1/matchups/selected.json", action: :save_week_outcomes, week_id: @week.id
 			expect(@pool_entry.knocked_out).to eq(true)
 		end
 		it "knocks out a pool entry if the selected team loses"

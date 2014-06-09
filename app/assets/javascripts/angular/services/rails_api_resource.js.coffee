@@ -115,27 +115,15 @@ angular.module('RailsApiResource', ['ngResource'])
 
       Resource.save_collection = (data, parent_id) ->
         console.log("Resource.save_collection")
-        saveCollectionUrl = KOPOOL_CONFIG.PROTOCOL + '://' + KOPOOL_CONFIG.HOSTNAME + '/' + resourceName + '/selected'
+        saveCollectionUrl = KOPOOL_CONFIG.PROTOCOL + '://' + KOPOOL_CONFIG.HOSTNAME + '/' + resourceName + '/selected.json'
         if saveCollectionUrl.indexOf(":parent_id") > -1?
           saveCollectionUrl = saveCollectionUrl.replace(/:parent_id/, parent_id)
 
         console.log("saveCollectionUrl will be: "+saveCollectionUrl)
         $http.post(saveCollectionUrl, data, {params:defaultParams}).then( (response) ->
           result = []
-          console.log("(RailsApiResource.create) response="+response.data)
-
-          if response.data instanceof Array
-            console.log("(get) is an Array")
-            angular.forEach(response.data, (value, key) ->
-              console.log("key:" + key + " value:" + value)
-              result[key] = new Resource(value)
-            )
-          else
-            console.log("(get) is an Object")
-            angular.forEach(response.data, (value, key) ->
-              result[key] = new Resource(value)
-            )
-          )
+          console.log("(RailsApiResource.save_collection) response="+response.data)
+        )
 
       Resource.remove = (data) ->
         console.log("Resource.remove")

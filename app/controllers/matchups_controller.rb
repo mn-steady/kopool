@@ -40,7 +40,7 @@ class MatchupsController < ApplicationController
 
   def save_week_outcomes
     Rails.logger.debug("in save_week_outcomes method")
-    @matchups = Matchup.where(id: params[:week_id])
+    @matchups = Matchup.where(week_id: params[:week_id])
     @picks_this_week = Pick.where(week_id: params[:week_id]) #also need to only select those that are valid/locked in
 
 
@@ -59,13 +59,13 @@ class MatchupsController < ApplicationController
     end
 
     respond_to do |format|
-      format.json {render json => @picks_this_week.to_json(include: {pool_entry: {only: [:team_name]} } ) }
+      format.json {render :json => @picks_this_week.to_json(include: {pool_entry: {only: [:team_name]} } ) }
     end
   end
 
   private
 
     def matchups_params
-      params.require(:matchup).permit(:home_team_id, :away_team_id, :game_time, :week_id, :completed, :tie, :winning_team_id)
+      params.permit(:home_team_id, :away_team_id, :game_time, :week_id, :completed, :tie, :winning_team_id)
     end
 end

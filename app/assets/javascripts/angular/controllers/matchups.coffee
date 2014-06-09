@@ -62,7 +62,7 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource'])
 		$scope.saveWeekOutcomes = (matchups) ->
 			console.log("Saving all outcomes for the week...")
 			week_id = matchups[0].week_id
-			Matchup.save_collection(matchups, week_id)
+			Matchup.save_collection(week_id, week_id)
 			$location.path('/weeks/#{week_id}/matchups')
 
 		$scope.tieSelected = tie_selected = false

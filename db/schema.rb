@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140601143218) do
+ActiveRecord::Schema.define(version: 20140609005011) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -71,6 +71,7 @@ ActiveRecord::Schema.define(version: 20140601143218) do
     t.boolean  "paid"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "knocked_out", default: false
   end
 
   create_table "seasons", force: true do |t|

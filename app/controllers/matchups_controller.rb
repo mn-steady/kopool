@@ -1,5 +1,5 @@
 class MatchupsController < ApplicationController
-	before_filter :verify_admin_user, only: [:show, :update]
+	before_filter :verify_admin_user, only: [:show, :update, :save_week_outcomes]
   before_filter :verify_any_user, only: [:index]
 
   def index
@@ -35,6 +35,31 @@ class MatchupsController < ApplicationController
       respond_to do | format |
         format.json { render :json => [], :status => :internal_server_error }
       end
+    end
+  end
+
+  def save_week_outcomes
+    Rails.logger.debug("in save_week_outcomes method")
+    @matchups = Matchup.where(id: params[:week_id])
+    @picks_this_week = Pick.where(week_id: params[:week_id]) #also need to only select those that are valid/locked in
+
+
+    @picks_this_week.each do |pick|
+      @picked_matchup = Matchup.where(:home_team_id == pick.team_id || :away_team_id == pick.team_id).first
+
+      if @picked_matchup.tie == true
+        pick.pool_entry.knocked_out = true
+        pick.save!
+      elsif @picked_matchup.winning_team_id == pick.team_id
+        # Send email message or give some other notification that a person will continue?
+      elsif @picked_matchup.winning_team_id != pick.team_id
+        pick.pool_entry.knocked_out = true
+        pick.save!
+      end
+    end
+
+    respond_to do |format|
+      format.json {render json => @picks_this_week.to_json(include: {pool_entry: {only: [:team_name]} } ) }
     end
   end
 

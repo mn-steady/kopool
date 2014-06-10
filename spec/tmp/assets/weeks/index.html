@@ -1,6 +1,5 @@
 <h2>Weeks Index for season {{season_id}}</h2>
 <br>
-Click a week row for more information
 <br>
 Controller: {{controller}}
 <br>
@@ -20,8 +19,8 @@ Controller: {{controller}}
     <td>{{ week.end_date | date : 'shortDate' }}</td>
     <td>{{ week.deadline | date : 'shortDate' }}</td>
     <td>
-      <a class='btn btn-primary' ng-href='#/weeks/{{week.id}}' role='button'>Edit</a>
-      <a class='btn btn-danger' ng-click='deleteweek(week)' role='button'>Delete</a>
+      <a class='btn btn-primary' ng-href='#/seasons/{{season_id}}/weeks/{{week.id}}' role='button'>Edit</a>
+      <a class='btn btn-danger' ng-click='deleteWeek(week)' role='button'>Delete</a>
     </td>
   </tr>
 </table>

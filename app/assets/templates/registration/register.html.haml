@@ -1,0 +1,115 @@
+%h1 Welcome to KOPOOL Registration!
+
+%h3 Registration is now open!
+
+%br
+
+%br
+
+.row
+  .col-md-8
+
+    .panel.panel-default
+      .panel-heading
+        %h3.panel-title Your User Information
+
+      .panel-body
+        %form.form-horizontal
+
+          .form-group
+            %label.col-sm-2 Email
+            .col-sm-5
+              %input.form-control{"type" => "text", "ng-model" => "registering_user.email", "placeholder"=>"Your Email Address"}
+
+          .form-group
+            %label.col-sm-2 Password
+            .col-sm-5
+              %input.form-control{"type" => "password", "ng-model" => "registering_user.password"}
+
+          .form-group
+            %label.col-sm-2 Confirm Password
+            .col-sm-5
+              %input.form-control{"type" => "password", "ng-model" => "registering_user.password_confirmation"}
+
+          .form-group
+            %label.col-sm-2 How Many Pool Entries?
+            .col-sm-2
+              %input.form-control{"type" => "number", "min" => "1", "ng-model" => "registering_user.num_pool_entries"}
+            .col-sm-3
+              {{total_charges()}}
+
+
+          %a.btn.btn-primary{"ng-click" => "make_registered_user()", role: "button"} Register my Username
+
+  .col-md-4
+    %br
+    %br
+    %br
+    First we'll setup your user account, then your Pool Entry Teams!
+
+.row
+  .col-md-12
+
+    .panel.panel-default{"ng-show" => "registering_user.is_registered" }
+      .panel-heading
+        %h3.panel-title Information on {{pool_entry_text()}}
+
+      .panel-body
+        %form.form-horizontal
+
+          .form-group
+            %label.col-sm-1 Team #
+            .col-sm-1
+              %input.form-control{"type" => "number", "min"=>"1", "max"=>"5", "ng-model" => "editing_team"}
+
+          .form-group
+            %label.col-sm-1 Team Name
+            .col-sm-10
+              %input.form-control{"type" => "text", "min"=>"1", "ng-model" => "registering_user.teams[editing_team-1].pool_entry_name"}
+
+.row
+
+  .col-md-4{"ng-repeat"=>"pool_entry in registering_user.teams", "ng-show" => "registering_user.is_registered" }
+    .panel.panel-warning
+      .panel-heading
+        .panel-title.text-center
+          %h3
+            {{registering_user.teams[$index].pool_entry_name}}
+      .panel-body
+        .text-right
+          %span.badge {{team_badge_text($index)}}
+        %br
+        .text-center
+          %h2
+            %span.label.label-danger
+              KOPOOL 2014
+        %br
+        .ticket-body
+          %em
+            %h4
+              .text-center {{registering_user.email}}
+          %br
+          .text-center
+            Price includes the price
+          %br
+          %span.glyphicon.glyphicon-arrow-right
+          %span.glyphicon.glyphicon-arrow-right NO REFUNDS
+          %span.glyphicon.glyphicon-arrow-left
+          %span.glyphicon.glyphicon-arrow-left
+          %br
+          .text-right
+            %h3
+              $50.00
+        %br
+        .text-center
+          %button.btn.btn-default.btn-lg
+            %span.glyphicon.glyphicon-hd-video
+          %button.btn.btn-default.btn-lg
+            %span.glyphicon.glyphicon-sound-7-1
+          %button.btn.btn-default.btn-lg
+            %span.glyphicon.glyphicon-sound-dolby
+
+
+
+
+%a.btn.btn-primary{"ng-href" => "#/register/sign_up/new", role: "button"} Setup these teams

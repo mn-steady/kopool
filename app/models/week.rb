@@ -11,6 +11,8 @@ class Week < ActiveRecord::Base
 	validates_presence_of :deadline
 	validates_presence_of :season_id
 
+	validates :week_number, uniqueness: {scope: :season_id}, presence: true
+
 	def close_week_for_picks!
 		self.update_attributes(open_for_picks: false)
 	end

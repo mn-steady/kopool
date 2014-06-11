@@ -1,6 +1,6 @@
 %h2 Edit a Week
 
-%a.btn.btn-primary{"ng-href" => "#/weeks", role: "button"} View All Weeks
+%a.btn.btn-primary{"ng-href" => "#/seasons/{{week.season_id}}/weeks", role: "button"} View All Weeks
 
 %br
 %br
@@ -21,5 +21,16 @@
     %label.col-sm-2 Start Date
     .col-sm-10
       %input.form-control{"type" => "text", "ng-model" => "week.start_date"}
+
+  .form-group
+    %label.col-sm-2 End Date
+    .col-sm-10
+      %input.form-control{"type" => "text", "ng-model" => "week.end_date"}
+
+  .form-group
+    %label.col-sm-2 Deadline
+    .col-sm-10
+      %input.form-control{"type" => "text", "ng-model" => "week.deadline"}
+
 
   %button.btn.btn-success{"ng-click"=>"save(week)", type: "submit"} Save

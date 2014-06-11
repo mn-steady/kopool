@@ -113,18 +113,25 @@ angular.module('RailsApiResource', ['ngResource'])
           new Resource(data)
         )
 
-      Resource.remove = (data) ->
+      Resource.remove = (data, parent_id) ->
         console.log("Resource.remove")
-        singleItemUrl = KOPOOL_CONFIG.PROTOCOL + '://' + KOPOOL_CONFIG.HOSTNAME + '/' + resourceName + '/' + data.id + '.json'
-        console.log("url will be "+singleItemUrl)
-        $http.delete(singleItemUrl, data, { params:defaultParams }).then( (response) ->
+        nested_url = KOPOOL_CONFIG.PROTOCOL + '://' + KOPOOL_CONFIG.HOSTNAME + '/' + resourceName + '/' + data.id + '.json'
+        if nested_url.indexOf(":parent_id") > -1?
+          nested_url = nested_url.replace(/:parent_id/, parent_id)
+
+        console.log("url will be "+nested_url)
+        $http.delete(nested_url, data, { params:defaultParams }).then( (response) ->
           new Resource(data)
         )
 
-      Resource.create = (data) ->
+      Resource.create = (data, parent_id) ->
         console.log("Resource.create")
-        console.log("url will be "+collectionUrl)
-        $http.post(collectionUrl, data, { params:defaultParams }).then( (response) ->
+        nested_url = KOPOOL_CONFIG.PROTOCOL + '://' + KOPOOL_CONFIG.HOSTNAME + '/' + resourceName + '.json'
+        if nested_url.indexOf(":parent_id") > -1?
+          nested_url = nested_url.replace(/:parent_id/, parent_id)
+
+        console.log("url will be "+nested_url)
+        $http.post(nested_url, data, { params:defaultParams }).then( (response) ->
           result = []
           console.log("(RailsApiResource.create) response="+response.data)
 

@@ -10,6 +10,26 @@ describe Week do
   it { should validate_presence_of :end_date }
   it { should validate_presence_of :deadline }
 
+  describe "#week_number unique in season" do
+    it "should not allow you to save a dup week_number in the same season" do
+      season = create(:season)
+      week1 = Week.create(week_number: 5, start_date: DateTime.new(2014,8,5), end_date: DateTime.new(2014,8,8), deadline: DateTime.new(2014,8,7), season: season)
+      week1.save!
+      week2 = Week.create(week_number: 5, start_date: DateTime.new(2014,8,12), end_date: DateTime.new(2014,8,18), deadline: DateTime.new(2014,8,14), season: season)
+      expect {
+        week2.save!
+      }.to raise_error ActiveRecord::RecordInvalid
+    end
+    it "should allow you to save two weeks with dup week number in different season" do
+      season = create(:season)
+      week1 = Week.create(week_number: 5, start_date: DateTime.new(2014,8,5), end_date: DateTime.new(2014,8,8), deadline: DateTime.new(2014,8,7), season: season)
+      week1.save!
+      season_2 = create(:season, year: season.year+1)
+      week2 = Week.create(week_number: 5, start_date: DateTime.new(2014,8,12), end_date: DateTime.new(2014,8,18), deadline: DateTime.new(2014,8,14), season_id: season_2.id)
+      expect(week2.save).not_to raise_error
+    end
+  end
+
   describe "#close_week_for_picks" do
   	it "should set open_for_picks for the passed in week to false" do
   		season = create(:season)

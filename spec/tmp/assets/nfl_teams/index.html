@@ -10,12 +10,15 @@ Controller: {{controller}}
       <td width='15%'>
         <img src='{{nfl_team.logo_url_small}}'>
       </td>
-      <td colspan='3'>{{ nfl_team.name }}</td>
+      <td colspan='6'>{{ nfl_team.name }}</td>
     </tr>
     <tr ng-switch-when='true'>
       <td></td>
       <td>{{ nfl_team.conference }}</td>
       <td>{{ nfl_team.division }}</td>
+      <td>Color: {{ nfl_team.color }}</td>
+      <td>Abbreviation: {{ nfl_team.abbreviation }}</td>
+      <td>Home Field:{{ nfl_team.home_field }}</td>
       <td>
         <a class='btn btn-primary' ng-href='#/nfl_teams/{{nfl_team.id}}' role='button'>Edit</a>
         <a class='btn btn-danger' ng-click='deleteTeam(nfl_team)' role='button'>Delete</a>

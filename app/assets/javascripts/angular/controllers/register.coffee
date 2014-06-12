@@ -1,6 +1,6 @@
-angular.module('Register', ['ngResource', 'RailsApiResource'])
+angular.module('Register', ['ngResource', 'RailsApiResource', 'user'])
 
-    .controller 'RegisterCtrl', ['$scope', '$location', '$http', '$routeParams', ($scope, $location, $http, $routeParams) ->
+    .controller 'RegisterCtrl', ['$scope', '$location', '$http', '$routeParams', 'currentUser', 'AuthService', ($scope, $location, $http, $routeParams, currentUser, AuthService) ->
       console.log("(RegisterCtrl)")
       $scope.controller = 'RegisterCtrl'
 
@@ -14,14 +14,73 @@ angular.module('Register', ['ngResource', 'RailsApiResource'])
       console.log("Passed id:" + team_id)
       console.log("Passed action:" + action)
 
-      $scope.pool_entries = [{team_temp_id: 0, team_name: "???", paid: false}]
-      $scope.registering_user = {email: "", password: "", password_conf: "", num_pool_entries: 1, teams: $scope.pool_entries, is_registered: false}
+      # $scope.pool_entries = [{team_temp_id: 0, team_name: "???", paid: false}]
+      $scope.pool_entries = []
+      $scope.registering_user = {email: "", password: "", password_confirmation: "", num_pool_entries: 1, teams: $scope.pool_entries, is_registered: false}
+      $scope.register_error = {message: null, errors: {}}
       $scope.editing_team = 1
+
+      $scope.register = ->
+        console.log("(registerCtrl.register)")
+        $scope.submit
+          method: "POST"
+          url: "../users.json"
+          data:
+            user:
+              email: $scope.registering_user.email
+              password: $scope.registering_user.password
+              password_confirmation: $scope.registering_user.password_confirmation
+          success_message: "You have been registered! Good luck!"
+          error_entity: $scope.register_error
+
+      $scope.submit = (parameters) ->
+
+        $http(
+          method: parameters.method
+          url: parameters.url
+          data: parameters.data
+        ).success((data, status) ->
+          if status is 201 or status is 204 or status is 200
+            parameters.error_entity.message = parameters.success_message
+            console.log("(registerCtrl.submit.success)")
+            $scope.save_user_data(data)
+          else
+            if data.error
+              parameters.error_entity.message = data.error
+            else
+              parameters.error_entity.message = "Success, but with an unexpected success code, potentially a server error, please report via support channels as this indicates a code defect.  Server response was: " + JSON.stringify(data)
+          return
+        ).error (data, status) ->
+          if status is 422
+            parameters.error_entity.errors = data.errors
+          else
+            if data.error
+              parameters.error_entity.message = data.error
+            else
+              parameters.error_entity.message = "Unexplained error, potentially a server error, please report via support channels as this indicates a code defect.  Server response was: " + JSON.stringify(data)
+          return
+        return
+
+      $scope.save_user_data = (user_data) ->
+        console.log("(registerCtrl.save_user_data)")
+        # Return values: {"id":3,"email":"registerui@example.com","created_at":"2014-06-12T01:47:36.983Z","updated_at":"2014-06-12T01:47:36.991Z","favorite_team_id":null,"phone":null,"paid_at":null,"comments":null,"cell":null,"admin":false}
+        currentUser.authorized = true
+        currentUser.username = user_data.email
+        AuthService.updateCookies()
+        console.log("(registerCtrl.save_user_data) saved username:" + currentUser.username)
+        return
 
 
       $scope.make_registered_user = () ->
         # TODO: Call Devise and verify also
+        $scope.register()
         $scope.registering_user.is_registered = true
+        for x in [1...$scope.registering_user.num_pool_entries] by 1
+          if $scope.pool_entries.length < $scope.registering_user.num_pool_entries
+            $scope.pool_entries.push({team_temp_id: x, team_name: "new", paid: false})
+
+      $scope.set_editing_team = (index) ->
+        $scope.editing_team = index + 1
 
       $scope.total_charges = () ->
         "$" + $scope.registering_user.num_pool_entries * 50.00 + ".00"
@@ -49,5 +108,11 @@ angular.module('Register', ['ngResource', 'RailsApiResource'])
 
         $scope.team_badge_text = (team_index) ->
           "Team " + (team_index+1) + " of " + $scope.registering_user.num_pool_entries
+
+        $scope.team_button_class = (index) ->
+          if index + 1 == $scope.editing_team
+            "btn-primary"
+          else
+            "btn-default"
 
     ]

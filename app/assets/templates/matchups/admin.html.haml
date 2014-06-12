@@ -1,0 +1,34 @@
+%h3 Matchups - Admin
+
+%br
+Controller: {{controller}}
+%div{"ng-repeat" => "item in outcomeCollection"}
+	%p {{outcome}} Outcome
+%br
+
+%table.table.table-striped{"ng-controller" => "MatchupsCtrl"}
+	%thead
+		%tr
+			%th 
+			%th Home Team
+			%th Away Team
+			%th Game Time
+	%tbody{"ng-repeat" => "matchup in matchups", "ng-click" => "selectMatchup(matchup)", "ng-switch" => "on=isSelected(matchup)"}
+		%tr
+			%td
+				%p 
+				%a.btn.btn-default{"ng-click" => "selectTie(matchup)"} Tie Game!
+			%td 
+				%p.team_name {{ matchup.home_team.name}}
+				%a.btn.btn-default{"ng-click" => "selectHomeTeamWin(matchup)"} Select {{ matchup.home_team.name }} as winner!
+			%td 
+				%p.team_name {{ matchup.away_team.name}}
+				%a.btn.btn-default{"ng-click" => "selectAwayTeamWin(matchup)"} Select {{ matchup.away_team.name }} as winner!
+			%td 
+				%p {{ matchup.game_time }}
+				%a.btn.btn-info{"ng-href" => "#/weeks/{{week_id}}/matchups/{{matchup.id}}", role: "button"} Edit
+				%a.btn.btn-danger Delete
+
+%a.btn.btn-success{"ng-click" => "saveWeekOutcomes(matchups)"} Save Results of this Week
+				
+				

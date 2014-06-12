@@ -40,7 +40,6 @@ angular.module('Register', ['ngResource', 'RailsApiResource'])
           else
             console.log("Pushing a new team")
             $scope.pool_entries.push({team_temp_id: 1, team_name: "new", paid: false})
-            $scope.registering_user.num_pool_entries++
 
         $scope.pool_entry_text = () ->
           if $scope.registering_user.num_pool_entries > 1

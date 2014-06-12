@@ -14,7 +14,8 @@ angular.module('Register', ['ngResource', 'RailsApiResource'])
       console.log("Passed id:" + team_id)
       console.log("Passed action:" + action)
 
-      $scope.pool_entries = [{team_temp_id: 0, team_name: "???", paid: false}]
+      # $scope.pool_entries = [{team_temp_id: 0, team_name: "???", paid: false}]
+      $scope.pool_entries = []
       $scope.registering_user = {email: "", password: "", password_conf: "", num_pool_entries: 1, teams: $scope.pool_entries, is_registered: false}
       $scope.editing_team = 1
 
@@ -22,6 +23,12 @@ angular.module('Register', ['ngResource', 'RailsApiResource'])
       $scope.make_registered_user = () ->
         # TODO: Call Devise and verify also
         $scope.registering_user.is_registered = true
+        for x in [1...$scope.registering_user.num_pool_entries] by 1
+          if $scope.pool_entries.length < $scope.registering_user.num_pool_entries
+            $scope.pool_entries.push({team_temp_id: x, team_name: "new", paid: false})
+
+      $scope.set_editing_team = (index) ->
+        $scope.editing_team = index + 1
 
       $scope.total_charges = () ->
         "$" + $scope.registering_user.num_pool_entries * 50.00 + ".00"
@@ -49,5 +56,11 @@ angular.module('Register', ['ngResource', 'RailsApiResource'])
 
         $scope.team_badge_text = (team_index) ->
           "Team " + (team_index+1) + " of " + $scope.registering_user.num_pool_entries
+
+        $scope.team_button_class = (index) ->
+          if index + 1 == $scope.editing_team
+            "btn-primary"
+          else
+            "btn-default"
 
     ]

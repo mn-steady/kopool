@@ -56,12 +56,11 @@
 
       .panel-body
         %form.form-horizontal
-
-          .form-group
-            %label.col-sm-1 Team #
-            .col-sm-1
-              %input.form-control{"type" => "number", "min"=>"1", "max"=>"5", "ng-model" => "editing_team"}
-
+          %div{"ng-repeat" => "pool_entry in registering_user.teams"}
+            .col-sm-2
+              %a.btn{"ng-click" => "set_editing_team($index)", "ng-class" => "team_button_class($index)", role: "button"} Edit Team # {{$index+1}}
+          %br
+          %br
           .form-group
             %label.col-sm-1 Team Name
             .col-sm-10

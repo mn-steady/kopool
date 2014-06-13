@@ -41,6 +41,7 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource'])
 			matchup.winning_team_id = null
 			Matchup.save(matchup, matchup.week_id).then((matchup) ->
 				$scope.matchup = matchup
+				$scope.tieSelected = true
 			)
 
 		$scope.selectHomeTeamWin = (matchup) ->
@@ -49,6 +50,7 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource'])
 			matchup.winning_team_id = matchup.home_team_id
 			Matchup.save(matchup, matchup.week_id).then((matchup) ->
 				$scope.matchup = matchup
+				$scope.homeSelected = true
 			)
 
 		$scope.selectAwayTeamWin = (matchup) ->
@@ -57,6 +59,7 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource'])
 			matchup.winning_team_id = matchup.away_team_id
 			Matchup.save(matchup, matchup.week_id).then((matchup) ->
 				$scope.matchup = matchup
+				$scope.awaySelected = true
 			)
 
 		$scope.saveWeekOutcomes = (matchups) ->
@@ -71,6 +74,15 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource'])
 
 		$scope.outcomeCollection = [tie_selected, home_selected, away_selected]
 
+		$scope.outcome_button_class = (matchup) ->
+			if matchup.tie == true
+				"btn btn-warning"
+			else if matchup.winning_team_id == matchup.home_team_id
+				"btn btn-primary"
+			else if matchup.winning_team_id != matchup.home_team_id
+				"btn btn-success"
+			else
+				"btn btn-default"
 		$scope.selectedIndex = -1
 
 		$scope.selectOutcome = (outcome) ->

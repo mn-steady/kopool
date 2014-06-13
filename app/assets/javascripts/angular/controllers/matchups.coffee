@@ -90,11 +90,14 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource'])
 
 		$scope.selectedMatchup = ""
 
-		$scope.selectTeam = (matchup, team) ->
-			console.log("---> Selecting " + team.name)
+		$scope.handleTeamSelection = (matchup, team) ->
+			$scope.selectMatchup(matchup, team)
+			# I want to select an individual team here too (for UI)
+
+		$scope.selectMatchup = (matchup, team) ->
 			$scope.selectedMatchup = matchup
 
-		$scope.isSelected = (matchup) ->
+		$scope.isSelectedMatchup = (matchup) ->
 			$scope.selectedMatchup == matchup
 
 

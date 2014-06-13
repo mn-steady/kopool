@@ -8,13 +8,11 @@
   .form-group
     %label.col-sm-2 Home Team
     .col-sm-10
-      %input.form-control{"type" => "text", "ng-model" => "matchup.home_team.name"}
       %select{"ng-model" => "selected_home_team", "ng-options" => "nfl_team as nfl_team.name for nfl_team in nfl_teams"}
 
   .form-group
     %label.col-sm-2 Away Team
     .col-sm-10
-      %input.form-control{"type" => "text", "ng-model" => "matchup.away_team.name"}
       %select{"ng-model" => "selected_away_team", "ng-options" => "nfl_team as nfl_team.name for nfl_team in nfl_teams"}
 
   .form-group

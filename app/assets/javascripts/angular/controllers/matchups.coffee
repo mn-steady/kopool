@@ -23,6 +23,7 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource'])
 		if matchup_id? and matchup_id == "new"
 			console.log("...Creating a new team")
 			$scope.matchup = new Matchup({})
+			$scope.matchup.week_id = $scope.week_id
 		else if matchup_id?
 			console.log("...Looking up a single team")
 			$scope.matchup = Matchup.get(matchup_id, week_id).then((matchup) ->
@@ -85,16 +86,19 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource'])
 				"btn btn-default"
 		$scope.selectedIndex = -1
 
-		$scope.selectOutcome = (outcome) ->
-			$scope.selectedOutcome = true
+		# Normal User Actions
 
-		$scope.selectMatchup = (matchup) ->
+		$scope.selectedMatchup = ""
+
+		$scope.selectTeam = (matchup, team) ->
+			console.log("---> Selecting " + team.name)
 			$scope.selectedMatchup = matchup
 
-		$scope.isSelected = (outcome) ->
-			$scope.outcome == true
+		$scope.isSelected = (matchup) ->
+			$scope.selectedMatchup == matchup
 
-		##$scope.selectButton = (outcome) ->
+
+		# Saving and Creation Actions
 
 		$scope.save = (matchup) ->
 				console.log("MatchupsCtrl.save...")
@@ -103,13 +107,13 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource'])
 					console.log("Saving matchup id " + matchup.id)
 					matchup.home_team_id = $scope.selected_home_team.id
 					matchup.away_team_id = $scope.selected_away_team.id
-					Matchup.save(matchup, matchup.week_id).then((matchup) ->
+					Matchup.save(matchup, $scope.week_id).then((matchup) ->
 						$scope.matchup = matchup
 					)
 				else
 					console.log("First-time save need POST new id")
-					Matchup.create(matchup).then((matchup) ->
+					Matchup.create(matchup, $scope.week_id).then((matchup) ->
 						$scope.matchup = matchup
 					)
-				$location.path ('/weeks/:week_id/matchups')
+				$location.path ('/weeks/' + $scope.week_id + '/matchups/admin')
 	]

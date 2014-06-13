@@ -1,9 +1,7 @@
 %h3 Matchups - Admin
 
 %br
-Controller: {{controller}}
-%div{"ng-repeat" => "item in outcomeCollection"}
-	%p {{outcome}} Outcome
+%a.btn.btn-primary{"ng-href" => "#/weeks/{{week_id}}/matchups/new", role: "button"} Create New Matchup This Week
 %br
 
 %table.table.table-striped{"ng-controller" => "MatchupsCtrl"}

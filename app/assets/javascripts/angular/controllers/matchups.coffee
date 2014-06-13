@@ -6,15 +6,24 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource'])
 	.factory 'NflTeam', (RailsApiResource) ->
 		RailsApiResource('nfl_teams', 'nfl_teams')
 
-	.controller 'MatchupsCtrl', ['$scope', '$location', '$http', '$routeParams', 'Matchup', 'NflTeam', ($scope, $location, $http, $routeParams, Matchup, NflTeam) ->
+	.factory 'PoolEntry', (RailsApiResource) ->
+		RailsApiResource('pool_entries', 'pool_entries')
+
+	.controller 'MatchupsCtrl', ['$scope', '$location', '$http', '$routeParams', 'Matchup', 'NflTeam', 'PoolEntry', 'currentUser', ($scope, $location, $http, $routeParams, Matchup, NflTeam, PoolEntry, currentUser) ->
 		$scope.controller = 'MatchupsCtrl'
 		console.log("MatchupsCtrl")
 		console.log("$location:" + $location)
+		console.log("Logged in as:" + currentUser.username)
 
 		$scope.matchups = []
 		NflTeam.query().then((nfl_teams) ->
 			$scope.nfl_teams = nfl_teams
 			console.log("*** Have nfl_teams***")
+		)
+
+		PoolEntry.query().then((pool_entries) ->
+			$scope.pool_entries = pool_entries
+			console.log("*** Have ALL pool entries - optimize this***")
 		)
 
 		$scope.week_id = week_id = $routeParams.week_id
@@ -68,6 +77,8 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource'])
 			week_id = matchups[0].week_id
 			Matchup.save_collection(week_id, week_id)
 			$location.path('/weeks/#{week_id}/matchups')
+
+		# Next 4 lines of code not used yet. Trying to highlight a specific button
 
 		$scope.tieSelected = tie_selected = false
 		$scope.homeSelected = home_selected = false

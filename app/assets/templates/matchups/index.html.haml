@@ -5,6 +5,47 @@ Controller: {{controller}}
 
 %br
 
+.row
+	.col-md-4{"ng-repeat"=>"pool_entry in pool_entries"}
+		.panel.panel-warning
+			.panel-heading
+				.panel-title.text-center
+					%h3
+						{{registering_user.teams[$index].pool_entry_name}}
+			.panel-body
+				.text-right
+					%span.badge {{team_badge_text($index)}}
+				%br
+				.text-center
+					%h2
+						%span.label.label-danger
+							KOPOOL 2014
+				%br
+				.ticket-body
+					%em
+						%h4
+							.text-center {{registering_user.email}}
+					%br
+					.text-center
+						Price includes the price
+					%br
+					%span.glyphicon.glyphicon-arrow-right
+					%span.glyphicon.glyphicon-arrow-right NO REFUNDS
+					%span.glyphicon.glyphicon-arrow-left
+					%span.glyphicon.glyphicon-arrow-left
+					%br
+					.text-right
+						%h3
+							$50.00
+				%br
+				.text-center
+					%button.btn.btn-default.btn-lg
+						%span.glyphicon.glyphicon-hd-video
+					%button.btn.btn-default.btn-lg
+						%span.glyphicon.glyphicon-sound-7-1
+					%button.btn.btn-default.btn-lg
+						%span.glyphicon.glyphicon-sound-dolby
+
 %table.table.table-striped{"ng-controller" => "MatchupsCtrl"}
 	%thead
 		%tr

@@ -1,4 +1,4 @@
-angular.module('Matchups', ['ngResource', 'RailsApiResource'])
+angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 
 	.factory 'Matchup', (RailsApiResource) ->
 		RailsApiResource('weeks/:parent_id/matchups', 'matchups')
@@ -134,4 +134,35 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource'])
 						$scope.matchup = matchup
 					)
 				$location.path ('/weeks/' + $scope.week_id + '/matchups/admin')
+
+		# Datepicker
+
+		$scope.today = ->
+			$scope.dt = new Date()
+			return
+
+		$scope.today()
+		$scope.clear = ->
+			$scope.dt = null
+			return
+
+		$scope.open = ($event) ->
+			$event.preventDefault()
+			$event.stopPropagation()
+			$scope.opened = true
+			return
+
+		$scope.dateOptions =
+			formatYear: "yy"
+			startingDay: 1
+
+		$scope.initDate = new Date("2016-15-20")
+		$scope.formats = [
+			"dd-MMMM-yyyy"
+			"yyyy/MM/dd"
+			"dd.MM.yyyy"
+			"shortDate"
+		]
+		$scope.format = $scope.formats[0]
+		return
 	]

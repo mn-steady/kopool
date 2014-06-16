@@ -11,7 +11,7 @@ Controller: {{controller}}
 			.panel-heading
 				.panel-title.text-center
 					%h3
-						{{registering_user.teams[$index].pool_entry_name}}
+						{{pool_entry.team_name}}
 			.panel-body
 				.text-right
 					%span.badge {{team_badge_text($index)}}
@@ -24,7 +24,7 @@ Controller: {{controller}}
 				.ticket-body
 					%em
 						%h4
-							.text-center {{registering_user.email}}
+							.text-center {{currentUser.email}}
 					%br
 					.text-center
 						Price includes the price

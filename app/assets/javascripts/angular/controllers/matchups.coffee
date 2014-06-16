@@ -121,11 +121,15 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource'])
 					console.log("Saving matchup id " + matchup.id)
 					matchup.home_team_id = $scope.selected_home_team.id
 					matchup.away_team_id = $scope.selected_away_team.id
+					matchup.game_time = $scope.selected_game_time
 					Matchup.save(matchup, $scope.week_id).then((matchup) ->
 						$scope.matchup = matchup
 					)
 				else
 					console.log("First-time save need POST new id")
+					matchup.home_team_id = $scope.selected_home_team.id
+					matchup.away_team_id = $scope.selected_away_team.id
+					matchup.game_time = $scope.selected_game_time
 					Matchup.create(matchup, $scope.week_id).then((matchup) ->
 						$scope.matchup = matchup
 					)

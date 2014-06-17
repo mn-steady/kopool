@@ -21,9 +21,10 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 			console.log("*** Have nfl_teams***")
 		)
 
+		$scope.pool_entries = []
 		PoolEntry.query().then((pool_entries) ->
 			$scope.pool_entries = pool_entries
-			console.log("*** Have ALL pool entries - optimize this***")
+			console.log("*** Have pool entries ***")
 		)
 
 		$scope.week_id = week_id = $routeParams.week_id
@@ -97,19 +98,39 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 				"btn btn-default"
 		$scope.selectedIndex = -1
 
-		# Normal User Actions
+		# User Action of Selecting a Pick
+
+		$scope.editing_pool_entry = 1
+
+		$scope.set_editing_pool_entry = (index) ->
+			$scope.editing_pool_entry = index + 1
+
+		$scope.$watch 'editing_pool_entry', (newVal, oldVal) ->
+			console.log("(Register.watch) old="+oldVal)
+			console.log("(Register.watch) new="+newVal)
+			console.log("(Register.watch) now editing entry:"+ $scope.editing_pool_entry)
+			$scope.editing_pool_entry = newVal
+
+		$scope.pool_entry_button_class = (index) ->
+			if index + 1 == $scope.editing_pool_entry
+				"btn btn-primary"
+			else
+				"btn btn-default"
 
 		$scope.selectedMatchup = ""
 
 		$scope.handleTeamSelection = (matchup, team) ->
 			$scope.selectMatchup(matchup, team)
-			# I want to select an individual team here too (for UI)
+			# I want to select an individual team here too (for UI and savePick function)
 
 		$scope.selectMatchup = (matchup, team) ->
 			$scope.selectedMatchup = matchup
 
 		$scope.isSelectedMatchup = (matchup) ->
 			$scope.selectedMatchup == matchup
+
+		$scope.savePick = (matchup, editing_pool_entry) ->
+			# Talk to Rails and create a new pick when the Save Pick button is clicked
 
 
 		# Saving and Creation Actions

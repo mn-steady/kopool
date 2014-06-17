@@ -13,8 +13,8 @@ Controller: {{controller}}
 					%h3
 						{{pool_entry.team_name}}
 			.panel-body
-				.text-right
-					%span.badge {{team_badge_text($index)}}
+				.text-center
+					%span.badge {{pool_entry.selected_pick_name}} 
 				%br
 				.text-center
 					%h2
@@ -29,10 +29,11 @@ Controller: {{controller}}
 					.text-center
 						Price includes the price
 					%br
-					%span.glyphicon.glyphicon-arrow-right
-					%span.glyphicon.glyphicon-arrow-right NO REFUNDS
-					%span.glyphicon.glyphicon-arrow-left
-					%span.glyphicon.glyphicon-arrow-left
+					.text-center
+						%span.glyphicon.glyphicon-arrow-right
+						%span.glyphicon.glyphicon-arrow-right NO REFUNDS
+						%span.glyphicon.glyphicon-arrow-left
+						%span.glyphicon.glyphicon-arrow-left
 					%br
 					.text-right
 						%h3
@@ -45,6 +46,8 @@ Controller: {{controller}}
 						%span.glyphicon.glyphicon-sound-7-1
 					%button.btn.btn-default.btn-lg
 						%span.glyphicon.glyphicon-sound-dolby
+		.text-center
+			%a.btn{"ng-click" => "set_editing_pool_entry($index)", "ng-class" => "pool_entry_button_class($index)", role: "button"} Select Pick for {{pool_entry.team_name}}
 
 %table.table.table-striped{"ng-controller" => "MatchupsCtrl"}
 	%thead
@@ -62,9 +65,9 @@ Controller: {{controller}}
 					%a.btn.btn-success{"ng-click" => "handleTeamSelection(matchup, matchup.home_team)"} Pick {{ matchup.home_team.name }} to win!
 			%td 
 				%p.team_name {{ matchup.away_team.name}}
-				%a.btn.btn-success{"ng-click" => "handleTeamSelection(matchup, matchup.home_team)"} Pick {{ matchup.away_team.name }} to win!
+				%a.btn.btn-success{"ng-click" => "handleTeamSelection(matchup, matchup.away_team)"} Pick {{ matchup.away_team.name }} to win!
 			%td 
 				%p {{ matchup.game_time }}
 				%div{"ng-if" => "isSelectedMatchup(matchup)"}
-					%a.btn.btn-primary Save Pick
+					%a.btn.btn-primary{"ng-click" => "savePick(matchup, editing_pool_entry"} Save Pick
 					%a.btn.btn-info Cancel

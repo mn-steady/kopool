@@ -9,6 +9,9 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 	.factory 'PoolEntry', (RailsApiResource) ->
 		RailsApiResource('pool_entries', 'pool_entries')
 
+	.factory 'Pick', (RailsApiResource) ->
+		RailsApiResource('weeks/:parent_id/picks', 'picks')
+
 	.controller 'MatchupsCtrl', ['$scope', '$location', '$http', '$routeParams', 'Matchup', 'NflTeam', 'PoolEntry', 'currentUser', ($scope, $location, $http, $routeParams, Matchup, NflTeam, PoolEntry, currentUser) ->
 		$scope.controller = 'MatchupsCtrl'
 		console.log("MatchupsCtrl")
@@ -45,6 +48,8 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 				$scope.matchups = matchups
 				console.log("*** Have matchups***")
 			)
+
+		# Outcome Selections for Administrators
 
 		$scope.selectTie = (matchup) ->
 			console.log("Saving matchup outcome as a Tie Game")
@@ -96,7 +101,6 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 				"btn btn-success"
 			else
 				"btn btn-default"
-		$scope.selectedIndex = -1
 
 		# User Action of Selecting a Pick
 
@@ -108,8 +112,8 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 		$scope.$watch 'editing_pool_entry', (newVal, oldVal) ->
 			console.log("(Register.watch) old="+oldVal)
 			console.log("(Register.watch) new="+newVal)
-			console.log("(Register.watch) now editing entry:"+ $scope.editing_pool_entry)
 			$scope.editing_pool_entry = newVal
+			console.log("(Register.watch) now editing entry:"+ $scope.editing_pool_entry)
 
 		$scope.pool_entry_button_class = (index) ->
 			if index + 1 == $scope.editing_pool_entry
@@ -119,8 +123,12 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 
 		$scope.selectedMatchup = ""
 
+		$scope.selectedPick = ""
+
 		$scope.handleTeamSelection = (matchup, team) ->
 			$scope.selectMatchup(matchup, team)
+			$scope.selectedPick = team
+			console.log("Pick selection is " + $scope.selectedPick.name)
 			# I want to select an individual team here too (for UI and savePick function)
 
 		$scope.selectMatchup = (matchup, team) ->
@@ -131,6 +139,12 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 
 		$scope.savePick = (matchup, editing_pool_entry) ->
 			# Talk to Rails and create a new pick when the Save Pick button is clicked
+			console.log("MatchupsCtrl.savePick...")
+			week_id = matchup.week_id
+			if pick.id?
+				console.log("Saving pick id= " + pick.id)
+				pick.team_id = $scope.selectedPick.id
+				Pick.save(pick, $scope.week_id) #Need to do something here to identify which pool entry is active
 
 
 		# Saving and Creation Actions

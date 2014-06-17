@@ -17,5 +17,7 @@ Kopool::Application.routes.draw do
         post 'selected', :action => "save_week_outcomes"
       end
     end
+    resources :picks do
+    end
   end
 end

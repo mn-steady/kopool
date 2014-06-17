@@ -3,7 +3,10 @@ angular.module('RailsApiResource', ['ngResource'])
   .constant('KOPOOL_CONFIG',
     {
       PROTOCOL: 'http',
-      HOSTNAME: 'localhost:3000',
+      # You have to manually change these for deployment
+      # TODO: Make it pull this from an environment variable
+      HOSTNAME: 'localhost:3000'
+      HOSTNAME: 'kopool.herokuapp.com'
     })
 
   .factory 'RailsApiResource', ($http, KOPOOL_CONFIG, $cookieStore) ->
@@ -112,7 +115,7 @@ angular.module('RailsApiResource', ['ngResource'])
         $http.put(singleItemUrl, data, { params:defaultParams }).then( (response) ->
           new Resource(data)
         )
-        
+
       Resource.save_collection = (data, parent_id) ->
         console.log("Resource.save_collection")
         saveCollectionUrl = KOPOOL_CONFIG.PROTOCOL + '://' + KOPOOL_CONFIG.HOSTNAME + '/' + resourceName + '/selected.json'

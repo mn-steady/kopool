@@ -36,6 +36,26 @@ bundle exec rspec --format d
 For HTML output of docs:
 bundle exec rspec --format h
 
+
+==Pushing to Heroku
+Normally will be:
+git push heroku master
+
+If you want to push a feature branch:
+git push heroku heroku_push:master
+
+heroku run rake db:seed
+heroku run rake db:migrate
+heroku run rails console
+
+
+
+
+
+
+
+
+
 Administrative
 * KOPools
   - Indexes Pools

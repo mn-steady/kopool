@@ -95,7 +95,7 @@ class WeeksController < ApplicationController
 private
 
   def weeks_params
-    params.permit(:id, :week_number, :start_date, :end_date, :deadline, :season_id)
+    params.permit(:id, :week_number, :start_date, :end_date, :deadline, :season_id, :week)
   end
 
 end

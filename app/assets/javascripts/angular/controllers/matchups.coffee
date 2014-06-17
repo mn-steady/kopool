@@ -139,12 +139,17 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 
 		$scope.savePick = (matchup, editing_pool_entry) ->
 			# Talk to Rails and create a new pick when the Save Pick button is clicked
+			# Will need to know which team they are choosing
 			console.log("MatchupsCtrl.savePick...")
+			pool_entry = $scope.pool_entries[editing_pool_entry - 1]
 			week_id = matchup.week_id
-			if pick.id?
+			if pick.id? 
 				console.log("Saving pick id= " + pick.id)
 				pick.team_id = $scope.selectedPick.id
-				Pick.save(pick, $scope.week_id) #Need to do something here to identify which pool entry is active
+				Pick.save(pick, $scope.week_id) 
+			else
+				console.log("First time saving need POST new id")
+				pick.pool_entry_id = 
 
 
 		# Saving and Creation Actions

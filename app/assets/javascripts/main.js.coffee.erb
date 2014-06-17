@@ -13,7 +13,7 @@
     $httpProvider.defaults.headers.common["X-CSRF-Token"] = $("meta[name=csrf-token]").attr("content")
     interceptor = ["$location", "$rootScope", "$q", ($location, $rootScope, $q) ->
       success = (response) ->
-        console.log("Successful interceptor")
+        console.log("Successful interceptor ")
         response
 
       error = (response) ->

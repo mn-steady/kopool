@@ -9,7 +9,7 @@
   .row
     .col-md-4
       %h2 NFL Teams
-      %p Administrators can use this 'NFL Teams' button to view, edit, and update NFL teams.  Make sure they are all in the correct Conference and Division.  Upload a nice looking logo for each of them.  Any logo you upload will automatically be stored on your Amazon S3 account and will automatically be scaled to "Medium" (300x300) and "Thumbnail" (100x100) sizes.
+      %p Administrators can use this 'NFL Teams' button to view, edit, and update NFL teams.  Make sure the teams are all in the correct Conference and Division.  Upload a nice looking logo for each team.  Any logo you upload will automatically be stored on your Amazon S3 account and will automatically be scaled to "Medium" (300x300) and "Thumbnail" (100x100) sizes.
       %p
         %a.btn.btn-primary{"ng-click" => "go('/nfl_teams')", role: "button"} NFL Teams »
     .col-md-4
@@ -19,7 +19,7 @@
         %a.btn.btn-success{href: "#/seasons/1/weeks", role: "button"} Season 1 Weeks »
     .col-md-4
       %h2 Weeks (Season 2)
-      %p You won't be using this button.  We have this here just for testing.
+      %p You won't be using this button.  We have this here just for testing.  If you wanted to use this button, you would be setting up NEXT season's weeks.  All of the same rules and issues apply as are outlined under "Weeks (Season 1)"
       %p
         %a.btn.btn-info{href: "#/seasons/2/weeks", role: "button"} Season 2 Weeks »
   %hr/

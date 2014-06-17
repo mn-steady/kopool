@@ -56,5 +56,3 @@ production:
   encoding: unicode
   database: kopool_production
   pool: 5
-  username: kopool
-  password:

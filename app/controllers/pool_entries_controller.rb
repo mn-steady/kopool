@@ -10,7 +10,7 @@ class PoolEntriesController < ApplicationController
     @pool_entries = PoolEntry.where(user: current_user)
 
     respond_to do | format |
-      format.json {render json: @pool_entries}
+      format.json {render json: @pool_entries} # Return this week's picks as well
     end
 
   end

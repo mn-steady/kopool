@@ -143,37 +143,42 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 			console.log("MatchupsCtrl.savePick...")
 			pool_entry = $scope.pool_entries[editing_pool_entry - 1]
 			week_id = matchup.week_id
-			if pick.id? 
+			if pool_entry.picks.first.id? 
 				console.log("Saving pick id= " + pick.id)
 				pick.team_id = $scope.selectedPick.id
 				Pick.save(pick, $scope.week_id) 
 			else
 				console.log("First time saving need POST new id")
-				pick.pool_entry_id = 
+				$scope.new_pick = {pool_entry_id: pool_entry.id, week_id: week_id, team_id: $scope.selectedPick.id, auto_picked: false}
+				Pick.create($scope.new_pick, week_id).then((pick) ->
+					$scope.pick = pick
+				)
+
+				$location.path ('/weeks/' + $scope.week_id + '/matchups')
 
 
 		# Saving and Creation Actions
 
 		$scope.save = (matchup) ->
-				console.log("MatchupsCtrl.save...")
-				week_id = matchup.week_id
-				if matchup.id?
-					console.log("Saving matchup id " + matchup.id)
-					matchup.home_team_id = $scope.selected_home_team.id
-					matchup.away_team_id = $scope.selected_away_team.id
-					matchup.game_time = $scope.selected_game_time
-					Matchup.save(matchup, $scope.week_id).then((matchup) ->
-						$scope.matchup = matchup
-					)
-				else
-					console.log("First-time save need POST new id")
-					matchup.home_team_id = $scope.selected_home_team.id
-					matchup.away_team_id = $scope.selected_away_team.id
-					matchup.game_time = $scope.selected_game_time
-					Matchup.create(matchup, $scope.week_id).then((matchup) ->
-						$scope.matchup = matchup
-					)
-				$location.path ('/weeks/' + $scope.week_id + '/matchups/admin')
+			console.log("MatchupsCtrl.save...")
+			week_id = matchup.week_id
+			if matchup.id?
+				console.log("Saving matchup id " + matchup.id)
+				matchup.home_team_id = $scope.selected_home_team.id
+				matchup.away_team_id = $scope.selected_away_team.id
+				matchup.game_time = $scope.selected_game_time
+				Matchup.save(matchup, $scope.week_id).then((matchup) ->
+					$scope.matchup = matchup
+				)
+			else
+				console.log("First-time save need POST new id")
+				matchup.home_team_id = $scope.selected_home_team.id
+				matchup.away_team_id = $scope.selected_away_team.id
+				matchup.game_time = $scope.selected_game_time
+				Matchup.create(matchup, $scope.week_id).then((matchup) ->
+					$scope.matchup = matchup
+				)
+			$location.path ('/weeks/' + $scope.week_id + '/matchups/admin')
 
 		# Datepicker
 

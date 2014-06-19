@@ -11,6 +11,8 @@ Kopool::Application.routes.draw do
   	resources :weeks, only: [:index, :new, :create, :edit, :show, :update, :destroy]
   end
 
+  resources :pool_entries
+
   resources :weeks do
     resources :matchups do
       collection do

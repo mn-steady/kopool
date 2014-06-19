@@ -18,3 +18,8 @@ Week.find_or_create_by(week_number: 6, start_date: DateTime.new(2015, 10, 5), de
 Week.find_or_create_by(week_number: 7, start_date: DateTime.new(2015, 10, 12), deadline: DateTime.new(2015, 10, 15), end_date: DateTime.new(2015, 10, 18), open_for_picks: true, season_id: season2.id)
 
 Matchup.find_or_create_by(week_id: 1, home_team: broncos, away_team: vikings, game_time: DateTime.new(2014,8,10,11))
+
+# create a base admin user so we can login
+# For some reason I was only able to do this from the Rails Console...
+admin_user = User.create :email => "daveandtree@comcast.net", :password => "#xcDso*RH6A4^Ir", password_confirmation: "#xcDso*RH6A4^Ir", admin: true
+admin_user.save!

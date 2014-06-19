@@ -1,6 +1,9 @@
 angular.module('Register', ['ngResource', 'RailsApiResource', 'user'])
 
-    .controller 'RegisterCtrl', ['$scope', '$location', '$http', '$routeParams', 'currentUser', 'AuthService', ($scope, $location, $http, $routeParams, currentUser, AuthService) ->
+  .factory 'PoolEntry', (RailsApiResource) ->
+      RailsApiResource('pool_entries', 'pool_entries')
+
+    .controller 'RegisterCtrl', ['$scope', '$location', '$http', '$routeParams', 'currentUser', 'AuthService', 'PoolEntry', ($scope, $location, $http, $routeParams, currentUser, AuthService, PoolEntry) ->
       console.log("(RegisterCtrl)")
       $scope.controller = 'RegisterCtrl'
 
@@ -16,6 +19,7 @@ angular.module('Register', ['ngResource', 'RailsApiResource', 'user'])
 
       # $scope.pool_entries = [{team_temp_id: 0, team_name: "???", paid: false}]
       $scope.pool_entries = []
+      $scope.pool_entries_persisted = 0
       $scope.registering_user = {email: "", password: "", password_confirmation: "", num_pool_entries: 1, teams: $scope.pool_entries, is_registered: false}
       $scope.register_error = {message: null, errors: {}}
       $scope.editing_team = 1
@@ -24,7 +28,7 @@ angular.module('Register', ['ngResource', 'RailsApiResource', 'user'])
         console.log("(registerCtrl.register)")
         $scope.submit
           method: "POST"
-          url: "../users.json"
+          url: "http://localhost:3000/users.json"
           data:
             user:
               email: $scope.registering_user.email
@@ -70,6 +74,13 @@ angular.module('Register', ['ngResource', 'RailsApiResource', 'user'])
         console.log("(registerCtrl.save_user_data) saved username:" + currentUser.username)
         return
 
+      $scope.persist_pool_entries = (user_data) ->
+        console.log("(registerCtrl.create_pool_entries)")
+        for pool_entry in $scope.pool_entries
+          console.log("Persisting Pool Entry: " + pool_entry.team_name)
+          PoolEntry.create(pool_entry).then((persisted_pool_entry) ->
+              $scope.pool_entries_persisted++
+            )
 
       $scope.make_registered_user = () ->
         # TODO: Call Devise and verify also
@@ -77,7 +88,7 @@ angular.module('Register', ['ngResource', 'RailsApiResource', 'user'])
         $scope.registering_user.is_registered = true
         for x in [1...$scope.registering_user.num_pool_entries] by 1
           if $scope.pool_entries.length < $scope.registering_user.num_pool_entries
-            $scope.pool_entries.push({team_temp_id: x, team_name: "new", paid: false})
+            $scope.pool_entries.push({team_temp_id: x, team_name: "", paid: false})
 
       $scope.set_editing_team = (index) ->
         $scope.editing_team = index + 1
@@ -98,7 +109,7 @@ angular.module('Register', ['ngResource', 'RailsApiResource', 'user'])
             $scope.editing_team = oldVal
           else
             console.log("Pushing a new team")
-            $scope.pool_entries.push({team_temp_id: 1, team_name: "new", paid: false})
+            $scope.pool_entries.push({team_temp_id: 1, team_name: "", paid: false})
 
         $scope.pool_entry_text = () ->
           if $scope.registering_user.num_pool_entries > 1
@@ -114,5 +125,11 @@ angular.module('Register', ['ngResource', 'RailsApiResource', 'user'])
             "btn-primary"
           else
             "btn-default"
+
+        $scope.persist_button_text = () ->
+          if $scope.pool_entries_persisted == $scope.pool_entries.length
+            "Teams have been Setup"
+          else
+            "Setup these Teams"
 
     ]

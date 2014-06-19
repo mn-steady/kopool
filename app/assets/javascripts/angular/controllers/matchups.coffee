@@ -12,7 +12,7 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 	.factory 'Pick', (RailsApiResource) ->
 		RailsApiResource('weeks/:parent_id/picks', 'picks')
 
-	.controller 'MatchupsCtrl', ['$scope', '$location', '$http', '$routeParams', 'Matchup', 'NflTeam', 'PoolEntry', 'currentUser', ($scope, $location, $http, $routeParams, Matchup, NflTeam, PoolEntry, currentUser) ->
+	.controller 'MatchupsCtrl', ['$scope', '$location', '$http', '$routeParams', 'Matchup', 'NflTeam', 'PoolEntry', 'currentUser', 'Pick', ($scope, $location, $http, $routeParams, Matchup, NflTeam, PoolEntry, currentUser, Pick) ->
 		$scope.controller = 'MatchupsCtrl'
 		console.log("MatchupsCtrl")
 		console.log("$location:" + $location)
@@ -27,8 +27,25 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 		$scope.pool_entries = []
 		PoolEntry.query().then((pool_entries) ->
 			$scope.pool_entries = pool_entries
+			$scope.gatherPicks()
 			console.log("*** Have pool entries ***")
 		)
+
+		$scope.gatherPicks = ->
+			$scope.picks = []
+			Pick.nested_query(week_id).then((picks) ->
+				$scope.picks = picks
+				$scope.associatePicks()
+			)
+
+		$scope.associatePicks = ->
+			for pool_entry in $scope.pool_entries
+				for pick in $scope.picks
+					console.log("We should have picks now: "+pick.pool_entry_id + " ? " + pool_entry.id)
+					if pick.pool_entry_id == pool_entry.id
+						console.log("extending the pool entry")
+						angular.extend(pool_entry, pick) 
+			console.log("$scope.pool_entries")
 
 		$scope.week_id = week_id = $routeParams.week_id
 		$scope.matchup_id = matchup_id = $routeParams.matchup_id
@@ -143,18 +160,14 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 			console.log("MatchupsCtrl.savePick...")
 			pool_entry = $scope.pool_entries[editing_pool_entry - 1]
 			week_id = matchup.week_id
-			if pool_entry.picks.first.id? 
-				console.log("Saving pick id= " + pick.id)
-				pick.team_id = $scope.selectedPick.id
-				Pick.save(pick, $scope.week_id) 
-			else
-				console.log("First time saving need POST new id")
-				$scope.new_pick = {pool_entry_id: pool_entry.id, week_id: week_id, team_id: $scope.selectedPick.id, auto_picked: false}
-				Pick.create($scope.new_pick, week_id).then((pick) ->
-					$scope.pick = pick
-				)
 
-				$location.path ('/weeks/' + $scope.week_id + '/matchups')
+			console.log("Sending Pick info to Rails...")
+			$scope.new_pick = {pool_entry_id: pool_entry.id, week_id: week_id, team_id: $scope.selectedPick.id, auto_picked: false}
+			Pick.create($scope.new_pick, week_id).then((pick) ->
+				$scope.pick = pick
+			)
+
+			$location.path ('/weeks/' + $scope.week_id + '/matchups')
 
 
 		# Saving and Creation Actions

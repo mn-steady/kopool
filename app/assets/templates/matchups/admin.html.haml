@@ -1,9 +1,7 @@
 %h3 Matchups - Admin
 
 %br
-Controller: {{controller}}
-%div{"ng-repeat" => "item in outcomeCollection"}
-	%p {{outcome}} Outcome
+%a.btn.btn-primary{"ng-href" => "#/weeks/{{week_id}}/matchups/new", role: "button"} Create New Matchup This Week
 %br
 
 %table.table.table-striped{"ng-controller" => "MatchupsCtrl"}
@@ -17,13 +15,13 @@ Controller: {{controller}}
 		%tr
 			%td
 				%p 
-				%a.btn.btn-default{"ng-click" => "selectTie(matchup)"} Tie Game!
+				%a{"ng-click" => "selectTie(matchup)", "ng-class" => "outcome_button_class(matchup)"} Tie Game!
 			%td 
 				%p.team_name {{ matchup.home_team.name}}
-				%a.btn.btn-default{"ng-click" => "selectHomeTeamWin(matchup)"} Select {{ matchup.home_team.name }} as winner!
+				%a{"ng-click" => "selectHomeTeamWin(matchup)", "ng-class" => "outcome_button_class(matchup)"} Select {{ matchup.home_team.name }} as winner!
 			%td 
 				%p.team_name {{ matchup.away_team.name}}
-				%a.btn.btn-default{"ng-click" => "selectAwayTeamWin(matchup)"} Select {{ matchup.away_team.name }} as winner!
+				%a{"ng-click" => "selectAwayTeamWin(matchup)", "ng-class" => "outcome_button_class(matchup)"} Select {{ matchup.away_team.name }} as winner!
 			%td 
 				%p {{ matchup.game_time }}
 				%a.btn.btn-info{"ng-href" => "#/weeks/{{week_id}}/matchups/{{matchup.id}}", role: "button"} Edit

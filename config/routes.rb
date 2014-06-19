@@ -5,6 +5,7 @@ Kopool::Application.routes.draw do
   root 'pages#index'
 
   resources :nfl_teams
+  resources :pool_entries
 
   resources :seasons, only: [:new, :create, :show] do
   	resources :weeks, only: [:index, :new, :create, :edit, :show, :update, :destroy]
@@ -18,5 +19,6 @@ Kopool::Application.routes.draw do
         post 'selected', :action => "save_week_outcomes"
       end
     end
+    resources :picks
   end
 end

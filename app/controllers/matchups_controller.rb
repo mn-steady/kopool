@@ -20,6 +20,25 @@ class MatchupsController < ApplicationController
     end
   end
 
+  def create
+    Rails.logger.debug("(Matchups.create)")
+    @matchup = Matchup.new()
+
+    @matchup.update_attributes(matchups_params)
+
+    if @matchup.save()
+      respond_to do | format |
+        format.json {render json: @matchup}
+      end
+    else
+      respond_to do | format |
+        error_message = ""
+        @matchup.errors.each{|attr,msg| error_message << "#{attr} #{msg} " }
+        format.json { render :json => [:error => error_message], :status => :internal_server_error}
+      end
+    end
+  end
+
   def update
     Rails.logger.debug("(MatchupsController.update) is admin")
     @matchup = Matchup.where(id: params[:id]).first

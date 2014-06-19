@@ -1,9 +1,13 @@
 .jumbotron
   .container
-    %h1 KO Pool
-    %p The system is in TEST MODE.  {{display_authorized()}}.
-    %p
-      %a.btn.btn-primary.btn-lg{href: "#/users/register", role: "button"} Register »
+    .row
+      .col-md-8
+        %h2 KO Pool
+        %p The system is in TEST MODE.  {{display_authorized()}}.
+        %p
+          %a.btn.btn-primary.btn-lg{href: "#/users/register", role: "button"} Register »
+      .col-md-4
+        %img.img-rounded.frontpage-logo{alt: "KO Pool Logo", src: asset_path('kopool_c_med.png')}
 .container
   / Example row of columns
   .row

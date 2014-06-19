@@ -11,10 +11,10 @@ Controller: {{controller}}
 			.panel-heading
 				.panel-title.text-center
 					%h3
-						{{pool_entry.team_name}}
+						{{pool_entry.nfl_team.name}}
 			.panel-body
 				.text-center
-					%span.badge {{pool_entry.selected_pick_name}} 
+					%span {{pool_entry.team_name}} 
 				%br
 				.text-center
 					%h2

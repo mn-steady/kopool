@@ -18,6 +18,29 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 		console.log("$location:" + $location)
 		console.log("Logged in as:" + currentUser.username)
 
+		# Routing for new matchups, or the index action for the week
+
+		$scope.week_id = week_id = $routeParams.week_id
+		$scope.matchup_id = matchup_id = $routeParams.matchup_id
+
+		if matchup_id? and matchup_id == "new"
+			console.log("...Creating a new matchup")
+			$scope.matchup = new Matchup({})
+			$scope.matchup.week_id = $scope.week_id
+		else if matchup_id?
+			console.log("...Looking up a single matchup")
+			$scope.matchup = Matchup.get(matchup_id, week_id).then((matchup) ->
+				$scope.matchup = matchup
+				console.log("Returned matchup" + matchup)
+			)
+		else
+			Matchup.nested_query(week_id).then((matchups) ->
+				$scope.matchups = matchups
+				console.log("*** Have matchups***")
+			)
+
+		# Gather resources and associate relevant pool entries and picks
+
 		$scope.matchups = []
 		NflTeam.query().then((nfl_teams) ->
 			$scope.nfl_teams = nfl_teams
@@ -41,30 +64,9 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 		$scope.associatePicks = ->
 			for pool_entry in $scope.pool_entries
 				for pick in $scope.picks
-					console.log("We should have picks now: "+pick.pool_entry_id + " ? " + pool_entry.id)
 					if pick.pool_entry_id == pool_entry.id
-						console.log("extending the pool entry")
 						angular.extend(pool_entry, pick) 
-			console.log("$scope.pool_entries")
-
-		$scope.week_id = week_id = $routeParams.week_id
-		$scope.matchup_id = matchup_id = $routeParams.matchup_id
-
-		if matchup_id? and matchup_id == "new"
-			console.log("...Creating a new team")
-			$scope.matchup = new Matchup({})
-			$scope.matchup.week_id = $scope.week_id
-		else if matchup_id?
-			console.log("...Looking up a single team")
-			$scope.matchup = Matchup.get(matchup_id, week_id).then((matchup) ->
-				$scope.matchup = matchup
-				console.log("Returned matchup" + matchup)
-			)
-		else
-			Matchup.nested_query(week_id).then((matchups) ->
-				$scope.matchups = matchups
-				console.log("*** Have matchups***")
-			)
+						console.log("A pick was associated with a pool entry")
 
 		# Outcome Selections for Administrators
 
@@ -162,12 +164,15 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 			week_id = matchup.week_id
 
 			console.log("Sending Pick info to Rails...")
-			$scope.new_pick = {pool_entry_id: pool_entry.id, week_id: week_id, team_id: $scope.selectedPick.id, auto_picked: false}
-			Pick.create($scope.new_pick, week_id).then((pick) ->
-				$scope.pick = pick
-			)
+			if pool_entry.pick?
+				console.log("Sending UPDATE pick to rails")
 
-			$location.path ('/weeks/' + $scope.week_id + '/matchups')
+			else
+				$scope.new_pick = {pool_entry_id: pool_entry.pool_entry_id, week_id: week_id, team_id: $scope.selectedPick.id}
+				console.log("Sending CREATE pick to rails")
+				Pick.create($scope.new_pick, week_id)
+
+				$location.path ('/weeks/' + $scope.week_id + '/matchups')
 
 
 		# Saving and Creation Actions

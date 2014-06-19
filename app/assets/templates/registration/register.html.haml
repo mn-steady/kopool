@@ -1,7 +1,5 @@
 %h1 Welcome to KOPOOL Registration!
 
-%br
-
 .row
   .col-md-8
 
@@ -30,7 +28,7 @@
           .form-group
             %label.col-sm-2 How Many Pool Entries?
             .col-sm-2
-              %input.form-control{"type" => "number", "min" => "1", "ng-model" => "registering_user.num_pool_entries", "ng-disabled" => "registering_user.is_registered"}
+              %input.form-control{"type" => "number", "min" => "1", "max" => "10", "ng-model" => "registering_user.num_pool_entries", "ng-disabled" => "registering_user.is_registered"}
             .col-sm-3
               {{total_charges()}}
 

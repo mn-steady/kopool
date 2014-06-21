@@ -13,6 +13,9 @@
 
 ActiveRecord::Schema.define(version: 20140609005011) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "matchups", force: true do |t|
     t.integer  "week_id"
     t.datetime "game_time"

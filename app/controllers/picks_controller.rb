@@ -33,8 +33,9 @@ class PicksController < ApplicationController
 
 	def update
 		Rails.logger.debug("Picks.update")
-		@pick = Pick.where(user: current_user, week_id: params[:week_id], pool_entry_id: params[:pool_entry_id])
-
+		@pool_entry = PoolEntry.find(params[:pool_entry_id])
+		@pick = Pick.where(week_id: params[:week_id], pool_entry_id: params[:pool_entry_id]).first unless current_user.id != @pool_entry.user_id
+		
 		@pick.update_attributes(picks_params)
 
 		if @pick.save

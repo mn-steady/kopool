@@ -142,6 +142,8 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 			$scope.selectMatchup(matchup, team)
 			$scope.selectedPick = team
 			console.log("Pick selection is " + $scope.selectedPick.name)
+			console.log("Value of selectedMatchup: " + $scope.selectedMatchup.home_team.name)
+			$scope.hideMatchups = true
 			# I want to select an individual team here too (for UI and savePick function)
 
 		$scope.selectMatchup = (matchup, team) ->
@@ -149,6 +151,11 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 
 		$scope.isSelectedMatchup = (matchup) ->
 			$scope.selectedMatchup == matchup
+
+		$scope.cancelTeamSelection = ->
+			$scope.selectedMatchup = ""
+			$scope.selectedPick = ""
+			$scope.hideMatchups = false
 
 		$scope.getPickedTeamName = (pool_entry) ->
 			if pool_entry.nfl_team

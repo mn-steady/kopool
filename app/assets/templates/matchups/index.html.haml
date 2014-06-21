@@ -55,7 +55,7 @@
 				%th Away Team
 				%th Game Time
 		%tbody{"ng-repeat" => "matchup in matchups"}
-			%tr
+			%tr{"ng-class" => "{'unselected-matchup' : (hideMatchups && !isSelectedMatchup(matchup))}"}
 				%td
 				%td 
 					%p.team-name {{ matchup.home_team.name}} 
@@ -68,4 +68,4 @@
 					%p {{ matchup.game_time }}
 					%div{"ng-if" => "isSelectedMatchup(matchup)"}
 						%a.btn.btn-primary{"ng-click" => "savePick(matchup, editing_pool_entry)"} Save Pick
-						%a.btn.btn-info Cancel
+						%a.btn.btn-info{"ng-click" => "cancelTeamSelection()"} Cancel

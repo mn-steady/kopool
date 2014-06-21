@@ -123,16 +123,9 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 
 		# User Action of Selecting a Pick
 
-		$scope.editing_pool_entry = 1
-
 		$scope.set_editing_pool_entry = (index) ->
 			$scope.editing_pool_entry = index + 1
-
-		$scope.$watch 'editing_pool_entry', (newVal, oldVal) ->
-			console.log("(Register.watch) old="+oldVal)
-			console.log("(Register.watch) new="+newVal)
-			$scope.editing_pool_entry = newVal
-			console.log("(Register.watch) now editing entry:"+ $scope.editing_pool_entry)
+			console.log("Set editing_pool_entry to: "+$scope.editing_pool_entry)
 
 		$scope.pool_entry_button_class = (index) ->
 			if index + 1 == $scope.editing_pool_entry
@@ -156,6 +149,15 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 		$scope.isSelectedMatchup = (matchup) ->
 			$scope.selectedMatchup == matchup
 
+		$scope.getPickedTeamName = (pool_entry) ->
+			if pool_entry.nfl_team
+				pool_entry.nfl_team.name
+			else
+				"Choose a Winning Team Below!"
+
+
+		# Saving and Creation Actions
+
 		$scope.savePick = (matchup, editing_pool_entry) ->
 			# Talk to Rails and create a new pick when the Save Pick button is clicked
 			# Will need to know which team they are choosing
@@ -164,18 +166,22 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 			week_id = matchup.week_id
 
 			console.log("Sending Pick info to Rails...")
-			if pool_entry.pick?
+			if pool_entry.team_id
 				console.log("Sending UPDATE pick to rails")
+				existing_pick = (pick for pick in $scope.picks when pick.pool_entry_id is pool_entry.id)[0]
+				console.log("Found existing_pick")
+				existing_pick.pool_entry_id = pool_entry.id
+				existing_pick.week_id = week_id
+				existing_pick.team_id = $scope.selectedPick.id
+				console.log("Updated existing_pick")
+				Pick.save(existing_pick, week_id)
 
 			else
-				$scope.new_pick = {pool_entry_id: pool_entry.pool_entry_id, week_id: week_id, team_id: $scope.selectedPick.id}
+				$scope.new_pick = {pool_entry_id: pool_entry.id, week_id: week_id, team_id: $scope.selectedPick.id}
 				console.log("Sending CREATE pick to rails")
 				Pick.create($scope.new_pick, week_id)
 
-				$location.path ('/weeks/' + $scope.week_id + '/matchups')
-
-
-		# Saving and Creation Actions
+			$location.path ('/weeks/' + $scope.week_id + '/matchups')
 
 		$scope.save = (matchup) ->
 			console.log("MatchupsCtrl.save...")

@@ -5,15 +5,30 @@ describe PicksController do
   pending "should gracefully trap if user attempts to change after locked_in"
 
   describe "GET index" do
-  	it "sets @picks to the user's picks from this season"
+
+  	before do
+			@user = create(:user, admin: true)
+			sign_in :user, @user
+
+			@season = Season.create(year: 2014, name: "2014 Season", entry_fee: 50)
+			@week = Week.create(season: @season, week_number: 1, start_date: DateTime.new(2014, 8, 5), deadline: DateTime.new(2014, 8, 8), end_date: DateTime.new(2014, 8, 11))
+			@pool_entry1 = PoolEntry.create(user: @user, team_name: "Test Team", paid: true)
+			@pool_entry2 = PoolEntry.create(user: @user, team_name: "Team Two", paid: true)
+
+			@broncos = NflTeam.create(name: "Denver Broncos", conference: "NFC", division: "West")
+			@vikings = NflTeam.create(name: "Minnesota Vikings", conference: "NFC", division: "North")
+			@matchup = Matchup.create(week_id: @week.id, home_team: @broncos, away_team: @vikings, game_time: DateTime.new(2014,8,10,11))
+		end
+
+  	pending "sets @picks to the user's picks from this season" do
+  		pick1 = Pick.create(pool_entry: @pool_entry1, week: @week, team_id: @vikings.id)
+  		pick2 = Pick.create(pool_entry: @pool_entry2, week: @week, team_id: @broncos.id)
+  		get :index, week_id: @week.id # This isn't working for some reason
+  		expect(@picks).to eq([pick1, pick2])
+
+  	end
   	it "does not include another user's picks in @picks"
   	it "does not include picks from a different season in @picks"
-  end
-
-  describe "GET new" do
-  	# Do we need this? I am envisioning a "matchup" page where you can
-  	# click "Choose Team" button for either team
-  	it "sets @pick to a new pick"
   end
 
   describe "POST create" do

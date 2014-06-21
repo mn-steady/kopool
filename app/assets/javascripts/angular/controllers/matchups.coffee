@@ -126,6 +126,7 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 		$scope.set_editing_pool_entry = (index) ->
 			$scope.editing_pool_entry = index + 1
 			console.log("Set editing_pool_entry to: "+$scope.editing_pool_entry)
+			$scope.showMatchups = true
 
 		$scope.pool_entry_button_class = (index) ->
 			if index + 1 == $scope.editing_pool_entry

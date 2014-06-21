@@ -46,7 +46,7 @@
 		.text-center
 			%a.btn{"ng-click" => "set_editing_pool_entry($index)", "ng-class" => "pool_entry_button_class($index)", role: "button"} Select Pick for {{pool_entry.team_name}}
 
-%table.table.table-striped{"ng-controller" => "MatchupsCtrl"}
+%table.table.table-striped{"ng-controller" => "MatchupsCtrl", "ng-show" => "showMatchups"}
 	%thead
 		%tr
 			%th 

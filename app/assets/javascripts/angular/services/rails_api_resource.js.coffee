@@ -5,8 +5,8 @@ angular.module('RailsApiResource', ['ngResource'])
       PROTOCOL: 'http',
       # You have to manually change these for deployment
       # TODO: Make it pull this from an environment variable
-      #HOSTNAME: 'localhost:3000'
-      HOSTNAME: 'kopool.herokuapp.com'
+      HOSTNAME: 'localhost:3000'
+      #HOSTNAME: 'kopool.herokuapp.com'
     })
 
   .factory 'RailsApiResource', ($http, KOPOOL_CONFIG, $cookieStore) ->

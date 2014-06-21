@@ -1,7 +1,4 @@
-%h3 Matchups
-
-%br
-Controller: {{controller}}
+%h3 Choose Your Pick For This Week!
 
 %br
 
@@ -11,7 +8,7 @@ Controller: {{controller}}
 			.panel-heading
 				.panel-title.text-center
 					%h3
-						{{pool_entry.nfl_team.name}}
+						{{getPickedTeamName(pool_entry)}}
 			.panel-body
 				.text-center
 					%span {{pool_entry.team_name}} 

@@ -149,6 +149,15 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 		$scope.isSelectedMatchup = (matchup) ->
 			$scope.selectedMatchup == matchup
 
+		$scope.getPickedTeamName = (pool_entry) ->
+			if pool_entry.nfl_team
+				pool_entry.nfl_team.name
+			else
+				"Choose a Winning Team Below!"
+
+
+		# Saving and Creation Actions
+
 		$scope.savePick = (matchup, editing_pool_entry) ->
 			# Talk to Rails and create a new pick when the Save Pick button is clicked
 			# Will need to know which team they are choosing
@@ -173,9 +182,6 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 				Pick.create($scope.new_pick, week_id)
 
 			$location.path ('/weeks/' + $scope.week_id + '/matchups')
-
-
-		# Saving and Creation Actions
 
 		$scope.save = (matchup) ->
 			console.log("MatchupsCtrl.save...")

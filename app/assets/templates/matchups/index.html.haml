@@ -46,25 +46,26 @@
 		.text-center
 			%a.btn{"ng-click" => "set_editing_pool_entry($index)", "ng-class" => "pool_entry_button_class($index)", role: "button"} Select Pick for {{pool_entry.team_name}}
 
-%table.table.table-striped{"ng-controller" => "MatchupsCtrl"}
-	%thead
-		%tr
-			%th 
-			%th Home Team
-			%th Away Team
-			%th Game Time
-	%tbody{"ng-repeat" => "matchup in matchups"}
-		%tr
-			%td
-			%td 
-				%p.team_name {{ matchup.home_team.name}} 
-				%div
-					%a.btn.btn-success{"ng-click" => "handleTeamSelection(matchup, matchup.home_team)"} Pick {{ matchup.home_team.name }} to win!
-			%td 
-				%p.team_name {{ matchup.away_team.name}}
-				%a.btn.btn-success{"ng-click" => "handleTeamSelection(matchup, matchup.away_team)"} Pick {{ matchup.away_team.name }} to win!
-			%td 
-				%p {{ matchup.game_time }}
-				%div{"ng-if" => "isSelectedMatchup(matchup)"}
-					%a.btn.btn-primary{"ng-click" => "savePick(matchup, editing_pool_entry)"} Save Pick
-					%a.btn.btn-info Cancel
+.animate-show{"ng-show" => "showMatchups"}
+	%table.table.table-striped{"ng-controller" => "MatchupsCtrl"}
+		%thead
+			%tr
+				%th 
+				%th Home Team
+				%th Away Team
+				%th Game Time
+		%tbody{"ng-repeat" => "matchup in matchups"}
+			%tr{"ng-class" => "{'unselected-matchup' : (hideMatchups && !isSelectedMatchup(matchup))}"}
+				%td
+				%td 
+					%p.team-name {{ matchup.home_team.name}} 
+					%div
+						%a.btn.btn-success{"ng-click" => "handleTeamSelection(matchup, matchup.home_team)", "ng-hide" => "isSelectedMatchup(matchup) && !isSelectedTeam(matchup.home_team)"} Pick {{ matchup.home_team.name }} to win!
+				%td 
+					%p.team-name {{ matchup.away_team.name}}
+					%a.btn.btn-success{"ng-click" => "handleTeamSelection(matchup, matchup.away_team)", "ng-hide" => "isSelectedMatchup(matchup) && !isSelectedTeam(matchup.away_team)"} Pick {{ matchup.away_team.name }} to win!
+				%td 
+					%p {{ matchup.game_time }}
+					%div{"ng-if" => "isSelectedMatchup(matchup)"}
+						%a.btn.btn-primary{"ng-click" => "savePick(matchup, editing_pool_entry)"} Save Pick
+						%a.btn.btn-info{"ng-click" => "cancelTeamSelection()"} Cancel

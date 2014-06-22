@@ -8,7 +8,7 @@
 #= depend_on_asset "weeks/edit.html"
 #= depend_on_asset "registration/register.html"
 
-@kopool = angular.module("kopool", ["ngRoute", "ngResource", "ngCookies", "user", "navbar", "NflTeams", "Weeks", "Matchups", "Register"])
+@kopool = angular.module("kopool", ["ngRoute", "ngResource", "ngCookies", "user", "navbar", "NflTeams", "Weeks", "Matchups", "Register", "ngAnimate"])
   .config(["$httpProvider", ($httpProvider) ->
     $httpProvider.defaults.headers.common["X-CSRF-Token"] = $("meta[name=csrf-token]").attr("content")
     interceptor = ["$location", "$rootScope", "$q", ($location, $rootScope, $q) ->

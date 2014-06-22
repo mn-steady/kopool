@@ -103,20 +103,20 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 			Matchup.save_collection(week_id, week_id)
 			$location.path('/weeks/#{week_id}/matchups')
 
-		# Next 4 lines of code not used yet. Trying to highlight a specific button
-
-		$scope.tieSelected = tie_selected = false
-		$scope.homeSelected = home_selected = false
-		$scope.awaySelected = away_selected = false
-
-		$scope.outcomeCollection = [tie_selected, home_selected, away_selected]
-
-		$scope.outcome_button_class = (matchup) ->
+		$scope.tie_button_class = (matchup) ->
 			if matchup.tie == true
 				"btn btn-warning"
-			else if matchup.winning_team_id == matchup.home_team_id
+			else
+				"btn btn-default"
+
+		$scope.home_button_class = (matchup) ->
+			if matchup.winning_team_id == matchup.home_team_id
 				"btn btn-primary"
-			else if matchup.winning_team_id != matchup.home_team_id
+			else
+				"btn btn-default"
+
+		$scope.away_button_class = (matchup) ->
+			if matchup.winning_team_id != matchup.home_team_id && matchup.tie == false
 				"btn btn-success"
 			else
 				"btn btn-default"
@@ -126,6 +126,7 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 		$scope.set_editing_pool_entry = (index) ->
 			$scope.editing_pool_entry = index + 1
 			console.log("Set editing_pool_entry to: "+$scope.editing_pool_entry)
+			$scope.showMatchups = true
 
 		$scope.pool_entry_button_class = (index) ->
 			if index + 1 == $scope.editing_pool_entry
@@ -141,6 +142,8 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 			$scope.selectMatchup(matchup, team)
 			$scope.selectedPick = team
 			console.log("Pick selection is " + $scope.selectedPick.name)
+			console.log("Value of selectedMatchup: " + $scope.selectedMatchup.home_team.name)
+			$scope.hideMatchups = true
 			# I want to select an individual team here too (for UI and savePick function)
 
 		$scope.selectMatchup = (matchup, team) ->
@@ -148,6 +151,14 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 
 		$scope.isSelectedMatchup = (matchup) ->
 			$scope.selectedMatchup == matchup
+
+		$scope.isSelectedTeam = (team) ->
+			$scope.selectedPick == team
+
+		$scope.cancelTeamSelection = ->
+			$scope.selectedMatchup = ""
+			$scope.selectedPick = ""
+			$scope.hideMatchups = false
 
 		$scope.getPickedTeamName = (pool_entry) ->
 			if pool_entry.nfl_team
@@ -175,6 +186,11 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 				existing_pick.team_id = $scope.selectedPick.id
 				console.log("Updated existing_pick")
 				Pick.save(existing_pick, week_id)
+				$scope.selectedMatchup = ""
+				$scope.selectedPick = ""
+				$scope.hideMatchups = false
+				$scope.$digest()
+
 
 			else
 				$scope.new_pick = {pool_entry_id: pool_entry.id, week_id: week_id, team_id: $scope.selectedPick.id}

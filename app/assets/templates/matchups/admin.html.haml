@@ -10,7 +10,7 @@
 			%th 
 			%th Home Team
 			%th Away Team
-			%th Game Time
+			%th Game Time (EASTERN)
 	%tbody{"ng-repeat" => "matchup in matchups", "ng-click" => "selectMatchup(matchup)"}
 		%tr
 			%td
@@ -23,7 +23,7 @@
 				%p.team_name {{ matchup.away_team.name}}
 				%a{"ng-click" => "selectAwayTeamWin(matchup)", "ng-class" => "away_button_class(matchup)"} {{ matchup.away_team.name }} won!
 			%td 
-				%p {{ matchup.game_time }}
+				%p {{ matchup.game_time | date : 'fullDate' }} {{ matchup.game_time | date : 'shortTime' }}
 				%a.btn.btn-info{"ng-href" => "#/weeks/{{week_id}}/matchups/{{matchup.id}}", role: "button"} Edit
 				%a.btn.btn-danger Delete
 

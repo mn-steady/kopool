@@ -18,8 +18,8 @@
   .form-group
     %label.col-sm-2 Game Time
     .col-sm-10
-      %p Selected Date is : {{dt | date:'fullDate'}}
-      %datepicker.well.well-sm{"ng-model" => "dt"}
-      %input.form-control{"type" => "text", "ng-model" => "matchup.game_time"}
+      -# %p Selected Date is : {{dt | date:'fullDate'}}
+      -# %datepicker.well.well-sm{"ng-model" => "dt"}
+      %input.form-control{"type" => "text", "ng-model" => "selected_game_time"}
 
   %button.btn.btn-success{"ng-click"=>"save(matchup)", type: "submit"} Save

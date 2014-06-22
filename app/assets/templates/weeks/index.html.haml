@@ -24,5 +24,6 @@ Controller: {{controller}}
     %td
       %a.btn.btn-primary{"ng-href" => "#/seasons/{{season_id}}/weeks/{{week.id}}", role: "button"} Edit
       %a.btn.btn-danger{"ng-click" => "deleteWeek(week)", role: "button"} Delete
+      %a.btn.btn-success{"ng-href" => "#weeks/{{week.id}}/matchups/admin"} Week {{week.week_number}} Matchups
 
 %a.btn.btn-primary{"ng-href" => "#/seasons/{{season_id}}/weeks/new", role: "button"} Create New week in Season {{season_id}}

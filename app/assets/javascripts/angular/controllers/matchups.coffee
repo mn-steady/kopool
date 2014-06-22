@@ -152,6 +152,9 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 		$scope.isSelectedMatchup = (matchup) ->
 			$scope.selectedMatchup == matchup
 
+		$scope.isSelectedTeam = (team) ->
+			$scope.selectedPick == team
+
 		$scope.cancelTeamSelection = ->
 			$scope.selectedMatchup = ""
 			$scope.selectedPick = ""
@@ -183,6 +186,11 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 				existing_pick.team_id = $scope.selectedPick.id
 				console.log("Updated existing_pick")
 				Pick.save(existing_pick, week_id)
+				$scope.selectedMatchup = ""
+				$scope.selectedPick = ""
+				$scope.hideMatchups = false
+				$scope.$digest()
+
 
 			else
 				$scope.new_pick = {pool_entry_id: pool_entry.id, week_id: week_id, team_id: $scope.selectedPick.id}

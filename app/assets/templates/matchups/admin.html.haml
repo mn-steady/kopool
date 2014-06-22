@@ -11,17 +11,17 @@
 			%th Home Team
 			%th Away Team
 			%th Game Time
-	%tbody{"ng-repeat" => "matchup in matchups", "ng-click" => "selectMatchup(matchup)", "ng-switch" => "on=isSelected(matchup)"}
+	%tbody{"ng-repeat" => "matchup in matchups", "ng-click" => "selectMatchup(matchup)"}
 		%tr
 			%td
 				%p 
-				%a{"ng-click" => "selectTie(matchup)", "ng-class" => "outcome_button_class(matchup)"} Tie Game!
+				%a{"ng-click" => "selectTie(matchup)", "ng-class" => "tie_button_class(matchup)"} Tie Game!
 			%td 
 				%p.team_name {{ matchup.home_team.name}}
-				%a{"ng-click" => "selectHomeTeamWin(matchup)", "ng-class" => "outcome_button_class(matchup)"} Select {{ matchup.home_team.name }} as winner!
+				%a{"ng-click" => "selectHomeTeamWin(matchup)", "ng-class" => "home_button_class(matchup)"} {{ matchup.home_team.name }} won!
 			%td 
 				%p.team_name {{ matchup.away_team.name}}
-				%a{"ng-click" => "selectAwayTeamWin(matchup)", "ng-class" => "outcome_button_class(matchup)"} Select {{ matchup.away_team.name }} as winner!
+				%a{"ng-click" => "selectAwayTeamWin(matchup)", "ng-class" => "away_button_class(matchup)"} {{ matchup.away_team.name }} won!
 			%td 
 				%p {{ matchup.game_time }}
 				%a.btn.btn-info{"ng-href" => "#/weeks/{{week_id}}/matchups/{{matchup.id}}", role: "button"} Edit

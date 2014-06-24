@@ -34,9 +34,9 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 				console.log("Returned matchup" + matchup)
 			)
 		else
-			Matchup.nested_query(week_id).then((matchups) ->
+			Matchup.nested_query($scope.week_id).then((matchups) ->
 				$scope.matchups = matchups
-				console.log("*** Have matchups***")
+				console.log("*** Have matchups for ***"+$scope.week_id)
 			)
 
 		# Gather resources and associate relevant pool entries and picks

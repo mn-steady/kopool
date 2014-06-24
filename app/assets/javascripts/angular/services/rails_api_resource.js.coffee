@@ -55,7 +55,8 @@ angular.module('RailsApiResource', ['ngResource'])
 
       Resource.nested_query = (parent_id, queryJson) ->
         console.log("(RailsApiResource.Resource.nested_query) queryJson="+queryJson)
-        if collectionUrl.indexOf(":parent_id") > -1?
+        collectionUrl = KOPOOL_CONFIG.PROTOCOL + '://' + KOPOOL_CONFIG.HOSTNAME + '/' + resourceName + '.json'
+        if collectionUrl.indexOf(":parent_id") > -1
           collectionUrl = collectionUrl.replace(/:parent_id/, parent_id)
           console.log("Resource will be: " + collectionUrl)
 

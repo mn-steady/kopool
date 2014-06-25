@@ -20,8 +20,12 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 
 		# Routing for new matchups, or the index action for the week
 
-		$scope.week_id = week_id = $routeParams.week_id
+		week_id = $routeParams.week_id
+		$scope.week_id = week_id
+		console.log("Handling Week ID:" + $scope.week_id)
 		$scope.matchup_id = matchup_id = $routeParams.matchup_id
+		$scope.matchups = []
+		$scope.pool_entries = []
 
 		if matchup_id? and matchup_id == "new"
 			console.log("...Creating a new matchup")
@@ -34,25 +38,24 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 				console.log("Returned matchup" + matchup)
 			)
 		else
-			Matchup.nested_query(week_id).then((matchups) ->
+			Matchup.nested_query($scope.week_id).then((matchups) ->
 				$scope.matchups = matchups
-				console.log("*** Have matchups***")
+				console.log("*** Have matchups for week:"+$scope.week_id + " ***")
 			)
 
 		# Gather resources and associate relevant pool entries and picks
 
-		$scope.matchups = []
 		NflTeam.query().then((nfl_teams) ->
 			$scope.nfl_teams = nfl_teams
 			console.log("*** Have nfl_teams***")
 		)
 
-		$scope.pool_entries = []
 		PoolEntry.query().then((pool_entries) ->
 			$scope.pool_entries = pool_entries
 			$scope.gatherPicks()
 			console.log("*** Have pool entries ***")
 		)
+
 
 		$scope.gatherPicks = ->
 			$scope.picks = []
@@ -65,7 +68,7 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 			for pool_entry in $scope.pool_entries
 				for pick in $scope.picks
 					if pick.pool_entry_id == pool_entry.id
-						angular.extend(pool_entry, pick) 
+						angular.extend(pool_entry, pick)
 						console.log("A pick was associated with a pool entry")
 
 		# Outcome Selections for Administrators

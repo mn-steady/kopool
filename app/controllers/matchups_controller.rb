@@ -5,7 +5,7 @@ class MatchupsController < ApplicationController
   def index
 
     @week = Week.find(params[:week_id])
-    @matchups = Matchup.where(week: @week)
+    @matchups = Matchup.where(week_id: @week.id)
 
     respond_to do | format |
       format.json {render :json => @matchups.to_json(include: [{ home_team: { only: [:name, :id] }}, away_team: {only: [:name, :id]}] ) }

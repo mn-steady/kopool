@@ -21,6 +21,7 @@ Controller: {{controller}}
     <td>
       <a class='btn btn-primary' ng-href='#/seasons/{{season_id}}/weeks/{{week.id}}' role='button'>Edit</a>
       <a class='btn btn-danger' ng-click='deleteWeek(week)' role='button'>Delete</a>
+      <a class='btn btn-success' ng-href='#weeks/{{week.id}}/matchups/admin'>Week {{week.week_number}} Matchups</a>
     </td>
   </tr>
 </table>

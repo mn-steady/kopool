@@ -110,6 +110,12 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 			week_id = matchup.week_id
 			Matchup.save_outcome(matchup, week_id)
 
+		$scope.displayOutcomeSaveButtons = (matchup) ->
+			if matchup.tie? then true
+
+		$scope.displayMatchupEditButtons = (matchup) ->
+			if matchup.tie == null then true
+
 		$scope.tie_button_class = (matchup) ->
 			if matchup.tie == true
 				"btn btn-warning"

@@ -24,8 +24,10 @@
 				%a{"ng-click" => "selectAwayTeamWin(matchup)", "ng-class" => "away_button_class(matchup)"} {{ matchup.away_team.name }} won!
 			%td
 				%p {{ matchup.game_time | date : 'fullDate' }} {{ matchup.game_time | date : 'shortTime' }}
-				%a.btn.btn-info{"ng-href" => "#/weeks/{{week_id}}/matchups/{{matchup.id}}", role: "button"} Edit
-				%a.btn.btn-danger Delete
+				%a.btn.btn-info{"ng-href" => "#/weeks/{{week_id}}/matchups/{{matchup.id}}", "ng-show" => "displayMatchupEditButtons(matchup)", role: "button"} Edit
+				%a.btn.btn-danger{"ng-show" => "displayMatchupEditButtons(matchup)"} Delete
+				%a.btn.btn-danger{"ng-show" => "displayOutcomeSaveButtons(matchup)"} Save as Final Outcome
+				%a.btn.btn-info{"ng-show" => "displayOutcomeSaveButtons(matchup)", "ng-click" => "cancelOutcomeSelection(matchup)"} Cancel
 
 %a.btn.btn-success{"ng-click" => "saveWeekOutcomes(matchups)"} Save Results of this Week
 

@@ -59,7 +59,7 @@ class MatchupsController < ApplicationController
 
   def save_outcome
     Rails.logger.debug("in save_outcome method")
-    @matchup = Matchup.find_by(id: params[:matchup].id)
+    @matchup = Matchup.find_by(id: params[:matchup][:id])
     @picks_this_week = Pick.where(week_id: params[:week_id]) #also need to only select those that are valid/locked in
 
 
@@ -69,11 +69,17 @@ class MatchupsController < ApplicationController
       if @picked_matchup.tie == true
         pick.pool_entry.knocked_out = true
         pick.save!
+        @matchup.completed = true
+        @matchup.save!
       elsif @picked_matchup.winning_team_id == pick.team_id
         # Send email message or give some other notification that a person will continue?
+        @matchup.completed = true
+        @matchup.save!
       elsif @picked_matchup.winning_team_id != pick.team_id
         pick.pool_entry.knocked_out = true
         pick.save!
+        @matchup.completed = true
+        @matchup.save!
       end
     end
 

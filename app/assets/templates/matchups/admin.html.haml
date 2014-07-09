@@ -12,7 +12,7 @@
 			%th Away Team
 			%th Game Time (EASTERN)
 	%tbody{"ng-repeat" => "matchup in matchups"}
-		%tr
+		%tr{"ng-hide" => "matchupCompleted(matchup)"}
 			%td
 				%p
 				%a{"ng-click" => "selectTie(matchup)", "ng-class" => "tie_button_class(matchup)"} Tie Game!
@@ -30,6 +30,14 @@
 				%a.btn.btn-danger{"ng-show" => "displayMatchupEditButtons(matchup)"} Delete
 				%a.btn.btn-danger{"ng-show" => "displayOutcomeSaveButtons(matchup)", "ng-click" => "saveOutcome(matchup)"} Save as Final Outcome
 				%a.btn.btn-info{"ng-show" => "displayOutcomeSaveButtons(matchup)", "ng-click" => "cancelOutcomeSelection(matchup)"} Cancel
+		%tr{"ng-show" => "matchupCompleted(matchup)"}
+			%td
+			%td
+				%p.team_name {{ matchup.home_team.name}}
+			%td
+				%p.team_name {{ matchup.away_team.name}}
+			%td
+				%p Winner: {{winningTeam(matchup)}}
 
 %a.btn.btn-success{"ng-click" => "saveWeekOutcomes(matchups)"} Save Results of this Week
 

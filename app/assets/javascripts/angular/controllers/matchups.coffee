@@ -110,6 +110,9 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 			week_id = matchup.week_id
 			Matchup.save_outcome(matchup, week_id)
 
+		$scope.matchupCompleted = (matchup) ->
+			if matchup.completed == true then true
+
 		$scope.displayOutcomeSaveButtons = (matchup) ->
 			if matchup.tie? then true
 
@@ -133,6 +136,14 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 				"btn btn-success"
 			else
 				"btn btn-default"
+
+		$scope.winningTeam = (matchup) ->
+			if matchup.winning_team_id == matchup.home_team_id
+				matchup.home_team.name
+			else if matchup.winning_team_id == matchup.away_team_id
+				matchup.away_team.name
+			else
+				"It was a tie!"
 
 		# User Action of Selecting a Pick
 

@@ -16,7 +16,7 @@ class MatchupsController < ApplicationController
     @matchup = Matchup.where(id: params[:id]).first
 
     respond_to do |format|
-      format.json {render :json => @matchup.to_json(include: [{ home_team: { only: [:name, :id] }}, away_team: {only: [:name, :id]}] ) }
+      format.json {render :json => @matchup.to_json(include: [{ home_team: { only: [:name, :id, :logo_url_small] }}, away_team: {only: [:name, :id, :logo_url_small]}] ) }
     end
   end
 

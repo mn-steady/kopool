@@ -97,13 +97,13 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 			matchup.winning_team_id = matchup.away_team_id
 			Matchup.save(matchup, matchup.week_id).then((matchup) ->
 				$scope.matchup = matchup
-				$scope.awaySelected = true
 			)
 
 		$scope.cancelOutcomeSelection = (matchup) ->
 			console.log("Cancelling outcome selection for matchup")
 			matchup.tie = null
 			matchup.winning_team_id = null
+			Matchup.save(matchup, matchup.week_id)
 
 		$scope.saveOutcome = (matchup) ->
 			console.log("Saving outcome for matchup"+matchup)

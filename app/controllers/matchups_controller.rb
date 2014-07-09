@@ -57,9 +57,9 @@ class MatchupsController < ApplicationController
     end
   end
 
-  def save_week_outcomes
-    Rails.logger.debug("in save_week_outcomes method")
-    @matchups = Matchup.where(week_id: params[:week_id])
+  def save_outcome
+    Rails.logger.debug("in save_outcome method")
+    @matchup = Matchup.find_by(id: params[:matchup].id)
     @picks_this_week = Pick.where(week_id: params[:week_id]) #also need to only select those that are valid/locked in
 
 

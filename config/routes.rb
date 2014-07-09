@@ -16,7 +16,7 @@ Kopool::Application.routes.draw do
   resources :weeks do
     resources :matchups do
       collection do
-        post 'selected', :action => "save_week_outcomes"
+        post 'save_outcome', :action => "save_outcome"
       end
     end
     resources :picks

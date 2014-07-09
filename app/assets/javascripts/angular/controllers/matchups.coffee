@@ -100,11 +100,15 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 				$scope.awaySelected = true
 			)
 
-		$scope.saveWeekOutcomes = (matchups) ->
-			console.log("Saving all outcomes for the week...")
-			week_id = matchups[0].week_id
-			Matchup.save_collection(week_id, week_id)
-			$location.path('/weeks/#{week_id}/matchups')
+		$scope.cancelOutcomeSelection = (matchup) ->
+			console.log("Cancelling outcome selection for matchup")
+			matchup.tie = null
+			matchup.winning_team_id = null
+
+		$scope.saveOutcome = (matchup) ->
+			console.log("Saving outcome for matchup"+matchup)
+			week_id = matchup.week_id
+			Matchup.save_outcome(matchup, week_id)
 
 		$scope.tie_button_class = (matchup) ->
 			if matchup.tie == true

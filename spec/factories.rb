@@ -3,8 +3,17 @@ FactoryGirl.define do
 		email { Faker::Internet.email }
 		phone { Faker::PhoneNumber.phone_number }
 		cell { Faker::PhoneNumber.cell_phone }
-		password "password"
-		password_confirmation "password"
+		password "crazyemail8"
+		password_confirmation "crazyemail8"
+	end
+
+	factory :admin, class: User do
+		email { Faker::Internet.email }
+		phone { Faker::PhoneNumber.phone_number }
+		cell { Faker::PhoneNumber.cell_phone }
+		password "crazyemail8"
+		password_confirmation "crazyemail8"
+		admin true
 	end
 
 	factory :season do

@@ -97,14 +97,27 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 			matchup.winning_team_id = matchup.away_team_id
 			Matchup.save(matchup, matchup.week_id).then((matchup) ->
 				$scope.matchup = matchup
-				$scope.awaySelected = true
 			)
 
-		$scope.saveWeekOutcomes = (matchups) ->
-			console.log("Saving all outcomes for the week...")
-			week_id = matchups[0].week_id
-			Matchup.save_collection(week_id, week_id)
-			$location.path('/weeks/#{week_id}/matchups')
+		$scope.cancelOutcomeSelection = (matchup) ->
+			console.log("Cancelling outcome selection for matchup")
+			matchup.tie = null
+			matchup.winning_team_id = null
+			Matchup.save(matchup, matchup.week_id)
+
+		$scope.saveOutcome = (matchup) ->
+			console.log("Saving outcome for matchup"+matchup)
+			week_id = matchup.week_id
+			Matchup.save_outcome(matchup, week_id)
+
+		$scope.matchupCompleted = (matchup) ->
+			if matchup.completed == true then true
+
+		$scope.displayOutcomeSaveButtons = (matchup) ->
+			if matchup.tie? then true
+
+		$scope.displayMatchupEditButtons = (matchup) ->
+			if matchup.tie == null then true
 
 		$scope.tie_button_class = (matchup) ->
 			if matchup.tie == true
@@ -123,6 +136,14 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 				"btn btn-success"
 			else
 				"btn btn-default"
+
+		$scope.winningTeam = (matchup) ->
+			if matchup.winning_team_id == matchup.home_team_id
+				matchup.home_team.name
+			else if matchup.winning_team_id == matchup.away_team_id
+				matchup.away_team.name
+			else
+				"It was a tie!"
 
 		# User Action of Selecting a Pick
 

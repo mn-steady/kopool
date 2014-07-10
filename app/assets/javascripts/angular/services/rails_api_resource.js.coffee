@@ -5,8 +5,8 @@ angular.module('RailsApiResource', ['ngResource'])
       PROTOCOL: 'http',
       # You have to manually change these for deployment
       # TODO: Make it pull this from an environment variable
-      #HOSTNAME: 'localhost:3000'
-      HOSTNAME: 'kopool.herokuapp.com'
+      HOSTNAME: 'localhost:3000'
+      #HOSTNAME: 'kopool.herokuapp.com'
     })
 
   .factory 'RailsApiResource', ($http, KOPOOL_CONFIG, $cookieStore) ->
@@ -117,16 +117,16 @@ angular.module('RailsApiResource', ['ngResource'])
           new Resource(data)
         )
 
-      Resource.save_collection = (data, parent_id) ->
-        console.log("Resource.save_collection")
-        saveCollectionUrl = KOPOOL_CONFIG.PROTOCOL + '://' + KOPOOL_CONFIG.HOSTNAME + '/' + resourceName + '/selected.json'
-        if saveCollectionUrl.indexOf(":parent_id") > -1?
-          saveCollectionUrl = saveCollectionUrl.replace(/:parent_id/, parent_id)
+      Resource.save_outcome = (data, parent_id) ->
+        console.log("Resource.save_outcome")
+        saveOutcomeUrl = KOPOOL_CONFIG.PROTOCOL + '://' + KOPOOL_CONFIG.HOSTNAME + '/' + resourceName + '/save_outcome.json'
+        if saveOutcomeUrl.indexOf(":parent_id") > -1?
+          saveOutcomeUrl = saveOutcomeUrl.replace(/:parent_id/, parent_id)
 
-        console.log("saveCollectionUrl will be: "+saveCollectionUrl)
-        $http.post(saveCollectionUrl, data, {params:defaultParams}).then( (response) ->
+        console.log("saveOutcomeUrl will be: "+saveOutcomeUrl)
+        $http.post(saveOutcomeUrl, data, {params:defaultParams}).then( (response) ->
           result = []
-          console.log("(RailsApiResource.save_collection) response="+response.data)
+          console.log("(RailsApiResource.save_outcome) response="+response.data)
         )
 
       Resource.remove = (data, parent_id) ->

@@ -16,7 +16,7 @@ class MatchupsController < ApplicationController
     @matchup = Matchup.where(id: params[:id]).first
 
     respond_to do |format|
-      format.json {render :json => @matchup.to_json(include: [{ home_team: { only: [:name, :id] }}, away_team: {only: [:name, :id]}] ) }
+      format.json {render :json => @matchup.to_json(include: [{ home_team: { only: [:name, :id, :logo_url_small] }}, away_team: {only: [:name, :id, :logo_url_small]}] ) }
     end
   end
 
@@ -57,9 +57,9 @@ class MatchupsController < ApplicationController
     end
   end
 
-  def save_week_outcomes
-    Rails.logger.debug("in save_week_outcomes method")
-    @matchups = Matchup.where(week_id: params[:week_id])
+  def save_outcome
+    Rails.logger.debug("in save_outcome method")
+    @matchup = Matchup.find_by(id: params[:matchup][:id])
     @picks_this_week = Pick.where(week_id: params[:week_id]) #also need to only select those that are valid/locked in
 
 
@@ -69,11 +69,17 @@ class MatchupsController < ApplicationController
       if @picked_matchup.tie == true
         pick.pool_entry.knocked_out = true
         pick.save!
+        @matchup.completed = true
+        @matchup.save!
       elsif @picked_matchup.winning_team_id == pick.team_id
         # Send email message or give some other notification that a person will continue?
+        @matchup.completed = true
+        @matchup.save!
       elsif @picked_matchup.winning_team_id != pick.team_id
         pick.pool_entry.knocked_out = true
         pick.save!
+        @matchup.completed = true
+        @matchup.save!
       end
     end
 

@@ -1,5 +1,6 @@
 class Week < ActiveRecord::Base
 	has_many :matchups
+	has_many :picks
 	belongs_to :season
 	belongs_to :default_team, class_name: :nfl_team
 

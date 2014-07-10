@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140609005011) do
+ActiveRecord::Schema.define(version: 20140710021304) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -63,6 +63,7 @@ ActiveRecord::Schema.define(version: 20140609005011) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "auto_picked"
+    t.integer  "matchup_id"
   end
 
   create_table "pool_entries", force: true do |t|

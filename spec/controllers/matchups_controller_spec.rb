@@ -4,12 +4,12 @@ describe MatchupsController do
 	describe "POST save_week_outcomes" do
 
 		before do
-			@user = create(:user, admin: true)
-			sign_in :user, @user
+			@admin = create(:admin)
+			sign_in :admin, @admin
 
 			@season = Season.create(year: 2014, name: "2014 Season", entry_fee: 50)
 			@week = Week.create(season: @season, week_number: 1, start_date: DateTime.new(2014, 8, 5), deadline: DateTime.new(2014, 8, 8), end_date: DateTime.new(2014, 8, 11))
-			@pool_entry = PoolEntry.create(user: @user, team_name: "Test Team", paid: true)
+			@pool_entry = PoolEntry.create(user: @admin, team_name: "Test Team", paid: true)
 
 			@broncos = NflTeam.create(name: "Denver Broncos", conference: "NFC", division: "West")
 			@vikings = NflTeam.create(name: "Minnesota Vikings", conference: "NFC", division: "North")
@@ -17,9 +17,10 @@ describe MatchupsController do
 		end
 
 		it "knocks out a pool entry if the selected matchup is a tie" do
+			binding.pry
 			@pick = Pick.create(pool_entry: @pool_entry, week: @week, team_id: @vikings.id)
 			@matchup.update_attributes(tie: true)
-			post "weeks/1/matchups/selected.json", action: :save_week_outcomes, week_id: @week.id
+			post :save_outcome, format: :json
 			expect(@pool_entry.knocked_out).to eq(true)
 		end
 		it "knocks out a pool entry if the selected team loses"

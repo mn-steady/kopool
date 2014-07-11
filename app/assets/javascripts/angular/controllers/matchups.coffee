@@ -246,6 +246,18 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 				)
 			$location.path ('/weeks/' + $scope.week_id + '/matchups/admin')
 
+		$scope.deleteMatchup = (matchup) ->
+			console.log("MatchupCtrl.delete...")
+			week_id = matchup.week_id
+			# Add checking for if there are picks associated with this Matchup
+			if matchup.id?
+				console.log("Deleting matchup id " + matchup.id)
+				Matchup.remove(matchup, week_id).then((matchup) ->
+					Matchup.nested_query($scope.week_id).then((matchups) ->
+						$scope.matchups = matchups
+					)
+				)
+
 		# Datepicker
 
 		$scope.today = ->

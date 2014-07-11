@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe MatchupsController do
-	describe "POST save_week_outcomes" do
+	describe "POST save__outcome" do
 
 		before do
 			@admin = create(:admin)
@@ -60,6 +60,30 @@ describe MatchupsController do
 				@matchup.reload
 				expect(@matchup.completed).to eq(true)
 			end
+		end
+	end
+
+	describe "DELETE destroy" do
+
+		before do
+			@admin = create(:admin)
+			sign_in :admin, @admin
+
+			@season = Season.create(year: 2014, name: "2014 Season", entry_fee: 50)
+			@week = Week.create(season: @season, week_number: 1, start_date: DateTime.new(2014, 8, 5), deadline: DateTime.new(2014, 8, 8), end_date: DateTime.new(2014, 8, 11))
+			@pool_entry = PoolEntry.create(user: @admin, team_name: "Test Team", paid: true)
+
+			@broncos = NflTeam.create(name: "Denver Broncos", conference: "NFC", division: "West")
+			@vikings = NflTeam.create(name: "Minnesota Vikings", conference: "NFC", division: "North")
+			@matchup = Matchup.create(week_id: @week.id, home_team: @broncos, away_team: @vikings, game_time: DateTime.new(2014,8,10,11))
+		end
+
+		it "deletes the matchup if there are no picks associated with it" do
+			delete :destroy, week_id: @week.id, id: @matchup.id, format: :json
+			expect(Matchup.all.count).to eq(0)
+		end
+
+		it "does not delete the matchup if there are picks associated with it" do
 
 		end
 	end

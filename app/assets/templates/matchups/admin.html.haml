@@ -27,7 +27,7 @@
 			%td
 				%p {{ matchup.game_time | date : 'fullDate' }} {{ matchup.game_time | date : 'shortTime' }}
 				%a.btn.btn-info{"ng-href" => "#/weeks/{{week_id}}/matchups/{{matchup.id}}", "ng-show" => "displayMatchupEditButtons(matchup)", role: "button"} Edit
-				%a.btn.btn-danger{"ng-show" => "displayMatchupEditButtons(matchup)"} Delete
+				%a.btn.btn-danger{"ng-show" => "displayMatchupEditButtons(matchup)", "ng-click" => "deleteMatchup(matchup)"} Delete
 				%a.btn.btn-danger{"ng-show" => "displayOutcomeSaveButtons(matchup)", "ng-click" => "saveOutcome(matchup)"} Save as Final Outcome
 				%a.btn.btn-info{"ng-show" => "displayOutcomeSaveButtons(matchup)", "ng-click" => "cancelOutcomeSelection(matchup)"} Cancel
 		%tr{"ng-show" => "matchupCompleted(matchup)"}

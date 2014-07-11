@@ -65,6 +65,7 @@ class MatchupsController < ApplicationController
     @this_matchups_picks.each do |pick|
       if @matchup.tie == true
         pick.pool_entry.knocked_out = true
+        pick.pool_entry.knocked_out_week_id = @matchup.week_id
         pick.save!
         @matchup.completed = true
         @matchup.save!
@@ -74,6 +75,7 @@ class MatchupsController < ApplicationController
         @matchup.save!
       elsif @matchup.winning_team_id != pick.team_id
         pick.pool_entry.knocked_out = true
+        pick.pool_entry.knocked_out_week_id = @matchup.week_id
         pick.save!
         @matchup.completed = true
         @matchup.save!

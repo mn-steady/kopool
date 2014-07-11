@@ -23,7 +23,21 @@ describe MatchupsController do
 			@pool_entry.reload
 			expect(@pool_entry.knocked_out).to eq(true)
 		end
-		it "knocks out a pool entry if the selected team loses"
-		it "does not knock out a pool entry if the selected team wins"
+
+		it "knocks out a pool entry if the selected team loses" do
+			@pick = Pick.create(pool_entry: @pool_entry, week: @week, team_id: @vikings.id)
+			@matchup.update_attributes(winning_team_id: @broncos.id)
+			post :save_outcome, week_id: @week.id, matchup: @matchup, format: :json
+			@pool_entry.reload
+			expect(@pool_entry.knocked_out).to eq(true)
+		end
+
+		it "does not knock out a pool entry if the selected team wins" do
+			@pick = Pick.create(pool_entry: @pool_entry, week: @week, team_id: @vikings.id)
+			@matchup.update_attributes(winning_team_id: @vikings.id)
+			post :save_outcome, week_id: @week.id, matchup: @matchup, format: :json
+			@pool_entry.reload
+			expect(@pool_entry.knocked_out).to eq(false)
+		end
 	end
 end

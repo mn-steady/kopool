@@ -16,28 +16,51 @@ describe MatchupsController do
 			@matchup = Matchup.create(week_id: @week.id, home_team: @broncos, away_team: @vikings, game_time: DateTime.new(2014,8,10,11))
 		end
 
-		it "knocks out a pool entry if the selected matchup is a tie" do
-			@pick = Pick.create(pool_entry: @pool_entry, week: @week, team_id: @vikings.id)
-			@matchup.update_attributes(tie: true)
-			post :save_outcome, week_id: @week.id, matchup: @matchup, format: :json
-			@pool_entry.reload
-			expect(@pool_entry.knocked_out).to eq(true)
+		context "game ends in a tie" do
+
+			it "knocks out the pool entry" do
+				@pick = Pick.create(pool_entry: @pool_entry, week: @week, team_id: @vikings.id)
+				@matchup.update_attributes(tie: true)
+				post :save_outcome, week_id: @week.id, matchup: @matchup, format: :json
+				@pool_entry.reload
+				expect(@pool_entry.knocked_out).to eq(true)
+			end
+
+			it "completes the matchup" do
+				@pick = Pick.create(pool_entry: @pool_entry, week: @week, team_id: @vikings.id)
+				@matchup.update_attributes(tie: true)
+				post :save_outcome, week_id: @week.id, matchup: @matchup, format: :json
+				@matchup.reload
+				expect(@matchup.completed).to eq(true)
+			end
 		end
 
-		it "knocks out a pool entry if the selected team loses" do
-			@pick = Pick.create(pool_entry: @pool_entry, week: @week, team_id: @vikings.id)
-			@matchup.update_attributes(winning_team_id: @broncos.id)
-			post :save_outcome, week_id: @week.id, matchup: @matchup, format: :json
-			@pool_entry.reload
-			expect(@pool_entry.knocked_out).to eq(true)
-		end
+		context "one team wins" do
+			
+			it "knocks out a pool entry if the selected team loses" do
+				@pick = Pick.create(pool_entry: @pool_entry, week: @week, team_id: @vikings.id)
+				@matchup.update_attributes(winning_team_id: @broncos.id)
+				post :save_outcome, week_id: @week.id, matchup: @matchup, format: :json
+				@pool_entry.reload
+				expect(@pool_entry.knocked_out).to eq(true)
+			end
 
-		it "does not knock out a pool entry if the selected team wins" do
-			@pick = Pick.create(pool_entry: @pool_entry, week: @week, team_id: @vikings.id)
-			@matchup.update_attributes(winning_team_id: @vikings.id)
-			post :save_outcome, week_id: @week.id, matchup: @matchup, format: :json
-			@pool_entry.reload
-			expect(@pool_entry.knocked_out).to eq(false)
+			it "does not knock out a pool entry if the selected team wins" do
+				@pick = Pick.create(pool_entry: @pool_entry, week: @week, team_id: @vikings.id)
+				@matchup.update_attributes(winning_team_id: @vikings.id)
+				post :save_outcome, week_id: @week.id, matchup: @matchup, format: :json
+				@pool_entry.reload
+				expect(@pool_entry.knocked_out).to eq(false)
+			end
+
+			it "completes the matchup" do
+				@pick = Pick.create(pool_entry: @pool_entry, week: @week, team_id: @vikings.id)
+				@matchup.update_attributes(winning_team_id: @broncos.id)
+				post :save_outcome, week_id: @week.id, matchup: @matchup, format: :json
+				@matchup.reload
+				expect(@matchup.completed).to eq(true)
+			end
+
 		end
 	end
 end

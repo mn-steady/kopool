@@ -12,6 +12,9 @@ Kopool::Application.routes.draw do
   end
 
   resources :weeks do
+    post "close_week", :action => "close_week!"
+    post "reopen_week", :action => "reopen_week!"
+    post "advance_week", :action => "next_week!"
     resources :matchups do
       collection do
         post "save_outcome", :action => "save_outcome"

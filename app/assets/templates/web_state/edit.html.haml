@@ -1,39 +1,38 @@
 %h2 Commissioner's Maintenance Page
 
 %br
-%br
 
-%form.form-horizontal
+.row
+  .col-sm-5
+    %p.bg-success.text-center
+      %br
+      You are currently in Season
+      %span.badge {{week.season_id}}
+      Week Number
+      %span.badge {{week.week_number}}
+      %br
+      %br
 
-  .form-group
-    %label.col-sm-2 Current Season
-    .col-sm-10
-      {{week.season_id}}
+.row
+  .col-sm-6
+    %span.badge This Week is {{current_week_status()}}
+    %br
+    %br
 
-  .form-group
-    %label.col-sm-2 Current Week
-    .col-sm-10
-      {{web_state.current_week}}
+.row
 
-  .form-group
-    %label.col-sm-2 Week Number
-    .col-sm-10
-      %input.form-control{"type" => "number", "ng-model" => "week.week_number"}
+  %form.form-horizontal
 
-  .form-group
-    %label.col-sm-2 Start Date
-    .col-sm-10
-      %input.form-control{"type" => "text", "ng-model" => "week.start_date"}
+    .form-group
+      %button.btn.btn-warning{"ng-click"=>"close_or_reopen_picks()", type: "submit"} {{close_or_open_button_text()}}
+      %button.btn.btn-danger{"ng-click"=>"advance_week()", type: "submit"} Move to Next Week
 
-  .form-group
-    %label.col-sm-2 End Date
-    .col-sm-10
-      %input.form-control{"type" => "text", "ng-model" => "week.end_date"}
+    %br
 
-  .form-group
-    %label.col-sm-2 Deadline
-    .col-sm-10
-      %input.form-control{"type" => "text", "ng-model" => "week.deadline"}
+    .form-group
+      %label.col-sm-2 Current Broadcast Message
+      .col-sm-10
+        %input.form-control{"type" => "text", "ng-model" => "web_state.broadcast_message"}
 
 
-  %button.btn.btn-success{"ng-click"=>"save(week)", type: "submit"} Save
+    %button.btn.btn-info{"ng-click"=>"save(week)", type: "submit"} Save Broadcast Message

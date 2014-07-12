@@ -19,7 +19,9 @@ class WeeksController < ApplicationController
 
   def show
     Rails.logger.debug("(WeeksController.show)")
-    @week = Week.where(id: weeks_params[:id]).where(season_id: weeks_params[:season_id]).first
+    # TODO: DC and JC discuss.  If we've got an actual id (not week number) there is no reason we also need
+    # the season.  Removed: where(season_id: weeks_params[:season_id])
+    @week = Week.where(id: weeks_params[:id]).first
     respond_to do | format |
       format.json {render json: @week}
     end
@@ -81,15 +83,31 @@ class WeeksController < ApplicationController
     end
   end
 
-
   def close_week!
-    @week = Week.find(params[:id])
+    @week = Week.find(params[:week_id])
     @week.close_week_for_picks!
+    render json: @week
+  end
+
+  def reopen_week!
+    @week = Week.find(params[:week_id])
+    if @week.reopen_week_for_picks!
+      render json: @week
+    else
+      error_message = "Cannot reopen week"
+      render :json => [:error => error_message], :status => :internal_server_error
+    end
   end
 
   def next_week!
-    @week = Week.find(params[:id])
-    @week.move_to_next_week
+    @week = Week.find(params[:week_id])
+    if @week.move_to_next_week!
+      render json: @week
+    else
+      Rails.logger.error("ERROR could not advance week")
+      error_message = "Cannot advance week"
+      render :json => [:error => error_message], :status => :internal_server_error
+    end
   end
 
 private

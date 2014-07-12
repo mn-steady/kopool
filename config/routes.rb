@@ -11,8 +11,6 @@ Kopool::Application.routes.draw do
   	resources :weeks, only: [:index, :new, :create, :edit, :show, :update, :destroy]
   end
 
-  resources :pool_entries
-
   resources :weeks do
     resources :matchups do
       collection do
@@ -20,5 +18,9 @@ Kopool::Application.routes.draw do
       end
     end
     resources :picks
+  end
+
+  namespace :admin do
+    resources :web_states
   end
 end

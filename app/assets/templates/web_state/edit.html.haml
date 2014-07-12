@@ -1,0 +1,39 @@
+%h2 Commissioner's Maintenance Page
+
+%br
+%br
+
+%form.form-horizontal
+
+  .form-group
+    %label.col-sm-2 Current Season
+    .col-sm-10
+      {{week.season_id}}
+
+  .form-group
+    %label.col-sm-2 Current Week
+    .col-sm-10
+      {{web_state.current_week}}
+
+  .form-group
+    %label.col-sm-2 Week Number
+    .col-sm-10
+      %input.form-control{"type" => "number", "ng-model" => "week.week_number"}
+
+  .form-group
+    %label.col-sm-2 Start Date
+    .col-sm-10
+      %input.form-control{"type" => "text", "ng-model" => "week.start_date"}
+
+  .form-group
+    %label.col-sm-2 End Date
+    .col-sm-10
+      %input.form-control{"type" => "text", "ng-model" => "week.end_date"}
+
+  .form-group
+    %label.col-sm-2 Deadline
+    .col-sm-10
+      %input.form-control{"type" => "text", "ng-model" => "week.deadline"}
+
+
+  %button.btn.btn-success{"ng-click"=>"save(week)", type: "submit"} Save

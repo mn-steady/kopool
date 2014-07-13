@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140710040759) do
+ActiveRecord::Schema.define(version: 20140711020419) do
 
   create_table "matchups", force: true do |t|
     t.integer  "week_id"
@@ -69,7 +69,8 @@ ActiveRecord::Schema.define(version: 20140710040759) do
     t.boolean  "paid"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "knocked_out", default: false
+    t.boolean  "knocked_out",         default: false
+    t.integer  "knocked_out_week_id"
   end
 
   create_table "seasons", force: true do |t|

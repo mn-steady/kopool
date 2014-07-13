@@ -199,6 +199,7 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 			console.log("MatchupsCtrl.savePick...")
 			pool_entry = $scope.pool_entries[editing_pool_entry - 1]
 			week_id = matchup.week_id
+			picked_matchup = matchup
 
 			console.log("Sending Pick info to Rails...")
 			if pool_entry.team_id
@@ -208,6 +209,7 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 				existing_pick.pool_entry_id = pool_entry.id
 				existing_pick.week_id = week_id
 				existing_pick.team_id = $scope.selectedPick.id
+				existing_pick.matchup_id = picked_matchup
 				console.log("Updated existing_pick")
 				Pick.save(existing_pick, week_id)
 				$scope.selectedMatchup = ""
@@ -217,7 +219,7 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 
 
 			else
-				$scope.new_pick = {pool_entry_id: pool_entry.id, week_id: week_id, team_id: $scope.selectedPick.id}
+				$scope.new_pick = {pool_entry_id: pool_entry.id, week_id: week_id, team_id: $scope.selectedPick.id, matchup_id: picked_matchup}
 				console.log("Sending CREATE pick to rails")
 				Pick.create($scope.new_pick, week_id)
 
@@ -243,6 +245,18 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 					$scope.matchup = matchup
 				)
 			$location.path ('/weeks/' + $scope.week_id + '/matchups/admin')
+
+		$scope.deleteMatchup = (matchup) ->
+			console.log("MatchupCtrl.delete...")
+			week_id = matchup.week_id
+			# Add checking for if there are picks associated with this Matchup
+			if matchup.id?
+				console.log("Deleting matchup id " + matchup.id)
+				Matchup.remove(matchup, week_id).then((matchup) ->
+					Matchup.nested_query($scope.week_id).then((matchups) ->
+						$scope.matchups = matchups
+					)
+				)
 
 		# Datepicker
 

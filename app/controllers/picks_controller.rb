@@ -54,7 +54,7 @@ class PicksController < ApplicationController
 	private
 
 	def picks_params
-		params.permit(:pool_entry_id, :week_id, :team_id, :locked_in, :auto_picked)
+		params.permit(:pool_entry_id, :week_id, :team_id, :locked_in, :auto_picked, :matchup_id)
 	end
 
 

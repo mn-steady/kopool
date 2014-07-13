@@ -12,13 +12,12 @@ describe WebState do
     ws = WebState.new()
     ws.current_week = week_1
     ws.save!
-    WebState.count.should eq(1)
+    expect(WebState.count).to eq(1)
 
     ws_nogo = WebState.new()
     ws.current_week = week_2
-    expect {
-      ws.save!
-    }.to raise_error(ActiveRecord::RecordInvalid)
+    ws.save!
+    expect(WebState.count).to eq(1)
   end
 
 end

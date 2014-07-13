@@ -8,6 +8,7 @@ describe 'Home Controller', ->
     @location    = $location
 
     @currentController = 'HomeCtrl'
+    @http.when("GET", "http://localhost:3000/admin/web_states/1.json").respond([{}, {}, {}]);
     $controller('HomeCtrl', { $scope: @scope, $location: @location })
 
 

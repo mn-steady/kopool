@@ -17,6 +17,10 @@
 <div class='container'>
   <!-- Example row of columns -->
   <div class='row'>
+    <div class='col-md-12'></div>
+    <div class='lead text-center'>{{web_state.broadcast_message}}</div>
+  </div>
+  <div class='row'>
     <div class='col-md-4'>
       <h2>NFL Teams</h2>
       <p>Administrators can use this 'NFL Teams' button to view, edit, and update NFL teams.  Make sure the teams are all in the correct Conference and Division.  Upload a nice looking logo for each team.  Any logo you upload will automatically be stored on your Amazon S3 account and will automatically be scaled to "Medium" (300x300) and "Thumbnail" (100x100) sizes.</p>
@@ -36,6 +40,15 @@
       <p>This is the admin page for creating matchups. You can create and edit matchups for a certain week, as well as save the outcomes of the games.</p>
       <p>
         <a class='btn btn-info' href='#/weeks/1/matchups/admin' role='button'>Week 1 Matchups »</a>
+      </p>
+    </div>
+  </div>
+  <div class='row'>
+    <div class='col-md-4'>
+      <h2>Commissioner</h2>
+      <p>Commissioner maintenance page - for the commish only!  Lets you open/close a week for picks and also move to the next week.</p>
+      <p>
+        <a class='btn btn-info' href='#/admin/web_state' role='button'>Commissioner »</a>
       </p>
     </div>
   </div>

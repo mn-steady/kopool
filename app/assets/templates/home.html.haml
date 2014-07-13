@@ -11,6 +11,9 @@
 .container
   / Example row of columns
   .row
+    .col-md-12
+    .lead.text-center {{web_state.broadcast_message}}
+  .row
     .col-md-4
       %h2 NFL Teams
       %p Administrators can use this 'NFL Teams' button to view, edit, and update NFL teams.  Make sure the teams are all in the correct Conference and Division.  Upload a nice looking logo for each team.  Any logo you upload will automatically be stored on your Amazon S3 account and will automatically be scaled to "Medium" (300x300) and "Thumbnail" (100x100) sizes.

@@ -1,23 +1,31 @@
-@kopool.controller 'HomeCtrl', ['$scope', '$location', 'currentUser', ($scope, $location, currentUser) ->
-  $scope.controller = 'HomeCtrl'
+angular.module('Home', ['ngResource', 'RailsApiResource'])
 
-  console.log("(HomeCtrl)")
+  .factory 'WebState', (RailsApiResource) ->
+      RailsApiResource('admin/web_states', 'webstate')
 
-  $scope.username = ->
-    currentUser.username
+  .controller 'HomeCtrl', ['$scope', '$location', 'currentUser', 'WebState', ($scope, $location, currentUser, WebState) ->
+    $scope.controller = 'HomeCtrl'
+    console.log("(HomeCtrl)")
 
-  $scope.authorized = ->
-    currentUser.authorized
+    $scope.web_state = WebState.get(1).then((web_state) ->
+      $scope.web_state = web_state
+    )
 
-  $scope.display_authorized = ->
-    if currentUser.authorized
-      "You are currently authorized as " + currentUser.username
-    else
-      "Please Sign-in at the top or Register"
+    $scope.username = ->
+      currentUser.username
+
+    $scope.authorized = ->
+      currentUser.authorized
+
+    $scope.display_authorized = ->
+      if currentUser.authorized
+        "You are currently authorized as " + currentUser.username
+      else
+        "Please Sign-in at the top or Register"
 
 
-  # Just demonstrating an alternate means of navigation.  Better to use anchor tags.
-  $scope.go = ( path ) ->
-    $location.path( path )
+    # Just demonstrating an alternate means of navigation.  Better to use anchor tags.
+    $scope.go = ( path ) ->
+      $location.path( path )
 
-]
+  ]

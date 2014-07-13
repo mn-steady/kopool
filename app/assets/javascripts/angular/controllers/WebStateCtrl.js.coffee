@@ -53,17 +53,11 @@ angular.module('WebStates', ['ngResource', 'RailsApiResource'])
 
     $scope.save = (web_state) ->
       console.log("WebStatesCtrl.save...")
-      if web_state.id?
-        console.log("Saving web_state id " + web_state.id)
-        web_state.save(web_state, $scope.season_id).then((web_state) ->
+      console.log("Saving web_state id " + web_state.id)
+      WebState.save(web_state).then((web_state) ->
           $scope.web_state = web_state
-        )
-      else
-        console.log("First-time save need POST new id")
-        web_state.create(web_state, $scope.season_id).then((web_state) ->
-          $scope.web_state = web_state
-        )
-      $location.path ('/seasons/' + $scope.season_id + '/web_states')
+      )
+
 
     $scope.close_or_open_button_text = () ->
       if $scope.week.open_for_picks == true

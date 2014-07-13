@@ -19,6 +19,8 @@ angular.module('WebStates', ['ngResource', 'RailsApiResource'])
     # There is always only 1 webstate record
     console.log("Passed action:" + action)
 
+    $scope.week = {}
+
     console.log("...Looking up the WebState")
     $scope.web_state = WebState.get(1).then((web_state) ->
       $scope.web_state = web_state

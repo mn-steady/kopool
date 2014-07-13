@@ -107,7 +107,8 @@ ActiveRecord::Schema.define(version: 20140711020419) do
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
   create_table "web_states", force: true do |t|
-    t.integer  "week_id",    null: false
+    t.integer  "week_id",                        null: false
+    t.string   "broadcast_message", default: "", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

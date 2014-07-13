@@ -1,5 +1,5 @@
 class MatchupsController < ApplicationController
-	before_filter :verify_admin_user, only: [:show, :update, :save_week_outcomes]
+	before_filter :verify_admin_user, only: [:show, :update, :save_week_outcomes, :destroy]
   before_filter :verify_any_user, only: [:index]
 
   def index
@@ -60,23 +60,22 @@ class MatchupsController < ApplicationController
   def save_outcome
     Rails.logger.debug("in save_outcome method")
     @matchup = Matchup.find_by(id: params[:matchup][:id])
-    @picks_this_week = Pick.where(week_id: params[:week_id]) #also need to only select those that are valid/locked in
+    @this_matchups_picks = @matchup.picks
 
-
-    @picks_this_week.each do |pick|
-      @picked_matchup = Matchup.where(:home_team_id == pick.team_id || :away_team_id == pick.team_id).first
-
-      if @picked_matchup.tie == true
+    @this_matchups_picks.each do |pick|
+      if @matchup.tie == true
         pick.pool_entry.knocked_out = true
+        pick.pool_entry.knocked_out_week_id = @matchup.week_id
         pick.save!
         @matchup.completed = true
         @matchup.save!
-      elsif @picked_matchup.winning_team_id == pick.team_id
+      elsif @matchup.winning_team_id == pick.team_id
         # Send email message or give some other notification that a person will continue?
         @matchup.completed = true
         @matchup.save!
-      elsif @picked_matchup.winning_team_id != pick.team_id
+      elsif @matchup.winning_team_id != pick.team_id
         pick.pool_entry.knocked_out = true
+        pick.pool_entry.knocked_out_week_id = @matchup.week_id
         pick.save!
         @matchup.completed = true
         @matchup.save!
@@ -86,6 +85,29 @@ class MatchupsController < ApplicationController
     respond_to do |format|
       format.json {render :json => @picks_this_week.to_json(include: {pool_entry: {only: [:team_name]} } ) }
     end
+  end
+
+  def destroy
+    Rails.logger.debug("in delete matchups method")
+    @matchup = Matchup.find_by(id: params[:id])
+
+    if @matchup.picks.count > 0
+      respond_to do |format|
+        error_message = "Matchup cannot be deleted! There are picks associated with this matchup."
+        format.json { render :json => [:error => error_message], :status => :internal_server_error }
+      end
+    end
+
+    if @matchup.delete
+      respond_to do |format|
+        format.json {render json: @matchup }
+      end
+    else
+      respond_to do |format|
+        format.json { render :json => [], :status => :internal_server_error}
+      end
+    end
+
   end
 
   private

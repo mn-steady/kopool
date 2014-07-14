@@ -117,14 +117,14 @@ angular.module('RailsApiResource', ['ngResource'])
           new Resource(data)
         )
 
-      Resource.save_outcome = (data, parent_id) ->
-        console.log("Resource.save_outcome")
-        saveOutcomeUrl = KOPOOL_CONFIG.PROTOCOL + '://' + KOPOOL_CONFIG.HOSTNAME + '/' + resourceName + '/save_outcome.json'
-        if saveOutcomeUrl.indexOf(":parent_id") > -1?
-          saveOutcomeUrl = saveOutcomeUrl.replace(/:parent_id/, parent_id)
+      Resource.post = (action, data, parent_id) ->
+        console.log("Resource.post action="+action)
+        actionUrl = KOPOOL_CONFIG.PROTOCOL + '://' + KOPOOL_CONFIG.HOSTNAME + '/' + resourceName + '/' + action + '.json'
+        if actionUrl.indexOf(":parent_id") > -1?
+          actionUrl = actionUrl.replace(/:parent_id/, parent_id)
 
-        console.log("saveOutcomeUrl will be: "+saveOutcomeUrl)
-        $http.post(saveOutcomeUrl, data, {params:defaultParams}).then( (response) ->
+        console.log("actionUrl will be: "+actionUrl)
+        $http.post(actionUrl, data, {params:defaultParams}).then( (response) ->
           result = []
           console.log("(RailsApiResource.save_outcome) response="+response.data)
         )

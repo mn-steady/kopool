@@ -108,7 +108,7 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 		$scope.saveOutcome = (matchup) ->
 			console.log("Saving outcome for matchup"+matchup)
 			week_id = matchup.week_id
-			Matchup.save_outcome(matchup, week_id)
+			Matchup.post("save_outcome", matchup, week_id)
 
 		$scope.matchupCompleted = (matchup) ->
 			if matchup.completed == true then true

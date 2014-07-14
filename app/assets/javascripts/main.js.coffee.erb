@@ -1,15 +1,16 @@
-#= depend_on_asset "home.html"
-#= depend_on_asset "nfl_teams/index.html"
-#= depend_on_asset "nfl_teams/edit.html"
 #= depend_on_asset "matchups/admin.html"
 #= depend_on_asset "matchups/edit.html"
 #= depend_on_asset "matchups/index.html"
-#= depend_on_asset "weeks/index.html"
-#= depend_on_asset "weeks/edit.html"
-#= depend_on_asset "weeks/results.html"
+#= depend_on_asset "nfl_teams/edit.html"
+#= depend_on_asset "nfl_teams/index.html"
 #= depend_on_asset "registration/register.html"
+#= depend_on_asset "web_state/edit.html"
+#= depend_on_asset "weeks/edit.html"
+#= depend_on_asset "weeks/index.html"
+#= depend_on_asset "weeks/results.html"
+#= depend_on_asset "home.html"
 
-@kopool = angular.module("kopool", ["ngRoute", "ngResource", "ngCookies", "user", "navbar", "NflTeams", "Weeks", "Matchups", "PoolEntries", "Register", "ngAnimate"])
+@kopool = angular.module("kopool", ["ngRoute", "ngResource", "ngCookies", "Home", "user", "navbar", "NflTeams", "Weeks", "Matchups", "PoolEntries", "Register", "WebStates", "ngAnimate"])
 	.config(["$httpProvider", ($httpProvider) ->
 		$httpProvider.defaults.headers.common["X-CSRF-Token"] = $("meta[name=csrf-token]").attr("content")
 		interceptor = ["$location", "$rootScope", "$q", ($location, $rootScope, $q) ->
@@ -74,6 +75,10 @@
 			templateUrl: '<%= asset_path("weeks/edit.html") %>',
 			controller: 'WeeksCtrl'
 		}).
+    when('/admin/web_state', {
+      templateUrl: '<%= asset_path("web_state/edit.html") %>',
+      controller: 'WebStatesCtrl'
+    }).
 		when('/users/login', {
 			templateUrl:'/users/login.html',
 			controller: 'UsersCtrl'

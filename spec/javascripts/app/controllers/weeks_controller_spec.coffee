@@ -6,6 +6,7 @@ describe 'Weeks Controller', ->
     @currentController = 'WeeksCtrl'
 
     @http.when("GET", "http://localhost:3000/seasons/undefined/weeks.json").respond([{}, {}, {}]);
+    @http.when("GET", "http://localhost:3000/weeks.json").respond([{}, {}, {}]);
     @controller('WeeksCtrl', { $scope: @scope, $location: @location })
 
 

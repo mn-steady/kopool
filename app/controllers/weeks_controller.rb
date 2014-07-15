@@ -1,5 +1,5 @@
 class WeeksController < ApplicationController
-  before_action :verify_any_user, only: [:index]
+  before_action :verify_any_user, only: [:index, :week_results]
   before_action :verify_admin_user, only: [:update, :destroy, :create]
 
   def index
@@ -107,6 +107,17 @@ class WeeksController < ApplicationController
       Rails.logger.error("ERROR could not advance week")
       error_message = "Cannot advance week"
       render :json => [:error => error_message], :status => :internal_server_error
+    end
+  end
+
+  def week_results
+    Rails.logger.debug("weeks_controller.week_results")
+    @week = Week.find_by(id: params[:week_id])
+    @season = @week.season
+    @pool_entries = PoolEntry.where(season_id: @season.id)
+
+    respond_to do | format |
+      format.json {render json: @pool_entries} # Return this week's picks as well
     end
   end
 

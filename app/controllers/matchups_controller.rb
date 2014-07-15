@@ -5,7 +5,7 @@ class MatchupsController < ApplicationController
   def index
 
     @week = Week.find(params[:week_id])
-    @matchups = Matchup.where(week_id: @week.id)
+    @matchups = Matchup.where(week_id: @week.id).order('game_time')
 
     respond_to do | format |
       format.json {render :json => @matchups.to_json(include: [{ home_team: { only: [:name, :id] }}, away_team: {only: [:name, :id]}] ) }
@@ -62,23 +62,18 @@ class MatchupsController < ApplicationController
     @matchup = Matchup.find_by(id: params[:matchup][:id])
     @this_matchups_picks = @matchup.picks
 
-    @this_matchups_picks.each do |pick|
-      if @matchup.tie == true
-        pick.pool_entry.knocked_out = true
-        pick.pool_entry.knocked_out_week_id = @matchup.week_id
-        pick.save!
-        @matchup.completed = true
-        @matchup.save!
-      elsif @matchup.winning_team_id == pick.team_id
-        # Send email message or give some other notification that a person will continue?
-        @matchup.completed = true
-        @matchup.save!
-      elsif @matchup.winning_team_id != pick.team_id
-        pick.pool_entry.knocked_out = true
-        pick.pool_entry.knocked_out_week_id = @matchup.week_id
-        pick.save!
-        @matchup.completed = true
-        @matchup.save!
+    if @this_matchups_picks.empty?
+      @matchup.completed = true
+      @matchup.save!
+    else
+      @this_matchups_picks.each do |pick|
+        if @matchup.tie == true
+          handle_tie_game(@matchup, pick)
+        elsif @matchup.winning_team_id == pick.team_id
+          handle_winning_outcome(@matchup, pick)
+        elsif @matchup.winning_team_id != pick.team_id
+          handle_losing_outcome(@matchup, pick)
+        end
       end
     end
 
@@ -115,4 +110,27 @@ class MatchupsController < ApplicationController
     def matchups_params
       params.permit(:home_team_id, :away_team_id, :game_time, :week_id, :completed, :tie, :winning_team_id)
     end
+
+    def handle_tie_game(matchup, pick)
+      pick.pool_entry.knocked_out = true
+      pick.pool_entry.knocked_out_week_id = @matchup.week_id
+      pick.save!
+      matchup.completed = true
+      matchup.save!
+    end
+
+    def handle_winning_outcome(matchup, pick)
+      # Send email message or give some other notification that a person will continue?
+      matchup.completed = true
+      matchup.save!
+    end
+
+    def handle_losing_outcome(matchup, pick)
+      pick.pool_entry.knocked_out = true
+      pick.pool_entry.knocked_out_week_id = @matchup.week_id
+      pick.save!
+      matchup.completed = true
+      matchup.save!
+    end
+
 end

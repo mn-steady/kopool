@@ -41,6 +41,13 @@ describe MatchupsController do
 				@pool_entry.reload
 				expect(@pool_entry.knocked_out_week_id).to eq(@week.id)
 			end
+
+			it "completes the matchup even if there are no picks for that game" do
+				@matchup.update_attributes(tie: true)
+				post :save_outcome, week_id: @week.id, matchup: @matchup, format: :json
+				@matchup.reload
+				expect(@matchup.completed).to eq(true)
+			end
 		end
 
 		context "one team wins" do
@@ -79,6 +86,13 @@ describe MatchupsController do
 
 			it "completes the matchup" do
 				@pick = Pick.create(pool_entry: @pool_entry, week: @week, team_id: @vikings.id, matchup: @matchup)
+				@matchup.update_attributes(winning_team_id: @broncos.id)
+				post :save_outcome, week_id: @week.id, matchup: @matchup, format: :json
+				@matchup.reload
+				expect(@matchup.completed).to eq(true)
+			end
+
+			it "completes the matchup even if there are no picks for that game" do
 				@matchup.update_attributes(winning_team_id: @broncos.id)
 				post :save_outcome, week_id: @week.id, matchup: @matchup, format: :json
 				@matchup.reload

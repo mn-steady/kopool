@@ -112,12 +112,20 @@ class WeeksController < ApplicationController
 
   def week_results
     Rails.logger.debug("weeks_controller.week_results")
-    @week = Week.find_by(id: params[:week_id])
-    @season = @week.season
-    @pool_entries = PoolEntry.where(season_id: @season.id)
+    @webstate = WebState.first
 
-    respond_to do | format |
-      format.json {render json: @pool_entries} # Return this week's picks as well
+    if params[:week_id].to_i > @webstate.week_id
+      Rails.logger.error("ERROR can't look at a future week's results")
+      error_message = "You cannot view the results of a future week. Nice try!"
+      render :json => [:error => error_message], :status => :bad_request
+    else
+      @week = Week.find_by(id: params[:week_id])
+      @season = @week.season
+      @pool_entries = PoolEntry.where(season_id: @season.id)
+
+      respond_to do | format |
+        format.json {render json: @pool_entries} # Return this week's picks as well
+      end
     end
   end
 

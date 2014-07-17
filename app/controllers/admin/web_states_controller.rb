@@ -4,7 +4,7 @@ class Admin::WebStatesController < ApplicationController
   def show
     @web_state = WebState.first
     respond_to do | format |
-      format.json {render json: @web_state}
+      format.json {render :json => @web_state.to_json(include: [{ current_week: { only: [:open_for_picks] }}])}
     end
   end
 

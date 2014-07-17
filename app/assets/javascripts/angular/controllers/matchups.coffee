@@ -12,7 +12,7 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 	.factory 'Pick', (RailsApiResource) ->
 		RailsApiResource('weeks/:parent_id/picks', 'picks')
 
-	.controller 'MatchupsCtrl', ['$scope', '$location', '$http', '$routeParams', 'Matchup', 'NflTeam', 'PoolEntry', 'currentUser', 'Pick', ($scope, $location, $http, $routeParams, Matchup, NflTeam, PoolEntry, currentUser, Pick) ->
+	.controller 'MatchupsCtrl', ['$scope', '$location', '$http', '$routeParams', 'Matchup', 'NflTeam', 'PoolEntry', 'currentUser', 'Pick', '$modal', ($scope, $location, $http, $routeParams, Matchup, NflTeam, PoolEntry, currentUser, Pick, $modal) ->
 		$scope.controller = 'MatchupsCtrl'
 		console.log("MatchupsCtrl")
 		console.log("$location:" + $location)
@@ -121,18 +121,21 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 
 		$scope.tie_button_class = (matchup) ->
 			if matchup.tie == true
+				matchup.winning_team_text = "Tie Game"
 				"btn btn-warning"
 			else
 				"btn btn-default"
 
 		$scope.home_button_class = (matchup) ->
 			if matchup.winning_team_id == matchup.home_team_id
+				matchup.winning_team_text = matchup.home_team.name + " as the Winner"
 				"btn btn-primary"
 			else
 				"btn btn-default"
 
 		$scope.away_button_class = (matchup) ->
 			if matchup.winning_team_id != matchup.home_team_id && matchup.tie == false
+				matchup.winning_team_text = matchup.away_team.name + " as the Winner"
 				"btn btn-success"
 			else
 				"btn btn-default"
@@ -258,34 +261,34 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 					)
 				)
 
-		# Datepicker
+		# Modal
 
-		$scope.today = ->
-			$scope.dt = new Date()
-			return
+		$scope.open = (size, matchup) ->
+			modalInstance = $modal.open(
+				templateUrl: "confirmOutcomeModal.html"
+				controller: ModalInstanceCtrl
+				size: size
+				resolve:
+					matchup: ->
+						matchup
+			)
+			modalInstance.result.then ((matchup) ->
+				console.log("first funciton of modalInstance result")
+				$scope.saveOutcome(matchup)
+			), ->
+				console.log("Modal dismissed at: " + new Date())
 
-		$scope.today()
-		$scope.clear = ->
-			$scope.dt = null
-			return
+		ModalInstanceCtrl = ($scope, $modalInstance, matchup) ->
+			console.log("In ModalInstanceCtrl")
+			console.log("this is what is in matchup" + matchup.id)
 
-		$scope.open = ($event) ->
-			$event.preventDefault()
-			$event.stopPropagation()
-			$scope.opened = true
-			return
+			$scope.matchup = matchup
 
-		$scope.dateOptions =
-			formatYear: "yy"
-			startingDay: 1
+			$scope.ok = ->
+				$modalInstance.close(matchup)
 
-		$scope.initDate = new Date("2016-15-20")
-		$scope.formats = [
-			"dd-MMMM-yyyy"
-			"yyyy/MM/dd"
-			"dd.MM.yyyy"
-			"shortDate"
-		]
-		$scope.format = $scope.formats[0]
-		return
+			$scope.cancel = ->
+				$modalInstance.dismiss("cancel")
 	]
+
+		

@@ -10,17 +10,17 @@
       .panel-body
         %form.form-horizontal{"name" => "registrationForm"}
 
-          .form-group
+          .form-group{"ng-show" => "user_needs_registration()"}
             %label.col-sm-2 Email
             .col-sm-5
               %input.form-control{"type" => "text", "ng-model" => "registering_user.email", "placeholder"=>"Your Email Address"}
 
-          .form-group
+          .form-group{"ng-show" => "user_needs_registration()"}
             %label.col-sm-2 Password
             .col-sm-5{"ng-class" => "password_is_valid(registering_user.password)"}
-              %input.form-control{"type" => "password",  "ng-model" => "registering_user.password"}
+              %input.form-control{"type" => "password", "ng-model" => "registering_user.password"}
 
-          .form-group
+          .form-group{"ng-show" => "user_needs_registration()"}
             %label.col-sm-2 Confirm Password
             .col-sm-5{"ng-class" => "password_is_valid(registering_user.password_confirmation)"}
               %input.form-control{"type" => "password", "ng-model" => "registering_user.password_confirmation"}
@@ -33,26 +33,26 @@
               {{total_charges()}}
 
 
-          %a.btn{"ng-click" => "register()", "ng-class" => "register_button_class()", "ng-show" => "user_needs_registration()", role: "button"} Register my Username
+          %a.btn{"ng-click" => "register()", "ng-class" => "register_button_class()", "ng-show" => "user_needs_registration()", "ng-disabled" => "!user_can_register()", role: "button"} Register my Username
           %a.btn{"ng-click" => "persist_pool_entries()", "ng-class" => "persist_button_class()", "ng-disabled" => "persist_button_disabled()", "ng-show" => "persist_button_show()", role: "button"} {{persist_button_text()}}
 
   .col-md-4
     %br
     %br
     %br
-    First we'll setup your user account, then your Pool Entry Teams!
-    %br
     .alert.alert-danger{"ng-show" => "register_error.message != null"}
       {{register_error.message}}
     %br
+    .alert.alert-danger{"ng-hide" => "email_valid(registering_user.email)"}
+      Email is invalid
     %br
     .alert.alert-danger{"ng-hide" => "passwords_long_enough(registering_user.password, registering_user.password_confirmation)"}
       Passwords must be at least 8 characters
     %br
-    %br
     .alert.alert-danger{"ng-hide" => "passwords_match(registering_user.password, registering_user.password_confirmation)"}
       Passwords must match
-    %br
+
+
 
 
 .row

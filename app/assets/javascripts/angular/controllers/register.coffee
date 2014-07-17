@@ -55,11 +55,11 @@ angular.module('Register', ['ngResource', 'RailsApiResource', 'user'])
           return
         ).error (data, status) ->
           if status is 422
-            parameters.error_entity.message = "Unable to Register.  Check username, password, and confirmation"
+            parameters.error_entity.message = "Unable to Register. If already registered: Please sign-in above, then return to this page."
             parameters.error_entity.errors = data.errors
           else
             if data.error
-              parameters.error_entity.message = "Unable to Register.  Check username, password, and confirmation"
+              parameters.error_entity.message = "Unable to Register. Check username, password, and confirmation."
               parameters.error_entity.message = data.error
             else
               parameters.error_entity.message = "Unexplained error, potentially a server error, please report via support channels as this indicates a code defect.  Server response was: " + JSON.stringify(data)
@@ -88,6 +88,15 @@ angular.module('Register', ['ngResource', 'RailsApiResource', 'user'])
           PoolEntry.create(pool_entry).then((persisted_pool_entry) ->
               $scope.pool_entries_persisted++
             )
+
+      $scope.load_persisted_pool_entries = () ->
+        console.log("(registerCtrl.load_persisted_pool_entries)")
+        for pool_entry in $scope.pool_entries
+          console.log("Persisting Pool Entry: " + pool_entry.team_name)
+          PoolEntry.create(pool_entry).then((persisted_pool_entry) ->
+              $scope.pool_entries_persisted++
+            )
+
 
 
       $scope.$watch 'registering_user.num_pool_entries', (newVal, oldVal) ->
@@ -139,6 +148,10 @@ angular.module('Register', ['ngResource', 'RailsApiResource', 'user'])
       $scope.user_needs_registration = () ->
         $scope.registering_user.is_registered == false and currentUser.authorized == false
 
+      $scope.user_can_register = () ->
+        $scope.user_needs_registration() and $scope.password_is_valid($scope.registering_user.password) and $scope.password_is_valid($scope.registering_user.password_confirmation) and $scope.passwords_long_enough($scope.registering_user.password, $scope.registering_user.password_confirmation) and $scope.email_valid($scope.registering_user.email) and $scope.passwords_match($scope.registering_user.password, $scope.registering_user.password_confirmation)
+
+
       $scope.persist_button_class = (index) ->
         if $scope.user_needs_registration() == false
           "btn-success"
@@ -175,15 +188,31 @@ angular.module('Register', ['ngResource', 'RailsApiResource', 'user'])
           "has-error"
 
       $scope.passwords_match = (p1, p2) ->
-        if p1 == p2
-          true
+        if $scope.user_needs_registration() == true
+          if p1 == p2
+            true
+          else
+            false
         else
-          false
+          true
 
       $scope.passwords_long_enough = (p1, p2) ->
-        if p1.length >= 8 && p2.length >= 8
-          true
+        if $scope.user_needs_registration() == true
+          if p1.length >= 8 and p2.length >= 8
+            true
+          else
+            false
         else
-          false
+          true
+
+      $scope.email_valid = (email) ->
+        if $scope.user_needs_registration() == true
+          # TODO: Use a regexp
+          if email.length >= 6
+            true
+          else
+            false
+        else
+          true
 
     ]

@@ -13,9 +13,6 @@
 
 ActiveRecord::Schema.define(version: 20140717015940) do
 
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
-
   create_table "matchups", force: true do |t|
     t.integer  "week_id"
     t.datetime "game_time"
@@ -111,8 +108,7 @@ ActiveRecord::Schema.define(version: 20140717015940) do
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
   create_table "web_states", force: true do |t|
-    t.integer  "week_id",                        null: false
-    t.string   "broadcast_message", default: "", null: false
+    t.integer  "week_id",    null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

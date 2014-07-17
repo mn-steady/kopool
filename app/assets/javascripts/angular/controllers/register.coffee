@@ -73,6 +73,9 @@ angular.module('Register', ['ngResource', 'RailsApiResource', 'user'])
         AuthService.updateCookies()
         console.log("(registerCtrl.save_user_data) saved username:" + currentUser.username)
         $scope.registering_user.is_registered = true
+        $scope.create_local_pool_entries
+
+      $scope.create_local_pool_entries = () ->
         for x in [1..$scope.registering_user.num_pool_entries] by 1
           if $scope.pool_entries.length < $scope.registering_user.num_pool_entries
             $scope.pool_entries.push({team_temp_id: x, team_name: "", paid: false})
@@ -85,6 +88,29 @@ angular.module('Register', ['ngResource', 'RailsApiResource', 'user'])
           PoolEntry.create(pool_entry).then((persisted_pool_entry) ->
               $scope.pool_entries_persisted++
             )
+
+
+      $scope.$watch 'registering_user.num_pool_entries', (newVal, oldVal) ->
+        console.log("(num_pool_entries.watch) old="+oldVal + " new=" + newVal)
+        if !$scope.user_needs_registration()
+          console.log("(num_pool_entries.watch) Adding pool entries after registration")
+          num_existing_teams = $scope.pool_entries.length
+          console.log("(num_pool_entries.watch) existing team count="+ num_existing_teams)
+          if newVal > num_existing_teams
+            if num_existing_teams == 10
+              console.log("CANNOT ADD ANY MORE TEAMS")
+              newVal = oldVal
+              $scope.editing_team = oldVal
+            else
+              console.log("Pushing a new team")
+              pool_entry = {team_temp_id: -1, team_name: "", paid: false}
+              $scope.pool_entries.push(pool_entry)
+          if newVal < num_existing_teams
+            console.log("CANNOT REMOVE TEAMS AFTER REGISTERED")
+            $scope.registering_user.num_pool_entries = oldVal
+          if newVal == num_existing_teams
+            console.log("Already have this many teams")
+
 
       $scope.set_editing_team = (index) ->
         $scope.editing_team = index + 1
@@ -110,17 +136,25 @@ angular.module('Register', ['ngResource', 'RailsApiResource', 'user'])
       $scope.register_button_class = (index) ->
         "btn-primary"
 
+      $scope.user_needs_registration = () ->
+        $scope.registering_user.is_registered == false and currentUser.authorized == false
+
       $scope.persist_button_class = (index) ->
-        if $scope.registering_user.is_registered == true
+        if $scope.user_needs_registration() == false
           "btn-success"
         else
           "btn-warning"
+
+      $scope.disable_pool_entry_change = () ->
+        # registering_user.is_registered
+        # TODO: When season is no longer open for registration, disallow a change?
+        false
 
       $scope.persist_button_disabled = () ->
         $scope.pool_entries_persisted == $scope.pool_entries.length
 
       $scope.persist_button_show = () ->
-        if $scope.registering_user.is_registered == true
+        if $scope.user_needs_registration() == false
           all_named = true
           for pool_entry in $scope.pool_entries
             if pool_entry.team_name == "" then all_named = false
@@ -133,5 +167,23 @@ angular.module('Register', ['ngResource', 'RailsApiResource', 'user'])
           "Teams have been Setup"
         else
           "Setup the Teams Below"
+
+      $scope.password_is_valid = (entry) ->
+        if entry.length >= 8
+          "has-success"
+        else
+          "has-error"
+
+      $scope.passwords_match = (p1, p2) ->
+        if p1 == p2
+          true
+        else
+          false
+
+      $scope.passwords_long_enough = (p1, p2) ->
+        if p1.length >= 8 && p2.length >= 8
+          true
+        else
+          false
 
     ]

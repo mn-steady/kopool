@@ -4,9 +4,11 @@ angular.module('user', ['RailsApiResource'])
   .factory('currentUser', ($cookieStore) ->
     {
       # token:        $cookieStore.get('token')
+      # WARNING: Do not save admin status in the Cookie due to possible tampering. You lose admin status on refresh
       username:     $cookieStore.get('username')
       password:     ''
       authorized:   false
+      admin:        false
       reset: ->
         # @token =    $cookieStore.get('token')
         @username = $cookieStore.get('username')
@@ -60,7 +62,6 @@ angular.module('user', ['RailsApiResource'])
       updateCookies: ->
         $cookieStore.put('username', currentUser.username)
 
-
       endSession: ->
         $cookieStore.remove('username')
         currentUser.reset()
@@ -95,6 +96,7 @@ angular.module('user', ['RailsApiResource'])
       $scope.currentUser.token    = undefined
       $scope.currentUser.username = undefined
       $scope.currentUser.password = undefined
+      $scope.currentUser.admin    = false
       AuthService.updateCookies()
     )
 

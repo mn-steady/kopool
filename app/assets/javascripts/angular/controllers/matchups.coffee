@@ -12,11 +12,43 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 	.factory 'Pick', (RailsApiResource) ->
 		RailsApiResource('weeks/:parent_id/picks', 'picks')
 
-	.controller 'MatchupsCtrl', ['$scope', '$location', '$http', '$routeParams', 'Matchup', 'NflTeam', 'PoolEntry', 'currentUser', 'Pick', '$modal', ($scope, $location, $http, $routeParams, Matchup, NflTeam, PoolEntry, currentUser, Pick, $modal) ->
+	.factory 'WebState', (RailsApiResource) ->
+			RailsApiResource('admin/web_states', 'webstate')
+
+	.factory 'Week', (RailsApiResource) ->
+      RailsApiResource('weeks', 'weeks')
+
+	.controller 'MatchupsCtrl', ['$scope', '$location', '$http', '$routeParams', 'Matchup', 'NflTeam', 'PoolEntry', 'currentUser', 'Pick', '$modal', 'WebState', 'Week', ($scope, $location, $http, $routeParams, Matchup, NflTeam, PoolEntry, currentUser, Pick, $modal, WebState, Week) ->
 		$scope.controller = 'MatchupsCtrl'
 		console.log("MatchupsCtrl")
 		console.log("$location:" + $location)
 		console.log("Logged in as:" + currentUser.username)
+
+		# Getting the current system status
+
+		$scope.week = {}
+
+		console.log("...Looking up the WebState")
+		$scope.web_state = WebState.get(1).then((web_state) ->
+			$scope.web_state = web_state
+			$scope.season = "TBD"
+			$scope.reload_week()
+			$scope.getAlert()
+		)
+
+		$scope.reload_week = () ->
+			$scope.week = Week.get($scope.web_state.week_id).then((week) ->
+				$scope.week = week
+				console.log("Reloaded week")
+			)
+
+		$scope.getAlert = () ->
+			if $scope.week.open_for_picks == true
+				$scope.alert = { type: "success", msg: "Make your pick for this week!" }
+			else
+				$scope.alert = { type: "danger", msg: "This week is closed! Your picks are locked in." }
+
+		
 
 		# Routing for new matchups, or the index action for the week
 

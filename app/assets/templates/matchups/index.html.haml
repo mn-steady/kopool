@@ -3,6 +3,10 @@
 %br
 
 .row
+	.col-sm-4.col-sm-offset-4.text-center
+		.alert{"class" => "alert alert-{{alert.type}}"} {{alert.msg}}
+
+.row
 	.col-md-4{"ng-repeat"=>"pool_entry in pool_entries"}
 		.panel.panel-warning
 			.panel-heading

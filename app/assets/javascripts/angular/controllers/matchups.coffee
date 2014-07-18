@@ -33,12 +33,12 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 			$scope.web_state = web_state
 			$scope.season = "TBD"
 			$scope.reload_week()
-			$scope.getAlert()
 		)
 
 		$scope.reload_week = () ->
 			$scope.week = Week.get($scope.web_state.week_id).then((week) ->
 				$scope.week = week
+				$scope.getAlert()
 				console.log("Reloaded week")
 			)
 
@@ -48,7 +48,9 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 			else
 				$scope.alert = { type: "danger", msg: "This week is closed! Your picks are locked in." }
 
-		
+		$scope.weekIsClosed = () ->
+			if $scope.week.open_for_picks == false
+				true
 
 		# Routing for new matchups, or the index action for the week
 

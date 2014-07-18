@@ -52,10 +52,17 @@ class PicksController < ApplicationController
 	end
 
 	def week_picks
+		@week = Week.find(params[:week_id])
 		@this_weeks_picks = Pick.where(week_id: params[:week_id])
 
-		respond_to do |format|
-			format.json { render :json => @this_weeks_picks.to_json(include: [nfl_team: {only: [:id, :name]}])}
+		if @week.open_for_picks == true
+			Rails.logger.error("ERROR you can't view the picks for a week before it is closed!")
+			error_message = "You cannot view the picks for this week until the games start!"
+			render :json => [:error => error_message], :status => :bad_request
+		else
+			respond_to do |format|
+				format.json { render :json => @this_weeks_picks.to_json(include: [nfl_team: {only: [:id, :name]}])}
+			end
 		end
 	end
 

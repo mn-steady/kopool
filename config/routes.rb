@@ -8,6 +8,7 @@ Kopool::Application.routes.draw do
   resources :pool_entries
 
   resources :seasons, only: [:new, :create, :show] do
+    get "season_results", :action => "season_results"
   	resources :weeks, only: [:index, :new, :create, :edit, :show, :update, :destroy]
   end
 
@@ -16,6 +17,7 @@ Kopool::Application.routes.draw do
     post "reopen_week", :action => "reopen_week!"
     post "advance_week", :action => "next_week!"
     get "week_results", :action => "week_results"
+    get "week_picks", :controller => "picks", :action => "week_picks"
     resources :matchups do
       collection do
         post "save_outcome", :action => "save_outcome"

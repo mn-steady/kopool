@@ -3,7 +3,7 @@ class PicksController < ApplicationController
 
 	def index
 
-		Rails.logger.debug("PicksController.this_weeks_picks")
+		Rails.logger.debug("PicksController.index")
 		@picks = Pick.where(week_id: params[:week_id]).joins(:pool_entry).where('pool_entries.user_id = ?', current_user.id)
 
 		respond_to do | format |
@@ -48,6 +48,14 @@ class PicksController < ApplicationController
 				@pick.errors.each{ |attr,msg| error_message << "#{attr} #{msg}" }
 				format.json { render :json => [:error =>  error_message], :status => :internal_server_error}
 			end
+		end
+	end
+
+	def week_picks
+		@this_weeks_picks = Pick.where(week_id: params[:week_id])
+
+		respond_to do |format|
+			format.json { render :json => @this_weeks_picks.to_json(include: [nfl_team: {only: [:id, :name]}])}
 		end
 	end
 

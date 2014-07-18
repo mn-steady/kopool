@@ -121,10 +121,11 @@ class WeeksController < ApplicationController
     else
       @week = Week.find_by(id: params[:week_id])
       @season = @week.season
-      @pool_entries = PoolEntry.where(season_id: @season.id)
+      @pool_entries_knocked_out_this_week = PoolEntry.where(season_id: @season.id, knocked_out_week_id: @week.id)
+      @pool_entries_still_alive = PoolEntry.where(season_id: @season.id, knocked_out: false)
 
       respond_to do | format |
-        format.json {render json: @pool_entries} # Return this week's picks as well
+        format.json {render json: [@pool_entries_knocked_out_this_week, @pool_entries_still_alive]} # Return this week's picks as well
       end
     end
   end

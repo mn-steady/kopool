@@ -113,10 +113,15 @@ class WeeksController < ApplicationController
   def week_results
     Rails.logger.debug("weeks_controller.week_results")
     @webstate = WebState.first
+    @week = Week.find(@webstate.week_id)
 
     if params[:week_id].to_i > @webstate.week_id
       Rails.logger.error("ERROR can't look at a future week's results")
       error_message = "You cannot view the results of a future week. Nice try!"
+      render :json => [:error => error_message], :status => :bad_request
+    elsif @week.open_for_picks == true
+      Rails.logger.error("ERROR can't see this weeks results until the week is closed for picks")
+      error_message = "You can't see the results for this week until the week is closed for picks."
       render :json => [:error => error_message], :status => :bad_request
     else
       @week = Week.find_by(id: params[:week_id])

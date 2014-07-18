@@ -184,16 +184,27 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 
 		# User Action of Selecting a Pick
 
+		$scope.editing_pool_entry = null
+
 		$scope.set_editing_pool_entry = (index) ->
-			$scope.editing_pool_entry = index + 1
+			$scope.editing_pool_entry = $scope.pool_entries[index]
 			console.log("Set editing_pool_entry to: "+$scope.editing_pool_entry)
 			$scope.showMatchups = true
 
-		$scope.pool_entry_button_class = (index) ->
-			if index + 1 == $scope.editing_pool_entry
+		$scope.pool_entry_button_class = (pool_entry) ->
+			if pool_entry == $scope.editing_pool_entry
 				"btn btn-primary"
 			else
 				"btn btn-default"
+
+		$scope.notSelectedPoolEntry = (pool_entry) ->
+			if $scope.editing_pool_entry == null
+				false
+			else if $scope.editing_pool_entry == pool_entry
+				false
+			else
+				true
+			
 
 		$scope.selectedMatchup = ""
 
@@ -234,7 +245,7 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 			# Talk to Rails and create a new pick when the Save Pick button is clicked
 			# Will need to know which team they are choosing
 			console.log("MatchupsCtrl.savePick...")
-			pool_entry = $scope.pool_entries[editing_pool_entry - 1]
+			pool_entry = $scope.editing_pool_entryy
 			week_id = matchup.week_id
 			picked_matchup = matchup
 

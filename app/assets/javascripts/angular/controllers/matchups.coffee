@@ -93,6 +93,7 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 
 		$scope.gatherPicks = ->
 			$scope.picks = []
+			console.log("in gatherPicks()")
 			Pick.nested_query(week_id).then((picks) ->
 				$scope.picks = picks
 				$scope.associatePicks()
@@ -233,6 +234,7 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 			$scope.hideMatchups = false
 
 		$scope.getPickedTeamName = (pool_entry) ->
+			console.log("getting pool entry name in getPickedTeamName")
 			if pool_entry.nfl_team
 				pool_entry.nfl_team.name
 			else
@@ -245,7 +247,7 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 			# Talk to Rails and create a new pick when the Save Pick button is clicked
 			# Will need to know which team they are choosing
 			console.log("MatchupsCtrl.savePick...")
-			pool_entry = $scope.editing_pool_entryy
+			pool_entry = $scope.editing_pool_entry
 			week_id = matchup.week_id
 			picked_matchup = matchup
 

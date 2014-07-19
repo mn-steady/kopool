@@ -6,7 +6,7 @@ angular.module('PoolEntries', ['ngResource', 'RailsApiResource'])
 	.factory 'NflTeam', (RailsApiResource) ->
 		RailsApiResource('nfl_teams', 'nfl_teams')
 
-	.factory 'Pick', (RailsApiResource) ->
+	.factory 'PickResults', (RailsApiResource) ->
 		RailsApiResource('weeks/:parent_id/week_picks', 'picks')
 
 	.controller 'PoolEntriesCtrl', ['$scope', '$location', '$http', '$routeParams', 'NflTeam', 'PoolEntriesThisWeek', 'Pick', ($scope, $location, $http, $routeParams, NflTeam, PoolEntriesThisWeek, Pick) ->
@@ -27,7 +27,7 @@ angular.module('PoolEntries', ['ngResource', 'RailsApiResource'])
 
 		$scope.gatherPicks = ->
 			$scope.picks = []
-			Pick.nested_query(week_id).then((this_weeks_picks) ->
+			PickResults.nested_query(week_id).then((this_weeks_picks) ->
 				$scope.picks = this_weeks_picks
 				$scope.associatePicks()
 			)

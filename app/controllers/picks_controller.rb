@@ -1,5 +1,5 @@
 class PicksController < ApplicationController
-	before_filter :verify_any_user, only: [:create, :update]
+	before_filter :verify_any_user, only: [:create, :update, :week_picks]
 
 	def index
 

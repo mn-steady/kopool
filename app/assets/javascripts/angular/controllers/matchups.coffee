@@ -185,8 +185,6 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 
 		# User Action of Selecting a Pick
 
-		$scope.editing_pool_entry = null
-
 		$scope.set_editing_pool_entry = (index) ->
 			$scope.editing_pool_entry = $scope.pool_entries[index]
 			console.log("Set editing_pool_entry to: "+$scope.editing_pool_entry)
@@ -198,11 +196,14 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 			else
 				"btn btn-default"
 
+
+		# Controls which pool entry shows up at the top of the screen
 		$scope.notSelectedPoolEntry = (pool_entry) ->
 			if $scope.editing_pool_entry == null
 				false
 			else if $scope.editing_pool_entry == pool_entry
 				false
+				console.log("We have decided this is the pool entry you're using")
 			else
 				true
 			
@@ -210,6 +211,9 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 		$scope.selectedMatchup = ""
 
 		$scope.selectedPick = ""
+
+		$scope.editing_pool_entry = null
+		console.log("Probably just reset editing_pool_entry")
 
 		$scope.handleTeamSelection = (matchup, team) ->
 			$scope.selectMatchup(matchup, team)

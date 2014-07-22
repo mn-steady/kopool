@@ -125,7 +125,7 @@ angular.module('Register', ['ngResource', 'RailsApiResource', 'user'])
               $scope.editing_team = oldVal
             else
               console.log("Pushing a new team")
-              $scope.pool_entries.push($scope.template_pool_entry)
+              $scope.pool_entries.push(id: newVal, team_name: "", paid: false, persisted: false)
           if newVal < num_existing_teams
             console.log("CANNOT REMOVE TEAMS AFTER REGISTERED")
             $scope.registering_user.num_pool_entries = oldVal

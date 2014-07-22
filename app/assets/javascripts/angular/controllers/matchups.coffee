@@ -38,16 +38,9 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 		$scope.reload_week = () ->
 			$scope.week = Week.get($scope.web_state.week_id).then((week) ->
 				$scope.week = week
-				$scope.getAlert()
+				$scope.open_for_picks = week.open_for_picks
 				console.log("Reloaded week")
 			)
-
-		$scope.getAlert = () ->
-			if $scope.week.open_for_picks == true
-				$scope.alert = ""
-				console.log("Week is open - don't show an alert")
-			else
-				$scope.alert = { type: "danger", msg: "This week is closed! Your picks are locked in." }
 
 		$scope.weekIsClosed = () ->
 			if $scope.week.open_for_picks == false
@@ -89,13 +82,13 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 			$scope.pool_entries = pool_entries
 			$scope.gatherPicks()
 			console.log("*** Have pool entries ***")
+			$scope.getAlert()
 		)
 
 		$scope.$watch('pool_entry', (pool_entry) ->
 			console.log("watch function triggered")
 			getPickedTeamName(pool_entry)
 		)
-
 
 		$scope.gatherPicks = ->
 			$scope.picks = []
@@ -111,6 +104,17 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 					if pick.pool_entry_id == pool_entry.id
 						angular.extend(pool_entry, pick)
 						console.log("A pick was associated with a pool entry")
+
+		$scope.getAlert = () ->
+			console.log("in getAlert")
+			if $scope.pool_entries.length == 0
+				$scope.alert = { type: "danger", msg: "All of your pool entries have been knocked out!" }
+				console.log("All pool entries have been knocked out")
+			else if $scope.open_for_picks == false
+				$scope.alert = { type: "danger", msg: "This week is closed! Your picks are locked in." }
+			else
+				$scope.alert = ""
+				console.log("Week is open - don't show an alert")
 
 		# Outcome Selections for Administrators
 
@@ -218,7 +222,6 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 		$scope.selectedPick = ""
 
 		$scope.editing_pool_entry = null
-		console.log("Probably just reset editing_pool_entry")
 
 		$scope.handleTeamSelection = (matchup, team) ->
 			$scope.selectMatchup(matchup, team)

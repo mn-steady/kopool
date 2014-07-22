@@ -8,7 +8,7 @@
 			%th{"width" => "40%"} Team Name
 			%th{"width" => "60%"} Team Chosen
 
-	%tbody{"ng-repeat" => "pool_entry in pool_entries | filter: {knocked_out:true}"}
+	%tbody{"ng-repeat" => "pool_entry in pool_entries_knocked_out_this_week"}
 		%tr
 			%td
 				%p.team-name {{ pool_entry.team_name}} 
@@ -23,7 +23,7 @@
 			%th{"width" => "40%"} Team Name
 			%th{"width" => "60%"} Team Chosen
 
-	%tbody{"ng-repeat" => "pool_entry in pool_entries | filter: {knocked_out:false}"}
+	%tbody{"ng-repeat" => "pool_entry in pool_entries_still_alive"}
 		%tr
 			%td
 				%p.team-name {{ pool_entry.team_name}} 

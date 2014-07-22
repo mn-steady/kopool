@@ -41,7 +41,7 @@
 
 %a.btn.btn-success{"ng-click" => "saveWeekOutcomes(matchups)"} Save Results of this Week
 
-%div{"ng-controller" => "MatchupsCtrl"}
+%div
 	%script{:id => "confirmOutcomeModal.html", :type => "text/ng-template"}
 		.modal-header
 			%h3.modal-title Save {{matchup.winning_team_text}}

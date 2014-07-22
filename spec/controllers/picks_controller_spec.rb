@@ -74,4 +74,31 @@ describe PicksController do
   	it "does not include completed picks in @missing_picks"
   end
 
+  describe "GET week_picks" do
+
+  	before do
+			@user = create(:user, admin: true)
+			sign_in :user, @user
+
+			@season = Season.create(year: 2014, name: "2014 Season", entry_fee: 50)
+			@week = Week.create(season: @season, week_number: 1, start_date: DateTime.new(2014, 8, 5), deadline: DateTime.new(2014, 8, 8), end_date: DateTime.new(2014, 8, 11))
+			@pool_entry1 = PoolEntry.create(user: @user, team_name: "Test Team", paid: true)
+			@pool_entry2 = PoolEntry.create(user: @user, team_name: "Team Two", paid: true)
+
+			@broncos = NflTeam.create(name: "Denver Broncos", conference: "NFC", division: "West")
+			@vikings = NflTeam.create(name: "Minnesota Vikings", conference: "NFC", division: "North")
+			@matchup = Matchup.create(week_id: @week.id, home_team: @broncos, away_team: @vikings, game_time: DateTime.new(2014,8,10,11))
+		end
+
+  	pending "returns the picks from this week" do
+  		pick1 = Pick.create(pool_entry: @pool_entry1, week: @week, team_id: @vikings.id)
+  		pick2 = Pick.create(pool_entry: @pool_entry2, week: @week, team_id: @broncos.id)
+  		get :week_picks, week_id: @week.id, format: :json
+  		@expected = ([pick1, pick2]).to_json(include: [nfl_team: {only: [:id, :name]}])
+  		@expected_parsed = JSON.parse(@expected)
+  		body = JSON.parse(response.body)
+  		expect(body).to eq(@expected_parsed)
+  	end
+  end
+
 end

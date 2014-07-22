@@ -90,6 +90,11 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 			console.log("*** Have pool entries ***")
 		)
 
+		$scope.$watch('pool_entry', (pool_entry) ->
+			console.log("watch function triggered")
+			getPickedTeamName(pool_entry)
+		)
+
 
 		$scope.gatherPicks = ->
 			$scope.picks = []
@@ -276,6 +281,8 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 
 			$location.path ('/weeks/' + $scope.week_id + '/matchups')
 			$scope.editing_pool_entry = null
+			$scope.gatherPicks()
+			$scope.showMatchups = false
 
 		$scope.save = (matchup) ->
 			console.log("MatchupsCtrl.save...")

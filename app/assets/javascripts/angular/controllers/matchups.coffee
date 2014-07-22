@@ -203,7 +203,6 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 				false
 			else if $scope.editing_pool_entry == pool_entry
 				false
-				console.log("We have decided this is the pool entry you're using")
 			else
 				true
 			
@@ -269,8 +268,6 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 				$scope.selectedMatchup = ""
 				$scope.selectedPick = ""
 				$scope.hideMatchups = false
-				$scope.$digest()
-
 
 			else
 				$scope.new_pick = {pool_entry_id: pool_entry.id, week_id: week_id, team_id: $scope.selectedPick.id, matchup_id: picked_matchup}
@@ -278,6 +275,7 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 				Pick.create($scope.new_pick, week_id)
 
 			$location.path ('/weeks/' + $scope.week_id + '/matchups')
+			$scope.editing_pool_entry = null
 
 		$scope.save = (matchup) ->
 			console.log("MatchupsCtrl.save...")

@@ -12,11 +12,39 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 	.factory 'Pick', (RailsApiResource) ->
 		RailsApiResource('weeks/:parent_id/picks', 'picks')
 
-	.controller 'MatchupsCtrl', ['$scope', '$location', '$http', '$routeParams', 'Matchup', 'NflTeam', 'PoolEntry', 'currentUser', 'Pick', '$modal', ($scope, $location, $http, $routeParams, Matchup, NflTeam, PoolEntry, currentUser, Pick, $modal) ->
+	.factory 'WebState', (RailsApiResource) ->
+			RailsApiResource('admin/web_states', 'webstate')
+
+	.factory 'Week', (RailsApiResource) ->
+      RailsApiResource('weeks', 'weeks')
+
+	.controller 'MatchupsCtrl', ['$scope', '$location', '$http', '$routeParams', 'Matchup', 'NflTeam', 'PoolEntry', 'currentUser', 'Pick', '$modal', 'WebState', 'Week', ($scope, $location, $http, $routeParams, Matchup, NflTeam, PoolEntry, currentUser, Pick, $modal, WebState, Week) ->
 		$scope.controller = 'MatchupsCtrl'
 		console.log("MatchupsCtrl")
 		console.log("$location:" + $location)
 		console.log("Logged in as:" + currentUser.username)
+
+		# Getting the current system status
+
+		$scope.week = {}
+
+		console.log("...Looking up the WebState")
+		$scope.web_state = WebState.get(1).then((web_state) ->
+			$scope.web_state = web_state
+			$scope.season = "TBD"
+			$scope.reload_week()
+		)
+
+		$scope.reload_week = () ->
+			$scope.week = Week.get($scope.web_state.week_id).then((week) ->
+				$scope.week = week
+				$scope.open_for_picks = week.open_for_picks
+				console.log("Reloaded week")
+			)
+
+		$scope.weekIsClosed = () ->
+			if $scope.week.open_for_picks == false
+				true
 
 		# Routing for new matchups, or the index action for the week
 
@@ -54,11 +82,17 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 			$scope.pool_entries = pool_entries
 			$scope.gatherPicks()
 			console.log("*** Have pool entries ***")
+			$scope.getAlert()
 		)
 
+		$scope.$watch('pool_entry', (pool_entry) ->
+			console.log("watch function triggered")
+			getPickedTeamName(pool_entry)
+		)
 
 		$scope.gatherPicks = ->
 			$scope.picks = []
+			console.log("in gatherPicks()")
 			Pick.nested_query(week_id).then((picks) ->
 				$scope.picks = picks
 				$scope.associatePicks()
@@ -70,6 +104,17 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 					if pick.pool_entry_id == pool_entry.id
 						angular.extend(pool_entry, pick)
 						console.log("A pick was associated with a pool entry")
+
+		$scope.getAlert = () ->
+			console.log("in getAlert")
+			if $scope.pool_entries.length == 0
+				$scope.alert = { type: "danger", msg: "All of your pool entries have been knocked out!" }
+				console.log("All pool entries have been knocked out")
+			else if $scope.open_for_picks == false
+				$scope.alert = { type: "danger", msg: "This week is closed! Your picks are locked in." }
+			else
+				$scope.alert = ""
+				console.log("Week is open - don't show an alert")
 
 		# Outcome Selections for Administrators
 
@@ -151,19 +196,32 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 		# User Action of Selecting a Pick
 
 		$scope.set_editing_pool_entry = (index) ->
-			$scope.editing_pool_entry = index + 1
+			$scope.editing_pool_entry = $scope.pool_entries[index]
 			console.log("Set editing_pool_entry to: "+$scope.editing_pool_entry)
 			$scope.showMatchups = true
 
-		$scope.pool_entry_button_class = (index) ->
-			if index + 1 == $scope.editing_pool_entry
+		$scope.pool_entry_button_class = (pool_entry) ->
+			if pool_entry == $scope.editing_pool_entry
 				"btn btn-primary"
 			else
 				"btn btn-default"
 
+
+		# Controls which pool entry shows up at the top of the screen
+		$scope.notSelectedPoolEntry = (pool_entry) ->
+			if $scope.editing_pool_entry == null
+				false
+			else if $scope.editing_pool_entry == pool_entry
+				false
+			else
+				true
+			
+
 		$scope.selectedMatchup = ""
 
 		$scope.selectedPick = ""
+
+		$scope.editing_pool_entry = null
 
 		$scope.handleTeamSelection = (matchup, team) ->
 			$scope.selectMatchup(matchup, team)
@@ -188,6 +246,7 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 			$scope.hideMatchups = false
 
 		$scope.getPickedTeamName = (pool_entry) ->
+			console.log("getting pool entry name in getPickedTeamName")
 			if pool_entry.nfl_team
 				pool_entry.nfl_team.name
 			else
@@ -200,7 +259,7 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 			# Talk to Rails and create a new pick when the Save Pick button is clicked
 			# Will need to know which team they are choosing
 			console.log("MatchupsCtrl.savePick...")
-			pool_entry = $scope.pool_entries[editing_pool_entry - 1]
+			pool_entry = $scope.editing_pool_entry
 			week_id = matchup.week_id
 			picked_matchup = matchup
 
@@ -218,8 +277,6 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 				$scope.selectedMatchup = ""
 				$scope.selectedPick = ""
 				$scope.hideMatchups = false
-				$scope.$digest()
-
 
 			else
 				$scope.new_pick = {pool_entry_id: pool_entry.id, week_id: week_id, team_id: $scope.selectedPick.id, matchup_id: picked_matchup}
@@ -227,6 +284,10 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 				Pick.create($scope.new_pick, week_id)
 
 			$location.path ('/weeks/' + $scope.week_id + '/matchups')
+			$scope.editing_pool_entry = null
+			$scope.gatherPicks()
+			$scope.showMatchups = false
+			$scope.alert = { type: "success", msg: "Your pick was saved! Good luck!" }
 
 		$scope.save = (matchup) ->
 			console.log("MatchupsCtrl.save...")

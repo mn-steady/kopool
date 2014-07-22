@@ -3,51 +3,56 @@
 %br
 
 .row
-	.col-md-4{"ng-repeat"=>"pool_entry in pool_entries"}
-		.panel.panel-warning
-			.panel-heading
-				.panel-title.text-center
-					%h3
-						{{getPickedTeamName(pool_entry)}}
-			.panel-body
-				.text-center
-					%span {{pool_entry.team_name}} 
-				%br
-				.text-center
-					%h2
-						%span.label.label-danger
-							KOPOOL 2014
-				%br
-				.ticket-body
-					%em
-						%h4
-							.text-center {{currentUser.email}}
-					%br
-					.text-center
-						Price includes the price
-					%br
-					.text-center
-						%span.glyphicon.glyphicon-arrow-right
-						%span.glyphicon.glyphicon-arrow-right NO REFUNDS
-						%span.glyphicon.glyphicon-arrow-left
-						%span.glyphicon.glyphicon-arrow-left
-					%br
-					.text-right
+	.col-sm-12.text-center
+		.alert{"class" => "alert alert-{{alert.type}}"} {{alert.msg}}
+
+.row
+	.col-md-4{"ng-repeat"=>"pool_entry in pool_entries | filter: {knocked_out: false}"}
+		%div{"ng-hide" => "notSelectedPoolEntry(pool_entry)"}
+			.panel.panel-warning
+				.panel-heading
+					.panel-title.text-center
 						%h3
-							$50.00
-				%br
-				.text-center
-					%button.btn.btn-default.btn-lg
-						%span.glyphicon.glyphicon-hd-video
-					%button.btn.btn-default.btn-lg
-						%span.glyphicon.glyphicon-sound-7-1
-					%button.btn.btn-default.btn-lg
-						%span.glyphicon.glyphicon-sound-dolby
-		.text-center
-			%a.btn{"ng-click" => "set_editing_pool_entry($index)", "ng-class" => "pool_entry_button_class($index)", role: "button"} Select Pick for {{pool_entry.team_name}}
+							{{pool_entry.team_name}}
+
+				.panel-body
+					.text-center
+						%span
+							%p This week's pick:
+							%h2 {{getPickedTeamName(pool_entry)}}
+					%br
+					.ticket-body
+						%em
+							%h4
+								.text-center {{currentUser.email}}
+						%br
+						%br
+						.text-center
+							%span.glyphicon.glyphicon-arrow-right
+							%span.glyphicon.glyphicon-arrow-right NO REFUNDS
+							%span.glyphicon.glyphicon-arrow-left
+							%span.glyphicon.glyphicon-arrow-left
+						%br
+						.text-center
+							%h3
+								$50.00
+						.text-center
+							%h2
+								%span.label.label-danger
+									KOPOOL 2014
+					%br
+					.text-center
+						%button.btn.btn-default.btn-lg
+							%span.glyphicon.glyphicon-hd-video
+						%button.btn.btn-default.btn-lg
+							%span.glyphicon.glyphicon-sound-7-1
+						%button.btn.btn-default.btn-lg
+							%span.glyphicon.glyphicon-sound-dolby
+			.text-center
+				%a.btn{"ng-click" => "set_editing_pool_entry($index)", "ng-class" => "pool_entry_button_class(pool_entry)", "ng-hide" => "weekIsClosed()", role: "button"} Select Pick for {{pool_entry.team_name}}
 
 .animate-show{"ng-show" => "showMatchups"}
-	%table.table.table-striped{"ng-controller" => "MatchupsCtrl"}
+	%table.table.table-striped
 		%thead
 			%tr
 				%th 

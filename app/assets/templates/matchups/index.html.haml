@@ -3,7 +3,7 @@
 %br
 
 .row
-	.col-sm-4.col-sm-offset-4.text-center
+	.col-sm-12.text-center
 		.alert{"class" => "alert alert-{{alert.type}}"} {{alert.msg}}
 
 .row
@@ -13,23 +13,19 @@
 				.panel-heading
 					.panel-title.text-center
 						%h3
-							{{getPickedTeamName(pool_entry)}}
+							{{pool_entry.team_name}}
+
 				.panel-body
 					.text-center
-						%span {{pool_entry.team_name}} 
-					%br
-					.text-center
-						%h2
-							%span.label.label-danger
-								KOPOOL 2014
+						%span
+							%p This week's pick:
+							%h2 {{getPickedTeamName(pool_entry)}}
 					%br
 					.ticket-body
 						%em
 							%h4
 								.text-center {{currentUser.email}}
 						%br
-						.text-center
-							Price includes the price
 						%br
 						.text-center
 							%span.glyphicon.glyphicon-arrow-right
@@ -37,9 +33,13 @@
 							%span.glyphicon.glyphicon-arrow-left
 							%span.glyphicon.glyphicon-arrow-left
 						%br
-						.text-right
+						.text-center
 							%h3
 								$50.00
+						.text-center
+							%h2
+								%span.label.label-danger
+									KOPOOL 2014
 					%br
 					.text-center
 						%button.btn.btn-default.btn-lg

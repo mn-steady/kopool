@@ -44,7 +44,8 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 
 		$scope.getAlert = () ->
 			if $scope.week.open_for_picks == true
-				$scope.alert = { type: "success", msg: "Make your pick for this week!" }
+				$scope.alert = ""
+				console.log("Week is open - don't show an alert")
 			else
 				$scope.alert = { type: "danger", msg: "This week is closed! Your picks are locked in." }
 
@@ -283,6 +284,7 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 			$scope.editing_pool_entry = null
 			$scope.gatherPicks()
 			$scope.showMatchups = false
+			$scope.alert = { type: "success", msg: "Your pick was saved! Good luck!" }
 
 		$scope.save = (matchup) ->
 			console.log("MatchupsCtrl.save...")

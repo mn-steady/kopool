@@ -5,7 +5,9 @@ Kopool::Application.routes.draw do
   root 'pages#index'
 
   resources :nfl_teams
+  get "pool_entries_index_all", :controller => "pool_entries", :action => "index_all"
   resources :pool_entries
+
 
   resources :seasons, only: [:new, :create, :show] do
     get "season_results", :action => "season_results"

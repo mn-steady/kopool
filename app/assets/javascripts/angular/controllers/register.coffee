@@ -3,26 +3,45 @@ angular.module('Register', ['ngResource', 'RailsApiResource', 'user'])
   .factory 'PoolEntry', (RailsApiResource) ->
       RailsApiResource('pool_entries', 'pool_entries')
 
-    .controller 'RegisterCtrl', ['$scope', '$location', '$http', '$routeParams', 'currentUser', 'AuthService', 'PoolEntry', 'KOPOOL_CONFIG', ($scope, $location, $http, $routeParams, currentUser, AuthService, PoolEntry, KOPOOL_CONFIG) ->
+  .factory 'PoolEntries', (RailsApiResource) ->
+      RailsApiResource('pool_entries_index_all', 'pool_entries')
+
+    .controller 'RegisterCtrl', ['$scope', '$location', '$http', '$routeParams', 'currentUser', 'AuthService', 'PoolEntry', 'PoolEntries', 'KOPOOL_CONFIG', ($scope, $location, $http, $routeParams, currentUser, AuthService, PoolEntry, PoolEntries, KOPOOL_CONFIG) ->
       console.log("(RegisterCtrl)")
       $scope.controller = 'RegisterCtrl'
-
-      # user_registration POST   /users(.:format)                             devise/registrations#create
-      # new_user_registration GET    /users/sign_up(.:format)                     devise/registrations#new
 
       console.log("$location:" + $location)
       action = $routeParams.action
       team_id = $routeParams.id
 
-      console.log("Passed id:" + team_id)
-      console.log("Passed action:" + action)
-
-      # $scope.pool_entries = [{team_temp_id: 0, team_name: "???", paid: false}]
       $scope.pool_entries = []
       $scope.pool_entries_persisted = 0
       $scope.registering_user = {email: "", password: "", password_confirmation: "", num_pool_entries: 1, teams: $scope.pool_entries, is_registered: false}
       $scope.register_error = {message: null, errors: {}}
+      $scope.template_pool_entry = {id: -1, team_name: "", paid: false, persisted: false}
       $scope.editing_team = 1
+
+      $scope.load_persisted_pool_entries = () ->
+        console.log("(registerCtrl.load_persisted_pool_entries)")
+        $scope.pool_entries_persisted = 0
+        PoolEntries.query().then((persisted_pool_entries) ->
+          for pool_entry in persisted_pool_entries
+            local_pool_entry = {id: pool_entry.id, team_name: pool_entry.team_name, paid: pool_entry.paid, persisted: true}
+            $scope.pool_entries.push(local_pool_entry)
+            $scope.pool_entries_persisted++
+          $scope.registering_user.num_pool_entries = $scope.pool_entries_persisted
+        )
+
+      $scope.user_needs_registration = () ->
+        $scope.registering_user.is_registered == false and currentUser.authorized == false
+
+      if $scope.user_needs_registration()
+        console.log("(Register) User Needs Registration")
+      else
+        console.log("(Register) User Already Registered")
+        $scope.registering_user = {email: currentUser.email, password: "", password_confirmation: "", num_pool_entries: 0, teams: $scope.pool_entries, is_registered: true}
+        $scope.load_persisted_pool_entries()
+
 
       $scope.register = ->
         console.log("(registerCtrl.register)")
@@ -66,6 +85,14 @@ angular.module('Register', ['ngResource', 'RailsApiResource', 'user'])
           return
         return
 
+
+      $scope.create_local_pool_entries = () ->
+        console.log("(registerCtrl.create_local_pool_entries)")
+        for x in [1..$scope.registering_user.num_pool_entries] by 1
+          if $scope.pool_entries.length < $scope.registering_user.num_pool_entries
+            $scope.pool_entries.push(id: x, team_name: "", paid: false, persisted: false)
+        return
+
       $scope.save_user_data = (user_data) ->
         console.log("(registerCtrl.save_user_data)")
         currentUser.authorized = true
@@ -73,31 +100,17 @@ angular.module('Register', ['ngResource', 'RailsApiResource', 'user'])
         AuthService.updateCookies()
         console.log("(registerCtrl.save_user_data) saved username:" + currentUser.username)
         $scope.registering_user.is_registered = true
-        $scope.create_local_pool_entries
+        $scope.create_local_pool_entries()
 
-      $scope.create_local_pool_entries = () ->
-        for x in [1..$scope.registering_user.num_pool_entries] by 1
-          if $scope.pool_entries.length < $scope.registering_user.num_pool_entries
-            $scope.pool_entries.push({team_temp_id: x, team_name: "", paid: false})
-        return
 
       $scope.persist_pool_entries = (user_data) ->
         console.log("(registerCtrl.create_pool_entries)")
         for pool_entry in $scope.pool_entries
-          console.log("Persisting Pool Entry: " + pool_entry.team_name)
-          PoolEntry.create(pool_entry).then((persisted_pool_entry) ->
-              $scope.pool_entries_persisted++
-            )
-
-      $scope.load_persisted_pool_entries = () ->
-        console.log("(registerCtrl.load_persisted_pool_entries)")
-        for pool_entry in $scope.pool_entries
-          console.log("Persisting Pool Entry: " + pool_entry.team_name)
-          PoolEntry.create(pool_entry).then((persisted_pool_entry) ->
-              $scope.pool_entries_persisted++
-            )
-
-
+          if !pool_entry.persisted
+            console.log("Persisting Pool Entry: " + pool_entry.team_name)
+            PoolEntry.create(pool_entry).then((persisted_pool_entry) ->
+                $scope.pool_entries_persisted++
+              )
 
       $scope.$watch 'registering_user.num_pool_entries', (newVal, oldVal) ->
         console.log("(num_pool_entries.watch) old="+oldVal + " new=" + newVal)
@@ -112,8 +125,7 @@ angular.module('Register', ['ngResource', 'RailsApiResource', 'user'])
               $scope.editing_team = oldVal
             else
               console.log("Pushing a new team")
-              pool_entry = {team_temp_id: -1, team_name: "", paid: false}
-              $scope.pool_entries.push(pool_entry)
+              $scope.pool_entries.push($scope.template_pool_entry)
           if newVal < num_existing_teams
             console.log("CANNOT REMOVE TEAMS AFTER REGISTERED")
             $scope.registering_user.num_pool_entries = oldVal
@@ -142,11 +154,22 @@ angular.module('Register', ['ngResource', 'RailsApiResource', 'user'])
         else
           "btn-default"
 
+      $scope.team_button_text = (team_index) ->
+        team_number = team_index + 1
+        if $scope.registering_user.teams[team_index].persisted
+          "Team # " + team_number + " SAVED"
+        else
+          "Edit Team # " + team_number
+
+      $scope.team_button_disabled = (team_index) ->
+        team_number = team_index + 1
+        if $scope.registering_user.teams[team_index]? && $scope.registering_user.teams[team_index].persisted
+          true
+        else
+          false
+
       $scope.register_button_class = (index) ->
         "btn-primary"
-
-      $scope.user_needs_registration = () ->
-        $scope.registering_user.is_registered == false and currentUser.authorized == false
 
       $scope.user_can_register = () ->
         $scope.user_needs_registration() and $scope.password_is_valid($scope.registering_user.password) and $scope.password_is_valid($scope.registering_user.password_confirmation) and $scope.passwords_long_enough($scope.registering_user.password, $scope.registering_user.password_confirmation) and $scope.email_valid($scope.registering_user.email) and $scope.passwords_match($scope.registering_user.password, $scope.registering_user.password_confirmation)

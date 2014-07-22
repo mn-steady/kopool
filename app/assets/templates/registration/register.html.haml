@@ -66,13 +66,13 @@
         %form.form-horizontal
           %div{"ng-repeat" => "pool_entry in registering_user.teams"}
             .col-sm-2
-              %a.btn{"ng-click" => "set_editing_team($index)", "ng-class" => "team_button_class($index)", role: "button"} Edit Team # {{$index+1}}
+              %a.btn{"ng-click" => "set_editing_team($index)", "ng-class" => "team_button_class($index)", "ng-disabled" => "team_button_disabled($index)", role: "button"} {{team_button_text($index)}}
           %br
           %br
           .form-group
             %label.col-sm-1 Team Name
             .col-sm-10
-              %input.form-control{"type" => "text", "min"=>"1", "ng-model" => "registering_user.teams[editing_team-1].team_name"}
+              %input.form-control{"type" => "text", "min"=>"1", "ng-model" => "registering_user.teams[editing_team-1].team_name", "ng-disabled" => "team_button_disabled(editing_team-1)"}
 
 .row
 

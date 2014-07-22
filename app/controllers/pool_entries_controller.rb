@@ -1,15 +1,23 @@
 class PoolEntriesController < ApplicationController
 
   before_filter :verify_admin_user, only: [:show, :update, :destroy]
-  before_filter :verify_any_user, only: [:index, :create]
+  before_filter :verify_any_user, only: [:index, :create, :index_even_knocked_out]
 
   def index
-
     Rails.logger.debug("(PoolEntriesController.index) is user")
     @pool_entries = PoolEntry.where(user: current_user, knocked_out: false)
 
     respond_to do | format |
       format.json {render json: @pool_entries} # Return this week's picks as well
+    end
+  end
+
+  def index_all
+    Rails.logger.debug("(PoolEntriesController.index_even_knocked_out) is user")
+    @pool_entries = PoolEntry.where(user: current_user)
+
+    respond_to do | format |
+      format.json {render json: @pool_entries}
     end
   end
 

@@ -40,6 +40,7 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 				$scope.week = week
 				$scope.open_for_picks = week.open_for_picks
 				console.log("Reloaded week")
+				$scope.getAlert()
 			)
 
 		$scope.weekIsClosed = () ->
@@ -82,7 +83,6 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 			$scope.pool_entries = pool_entries
 			$scope.gatherPicks()
 			console.log("*** Have pool entries ***")
-			$scope.getAlert()
 		)
 
 		$scope.$watch('pool_entry', (pool_entry) ->
@@ -109,9 +109,10 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 			console.log("in getAlert")
 			if $scope.pool_entries.length == 0
 				$scope.alert = { type: "danger", msg: "All of your pool entries have been knocked out!" }
-				console.log("All pool entries have been knocked out")
+				console.log("All of your pool entries have been knocked out")
 			else if $scope.open_for_picks == false
 				$scope.alert = { type: "danger", msg: "This week is closed! Your picks are locked in." }
+				console.log("This week is closed for addiitonal picks")
 			else
 				$scope.alert = ""
 				console.log("Week is open - don't show an alert")

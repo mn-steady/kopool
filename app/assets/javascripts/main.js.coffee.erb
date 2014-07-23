@@ -67,6 +67,10 @@
 			templateUrl: '<%= asset_path("weeks/edit.html") %>',
 			controller: 'WeeksCtrl'
 		}).
+		when('/seasons/:season_id/results', {
+			templateUrl: '<%= asset_path("seasons/results.html") %>',
+			controller: 'PoolEntriesCtrl'
+		}).
 		when('/weeks/:week_id/results', {
 			templateUrl: '<%= asset_path("weeks/results.html") %>',
 			controller: 'PoolEntriesCtrl'

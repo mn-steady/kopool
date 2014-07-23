@@ -8,7 +8,7 @@ class MatchupsController < ApplicationController
     @matchups = Matchup.where(week_id: @week.id).order('game_time')
 
     respond_to do | format |
-      format.json {render :json => @matchups.to_json(include: [{ home_team: { only: [:name, :id] }}, away_team: {only: [:name, :id]}] ) }
+      format.json {render :json => @matchups.to_json(include: [{ home_team: { only: [:name, :id], :methods => [:logo_url_small] }}, away_team: {only: [:name, :id], :methods => [:logo_url_small]}] ) }
     end
 	end
 

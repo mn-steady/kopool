@@ -1,9 +1,9 @@
 angular.module('Weeks', ['ngResource', 'RailsApiResource'])
 
-  .factory 'Week', (RailsApiResource) ->
+  .factory 'SeasonWeeks', (RailsApiResource) ->
       RailsApiResource('seasons/:parent_id/weeks', 'weeks')
 
-  .controller 'WeeksCtrl', ['$scope', '$location', '$http', '$routeParams', 'Week', ($scope, $location, $http, $routeParams, Week) ->
+  .controller 'WeeksCtrl', ['$scope', '$location', '$http', '$routeParams', 'SeasonWeeks', ($scope, $location, $http, $routeParams, SeasonWeeks) ->
     $scope.controller = 'WeeksCtrl'
 
     console.log("WeeksCtrl")
@@ -25,7 +25,7 @@ angular.module('Weeks', ['ngResource', 'RailsApiResource'])
       $scope.week.season_id = $scope.season_id
     else if week_id?
       console.log("...Looking up a single week")
-      $scope.week = Week.get(week_id, season_id).then((week) ->
+      $scope.week = SeasonWeeks.get(week_id, season_id).then((week) ->
         # week.end_date = Date.parse(week.end_date)
         # week.start_date = Date(week.start_date)
         # week.deadline = week.deadline
@@ -34,21 +34,21 @@ angular.module('Weeks', ['ngResource', 'RailsApiResource'])
       )
     else
       console.log("...All Weeks for season "+season_id)
-      Week.nested_query(season_id).then((weeks) ->
+      SeasonWeeks.nested_query(season_id).then((weeks) ->
         $scope.weeks = weeks
-        console.log("*** Have weeks***")
+        console.log("*** Have weeks for season: " +season_id+ " ***")
       )
 
     $scope.save = (week) ->
       console.log("WeeksCtrl.save...")
       if week.id?
         console.log("Saving week id " + week.id)
-        Week.save(week, $scope.season_id).then((week) ->
+        SeasonWeeks.save(week, $scope.season_id).then((week) ->
           $scope.week = week
         )
       else
         console.log("First-time save need POST new id")
-        Week.create(week, $scope.season_id).then((week) ->
+        SeasonWeeks.create(week, $scope.season_id).then((week) ->
           $scope.week = week
         )
       $location.path ('/seasons/' + $scope.season_id + '/weeks')
@@ -57,9 +57,9 @@ angular.module('Weeks', ['ngResource', 'RailsApiResource'])
       console.log("WeeksCtrl.delete...")
       if week.id?
         console.log("Deleting week id " + week.id)
-        Week.remove(week, $scope.season_id).then((week) ->
+        SeasonWeeks.remove(week, $scope.season_id).then((week) ->
           # Forcibly reloading the collection refreshes the screen nicely!
-          Week.nested_query(season_id).then((weeks) ->
+          SeasonWeeks.nested_query(season_id).then((weeks) ->
             $scope.weeks = weeks
             $location.path ('/seasons/' + $scope.season_id + '/weeks')
           )

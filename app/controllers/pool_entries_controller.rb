@@ -8,7 +8,7 @@ class PoolEntriesController < ApplicationController
     @pool_entries = PoolEntry.where(user: current_user, knocked_out: false)
 
     respond_to do | format |
-      format.json {render json: @pool_entries} # Return this week's picks as well
+      format.json {render json: @pool_entries}
     end
   end
 

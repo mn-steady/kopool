@@ -7,7 +7,7 @@ class PicksController < ApplicationController
 		@picks = Pick.where(week_id: params[:week_id]).joins(:pool_entry).where('pool_entries.user_id = ?', current_user.id)
 
 		respond_to do | format |
-			format.json {render :json => @picks.to_json(include: [{pool_entry: {only: [:id, :team_name] }}, nfl_team: {only: [:id, :name]}] ) }
+			format.json {render :json => @picks.to_json(include: [{pool_entry: {only: [:id, :team_name] }}, nfl_team: {only: [:id, :name], :methods => [:logo_url_small]}] ) }
 		end
 
 	end
@@ -61,7 +61,7 @@ class PicksController < ApplicationController
 			render :json => [:error => error_message], :status => :bad_request
 		else
 			respond_to do |format|
-				format.json { render :json => @this_weeks_picks.to_json(include: [nfl_team: {only: [:id, :name]}])}
+				format.json { render :json => @this_weeks_picks.to_json(include: [nfl_team: {only: [:id, :name], :methods => [:logo_url_small]}])}
 			end
 		end
 	end

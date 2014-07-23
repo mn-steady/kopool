@@ -19,6 +19,7 @@
 					.text-center
 						%span
 							%p This week's pick:
+							%img{"src" => "{{pool_entry.nfl_team.logo_url_small}}" }
 							%h2 {{getPickedTeamName(pool_entry)}}
 					%br
 					.ticket-body
@@ -57,15 +58,19 @@
 			%tr
 				%th 
 				%th Home Team
+				%th
 				%th Away Team
 				%th Game Time
 		%tbody{"ng-repeat" => "matchup in matchups"}
 			%tr{"ng-class" => "{'unselected-matchup' : (hideMatchups && !isSelectedMatchup(matchup))}"}
 				%td
+					%img{"src" => "{{matchup.home_team.logo_url_small}}", "ng-hide" => "isSelectedMatchup(matchup) && !isSelectedTeam(matchup.home_team)"}
 				%td 
 					%p.team-name {{ matchup.home_team.name}} 
 					%div
 						%a.btn.btn-success{"ng-click" => "handleTeamSelection(matchup, matchup.home_team)", "ng-hide" => "isSelectedMatchup(matchup) && !isSelectedTeam(matchup.home_team)"} Pick {{ matchup.home_team.name }} to win!
+				%td
+					%img{"src" => "{{matchup.away_team.logo_url_small}}", "ng-hide" => "isSelectedMatchup(matchup) && !isSelectedTeam(matchup.away_team)"}
 				%td 
 					%p.team-name {{ matchup.away_team.name}}
 					%a.btn.btn-success{"ng-click" => "handleTeamSelection(matchup, matchup.away_team)", "ng-hide" => "isSelectedMatchup(matchup) && !isSelectedTeam(matchup.away_team)"} Pick {{ matchup.away_team.name }} to win!

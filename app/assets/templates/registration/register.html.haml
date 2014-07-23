@@ -1,5 +1,5 @@
 %h1 Welcome to KOPOOL Registration!
-
+%h2 Season {{web_state.current_week.season.name}} Week {{web_state.current_week.week_number}}
 .row
   .col-md-8
 
@@ -39,7 +39,6 @@
   .col-md-4
     %br
     %br
-    %br
     .alert.alert-danger{"ng-show" => "register_error.message != null"}
       {{register_error.message}}
     %br
@@ -51,6 +50,9 @@
     %br
     .alert.alert-danger{"ng-hide" => "passwords_match(registering_user.password, registering_user.password_confirmation)"}
       Passwords must match
+    %br
+    .alert.alert-warning{"ng-show" => "disable_pool_entry_change()"}
+      Can only add pool entries when "open for registration" and week 1
 
 
 

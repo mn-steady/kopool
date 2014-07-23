@@ -1,4 +1,4 @@
-angular.module('Home', ['ngResource', 'RailsApiResource'])
+angular.module('Home', ['ngResource', 'RailsApiResource', 'user'])
 
   .factory 'WebState', (RailsApiResource) ->
       RailsApiResource('admin/web_states', 'webstate')
@@ -6,30 +6,47 @@ angular.module('Home', ['ngResource', 'RailsApiResource'])
   .factory 'PoolEntriesThisSeason', (RailsApiResource) ->
     RailsApiResource('seasons/:parent_id/season_results', 'pool_entries')
 
-  .controller 'HomeCtrl', ['$scope', '$location', 'currentUser', 'WebState', 'PoolEntriesThisSeason', 'Week', ($scope, $location, currentUser, WebState, PoolEntriesThisSeason, Week) ->
+  .controller 'HomeCtrl', ['$scope', '$location', 'currentUser', 'WebState', 'PoolEntriesThisSeason', ($scope, $location, currentUser, WebState, PoolEntriesThisSeason, Week) ->
     $scope.controller = 'HomeCtrl'
     console.log("(HomeCtrl)")
 
-    $scope.web_state = WebState.get(1).then((web_state) ->
+    $scope.total_pot = 0
+    $scope.pool_entries = []
+    $scope.active_pool_entries = []
+    $scope.active_pool_entries_count = 0
+
+    $scope.web_state =
+      id: 0
+      week_id: 0
+      broadcast_message: "...Please Login..."
+      current_week:
+        week_number: 0
+        open_for_picks: false
+        season:
+          id: 0
+          year: 0
+          name: "...Please Login..."
+          open_for_registration: false
+
+
+    WebState.get(1).then((web_state) ->
       $scope.web_state = web_state
-      $scope.reload_week()
+      $scope.week = web_state.current_week
+      $scope.open_for_picks = web_state.current_week.open_for_picks
+      if $scope.authorized()
+        $scope.reload_pool_entries()
+      else
+        console.log("** Current user is not authorized - no webstate or details **")
     )
 
-    $scope.reload_week = () ->
-      $scope.week = Week.get($scope.web_state.week_id).then((week) ->
-        $scope.week = week
-        $scope.open_for_picks = week.open_for_picks
-        console.log("Reloaded week")
+    $scope.reload_pool_entries = () ->
+      PoolEntriesThisSeason.nested_query(1).then((pool_entries) ->
+        $scope.pool_entries = pool_entries
+        $scope.getActivePoolEntries()
+        console.log("*** Have pool entries ***")
       )
 
-    PoolEntriesThisSeason.nested_query(1).then((pool_entries) ->
-      $scope.pool_entries = pool_entries
-      $scope.getActivePoolEntries()
-      console.log("*** Have pool entries ***")
-    )
-
     $scope.getActivePoolEntries = () ->
-      $scope.active_pool_entries = []
       for pool_entry in $scope.pool_entries
         if pool_entry.knocked_out == false
           $scope.active_pool_entries.push(pool_entry)
@@ -51,7 +68,6 @@ angular.module('Home', ['ngResource', 'RailsApiResource'])
         "You are currently authorized as " + currentUser.username
       else
         "Please Sign-in at the top or Register"
-
 
     # Just demonstrating an alternate means of navigation.  Better to use anchor tags.
     $scope.go = ( path ) ->

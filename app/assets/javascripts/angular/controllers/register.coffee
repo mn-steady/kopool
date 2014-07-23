@@ -3,10 +3,13 @@ angular.module('Register', ['ngResource', 'RailsApiResource', 'user'])
   .factory 'PoolEntry', (RailsApiResource) ->
       RailsApiResource('pool_entries', 'pool_entries')
 
+  .factory 'WebState', (RailsApiResource) ->
+      RailsApiResource('admin/web_states', 'webstate')
+
   .factory 'PoolEntries', (RailsApiResource) ->
       RailsApiResource('pool_entries_index_all', 'pool_entries')
 
-    .controller 'RegisterCtrl', ['$scope', '$location', '$http', '$routeParams', 'currentUser', 'AuthService', 'PoolEntry', 'PoolEntries', 'KOPOOL_CONFIG', ($scope, $location, $http, $routeParams, currentUser, AuthService, PoolEntry, PoolEntries, KOPOOL_CONFIG) ->
+    .controller 'RegisterCtrl', ['$scope', '$location', '$http', '$routeParams', 'currentUser', 'AuthService', 'PoolEntry', 'PoolEntries', 'WebState', 'KOPOOL_CONFIG', ($scope, $location, $http, $routeParams, currentUser, AuthService, PoolEntry, PoolEntries, WebState, KOPOOL_CONFIG) ->
       console.log("(RegisterCtrl)")
       $scope.controller = 'RegisterCtrl'
 
@@ -18,15 +21,39 @@ angular.module('Register', ['ngResource', 'RailsApiResource', 'user'])
       $scope.pool_entries_persisted = 0
       $scope.registering_user = {email: "", password: "", password_confirmation: "", num_pool_entries: 1, teams: $scope.pool_entries, is_registered: false}
       $scope.register_error = {message: null, errors: {}}
-      $scope.template_pool_entry = {id: -1, team_name: "", paid: false, persisted: false}
       $scope.editing_team = 1
+
+      $scope.template_pool_entry =
+        id: -1
+        team_name: ""
+        paid: false
+        persisted: false
+        season: -1
+
+      $scope.web_state =
+        id: 0
+        week_id: 0
+        broadcast_message: "...Refreshing..."
+        current_week:
+          week_number: 0
+          open_for_picks: false
+          season:
+            id: 0
+            year: 0
+            name: "...Refreshing..."
+            open_for_registration: false
+
+      console.log("...Looking up the WebState")
+      WebState.get(1).then((web_state) ->
+        $scope.web_state = web_state
+      )
 
       $scope.load_persisted_pool_entries = () ->
         console.log("(registerCtrl.load_persisted_pool_entries)")
         $scope.pool_entries_persisted = 0
         PoolEntries.query().then((persisted_pool_entries) ->
           for pool_entry in persisted_pool_entries
-            local_pool_entry = {id: pool_entry.id, team_name: pool_entry.team_name, paid: pool_entry.paid, persisted: true}
+            local_pool_entry = {id: pool_entry.id, team_name: pool_entry.team_name, paid: pool_entry.paid, persisted: true, season_id: pool_entry.season_id}
             $scope.pool_entries.push(local_pool_entry)
             $scope.pool_entries_persisted++
           $scope.registering_user.num_pool_entries = $scope.pool_entries_persisted
@@ -90,7 +117,7 @@ angular.module('Register', ['ngResource', 'RailsApiResource', 'user'])
         console.log("(registerCtrl.create_local_pool_entries)")
         for x in [1..$scope.registering_user.num_pool_entries] by 1
           if $scope.pool_entries.length < $scope.registering_user.num_pool_entries
-            $scope.pool_entries.push(id: x, team_name: "", paid: false, persisted: false)
+            $scope.pool_entries.push(id: x, team_name: "", paid: false, persisted: false, season_id: $scope.season_id())
         return
 
       $scope.save_user_data = (user_data) ->
@@ -110,6 +137,9 @@ angular.module('Register', ['ngResource', 'RailsApiResource', 'user'])
             console.log("Persisting Pool Entry: " + pool_entry.team_name)
             PoolEntry.create(pool_entry).then((persisted_pool_entry) ->
                 $scope.pool_entries_persisted++
+                for local_pool_entry in $scope.pool_entries
+                  if local_pool_entry.team_name == persisted_pool_entry.team_name
+                    local_pool_entry.persisted = true
               )
 
       $scope.$watch 'registering_user.num_pool_entries', (newVal, oldVal) ->
@@ -168,12 +198,18 @@ angular.module('Register', ['ngResource', 'RailsApiResource', 'user'])
         else
           false
 
+      $scope.open_for_registration = () ->
+        $scope.web_state.current_week.season.open_for_registration
+
+      $scope.season_id = () ->
+        $scope.web_state.current_week.season.id
+
+
       $scope.register_button_class = (index) ->
         "btn-primary"
 
       $scope.user_can_register = () ->
         $scope.user_needs_registration() and $scope.password_is_valid($scope.registering_user.password) and $scope.password_is_valid($scope.registering_user.password_confirmation) and $scope.passwords_long_enough($scope.registering_user.password, $scope.registering_user.password_confirmation) and $scope.email_valid($scope.registering_user.email) and $scope.passwords_match($scope.registering_user.password, $scope.registering_user.password_confirmation)
-
 
       $scope.persist_button_class = (index) ->
         if $scope.user_needs_registration() == false
@@ -182,9 +218,7 @@ angular.module('Register', ['ngResource', 'RailsApiResource', 'user'])
           "btn-warning"
 
       $scope.disable_pool_entry_change = () ->
-        # registering_user.is_registered
-        # TODO: When season is no longer open for registration, disallow a change?
-        false
+        !$scope.open_for_registration() or $scope.web_state.current_week.week_number != 1
 
       $scope.persist_button_disabled = () ->
         $scope.pool_entries_persisted == $scope.pool_entries.length

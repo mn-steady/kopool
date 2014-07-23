@@ -21,7 +21,12 @@ class SeasonsController < ApplicationController
 	end
 
 	def season_results
+		Rails.logger.debug("seasons_controller.season_results")
+		@pool_entries = PoolEntry.all
 
+		respond_to do |format|
+			format.json {render json: @pool_entries}
+		end
 	end
 
 	private

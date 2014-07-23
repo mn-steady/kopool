@@ -36,6 +36,10 @@ bundle exec rspec --format d
 For HTML output of docs:
 bundle exec rspec --format h
 
+For ERD / Structure Diagram:
+budnle exec erd
+(makes erd.pdf)
+
 
 ==Pushing to Heroku
 Normally will be:

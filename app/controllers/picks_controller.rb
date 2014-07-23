@@ -61,7 +61,7 @@ class PicksController < ApplicationController
 			render :json => [:error => error_message], :status => :bad_request
 		else
 			respond_to do |format|
-				format.json { render :json => @this_weeks_picks.to_json(include: [nfl_team: {only: [:id, :name]}])}
+				format.json { render :json => @this_weeks_picks.to_json(include: [nfl_team: {only: [:id, :name], :methods => [:logo_url_small]}])}
 			end
 		end
 	end

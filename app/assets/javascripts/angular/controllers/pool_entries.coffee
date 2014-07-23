@@ -9,7 +9,7 @@ angular.module('PoolEntries', ['ngResource', 'RailsApiResource'])
 	.factory 'PickResults', (RailsApiResource) ->
 		RailsApiResource('weeks/:parent_id/week_picks', 'picks')
 
-	.controller 'PoolEntriesCtrl', ['$scope', '$location', '$http', '$routeParams', 'NflTeam', 'PoolEntriesThisWeek', 'Pick', ($scope, $location, $http, $routeParams, NflTeam, PoolEntriesThisWeek, Pick) ->
+	.controller 'PoolEntriesCtrl', ['$scope', '$location', '$http', '$routeParams', 'NflTeam', 'PoolEntriesThisWeek', 'PickResults', ($scope, $location, $http, $routeParams, NflTeam, PoolEntriesThisWeek, PickResults) ->
 
 		week_id = $routeParams.week_id
 

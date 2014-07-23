@@ -21,8 +21,14 @@ angular.module('Register', ['ngResource', 'RailsApiResource', 'user'])
       $scope.pool_entries_persisted = 0
       $scope.registering_user = {email: "", password: "", password_confirmation: "", num_pool_entries: 1, teams: $scope.pool_entries, is_registered: false}
       $scope.register_error = {message: null, errors: {}}
-      $scope.template_pool_entry = {id: -1, team_name: "", paid: false, persisted: false}
       $scope.editing_team = 1
+
+      $scope.template_pool_entry =
+        id: -1
+        team_name: ""
+        paid: false
+        persisted: false
+        season: -1
 
       $scope.web_state =
         id: 0
@@ -32,7 +38,8 @@ angular.module('Register', ['ngResource', 'RailsApiResource', 'user'])
           week_number: 0
           open_for_picks: false
           season:
-            year: 1999
+            id: 0
+            year: 0
             name: "...Refreshing..."
             open_for_registration: false
 
@@ -46,7 +53,7 @@ angular.module('Register', ['ngResource', 'RailsApiResource', 'user'])
         $scope.pool_entries_persisted = 0
         PoolEntries.query().then((persisted_pool_entries) ->
           for pool_entry in persisted_pool_entries
-            local_pool_entry = {id: pool_entry.id, team_name: pool_entry.team_name, paid: pool_entry.paid, persisted: true}
+            local_pool_entry = {id: pool_entry.id, team_name: pool_entry.team_name, paid: pool_entry.paid, persisted: true, season_id: pool_entry.season_id}
             $scope.pool_entries.push(local_pool_entry)
             $scope.pool_entries_persisted++
           $scope.registering_user.num_pool_entries = $scope.pool_entries_persisted
@@ -110,7 +117,7 @@ angular.module('Register', ['ngResource', 'RailsApiResource', 'user'])
         console.log("(registerCtrl.create_local_pool_entries)")
         for x in [1..$scope.registering_user.num_pool_entries] by 1
           if $scope.pool_entries.length < $scope.registering_user.num_pool_entries
-            $scope.pool_entries.push(id: x, team_name: "", paid: false, persisted: false)
+            $scope.pool_entries.push(id: x, team_name: "", paid: false, persisted: false, season_id: $scope.season_id())
         return
 
       $scope.save_user_data = (user_data) ->
@@ -130,6 +137,9 @@ angular.module('Register', ['ngResource', 'RailsApiResource', 'user'])
             console.log("Persisting Pool Entry: " + pool_entry.team_name)
             PoolEntry.create(pool_entry).then((persisted_pool_entry) ->
                 $scope.pool_entries_persisted++
+                for local_pool_entry in $scope.pool_entries
+                  if local_pool_entry.team_name == persisted_pool_entry.team_name
+                    local_pool_entry.persisted = true
               )
 
       $scope.$watch 'registering_user.num_pool_entries', (newVal, oldVal) ->
@@ -190,6 +200,10 @@ angular.module('Register', ['ngResource', 'RailsApiResource', 'user'])
 
       $scope.open_for_registration = () ->
         $scope.web_state.current_week.season.open_for_registration
+
+      $scope.season_id = () ->
+        $scope.web_state.current_week.season.id
+
 
       $scope.register_button_class = (index) ->
         "btn-primary"

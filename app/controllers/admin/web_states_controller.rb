@@ -7,7 +7,7 @@ class Admin::WebStatesController < ApplicationController
       # Jack: If you want to know what a "Law of demeter violation" is... This is it!
       format.json {render :json => @web_state.to_json(
         include: [{ current_week: { only: [:open_for_picks, :week_number],
-         :include => [{ season: { only: [:year, :name, :open_for_registration]}}]
+         :include => [{ season: { only: [:id, :year, :name, :open_for_registration]}}]
          }}])
       }
     end

@@ -6,7 +6,10 @@ angular.module('Home', ['ngResource', 'RailsApiResource', 'user'])
   .factory 'PoolEntriesThisSeason', (RailsApiResource) ->
     RailsApiResource('seasons/:parent_id/season_results', 'pool_entries')
 
-  .controller 'HomeCtrl', ['$scope', '$location', 'currentUser', 'WebState', 'PoolEntriesThisSeason', ($scope, $location, currentUser, WebState, PoolEntriesThisSeason, Week) ->
+  .factory 'SeasonWeeks', (RailsApiResource) ->
+      RailsApiResource('seasons/:parent_id/weeks', 'weeks')
+
+  .controller 'HomeCtrl', ['$scope', '$location', 'currentUser', 'WebState', 'PoolEntriesThisSeason', 'SeasonWeeks', ($scope, $location, currentUser, WebState, PoolEntriesThisSeason, SeasonWeeks) ->
     $scope.controller = 'HomeCtrl'
     console.log("(HomeCtrl)")
 
@@ -14,6 +17,7 @@ angular.module('Home', ['ngResource', 'RailsApiResource', 'user'])
     $scope.pool_entries = []
     $scope.active_pool_entries = []
     $scope.active_pool_entries_count = 0
+    $scope.weeks = {}
 
     $scope.web_state =
       id: 0
@@ -35,8 +39,9 @@ angular.module('Home', ['ngResource', 'RailsApiResource', 'user'])
       $scope.open_for_picks = web_state.current_week.open_for_picks
       if $scope.authorized()
         $scope.reload_pool_entries()
+        $scope.load_season_weeks()
       else
-        console.log("** Current user is not authorized - no webstate or details **")
+        console.log("** Current user is not authorized - no pool entries **")
     )
 
     $scope.reload_pool_entries = () ->
@@ -52,6 +57,12 @@ angular.module('Home', ['ngResource', 'RailsApiResource', 'user'])
           $scope.active_pool_entries.push(pool_entry)
       $scope.active_pool_entries_count = $scope.active_pool_entries.length
       $scope.getTotalPot()
+
+    $scope.load_season_weeks = () ->
+      SeasonWeeks.nested_query($scope.web_state.current_week.season.id).then((weeks) ->
+        console.log("*** Have All Weeks ***")
+        $scope.weeks = weeks
+      )
 
     $scope.getTotalPot = () ->
       $scope.total_pot = $scope.active_pool_entries_count * 50

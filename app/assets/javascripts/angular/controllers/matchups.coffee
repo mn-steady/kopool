@@ -31,17 +31,15 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 		console.log("...Looking up the WebState")
 		$scope.web_state = WebState.get(1).then((web_state) ->
 			$scope.web_state = web_state
-			$scope.season = "TBD"
-			$scope.reload_week()
-		)
-
-		$scope.reload_week = () ->
-			$scope.week = Week.get($scope.web_state.week_id).then((week) ->
-				$scope.week = week
-				$scope.open_for_picks = week.open_for_picks
-				console.log("Reloaded week")
+			$scope.week = web_state.current_week
+			$scope.open_for_picks = web_state.current_week.open_for_picks
+			$scope.loadPoolEntries().then(() ->
 				$scope.getAlert()
 			)
+		)
+
+		$scope.authorized = ->
+      currentUser.authorized
 
 		$scope.weekIsClosed = () ->
 			if $scope.week.open_for_picks == false
@@ -74,21 +72,20 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 
 		# Gather resources and associate relevant pool entries and picks
 
-		NflTeam.query().then((nfl_teams) ->
-			$scope.nfl_teams = nfl_teams
-			console.log("*** Have nfl_teams***")
-		)
+		
+		$scope.loadPoolEntries = () ->
+			PoolEntry.query().then((pool_entries) ->
+				$scope.pool_entries = pool_entries
+				$scope.gatherPicks()
+				$scope.loadNflTeams()
+				console.log("*** Have pool entries ***")
+			)
 
-		PoolEntry.query().then((pool_entries) ->
-			$scope.pool_entries = pool_entries
-			$scope.gatherPicks()
-			console.log("*** Have pool entries ***")
-		)
-
-		$scope.$watch('pool_entry', (pool_entry) ->
-			console.log("watch function triggered")
-			getPickedTeamName(pool_entry)
-		)
+		$scope.loadNflTeams = () ->
+			NflTeam.query().then((nfl_teams) ->
+				$scope.nfl_teams = nfl_teams
+				console.log("*** Have nfl_teams***")
+			)
 
 		$scope.gatherPicks = ->
 			$scope.picks = []
@@ -267,17 +264,21 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 			console.log("Sending Pick info to Rails...")
 			if pool_entry.team_id
 				console.log("Sending UPDATE pick to rails")
-				existing_pick = (pick for pick in $scope.picks when pick.pool_entry_id is pool_entry.id)[0]
+				for pick in $scope.picks
+					if pick.pool_entry_id = pool_entry.pool_entry_id 
+						existing_pick = pick
 				console.log("Found existing_pick")
-				existing_pick.pool_entry_id = pool_entry.id
+				existing_pick.pool_entry_id = pool_entry.pool_entry_id
 				existing_pick.week_id = week_id
 				existing_pick.team_id = $scope.selectedPick.id
 				existing_pick.matchup_id = picked_matchup
 				console.log("Updated existing_pick")
-				Pick.save(existing_pick, week_id)
-				$scope.selectedMatchup = ""
-				$scope.selectedPick = ""
-				$scope.hideMatchups = false
+				Pick.save(existing_pick, week_id).then((existing_pick) ->
+					$scope.selectedMatchup = ""
+					$scope.selectedPick = ""
+					$scope.hideMatchups = false
+					console.log("existing_pick: " + existing_pick)
+				)
 
 			else
 				$scope.new_pick = {pool_entry_id: pool_entry.id, week_id: week_id, team_id: $scope.selectedPick.id, matchup_id: picked_matchup}
@@ -286,9 +287,10 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 
 			$location.path ('/weeks/' + $scope.week_id + '/matchups')
 			$scope.editing_pool_entry = null
-			$scope.gatherPicks()
 			$scope.showMatchups = false
+			$scope.loadPoolEntries()
 			$scope.alert = { type: "success", msg: "Your pick was saved! Good luck!" }
+			console.log("End of savePick method")
 
 		$scope.save = (matchup) ->
 			console.log("MatchupsCtrl.save...")

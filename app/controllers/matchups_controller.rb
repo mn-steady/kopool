@@ -1,5 +1,5 @@
 class MatchupsController < ApplicationController
-	before_filter :verify_admin_user, only: [:show, :update, :save_week_outcomes, :destroy]
+	before_filter :verify_admin_user, only: [:show, :update, :save_week_outcomes, :destroy, :create]
   before_filter :verify_any_user, only: [:index]
 
   def index
@@ -61,7 +61,6 @@ class MatchupsController < ApplicationController
     Rails.logger.debug("in save_outcome method")
     @matchup = Matchup.find_by(id: params[:matchup][:id])
     @this_matchups_picks = @matchup.picks
-
     if @this_matchups_picks.empty?
       @matchup.completed = true
       @matchup.save!

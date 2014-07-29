@@ -21,7 +21,7 @@ angular.module('Weeks', ['ngResource', 'RailsApiResource'])
 
     if week_id? and week_id == "new"
       console.log("...Creating a new week")
-      $scope.week = new Week({})
+      $scope.week = new SeasonWeeks({})
       $scope.week.season_id = $scope.season_id
     else if week_id?
       console.log("...Looking up a single week")

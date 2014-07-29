@@ -89,6 +89,7 @@ angular.module('navbar', ['ngResource', 'RailsApiResource', 'user'])
       console.log("(navbarCtrl.clear_user_loggedout)")
       currentUser.authorized = false
       currentUser.username = ''
+      currentUser.admin = false
       console.log("(navbarCtrl.clear_user_loggedout) cleared username:" + currentUser.username)
 
       # Clear out the UI fields
@@ -99,6 +100,7 @@ angular.module('navbar', ['ngResource', 'RailsApiResource', 'user'])
     $scope.save_user_data = (user_data) ->
       console.log("(navbarCtrl.save_user_data)")
       currentUser.authorized = true
+      currentUser.admin = user_data.admin
       currentUser.username = user_data.email
       AuthService.updateCookies()
       console.log("(navbarCtrl.save_user_data) saved username:" + currentUser.username)

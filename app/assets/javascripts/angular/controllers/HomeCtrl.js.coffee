@@ -80,6 +80,10 @@ angular.module('Home', ['ngResource', 'RailsApiResource', 'user'])
     $scope.authorized = ->
       currentUser.authorized
 
+    $scope.is_admin = ->
+      currentUser.admin
+
+
     $scope.display_authorized = ->
       if currentUser.authorized
         "You are currently authorized as " + currentUser.username

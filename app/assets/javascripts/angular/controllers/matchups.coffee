@@ -38,6 +38,12 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 			)
 		)
 
+		$scope.loadMatchups = () ->
+			Matchup.nested_query($scope.week_id).then((matchups) ->
+				$scope.matchups = matchups
+				console.log("*** Have matchups for week:"+$scope.week_id + " ***")
+			)
+
 		$scope.authorized = ->
       currentUser.authorized
 
@@ -65,13 +71,10 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 				console.log("Returned matchup" + matchup)
 			)
 		else
-			Matchup.nested_query($scope.week_id).then((matchups) ->
-				$scope.matchups = matchups
-				console.log("*** Have matchups for week:"+$scope.week_id + " ***")
-			)
+			console.log("Getting all matchups this week")
+			$scope.loadMatchups()
 
 		# Gather resources and associate relevant pool entries and picks
-
 		
 		$scope.loadPoolEntries = () ->
 			PoolEntry.query().then((pool_entries) ->
@@ -151,7 +154,9 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 		$scope.saveOutcome = (matchup) ->
 			console.log("Saving outcome for matchup"+matchup)
 			week_id = matchup.week_id
-			Matchup.post("save_outcome", matchup, week_id)
+			Matchup.post("save_outcome", matchup, week_id).then(()->
+				$scope.loadMatchups()
+			)
 
 		$scope.matchupCompleted = (matchup) ->
 			if matchup.completed == true then true

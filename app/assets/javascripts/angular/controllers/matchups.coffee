@@ -271,7 +271,7 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 				existing_pick.pool_entry_id = pool_entry.pool_entry_id
 				existing_pick.week_id = week_id
 				existing_pick.team_id = $scope.selectedPick.id
-				existing_pick.matchup_id = picked_matchup
+				existing_pick.matchup_id = picked_matchup.id
 				console.log("Updated existing_pick")
 				Pick.save(existing_pick, week_id).then((existing_pick) ->
 					$scope.selectedMatchup = ""
@@ -281,7 +281,7 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 				)
 
 			else
-				$scope.new_pick = {pool_entry_id: pool_entry.id, week_id: week_id, team_id: $scope.selectedPick.id, matchup_id: picked_matchup}
+				$scope.new_pick = {pool_entry_id: pool_entry.id, week_id: week_id, team_id: $scope.selectedPick.id, matchup_id: picked_matchup.id}
 				console.log("Sending CREATE pick to rails")
 				Pick.create($scope.new_pick, week_id)
 

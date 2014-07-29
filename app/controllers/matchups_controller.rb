@@ -1,5 +1,5 @@
 class MatchupsController < ApplicationController
-	before_filter :verify_admin_user, only: [:show, :update, :save_week_outcomes, :destroy]
+	before_filter :verify_admin_user, only: [:show, :update, :save_week_outcomes, :destroy, :create]
   before_filter :verify_any_user, only: [:index]
 
   def index
@@ -61,7 +61,7 @@ class MatchupsController < ApplicationController
     Rails.logger.debug("in save_outcome method")
     @matchup = Matchup.find_by(id: params[:matchup][:id])
     @this_matchups_picks = @matchup.picks
-
+    binding.pry
     if @this_matchups_picks.empty?
       @matchup.completed = true
       @matchup.save!
@@ -126,11 +126,13 @@ class MatchupsController < ApplicationController
     end
 
     def handle_losing_outcome(matchup, pick)
+      binding.pry
       pick.pool_entry.knocked_out = true
       pick.pool_entry.knocked_out_week_id = @matchup.week_id
       pick.save!
       matchup.completed = true
       matchup.save!
+      binding.pry
     end
 
 end

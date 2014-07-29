@@ -6,8 +6,8 @@ describe WebState do
 
   it "does not allow you to have more than 1 WebState record" do
     season = FactoryGirl.create(:season)
-    week_1 = FactoryGirl.create(:week, season: season)
-    week_2 = FactoryGirl.create(:week, season: season)
+    week_1 = FactoryGirl.create(:week, week_number: 10, season: season)
+    week_2 = FactoryGirl.create(:week, week_number: 11, season: season)
 
     ws = WebState.new()
     ws.current_week = week_1

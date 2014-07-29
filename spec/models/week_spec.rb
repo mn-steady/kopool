@@ -26,7 +26,9 @@ describe Week do
       week1.save!
       season_2 = create(:season, year: season.year+1)
       week2 = Week.create(week_number: 5, start_date: DateTime.new(2014,8,12), end_date: DateTime.new(2014,8,18), deadline: DateTime.new(2014,8,14), season_id: season_2.id)
-      expect(week2.save).not_to raise_error
+      expect {
+        week2.save!
+      }.not_to raise_error
     end
   end
 

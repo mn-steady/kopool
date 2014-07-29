@@ -1,13 +1,10 @@
-%h3 {{matchup_header()}}
-
-%br
-
 .row
-	.col-sm-12.text-center
-		.alert{"class" => "alert alert-{{alert.type}}"} {{alert.msg}}
 
-.row
-	.col-sm-12
+	.col-sm-8
+		%h3 {{matchup_header()}}
+
+	.col-sm-4
+		%br
 		.btn-group{:dropdown => ""}
 			%button.btn.btn-danger{:type => "button"} Other Matchups
 			%button.btn.btn-danger.dropdown-toggle{:type => "button"}
@@ -17,6 +14,12 @@
 				%li{"ng-repeat"=>"week in season_weeks"}
 					%a{href:"#/weeks/{{week.id}}/matchups"}
 						Week {{week.week_number}}
+
+%br
+
+.row
+	.col-sm-12.text-center
+		.alert{"class" => "alert alert-{{alert.type}}"} {{alert.msg}}
 
 .row
 	.col-md-4{"ng-repeat"=>"pool_entry in pool_entries | filter: {knocked_out: false}"}

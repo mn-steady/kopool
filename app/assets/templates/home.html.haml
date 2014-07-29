@@ -4,48 +4,23 @@
       .col-md-8
         %h2 KO Pool
         %p The system is in TEST MODE.  {{display_authorized()}}.
-        %p There are currently {{active_pool_entries_count}} teams remaining in the ring, battling for a sum of ${{total_pot}}!
+        %p {{display_battle_summary()}}
         %p
           %a.btn.btn-primary.btn-lg{href: "#/users/register", role: "button"} Register »
       .col-md-4
         %img.img-rounded.frontpage-logo{alt: "KO Pool Logo", src: asset_path('kopool_c_med.png')}
 .container
-  / Example row of columns
+
   .row
     .col-md-12
     .lead.text-center {{web_state.broadcast_message}}
-  .row
-
-    .col-md-4
-      .btn-group{:dropdown => ""}
-        %button.btn.btn-danger{:type => "button"} View Matchups
-        %button.btn.btn-danger.dropdown-toggle{:type => "button"}
-          %span.caret
-          %span.sr-only Split button
-        %ul.dropdown-menu{:role => "menu"}
-          %li{"ng-repeat"=>"week in weeks"}
-            %a{href:"#/weeks/{{week.id}}/matchups"}
-              Week {{week.week_number}}
-      %p Use this go go directly to the matchups for any week.
-      %p
-
-    .col-md-4
-      %h2 Your Picks This Week
-      %p This doesn't actually work yet, but this is what I'm envisioning for User Choices.
-      %p
-        %a.btn.btn-primary{"ng-click" => "go('/nfl_teams')", role: "button"} Your Picks »
-    .col-md-4
-      %h2 Your Teams
-      %p This doesn't actually work yet, but this is what I'm envisioning for User Choices.
-      %p
-        %a.btn.btn-primary{"ng-click" => "go('/nfl_teams')", role: "button"} Your Teams »
 
   .row
     .col-md-4
-      %h2 Profile
-      %p This doesn't actually work yet, but this is what I'm envisioning for User Choices.
+      %h2 Your Matchups
+      %p View your Matchups this weeks
       %p
-        %a.btn.btn-primary{"ng-click" => "go('/nfl_teams')", role: "button"} Your Profile »
+        %a.btn.btn-primary{href: '#/weeks/{{week.id}}/matchups', role: "button"} Your Matchups »
 
   .row
     .col-sm-12.text-center

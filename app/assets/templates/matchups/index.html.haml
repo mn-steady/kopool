@@ -1,10 +1,22 @@
-%h3 Choose Your Pick For This Week!
+%h3 {{matchup_header()}}
 
 %br
 
 .row
 	.col-sm-12.text-center
 		.alert{"class" => "alert alert-{{alert.type}}"} {{alert.msg}}
+
+.row
+	.col-sm-12
+		.btn-group{:dropdown => ""}
+			%button.btn.btn-danger{:type => "button"} Other Matchups
+			%button.btn.btn-danger.dropdown-toggle{:type => "button"}
+				%span.caret
+				%span.sr-only Split button
+			%ul.dropdown-menu{:role => "menu"}
+				%li{"ng-repeat"=>"week in season_weeks"}
+					%a{href:"#/weeks/{{week.id}}/matchups"}
+						Week {{week.week_number}}
 
 .row
 	.col-md-4{"ng-repeat"=>"pool_entry in pool_entries | filter: {knocked_out: false}"}
@@ -57,24 +69,24 @@
 		%thead
 			%tr
 				%th Home Team
-				%th 
+				%th
 				%th Away Team
-				%th 
+				%th
 				%th Game Time
 		%tbody{"ng-repeat" => "matchup in matchups"}
 			%tr{"ng-class" => "{'unselected-matchup' : (hideMatchups && !isSelectedMatchup(matchup))}"}
 				%td
 					%img{"src" => "{{matchup.home_team.logo_url_small}}", "ng-hide" => "isSelectedMatchup(matchup) && !isSelectedTeam(matchup.home_team)"}
-				%td 
-					%p.team-name {{ matchup.home_team.name}} 
+				%td
+					%p.team-name {{ matchup.home_team.name}}
 					%div
 						%a.btn.btn-success{"ng-click" => "handleTeamSelection(matchup, matchup.home_team)", "ng-hide" => "isSelectedMatchup(matchup) && !isSelectedTeam(matchup.home_team)"} Pick {{ matchup.home_team.name }} to win!
 				%td
 					%img{"src" => "{{matchup.away_team.logo_url_small}}", "ng-hide" => "isSelectedMatchup(matchup) && !isSelectedTeam(matchup.away_team)"}
-				%td 
+				%td
 					%p.team-name {{ matchup.away_team.name}}
 					%a.btn.btn-success{"ng-click" => "handleTeamSelection(matchup, matchup.away_team)", "ng-hide" => "isSelectedMatchup(matchup) && !isSelectedTeam(matchup.away_team)"} Pick {{ matchup.away_team.name }} to win!
-				%td 
+				%td
 					%p {{ matchup.game_time | date : 'fullDate' }} {{ matchup.game_time | date : 'shortTime' }}
 					%div{"ng-if" => "isSelectedMatchup(matchup)"}
 						%a.btn.btn-primary{"ng-click" => "savePick(matchup, editing_pool_entry)"} Save Pick

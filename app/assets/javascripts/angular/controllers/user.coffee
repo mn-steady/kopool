@@ -60,6 +60,7 @@ angular.module('user', ['RailsApiResource'])
 
 
       updateCookies: ->
+        console.log("(AuthService.updateCookies)")
         $cookieStore.put('username', currentUser.username)
 
       endSession: ->
@@ -84,7 +85,8 @@ angular.module('user', ['RailsApiResource'])
 
 
     $scope.$on(AUTH_EVENTS.loginSuccess, ->
-      console.log 'login success'
+      console.log('(LoginController) login success event')
+      $scope.currentUser.admin    = currentUser.admin
       AuthService.updateCookies()
 
       $location.url('/dashboard')
@@ -92,7 +94,7 @@ angular.module('user', ['RailsApiResource'])
 
 
     $scope.$on(AUTH_EVENTS.loginFailed, ->
-      console.log 'login failed'
+      console.log('(LoginController) login failed event')
       $scope.currentUser.token    = undefined
       $scope.currentUser.username = undefined
       $scope.currentUser.password = undefined

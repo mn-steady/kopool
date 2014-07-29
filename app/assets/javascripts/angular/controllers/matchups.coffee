@@ -16,9 +16,12 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 			RailsApiResource('admin/web_states', 'webstate')
 
 	.factory 'Week', (RailsApiResource) ->
-      RailsApiResource('weeks', 'weeks')
+			RailsApiResource('weeks', 'weeks')
 
-	.controller 'MatchupsCtrl', ['$scope', '$location', '$http', '$routeParams', 'Matchup', 'NflTeam', 'PoolEntry', 'currentUser', 'Pick', '$modal', 'WebState', 'Week', ($scope, $location, $http, $routeParams, Matchup, NflTeam, PoolEntry, currentUser, Pick, $modal, WebState, Week) ->
+	.factory 'SeasonWeeks', (RailsApiResource) ->
+		RailsApiResource('seasons/:parent_id/weeks', 'weeks')
+
+	.controller 'MatchupsCtrl', ['$scope', '$location', '$http', '$routeParams', 'Matchup', 'NflTeam', 'PoolEntry', 'currentUser', 'Pick', '$modal', 'WebState', 'Week', 'SeasonWeeks', ($scope, $location, $http, $routeParams, Matchup, NflTeam, PoolEntry, currentUser, Pick, $modal, WebState, Week, SeasonWeeks) ->
 		$scope.controller = 'MatchupsCtrl'
 		console.log("MatchupsCtrl")
 		console.log("$location:" + $location)
@@ -26,30 +29,29 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 
 		# Getting the current system status
 
-		$scope.week = {}
+		$scope.current_week = {}
+		$scope.season_weeks = {}
 
 		console.log("...Looking up the WebState")
 		$scope.web_state = WebState.get(1).then((web_state) ->
 			$scope.web_state = web_state
-			$scope.week = web_state.current_week
+			$scope.current_week = web_state.current_week
 			$scope.open_for_picks = web_state.current_week.open_for_picks
 			$scope.loadPoolEntries().then(() ->
 				$scope.getAlert()
 			)
 		)
 
-		$scope.authorized = ->
-      currentUser.authorized
-
-		$scope.weekIsClosed = () ->
-			if $scope.week.open_for_picks == false
-				true
+		$scope.loadMatchups = () ->
+			Matchup.nested_query($scope.week_id).then((matchups) ->
+				$scope.matchups = matchups
+				console.log("*** Have matchups for week:"+$scope.week_id + " ***")
+			)
 
 		# Routing for new matchups, or the index action for the week
-
 		week_id = $routeParams.week_id
 		$scope.week_id = week_id
-		console.log("Handling Week ID:" + $scope.week_id)
+		console.log("Passed Week ID:" + $scope.week_id)
 		$scope.matchup_id = matchup_id = $routeParams.matchup_id
 		$scope.matchups = []
 		$scope.pool_entries = []
@@ -65,20 +67,35 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 				console.log("Returned matchup" + matchup)
 			)
 		else
-			Matchup.nested_query($scope.week_id).then((matchups) ->
-				$scope.matchups = matchups
-				console.log("*** Have matchups for week:"+$scope.week_id + " ***")
-			)
+			console.log("Getting all matchups this week")
+			$scope.loadMatchups()
 
 		# Gather resources and associate relevant pool entries and picks
+		$scope.authorized = ->
+			currentUser.authorized
 
-		
+		$scope.weekIsClosed = () ->
+			if $scope.current_week.open_for_picks == false
+				true
+
+		$scope.load_season_weeks = () ->
+			console.log("(load_season_weeks)")
+			SeasonWeeks.nested_query($scope.web_state.current_week.season.id).then((season_weeks) ->
+				console.log("(load_season_weeks) *** Have All Season Weeks ***")
+				$scope.season_weeks = season_weeks
+			)
+
+			console.log("Getting all matchups this week")
+			$scope.loadMatchups()
+
+		# Gather resources and associate relevant pool entries and picks
 		$scope.loadPoolEntries = () ->
 			PoolEntry.query().then((pool_entries) ->
 				$scope.pool_entries = pool_entries
 				$scope.gatherPicks()
 				$scope.loadNflTeams()
-				console.log("*** Have pool entries ***")
+				$scope.load_season_weeks()
+				console.log("*** Have pool entries, picks, teams, and season-weeks ***")
 			)
 
 		$scope.loadNflTeams = () ->
@@ -101,6 +118,13 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 					if pick.pool_entry_id == pool_entry.id
 						angular.extend(pool_entry, pick)
 						console.log("A pick was associated with a pool entry")
+
+		$scope.matchup_header = ->
+			console.log("(matchup_header) week_id:" + parseInt($scope.week_id) + " current_week.id:" + $scope.current_week.id)
+			if parseInt($scope.week_id) == $scope.current_week.id
+				"Choose Your Pick For This Week (Week " + $scope.current_week.week_number + ")"
+			else
+				"Matchups for a different week"
 
 		$scope.getAlert = () ->
 			console.log("in getAlert")
@@ -151,7 +175,9 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 		$scope.saveOutcome = (matchup) ->
 			console.log("Saving outcome for matchup"+matchup)
 			week_id = matchup.week_id
-			Matchup.post("save_outcome", matchup, week_id)
+			Matchup.post("save_outcome", matchup, week_id).then(()->
+				$scope.loadMatchups()
+			)
 
 		$scope.matchupCompleted = (matchup) ->
 			if matchup.completed == true then true
@@ -213,7 +239,7 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 				false
 			else
 				true
-			
+
 
 		$scope.selectedMatchup = ""
 
@@ -265,13 +291,13 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 			if pool_entry.team_id
 				console.log("Sending UPDATE pick to rails")
 				for pick in $scope.picks
-					if pick.pool_entry_id = pool_entry.pool_entry_id 
+					if pick.pool_entry_id = pool_entry.pool_entry_id
 						existing_pick = pick
 				console.log("Found existing_pick")
 				existing_pick.pool_entry_id = pool_entry.pool_entry_id
 				existing_pick.week_id = week_id
 				existing_pick.team_id = $scope.selectedPick.id
-				existing_pick.matchup_id = picked_matchup
+				existing_pick.matchup_id = picked_matchup.id
 				console.log("Updated existing_pick")
 				Pick.save(existing_pick, week_id).then((existing_pick) ->
 					$scope.selectedMatchup = ""
@@ -281,7 +307,7 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 				)
 
 			else
-				$scope.new_pick = {pool_entry_id: pool_entry.id, week_id: week_id, team_id: $scope.selectedPick.id, matchup_id: picked_matchup}
+				$scope.new_pick = {pool_entry_id: pool_entry.id, week_id: week_id, team_id: $scope.selectedPick.id, matchup_id: picked_matchup.id}
 				console.log("Sending CREATE pick to rails")
 				Pick.create($scope.new_pick, week_id)
 
@@ -355,4 +381,3 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 				$modalInstance.dismiss("cancel")
 	]
 
-		

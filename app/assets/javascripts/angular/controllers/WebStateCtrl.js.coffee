@@ -21,14 +21,18 @@ angular.module('WebStates', ['ngResource', 'RailsApiResource'])
 
     $scope.week = {}
 
-    console.log("...Looking up the WebState")
-    $scope.web_state = WebState.get(1).then((web_state) ->
-      $scope.web_state = web_state
-      $scope.season = "TBD"
+    $scope.getWebState = () ->
+      console.log("...Looking up the WebState")
+      $scope.web_state = WebState.get(1).then((web_state) ->
+        $scope.web_state = web_state
+        $scope.season = "TBD"
 
-      $scope.reload_week()
+        $scope.reload_week()
+      )
 
-    )
+    $scope.getWebState()
+
+    
 
     $scope.reload_week = () ->
       $scope.week = Week.get($scope.web_state.week_id).then((week) ->
@@ -40,18 +44,20 @@ angular.module('WebStates', ['ngResource', 'RailsApiResource'])
     $scope.close_or_reopen_picks = () ->
       console.log("WebStatesCtrl.close_or_reopen_picks...")
       if $scope.week.open_for_picks == true
-        console.log("Closing week "+$scope.week_id)
+        console.log("Closing week "+$scope.week.id)
         Week.post(":parent_id/close_week", {}, $scope.week.id)
       else
-        console.log("Attempting to re-open week "+$scope.week_id)
+        console.log("Attempting to re-open week "+$scope.week.id)
         Week.post(":parent_id/reopen_week", {}, $scope.week.id)
       $scope.reload_week()
 
     $scope.advance_week = () ->
       console.log("WebStatesCtrl.advance_week...")
-      console.log("Advancing week "+$scope.week_id)
-      Week.post(":parent_id/advance_week", {}, $scope.week.id)
-      $scope.reload_week()
+      console.log("Advancing week "+$scope.week.id)
+      Week.post(":parent_id/advance_week", {}, $scope.week.id).then(() ->
+        $scope.getWebState()
+      )
+      
 
     $scope.save = (web_state) ->
       console.log("WebStatesCtrl.save...")

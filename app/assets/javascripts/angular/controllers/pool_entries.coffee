@@ -18,11 +18,14 @@ angular.module('PoolEntries', ['ngResource', 'RailsApiResource'])
 			console.log("*** Have nfl_teams***")
 		)
 
-		PoolEntriesThisWeek.nested_query(week_id).then((pool_entries) ->
-			$scope.pool_entries_knocked_out_this_week = pool_entries[0]
-			$scope.pool_entries_still_alive = pool_entries[1]
-			$scope.gatherPicks()
-			console.log("*** Have pool entries for results ***")
+		PoolEntriesThisWeek.nested_query(week_id).then(
+			(pool_entries) ->
+				$scope.pool_entries_knocked_out_this_week = pool_entries[0]
+				$scope.pool_entries_still_alive = pool_entries[1]
+				$scope.gatherPicks()
+				console.log("*** Have pool entries for results ***")
+			(json_error_data) ->
+				$scope.error_message = json_error_data.data[0].error
 		)
 
 		$scope.gatherPicks = ->

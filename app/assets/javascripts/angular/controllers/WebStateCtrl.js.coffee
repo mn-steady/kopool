@@ -1,4 +1,4 @@
-angular.module('WebStates', ['ngResource', 'RailsApiResource'])
+angular.module('WebStates', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 
   .factory 'WebState', (RailsApiResource) ->
       RailsApiResource('admin/web_states', 'webstate')
@@ -6,7 +6,7 @@ angular.module('WebStates', ['ngResource', 'RailsApiResource'])
   .factory 'Week', (RailsApiResource) ->
       RailsApiResource('weeks', 'weeks')
 
-  .controller 'WebStatesCtrl', ['$scope', '$location', '$http', '$routeParams', 'WebState', 'Week', ($scope, $location, $http, $routeParams, WebState, Week) ->
+  .controller 'WebStatesCtrl', ['$scope', '$location', '$http', '$routeParams', 'WebState', 'Week', '$modal', ($scope, $location, $http, $routeParams, WebState, Week, $modal) ->
     $scope.controller = 'WebStatesCtrl'
 
     console.log("WebStatesCtrl")
@@ -32,7 +32,7 @@ angular.module('WebStates', ['ngResource', 'RailsApiResource'])
 
     $scope.getWebState()
 
-    
+
 
     $scope.reload_week = () ->
       $scope.week = Week.get($scope.web_state.week_id).then((week) ->
@@ -57,7 +57,7 @@ angular.module('WebStates', ['ngResource', 'RailsApiResource'])
       Week.post(":parent_id/advance_week", {}, $scope.week.id).then(() ->
         $scope.getWebState()
       )
-      
+
 
     $scope.save = (web_state) ->
       console.log("WebStatesCtrl.save...")
@@ -78,5 +78,26 @@ angular.module('WebStates', ['ngResource', 'RailsApiResource'])
         "OPEN FOR PICKS"
       else
         "CLOSED FOR PICKS"
+
+    # Modal
+    $scope.open = (size) ->
+      modalInstance = $modal.open(
+        templateUrl: "confirmAdvanceWeekModal.html"
+        controller: ModalInstanceCtrl
+      )
+      modalInstance.result.then (() ->
+        $scope.advance_week()
+      ), ->
+        console.log("Modal dismissed at: " + new Date())
+
+    ModalInstanceCtrl = ($scope, $modalInstance) ->
+      console.log("In ModalInstanceCtrl")
+
+      $scope.ok = ->
+        $modalInstance.close()
+
+      $scope.cancel = ->
+        $modalInstance.dismiss("cancel")
+
 
   ]

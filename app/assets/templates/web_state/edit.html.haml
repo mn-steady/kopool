@@ -25,7 +25,7 @@
 
     .form-group
       %button.btn.btn-warning{"ng-click"=>"close_or_reopen_picks()", type: "submit"} {{close_or_open_button_text()}}
-      %button.btn.btn-danger{"ng-click"=>"advance_week()", type: "submit"} Move to Next Week
+      %button.btn.btn-danger{"ng-click"=>"open('')", type: "submit"} Move to Next Week
 
     %br
 
@@ -36,3 +36,13 @@
 
 
     %button.btn.btn-info{"ng-click"=>"save(web_state)", type: "submit"} Save Broadcast Message
+
+%div
+  %script{:id => "confirmAdvanceWeekModal.html", :type => "text/ng-template"}
+    .modal-header
+      %h3.modal-title Move to Next Week?
+    .modal-body
+      %p You cannot move weeks backwards!
+    .modal-footer
+      %button.btn.btn-primary{"ng-click" => "ok()"} Advance Week
+      %button.btn.btn-warning{"ng-click" => "cancel()"} Cancel

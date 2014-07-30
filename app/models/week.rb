@@ -5,6 +5,7 @@ class Week < ActiveRecord::Base
 	belongs_to :default_team, class_name: :nfl_team
 
 	WEEKS_IN_SEASON = 17
+	DOW_MONDAY = 1
 
 	validates_presence_of :week_number
 	validates_presence_of :start_date
@@ -13,6 +14,10 @@ class Week < ActiveRecord::Base
 	validates_presence_of :season_id
 
 	validates :week_number, uniqueness: {scope: :season_id}, presence: true
+
+	def self.autopick_matchup_during_week(week_id)
+		Matchup.where(week_id: week_id).where('EXTRACT (dow from game_time) = ?', DOW_MONDAY).order(:game_time).first
+	end
 
 	def close_week_for_picks!
 		self.update_attributes(open_for_picks: false)
@@ -34,6 +39,7 @@ class Week < ActiveRecord::Base
 		webstate = WebState.first
 		if self.id == webstate.week_id
 			self.close_week_for_picks!
+			autopick_if_missing!(self.id)
 			# TODO: Decide what we want to do to end a season
 			if self.week_number < WEEKS_IN_SEASON # Don't error out if this is the last week in the season
 				next_week_number = self.week_number + 1
@@ -50,4 +56,21 @@ class Week < ActiveRecord::Base
 			return false
 		end
 	end
+
+private
+
+	def autopick_if_missing!(week)
+		pool_entries_need_autopicks = PoolEntry.needs_autopicking(week)
+		if pool_entries_need_autopicks.present?
+			robo_matchup = Week.autopick_matchup_during_week(week.id)
+			pool_entries_need_autopicks.each do | robopick |
+				p = Pick.where(week_id: week.id).where(pool_entry_id: robopick.id)
+				if p.nil?
+					autopick = Pick.new(pool_entry_id: robopick.id, week_id: week.id, team_id: robo_matchup.home_team_id, auto_picked: true, matchup_id: robo_matchup.id)
+					autopick.save!
+				end
+			end
+		end
+	end
+
 end

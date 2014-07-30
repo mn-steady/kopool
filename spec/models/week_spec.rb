@@ -52,7 +52,6 @@ describe Week do
   end
 
   describe "#move_to_next_week" do
-
     it "should not advance the week at the last week of the season" do
       season = create(:season)
       week16 = Week.create(week_number: 16, start_date: DateTime.new(2014,8,5), end_date: DateTime.new(2014,8,8), deadline: DateTime.new(2014,8,7), season: season)
@@ -74,4 +73,31 @@ describe Week do
       expect(web_state.reload.week_id).to eq(week2_2.id)
     end
   end
+
+  describe "#autopick_matchup_during_week" do
+
+    before(:each) do
+      @season = FactoryGirl.create(:season)
+      @week = FactoryGirl.create(:week, week_number: 16, start_date: DateTime.new(2017,8,13), end_date: DateTime.new(2017,8,19), deadline: DateTime.new(2017,8,17), season: @season)
+      @team1 = FactoryGirl.create(:nfl_team)
+      @team2 = FactoryGirl.create(:nfl_team)
+      @team3 = FactoryGirl.create(:nfl_team)
+      @team4 = FactoryGirl.create(:nfl_team)
+      @monday_matchup = Matchup.create(game_time: DateTime.new(2017,8,14,15,00), week_id: @week.id, home_team_id: @team1.id, away_team_id: @team2.id)
+      @wednesday_matchup = Matchup.create(game_time: DateTime.new(2017,8,16,15,30), week_id: @week.id, home_team_id: @team3.id, away_team_id: @team4.id)
+    end
+
+    it "should return the monday matchup if only one monday game" do
+      expect(Week.autopick_matchup_during_week(@week.id)).to eq(@monday_matchup)
+    end
+
+    it "should return the FIRST monday matchup if multiple monday games" do
+      @team5 = FactoryGirl.create(:nfl_team)
+      @team6 = FactoryGirl.create(:nfl_team)
+      @monday_matchup2 = Matchup.create(game_time: DateTime.new(2017,8,14,15,45), week_id: @week.id, home_team_id: @team5.id, away_team_id: @team6.id)
+      expect(Week.autopick_matchup_during_week(@week.id)).to eq(@monday_matchup)
+    end
+  end
+
+
 end

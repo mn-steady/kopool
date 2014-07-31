@@ -59,6 +59,17 @@ describe Week do
       web_state = create(:web_state, week_id: week17.id)
       week17.move_to_next_week!
       expect(web_state.reload.week_id).to eq(week17.id)
+      expect(Week.where(id: week17.id).first.open_for_picks).to eq(false)
+    end
+
+    it "should automatically open the next week for picks" do
+      season = create(:season)
+      week1 = Week.create(week_number: 10, start_date: DateTime.new(2014,8,5), end_date: DateTime.new(2014,8,8), deadline: DateTime.new(2014,8,7), season: season)
+      week2 = Week.create(week_number: 11, start_date: DateTime.new(2014,8,12), end_date: DateTime.new(2014,8,18), deadline: DateTime.new(2014,8,14), season: season)
+      web_state = create(:web_state, week_id: week1.id)
+      week1.move_to_next_week!
+      expect(web_state.reload.week_id).to eq(week2.id)
+      expect(Week.where(id: week2.id).first.open_for_picks).to eq(true)
     end
 
     it "should affect only the proper season's week if multiple seasons are in the database" do
@@ -72,7 +83,31 @@ describe Week do
       week1_2.move_to_next_week!
       expect(web_state.reload.week_id).to eq(week2_2.id)
     end
+
+    it "should autopick for a pool entry that had not picked" do
+      @season = create(:season)
+      @week16 = Week.create(week_number: 16, start_date: DateTime.new(2014,8,5), end_date: DateTime.new(2014,8,8), deadline: DateTime.new(2014,8,7), season: @season)
+      @week17 = Week.create(week_number: 17, start_date: DateTime.new(2014,8,12), end_date: DateTime.new(2014,8,18), deadline: DateTime.new(2014,8,14), season: @season)
+      @web_state = create(:web_state, week_id: @week16.id)
+      @team1 = FactoryGirl.create(:nfl_team)
+      @team2 = FactoryGirl.create(:nfl_team)
+      @monday_matchup = Matchup.create(game_time: DateTime.new(2017,8,14,15,00), week_id: @week16.id, home_team_id: @team1.id, away_team_id: @team2.id)
+
+      @pool_entry_nopick1 = FactoryGirl.create(:pool_entry, team_name: "Losers did not pick", season: @season)
+      @pool_entry_knocked = FactoryGirl.create(:pool_entry, team_name: "We dont matter", knocked_out: true, season: @season)
+      @pool_entry_pick1 = FactoryGirl.create(:pool_entry, season: @season)
+      @pick1 = FactoryGirl.create(:pick, pool_entry: @pool_entry_pick1, week: @week16, nfl_team: @monday_matchup.away_team, matchup: @monday_matchup)
+
+      @week16.move_to_next_week!
+
+      expect(Pick.where(auto_picked: true).count).to eq(1)
+      expect(Pick.where(auto_picked: true).first.nfl_team).to eq(@team1)
+      expect(Pick.where(auto_picked: true).first.pool_entry).to eq(@pool_entry_nopick1)
+      expect(@web_state.reload.week_id).to eq(@week17.id)
+    end
   end
+
+
 
   describe "#autopick_matchup_during_week" do
 

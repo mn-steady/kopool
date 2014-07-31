@@ -83,7 +83,6 @@ angular.module('Home', ['ngResource', 'RailsApiResource', 'user'])
     $scope.is_admin = ->
       currentUser.admin
 
-
     $scope.display_authorized = ->
       if currentUser.authorized
         "You are currently authorized as " + currentUser.username
@@ -95,6 +94,16 @@ angular.module('Home', ['ngResource', 'RailsApiResource', 'user'])
         "There are currently " + $scope.active_pool_entries_count + " teams remaining in the ring, battling for a sum of $" + $scope.total_pot + "!"
       else
         "Sign-in for the weekly summary"
+
+    $scope.register_button_text = () ->
+      if currentUser.authorized
+        "Add Pool Entries »"
+      else
+        "Register »"
+
+    $scope.register_button_show = () ->
+      $scope.web_state.current_week.week_number == 1 && $scope.web_state.current_week.season.open_for_registration == true
+
 
     # Just demonstrating an alternate means of navigation.  Better to use anchor tags.
     $scope.go = ( path ) ->

@@ -51,6 +51,9 @@
     .alert.alert-danger{"ng-hide" => "passwords_match(registering_user.password, registering_user.password_confirmation)"}
       Passwords must match
     %br
+    .alert.alert-danger{"ng-show" => "persisting_pool_entries_failed == true"}
+      Your Pool Entry team names must be unique across the entire pool this season.  Be more creative!
+    %br
     .alert.alert-warning{"ng-show" => "disable_pool_entry_change()"}
       Can only add pool entries when "open for registration" and week 1
 

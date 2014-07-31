@@ -55,7 +55,7 @@ angular.module('PoolEntries', ['ngResource', 'RailsApiResource'])
 			$scope.pool_entries_knocked_out_this_week = []
 			$scope.pool_entries_still_alive = []
 			$scope.pool_entries_knocked_out_previously = []
-			$scope.pool_entries_not_yet_paid = []
+			$scope.pool_entries_not_yet_paid = [] # Still need to support this below
 
 			console.log("sorting pool entries")
 
@@ -70,14 +70,14 @@ angular.module('PoolEntries', ['ngResource', 'RailsApiResource'])
 			$scope.gatherPicks()
 
 
-		$scope.gatherPicks = ->
+		$scope.gatherPicks = () ->
 			$scope.picks = []
 			PickResults.nested_query(week_id).then((this_weeks_picks) ->
 				$scope.picks = this_weeks_picks
 				$scope.associatePicks()
 			)
 
-		$scope.associatePicks = ->
+		$scope.associatePicks = () ->
 			console.log("in associatePicks")
 			for pool_entry in $scope.pool_entries_knocked_out_this_week
 				for pick in $scope.picks
@@ -90,7 +90,7 @@ angular.module('PoolEntries', ['ngResource', 'RailsApiResource'])
 						angular.extend(pool_entry, pick)
 						console.log("A pick was associated with a pool entry that is still alive")
 
-		$scope.results_header = ->
+		$scope.results_header = () ->
 			console.log("(matchup_header) week_id:" + parseInt($scope.week_id) + " current_week.id:" + $scope.current_week.id)
 			if parseInt($scope.week_id) == $scope.current_week.id
 				"Live Results from This Round (Week " + $scope.current_week.week_number + ")"

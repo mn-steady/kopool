@@ -22,6 +22,7 @@ angular.module('Register', ['ngResource', 'RailsApiResource', 'user'])
       $scope.registering_user = {email: "", password: "", password_confirmation: "", num_pool_entries: 1, teams: $scope.pool_entries, is_registered: false}
       $scope.register_error = {message: null, errors: {}}
       $scope.editing_team = 1
+      $scope.persisting_pool_entries_failed = false
 
       $scope.template_pool_entry =
         id: -1
@@ -136,10 +137,15 @@ angular.module('Register', ['ngResource', 'RailsApiResource', 'user'])
           if !pool_entry.persisted
             console.log("Persisting Pool Entry: " + pool_entry.team_name)
             PoolEntry.create(pool_entry).then((persisted_pool_entry) ->
+                console.log("..Back from creating Pool Entry")
+                $scope.persisting_pool_entries_failed = false
                 $scope.pool_entries_persisted++
                 for local_pool_entry in $scope.pool_entries
                   if local_pool_entry.team_name == persisted_pool_entry.team_name
                     local_pool_entry.persisted = true
+
+              (failure) ->
+                $scope.persisting_pool_entries_failed = true
               )
 
       $scope.$watch 'registering_user.num_pool_entries', (newVal, oldVal) ->

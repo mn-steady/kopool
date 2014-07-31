@@ -33,3 +33,18 @@
 				%p.team-name {{ pool_entry.team_name}} 
 			%td 
 				%img{"src" => "{{pool_entry.nfl_team.logo_url_small}}" }
+
+%h4 Knocked Out Previously
+
+%table.table.table-striped
+	%thead
+		%tr
+			%th{"width" => "40%"} Team Name
+			%th{"width" => "60%"} Team Chosen
+
+	%tbody{"ng-repeat" => "pool_entry in pool_entries_knocked_out_previously"}
+		%tr
+			%td
+				%p.team-name {{ pool_entry.team_name}} 
+			%td 
+				%img{"src" => "{{pool_entry.nfl_team.logo_url_small}}" }

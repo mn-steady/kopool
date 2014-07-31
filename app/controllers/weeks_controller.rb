@@ -125,12 +125,10 @@ class WeeksController < ApplicationController
       render :json => [:error => error_message], :status => :bad_request
     else
       @season = @week.season
-      @pool_entries_knocked_out_this_week = PoolEntry.where(season_id: @season.id, knocked_out_week_id: @week.id)
-      @pool_entries_still_alive = PoolEntry.where(season_id: @season.id, knocked_out: false)
-      binding.pry
+      @pool_entries_this_season = PoolEntry.where(season_id: @season.id)
 
       respond_to do | format |
-        format.json {render json: [@pool_entries_knocked_out_this_week, @pool_entries_still_alive]} # Return this week's picks as well
+        format.json {render json: @pool_entries_this_season}
       end
     end
   end

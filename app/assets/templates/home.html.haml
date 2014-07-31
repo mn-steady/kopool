@@ -17,10 +17,16 @@
 
   .row
     .col-md-4
-      %h2 Your Matchups
-      %p View your Matchups this weeks
+      %h2 Your Picks This Week
+      %p View all of the Matchups for this week and make your winning picks. You will not be able to make or change any picks after the first game of the week begins.
       %p
-        %a.btn.btn-primary{href: '#/weeks/{{week.id}}/matchups', role: "button"} Your Matchups »
+        %a.btn.btn-primary{href: '#/weeks/{{week.id}}/matchups', role: "button"} Your Picks »
+
+    .col-md-4
+      %h2 This Week's Results
+      %p View the Results LIVE for the week. This page will open once the games begin for the week.
+      %p
+        %a.btn.btn-primary{href: '#/weeks/{{week.id}}/results', role: "button"} Your Picks »
 
   .admin-panel{"ng-show" => "is_admin()"}
     .row

@@ -1,19 +1,22 @@
-%h3 Live Results From This Round!
+.row
+	.col-sm-8
+		%h3 {{results_header()}}
 
-%h4 Knocked Out This Week:
+	.col-sm-4
+		%br
+		.btn-group{:dropdown => ""}
+			%button.btn.btn-danger{:type => "button"} Results of Other Weeks
+			%button.btn.btn-danger.dropdown-toggle{:type => "button"}
+				%span.caret
+				%span.sr-only Split button
+			%ul.dropdown-menu{:role => "menu"}
+				%li{"ng-repeat"=>"week in season_weeks"}
+					%a{href:"#/weeks/{{week.id}}/results"}
+						Week {{week.week_number}} Results
 
-%table.table.table-striped
-	%thead
-		%tr
-			%th{"width" => "40%"} Team Name
-			%th{"width" => "60%"} Team Chosen
-
-	%tbody{"ng-repeat" => "pool_entry in pool_entries_knocked_out_this_week"}
-		%tr
-			%td
-				%p.team-name {{ pool_entry.team_name}} 
-			%td
-				%p.team-name {{ pool_entry.nfl_team.name}}
+.row{"ng-if" => "error_message"}
+	.col-sm-12.text-center
+		.alert.alert-danger {{error_message}}
 
 %h4 Still Alive!
 
@@ -29,3 +32,32 @@
 				%p.team-name {{ pool_entry.team_name}} 
 			%td 
 				%img{"src" => "{{pool_entry.nfl_team.logo_url_small}}" }
+
+%h4 Knocked Out This Week:
+
+%table.table.table-striped
+	%thead
+		%tr
+			%th{"width" => "40%"} Team Name
+			%th{"width" => "60%"} Team Chosen
+
+	%tbody{"ng-repeat" => "pool_entry in pool_entries_knocked_out_this_week"}
+		%tr
+			%td
+				%p.team-name {{ pool_entry.team_name}} 
+			%td
+				%img{"src" => "{{pool_entry.nfl_team.logo_url_small}}" }
+
+%h4 Knocked Out Previously
+
+%table.table.table-striped
+	%thead
+		%tr
+			%th{"width" => "40%"} Team Name
+			%th{"width" => "60%"} 
+
+	%tbody{"ng-repeat" => "pool_entry in pool_entries_knocked_out_previously"}
+		%tr
+			%td
+				%p.team-name {{ pool_entry.team_name}} 
+			%td 

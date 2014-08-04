@@ -67,10 +67,10 @@ angular.module('PoolEntries', ['ngResource', 'RailsApiResource'])
 				else if pool_entry.knocked_out == true
 					$scope.pool_entries_knocked_out_previously.push pool_entry
 
-			$scope.gatherPicks()
+			$scope.loadPicks()
 
 
-		$scope.gatherPicks = () ->
+		$scope.loadPicks = () ->
 			$scope.picks = []
 			PickResults.nested_query(week_id).then((this_weeks_picks) ->
 				$scope.picks = this_weeks_picks

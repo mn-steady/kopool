@@ -4,6 +4,51 @@
 %a.btn.btn-primary{"ng-href" => "#/weeks/{{week_id}}/matchups/new", role: "button"} Create New Matchup This Week
 %br
 
+%h4 Matchups With At Least 1 Picked Team
+
+%table.table.table-striped
+	%thead
+		%tr
+			%th
+			%th Home Team
+			%th 
+			%th Away Team
+			%th 
+			%th Game Time (EASTERN)
+	%tbody{"ng-repeat" => "matchup in matchups | filter: isPicked(matchup)"}
+		%tr{"ng-hide" => "matchupCompleted(matchup)"}
+			%td
+				%p
+				%a{"ng-click" => "selectTie(matchup)", "ng-class" => "tie_button_class(matchup)"} Tie Game!
+			%td
+				%img{"src" => "{{matchup.home_team.logo_url_small}}" }
+			%td
+				%p.team_name {{ matchup.home_team.name}}
+				%a{"ng-click" => "selectHomeTeamWin(matchup)", "ng-class" => "home_button_class(matchup)"} {{ matchup.home_team.name }} won!
+			%td
+				%img{"src" => "{{matchup.away_team.logo_url_small}}" }
+			%td
+				%p.team_name {{ matchup.away_team.name}}
+				%a{"ng-click" => "selectAwayTeamWin(matchup)", "ng-class" => "away_button_class(matchup)"} {{ matchup.away_team.name }} won!
+			%td
+				%p {{ matchup.game_time | date : 'fullDate' }} {{ matchup.game_time | date : 'shortTime' }}
+				%a.btn.btn-info{"ng-href" => "#/weeks/{{week_id}}/matchups/{{matchup.id}}", "ng-show" => "displayMatchupEditButtons(matchup)", role: "button"} Edit
+				%a.btn.btn-danger{"ng-show" => "displayMatchupEditButtons(matchup)", "ng-click" => "deleteMatchup(matchup)"} Delete
+				%a.btn.btn-danger{"ng-show" => "displayOutcomeSaveButtons(matchup)", "ng-click" => "open('', matchup)"} Save as Final Outcome
+				%a.btn.btn-info{"ng-show" => "displayOutcomeSaveButtons(matchup)", "ng-click" => "cancelOutcomeSelection(matchup)"} Cancel
+		%tr{"ng-show" => "matchupCompleted(matchup)"}
+			%td
+			%td
+			%td
+				%p.team-name {{ matchup.home_team.name}}
+			%td
+			%td
+				%p.team-name {{ matchup.away_team.name}}
+			%td
+				%p.team-name Winner: {{winningTeam(matchup)}}
+
+%h4 Matchups Without Any Picked Teams - No Need to Score These
+
 %table.table.table-striped
 	%thead
 		%tr

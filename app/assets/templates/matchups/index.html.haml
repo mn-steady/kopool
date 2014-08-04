@@ -23,7 +23,7 @@
 
 .row
 	.col-md-4{"ng-repeat"=>"pool_entry in pool_entries | filter: {knocked_out: false}"}
-		%div{"ng-hide" => "notSelectedPoolEntry(pool_entry)"}
+		%div{"ng-hide" => "notSelectedPoolEntry(pool_entry)", "ng-click" => "set_editing_pool_entry($index)"}
 			.panel.panel-warning
 				.panel-heading
 					.panel-title.text-center

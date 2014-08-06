@@ -7,6 +7,9 @@ angular.module('AdminMatchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap
 
 		$scope.current_week = {}
 		$scope.season_weeks = {}
+		$scope.picks = []
+		$scope.matchups_with_picks = []
+		$scope.matchups_without_picks = []
 
 		week_id = $routeParams.week_id
 		$scope.week_id = week_id
@@ -48,7 +51,6 @@ angular.module('AdminMatchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap
 			)
 
 		$scope.loadPicks = () ->
-			$scope.picks = []
 			console.log("in loadPicks()")
 			PickResults.nested_query(week_id).then((picks) ->
 				$scope.picks = picks
@@ -68,24 +70,31 @@ angular.module('AdminMatchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap
 			Matchup.nested_query($scope.week_id).then((matchups) ->
 				$scope.matchups = matchups
 				console.log("*** Have matchups for week:"+$scope.week_id + " ***")
+				$scope.filterMatchups()
 			)
 
-		$scope.isPicked = (matchup) ->
-			console.log("in isPicked")
-			for pick in $scope.picks
-				if pick.team_id == (matchup.home_team_id or matchup.away_team_id) then return true
-
-		# $scope.filterMatchups = (matchups) ->
-		# 	console.log("in filterMatchups()")
-		# 	$scope.matchups_with_picks = []
-		# 	$scope.matchups_without_picks = []
+		# $scope.isPicked = (matchups) ->
+		# 	console.log("in isPicked")
+		# 	filtered = []
 		# 	for matchup in matchups
 		# 		for pick in $scope.picks
-		# 			if pick.team_id == (matchup.home_team_id or matchup.away_team_id)
-		# 				$scope.matchups_with_picks.push matchup
-		# 			else
-		# 				$scope.matchups_without_picks.push matchup
-		# 	console.log("end of filterMatchups")
+		# 			if pick.team_id == (matchup.home_team_id or matchup.away_team_id) then return true
+
+		# $scope.notPicked = (matchups) ->
+		# 	console.log("in notPicked")
+		# 	for matchup in matchups
+		# 		for pick in $scope.picks
+		# 			if pick.team_id == (matchup.home_team_id or matchup.away_team_id) then return false else return true
+
+		$scope.filterMatchups = () ->
+			console.log("in filterMatchups()")
+			for matchup in $scope.matchups
+				for pick in $scope.picks
+					if pick.team_id == (matchup.home_team_id or matchup.away_team_id)
+						$scope.matchups_with_picks.push matchup
+					else
+						$scope.matchups_without_picks.push matchup
+			console.log("end of filterMatchups")
 
 		# Outcome Selections for Administrators
 

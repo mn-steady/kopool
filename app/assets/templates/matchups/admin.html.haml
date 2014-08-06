@@ -15,7 +15,7 @@
 			%th Away Team
 			%th 
 			%th Game Time (EASTERN)
-	%tbody{"ng-repeat" => "matchup in matchups | filter: isPicked(matchup)"}
+	%tbody{"ng-repeat" => "matchup in $scope.matchups_with_picks"}
 		%tr{"ng-hide" => "matchupCompleted(matchup)"}
 			%td
 				%p
@@ -58,7 +58,7 @@
 			%th Away Team
 			%th 
 			%th Game Time (EASTERN)
-	%tbody{"ng-repeat" => "matchup in matchups"}
+	%tbody{"ng-repeat" => "matchup in $scope.matchups_without_picks"}
 		%tr{"ng-hide" => "matchupCompleted(matchup)"}
 			%td
 				%p

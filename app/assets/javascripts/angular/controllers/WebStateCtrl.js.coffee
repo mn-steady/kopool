@@ -75,9 +75,9 @@ angular.module('WebStates', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 
     $scope.current_week_status = () ->
       if $scope.week.open_for_picks == true
-        "OPEN FOR PICKS"
+        "OPEN for picks"
       else
-        "CLOSED FOR PICKS"
+        "CLOSED for picks"
 
     # Modal
     $scope.open = (size) ->

@@ -2,40 +2,37 @@
 
 %br
 
-.row
-  .col-sm-5
-    %p.bg-success.text-center
-      %br
-      You are currently in Season
-      %span.badge {{week.season_id}}
-      Week Number
-      %span.badge {{week.week_number}}
-      %br
-      %br
+.container
+  .row
+    .col-sm-12.text-center
+      .alert.alert-success
+        %br
+        You are currently in Season
+        %span.badge {{week.season_id}}
+        Week Number
+        %span.badge {{week.week_number}}
+        %br
+        %br
 
-.row
-  .col-sm-6
-    %span.badge This Week is {{current_week_status()}}
-    %br
-    %br
+  .row
+    .col-sm-6.col-sm-offset-3.text-center
+      .alert.alert-info This Week is {{current_week_status()}}
 
-.row
+  .row
+    .col-sm-6.col-sm-offset-3.text-center
 
-  %form.form-horizontal
-
-    .form-group
       %button.btn.btn-warning{"ng-click"=>"close_or_reopen_picks()", type: "submit"} {{close_or_open_button_text()}}
       %button.btn.btn-danger{"ng-click"=>"open('')", type: "submit"} Move to Next Week
 
-    %br
+  %br
 
-    .form-group
-      %label.col-sm-2 Current Broadcast Message
-      .col-sm-10
-        %input.form-control{"type" => "text", "ng-model" => "web_state.broadcast_message"}
-
-
-    %button.btn.btn-info{"ng-click"=>"save(web_state)", type: "submit"} Save Broadcast Message
+  .row
+    .col-sm-2 Current Broadcast Message
+    .col-sm-10
+      %input.form-control{"type" => "text", "ng-model" => "web_state.broadcast_message"}
+  .row
+    .col-sm-2.col-sm-offset-2
+      %button.btn.btn-info{"ng-click"=>"save(web_state)", type: "submit"} Save Broadcast Message
 
 %div
   %script{:id => "confirmAdvanceWeekModal.html", :type => "text/ng-template"}

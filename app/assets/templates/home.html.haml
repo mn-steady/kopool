@@ -26,7 +26,7 @@
       %h2 This Week's Results
       %p View the Results LIVE for the week. This page will open once the games begin for the week.
       %p
-        %a.btn.btn-primary{href: '#/weeks/{{week.id}}/results', role: "button"} Your Picks »
+        %a.btn.btn-primary{href: '#/weeks/{{week.id}}/results', role: "button"} Results »
 
   .admin-panel{"ng-show" => "is_admin()"}
     .row
@@ -38,15 +38,15 @@
         %p
           %a.btn.btn-primary{"ng-click" => "go('/nfl_teams')", role: "button"} NFL Teams »
       .col-md-4
-        %h2 Weeks (Season 1)
+        %h2 View All Weeks
         %p Administrators can use this 'Weeks' button to view, edit, and update weeks.  Make sure all of the dates are correct.  You must always enter and edit them in international format: yyyy-mm-dd.  Also, currently there is a bug where the timezone is messing up the weeks.  You may have to enter hours also:  yyyy-mm-dd hh:mm.  Jack and Dave will discuss.
         %p
-          %a.btn.btn-success{href: "#/seasons/1/weeks", role: "button"} Season 1 Weeks »
+          %a.btn.btn-success{href: "#/seasons/1/weeks", role: "button"} View Weeks »
       .col-md-4
-        %h2 Matchups (Week 1)
-        %p This is the admin page for creating matchups. You can create and edit matchups for a certain week, as well as save the outcomes of the games.
+        %h2 Score Matchups
+        %p Click here to score the matchups for this week!
         %p
-          %a.btn.btn-info{href: "#/weeks/1/matchups/admin", role: "button"} Week 1 Matchups »
+          %a.btn.btn-info{href: "#/weeks/{{week.id}}/matchups/scoring", role: "button"} Week 1 Matchups »
     .row
       .col-md-4
         %h2 Commissioner

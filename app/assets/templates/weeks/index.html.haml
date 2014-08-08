@@ -14,7 +14,8 @@ Controller: {{controller}}
     %th Start Date
     %th End Date
     %th Deadline
-    %th Actions
+    %th Week Actions
+    %th Matchup Actions
   %tr{"ng-repeat" => "week in weeks"}
     %td {{ week.season_id }}
     %td {{ week.week_number }}
@@ -24,6 +25,9 @@ Controller: {{controller}}
     %td
       %a.btn.btn-primary{"ng-href" => "#/seasons/{{season_id}}/weeks/{{week.id}}", role: "button"} Edit
       %a.btn.btn-danger{"ng-click" => "deleteWeek(week)", role: "button"} Delete
-      %a.btn.btn-success{"ng-href" => "#weeks/{{week.id}}/matchups/admin"} Week {{week.week_number}} Matchups
+    %td
+      %a.btn.btn-info{"ng-href" => "#weeks/{{week.id}}/matchups/admin"} Create/Edit Matchups
+      %a.btn.btn-success{"ng-href" => "#weeks/{{week.id}}/matchups/scoring"} Score Matchups for Week {{week.week_number}}
+      
 
 %a.btn.btn-primary{"ng-href" => "#/seasons/{{season_id}}/weeks/new", role: "button"} Create New week in Season {{season_id}}

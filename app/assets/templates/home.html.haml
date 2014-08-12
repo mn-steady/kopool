@@ -9,6 +9,7 @@
           %a.btn.btn-primary.btn-lg{href: "#/users/register", role: "button", "ng-show" => "register_button_show()"} {{register_button_text()}}
       .col-md-4
         %img.img-rounded.frontpage-logo{alt: "KO Pool Logo", src: asset_path('kopool_c_med.png')}
+        %div.title-text.text-center Round {{week.week_number}}
 .container
 
   .row
@@ -46,7 +47,7 @@
         %h2 Score Matchups
         %p Click here to score the matchups for this week!
         %p
-          %a.btn.btn-info{href: "#/weeks/{{week.id}}/matchups/scoring", role: "button"} Week 1 Matchups »
+          %a.btn.btn-info{href: "#/weeks/{{week.id}}/matchups/scoring", role: "button"} Score Matchups »
     .row
       .col-md-4
         %h2 Commissioner

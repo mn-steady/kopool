@@ -49,7 +49,6 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 		console.log("Passed Week ID:" + $scope.week_id)
 		$scope.matchup_id = matchup_id = $routeParams.matchup_id
 		$scope.matchups = []
-		$scope.pool_entries = []
 		$scope.getWebState()
 
 		if matchup_id? and matchup_id == "new"
@@ -120,7 +119,6 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 			Matchup.nested_query($scope.week_id).then((matchups) ->
 				$scope.matchups = matchups
 				console.log("*** Have matchups for week:"+$scope.week_id + " ***")
-				$scope.filterMatchups(matchups)
 			)
 
 		$scope.matchup_header = ->
@@ -172,15 +170,11 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 		$scope.editing_pool_entry = null
 
 		$scope.handleTeamSelection = (matchup, team) ->
-			$scope.selectMatchup(matchup, team)
+			$scope.selectedMatchup = matchup
 			$scope.selectedPick = team
 			console.log("Pick selection is " + $scope.selectedPick.name)
 			console.log("Value of selectedMatchup: " + $scope.selectedMatchup.home_team.name)
 			$scope.hideMatchups = true
-			# I want to select an individual team here too (for UI and savePick function)
-
-		$scope.selectMatchup = (matchup, team) ->
-			$scope.selectedMatchup = matchup
 
 		$scope.isSelectedMatchup = (matchup) ->
 			$scope.selectedMatchup == matchup
@@ -204,8 +198,6 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 		# Saving and Creation Actions
 
 		$scope.savePick = (matchup, editing_pool_entry) ->
-			# Talk to Rails and create a new pick when the Save Pick button is clicked
-			# Will need to know which team they are choosing
 			console.log("MatchupsCtrl.savePick...")
 			pool_entry = $scope.editing_pool_entry
 			week_id = matchup.week_id
@@ -224,9 +216,6 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 				existing_pick.matchup_id = picked_matchup.id
 				console.log("Updated existing_pick")
 				Pick.save(existing_pick, week_id).then((existing_pick) ->
-					$scope.selectedMatchup = ""
-					$scope.selectedPick = ""
-					$scope.hideMatchups = false
 					console.log("existing_pick: " + existing_pick)
 				)
 
@@ -236,7 +225,10 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 				Pick.create($scope.new_pick, week_id)
 
 			$location.path ('/weeks/' + $scope.week_id + '/matchups')
+			$scope.selectedMatchup = ""
+			$scope.selectedPick = ""
 			$scope.editing_pool_entry = null
+			$scope.hideMatchups = false
 			$scope.showMatchups = false
 			$scope.loadPoolEntries()
 			$scope.alert = { type: "success", msg: "Your pick was saved! Good luck!" }

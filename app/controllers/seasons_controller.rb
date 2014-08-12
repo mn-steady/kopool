@@ -22,10 +22,10 @@ class SeasonsController < ApplicationController
 
 	def season_results
 		Rails.logger.debug("seasons_controller.season_results")
-		@pool_entries = PoolEntry.all
+		@pool_entries = PoolEntry.where(season_id: params[:season_id])
 
 		respond_to do |format|
-			format.json {render json: @pool_entries}
+			format.json {render :json => @pool_entries.to_json(include: [{user: {only: [:email, :cell]}}])}
 		end
 	end
 

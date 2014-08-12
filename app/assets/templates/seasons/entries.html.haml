@@ -1,0 +1,20 @@
+%h3 All Pool Entries for This Season
+
+%table.table.table-striped
+	%thead
+		%tr
+			%th Team Name
+			%th Email
+			%th Paid?
+			%th 
+			%th 
+			%th 
+	%tbody{"ng-repeat" => "pool_entry in pool_entries"}
+		%tr
+			%td {{pool_entry.team_name}}
+			%td {{pool_entry.user.email}}
+			%td	{{pool_entry.paid}}
+			%td				
+			%td
+			%td
+				

@@ -10,7 +10,7 @@
 #= depend_on_asset "weeks/results.html"
 #= depend_on_asset "home.html"
 
-@kopool = angular.module("kopool", ["ngRoute", "ngResource", "ngCookies", "Home", "user", "navbar", "NflTeams", "Weeks", "Matchups", "PoolEntries", "Register", "WebStates", "ngAnimate", "ui.bootstrap"])
+@kopool = angular.module("kopool", ["ngRoute", "ngResource", "ngCookies", "Home", "user", "navbar", "NflTeams", "Weeks", "Matchups", "PoolEntries", "Register", "WebStates", "ngAnimate", "ui.bootstrap", "AdminMatchups", "AdminPoolEntries"])
 	.config(["$httpProvider", ($httpProvider) ->
 		$httpProvider.defaults.headers.common["X-CSRF-Token"] = $("meta[name=csrf-token]").attr("content")
 		interceptor = ["$location", "$rootScope", "$q", ($location, $rootScope, $q) ->
@@ -47,9 +47,13 @@
 			templateUrl: '<%= asset_path("nfl_teams/edit.html") %>',
 			controller: 'NflTeamsCtrl'
 		}).
+		when('/weeks/:week_id/matchups/scoring', {
+			templateUrl:'<%= asset_path("matchups/scoring.html") %>',
+			controller: 'AdminMatchupsCtrl'
+		}).
 		when('/weeks/:week_id/matchups/admin', {
 			templateUrl:'<%= asset_path("matchups/admin.html") %>',
-			controller: 'MatchupsCtrl'
+			controller: 'AdminMatchupsCtrl'
 		}).
 		when('/weeks/:week_id/matchups/:matchup_id', {
 			templateUrl:'<%= asset_path("matchups/edit.html") %>',
@@ -70,6 +74,10 @@
 		when('/seasons/:season_id/results', {
 			templateUrl: '<%= asset_path("seasons/results.html") %>',
 			controller: 'PoolEntriesCtrl'
+		}).
+		when('/seasons/:season_id/entries', {
+			templateUrl: '<%= asset_path("seasons/entries.html") %>',
+			controller: 'AdminPoolEntriesCtrl'
 		}).
 		when('/weeks/:week_id/results', {
 			templateUrl: '<%= asset_path("weeks/results.html") %>',

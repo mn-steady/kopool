@@ -90,7 +90,7 @@ angular.module('PoolEntries', ['ngResource', 'RailsApiResource'])
 						angular.extend(pool_entry, pick)
 						console.log("A pick was associated with a pool entry that is still alive")
 
-		$scope.results_header = () ->
+		$scope.results_header = ->
 			console.log("(matchup_header) week_id:" + parseInt($scope.week_id) + " current_week.id:" + $scope.current_week.id)
 			if parseInt($scope.week_id) == $scope.current_week.id
 				"Live Results from This Round (Week " + $scope.current_week.week_number + ")"

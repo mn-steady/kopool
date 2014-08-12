@@ -1,8 +1,6 @@
 <h2>Weeks Index for season {{season_id}}</h2>
 <br>
 <br>
-Controller: {{controller}}
-<br>
 <table class='table table-striped' ng-controller='WeeksCtrl'>
   <tr>
     <th>Season</th>
@@ -10,7 +8,8 @@ Controller: {{controller}}
     <th>Start Date</th>
     <th>End Date</th>
     <th>Deadline</th>
-    <th>Actions</th>
+    <th>Week Actions</th>
+    <th>Matchup Actions</th>
   </tr>
   <tr ng-repeat='week in weeks'>
     <td>{{ week.season_id }}</td>
@@ -21,7 +20,10 @@ Controller: {{controller}}
     <td>
       <a class='btn btn-primary' ng-href='#/seasons/{{season_id}}/weeks/{{week.id}}' role='button'>Edit</a>
       <a class='btn btn-danger' ng-click='deleteWeek(week)' role='button'>Delete</a>
-      <a class='btn btn-success' ng-href='#weeks/{{week.id}}/matchups/admin'>Week {{week.week_number}} Matchups</a>
+    </td>
+    <td>
+      <a class='btn btn-info' ng-href='#weeks/{{week.id}}/matchups/admin'>Create/Edit Matchups</a>
+      <a class='btn btn-success' ng-href='#weeks/{{week.id}}/matchups/scoring'>Score Matchups for Week {{week.week_number}}</a>
     </td>
   </tr>
 </table>

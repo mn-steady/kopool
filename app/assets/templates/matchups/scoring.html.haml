@@ -4,6 +4,10 @@
 %a.btn.btn-primary{"ng-href" => "#/weeks/{{week_id}}/matchups/new", role: "button"} Create New Matchup This Week
 %br
 
+.row{"ng-if" => "error_message"}
+	.col-sm-12.text-center
+		.alert.alert-danger {{error_message}}
+
 %h4 Matchups With At Least 1 Picked Team
 
 %table.table.table-striped

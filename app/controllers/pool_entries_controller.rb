@@ -41,10 +41,29 @@ class PoolEntriesController < ApplicationController
     end
   end
 
+  def update
+    Rails.logger.debug("PoolEntries.update")
+    @pool_entry = PoolEntry.find(params[:id])
+
+    @pool_entry.update_attributes(pool_entries_params)
+
+    if @pool_entry.save
+      respond_to do | format |
+        format.json {render json: @pool_entry }
+      end
+    else
+      respond_to do | format |
+        error_message = ""
+        @pool_entry.errors.each{ |attr,msg| error_message << "#{attr} #{msg}" }
+        format.json { render :json => [:error => error_message], :status => :bad_request}
+      end
+    end
+  end
+
 private
 
   def pool_entries_params
-    params.permit(:id, :user_id, :team_name)
+    params.permit(:id, :user_id, :team_name, :paid)
   end
 
 end

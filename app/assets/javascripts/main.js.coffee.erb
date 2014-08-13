@@ -99,6 +99,14 @@
 			templateUrl:'<%= asset_path("registration/register.html") %>',
 			controller: 'RegisterCtrl'
 		}).
+		when('/users/:user_id/profile', {
+			templateUrl:'<%= asset_path("users/profile.html") %>',
+			controller: 'RegisterCtrl'
+		}).
+		when('/registration/rules', {
+			templateUrl:'<%= asset_path("registration/rules.html") %>',
+			controller: 'RegisterCtrl'
+		}).
 		otherwise({
 			templateUrl: '<%= asset_path("home.html") %>'
 			controller: 'HomeCtrl'

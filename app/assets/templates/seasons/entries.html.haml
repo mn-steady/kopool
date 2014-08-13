@@ -13,8 +13,9 @@
 		%tr
 			%td {{pool_entry.team_name}}
 			%td {{pool_entry.user.email}}
-			%td	{{pool_entry.paid}}
-			%td				
+			%td{"ng-class" => "getPaidTextClass(pool_entry)"}	{{getPaidOrUnpaidStatusText(pool_entry)}}
+			%td
+				%a.btn.btn-default{"ng-click" => "markPaidOrUnpaid(pool_entry)"} Mark as {{getPaidOrUnpaidButtonText(pool_entry)}}
 			%td
 			%td
 				

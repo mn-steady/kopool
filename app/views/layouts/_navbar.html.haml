@@ -6,12 +6,23 @@
         %span.icon-bar
         %span.icon-bar
         %span.icon-bar
-      %a.navbar-brand{href: "#"}{{display_name()}}
-    .navbar-collapse.collapse
-      %form.navbar-form.navbar-right{role: "form"}
-        .form-group
-          %input.form-control{"ng-model" => "login_user.email", placeholder: "Email", type: "text"}/
-        .form-group
-          %input.form-control{"ng-model" => "login_user.password", placeholder: "Password", type: "password"}/
-        %button.btn.btn-success{"ng-click"=>"login_logout()", type: "submit"} {{button_sign_in_or_out()}}
-    / /.navbar-collapse
+      %a.navbar-brand{href: "#"} KO Pool
+
+    %form.navbar-form.navbar-right{"ng-hide" => "isSignedIn()", role: "form"}
+      .form-group
+        %input.form-control{"ng-hide" => "isSignedIn()", "ng-model" => "login_user.email", placeholder: "Email", type: "text"}/
+      .form-group
+        %input.form-control{"ng-hide" => "isSignedIn()", "ng-model" => "login_user.password", placeholder: "Password", type: "password"}/
+      %button.btn.btn-success{"ng-click"=>"login_logout()", type: "submit"} {{button_sign_in_or_out()}}
+
+    .navbar-right.btn-group.navbar-group{"ng-show" => "isSignedIn()", :dropdown => ""}
+      %button.btn.btn-success.dropdown-toggle{:type => "button"} 
+        {{display_name()}}
+        %span.caret
+      %ul.dropdown-menu{:role => "menu"}
+        %li
+          %a{"ng-click"=>"login_logout()", type: "submit", :role => "menuitem"} {{button_sign_in_or_out()}}
+        %li.divider
+        %li
+          %a{href: "#/users/{{currentUser.id}}/profile"} View Profile
+          %a{href: "#/registration/rules"} Rules

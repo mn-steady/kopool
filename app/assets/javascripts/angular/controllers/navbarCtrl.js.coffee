@@ -95,6 +95,9 @@ angular.module('navbar', ['ngResource', 'RailsApiResource', 'user'])
       # Clear out the UI fields
       $scope.login_user.email = null
       $scope.login_user.password = null
+
+      # Return to main page
+      $location.path "/users/sign_in"
       return
 
     $scope.save_user_data = (user_data) ->
@@ -109,6 +112,10 @@ angular.module('navbar', ['ngResource', 'RailsApiResource', 'user'])
       $scope.login_user.email = null
       $scope.login_user.password = null
       return
+
+    $scope.isSignedIn = ->
+      if AuthService.isAuthenticated()
+        true
 
     $scope.display_name = ->
       if AuthService.isAuthenticated()

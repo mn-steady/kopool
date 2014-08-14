@@ -11,7 +11,7 @@
       </div>
       <div class='col-md-4'>
         <img alt='KO Pool Logo' class='img-rounded frontpage-logo' src='/assets/kopool_c_med.png'>
-        <div class='title-text text-center'>Round {{week.week_number}}</div>
+        <div class='title-text text-center'>Round {{current_week.week_number}}</div>
       </div>
     </div>
   </div>
@@ -26,14 +26,14 @@
       <h2>Your Picks This Week</h2>
       <p>View all of the Matchups for this week and make your winning picks. You will not be able to make or change any picks after the first game of the week begins.</p>
       <p>
-        <a class='btn btn-primary' href='#/weeks/{{week.id}}/matchups' role='button'>Your Picks »</a>
+        <a class='btn btn-primary' href='#/weeks/{{web_state.current_week.id}}/matchups' role='button'>Your Picks »</a>
       </p>
     </div>
     <div class='col-md-4'>
       <h2>This Week's Results</h2>
       <p>View the Results LIVE for the week. This page will open once the games begin for the week.</p>
       <p>
-        <a class='btn btn-primary' href='#/weeks/{{week.id}}/results' role='button'>Results »</a>
+        <a class='btn btn-primary' href='#/weeks/{{web_state.current_week.id}}/results' role='button'>Results »</a>
       </p>
     </div>
   </div>
@@ -60,7 +60,7 @@
         <h2>Score Matchups</h2>
         <p>Click here to score the matchups for this week!</p>
         <p>
-          <a class='btn btn-info' href='#/weeks/{{week.id}}/matchups/scoring' role='button'>Score Matchups »</a>
+          <a class='btn btn-info' href='#/weeks/{{web_state.current_week.id}}/matchups/scoring' role='button'>Score Matchups »</a>
         </p>
       </div>
     </div>

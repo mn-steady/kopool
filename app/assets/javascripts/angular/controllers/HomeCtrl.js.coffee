@@ -9,7 +9,7 @@ angular.module('Home', ['ngResource', 'RailsApiResource', 'user'])
   .factory 'SeasonWeeks', (RailsApiResource) ->
       RailsApiResource('seasons/:parent_id/weeks', 'weeks')
 
-  .controller 'HomeCtrl', ['$scope', '$rootScope', '$location', 'currentUser', 'WebState', 'PoolEntriesThisSeason', 'SeasonWeeks', ($scope, $rootScope, $location, currentUser, WebState, PoolEntriesThisSeason, SeasonWeeks) ->
+  .controller 'HomeCtrl', ['$scope', '$location', 'currentUser', 'AuthService', 'WebState', 'PoolEntriesThisSeason', 'SeasonWeeks', ($scope, $location, currentUser, AuthService, WebState, PoolEntriesThisSeason, SeasonWeeks) ->
     $scope.controller = 'HomeCtrl'
     console.log("(HomeCtrl)")
 
@@ -32,17 +32,20 @@ angular.module('Home', ['ngResource', 'RailsApiResource', 'user'])
           name: "...Please Login..."
           open_for_registration: false
 
-    $scope.$watch 'currentUser.authorized', ((newVal, oldVal) ->
-      console.log("(currentUser.authorized) WATCH")
-    ),true
+
+    # Action Functions
 
     $scope.getWebState = () ->
       console.log("(HomeCtrl.getWebState) Looking up the WebState")
       WebState.get(1).then((web_state) ->
+        console.log("(HomeCtrl.getWebState) Back from the WebState lookup")
         $scope.web_state = web_state
+        if currentUser.authorized
+          console.log("(HomeCtrl.getWebState) user is authorized. Loading Pool Entries")
+          $scope.loadPoolEntries()
+        else
+          console.log("(HomeCtrl.getWebState) user is not yet authorized.")
       )
-
-    $scope.getWebState()
 
     $scope.loadPoolEntries = () ->
       console.log("(loadPoolEntries)")
@@ -64,10 +67,23 @@ angular.module('Home', ['ngResource', 'RailsApiResource', 'user'])
       $scope.active_pool_entries_count = $scope.active_pool_entries.length
       $scope.getTotalPot()
 
-
     $scope.getTotalPot = () ->
       $scope.total_pot = $scope.active_pool_entries_count * 50
       console.log("Calculated total pot")
+
+
+    # Main Controller Actions
+
+    $scope.getWebState()
+
+    $scope.$on 'auth-login-success', ((event) ->
+      console.log("(HomeCtrl) Caught auth-login-success broadcasted event!!")
+      $scope.loadPoolEntries()
+    )
+
+
+
+    # Display and utility functions
 
     $scope.is_admin = ->
       currentUser.admin

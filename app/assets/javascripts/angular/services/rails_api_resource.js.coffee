@@ -71,7 +71,6 @@ angular.module('RailsApiResource', ['ngResource'])
           if response.data instanceof Array
             console.log("is an Array")
             angular.forEach(response.data, (value, key) ->
-              console.log("key:" + key + " value:" + value)
               result[key] = new Resource(value)
             )
           else

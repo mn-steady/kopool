@@ -1,6 +1,6 @@
 angular.module('navbar', ['ngResource', 'RailsApiResource', 'user'])
 
-  .controller 'navbarCtrl', ['$scope', '$location', '$http', 'currentUser', 'AuthService', '$cookieStore', ($scope, $location, $http, currentUser, AuthService, $cookieStore) ->
+  .controller 'navbarCtrl', ['$scope', '$rootScope', '$location', '$http', 'currentUser', 'AuthService', '$cookieStore', ($scope, $rootScope, $location, $http, currentUser, AuthService, $cookieStore) ->
 
     $scope.controller = 'navbarCtrl'
     console.log("In navbarCtrl")
@@ -106,6 +106,7 @@ angular.module('navbar', ['ngResource', 'RailsApiResource', 'user'])
       currentUser.admin = user_data.admin
       currentUser.username = user_data.email
       AuthService.updateCookies()
+      $rootScope.$broadcast('auth-login-success')
       console.log("(navbarCtrl.save_user_data) saved username:" + currentUser.username)
 
       # Clear out the UI fields

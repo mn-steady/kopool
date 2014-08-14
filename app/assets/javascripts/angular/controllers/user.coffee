@@ -36,19 +36,16 @@ angular.module('user', ['RailsApiResource'])
         tokenRequest = {email: currentUser.username, password: currentUser.password}
         currentUser.password = ''
 
-        console.log("*** DO NOT USE THIS until switch to token-based ***")
-
+        #*** DO NOT USE THIS until switch to token-based ***
         # return Tokens.query(tokenRequest).then( (token) ->
         #   console.log("Back from getting token")
 
         #   if token.token?
         #     currentUser.token = token.token
         #     $rootScope.$broadcast(AUTH_EVENTS.loginSuccess)
-
         #   else
         #     $rootScope.$broadcast(AUTH_EVENTS.loginFailed)
         # )
-
 
       isAuthenticated: ->
         # !!"" === false // empty string is falsy

@@ -9,7 +9,7 @@
           %a.btn.btn-primary.btn-lg{href: "#/users/register", role: "button", "ng-show" => "register_button_show()"} {{register_button_text()}}
       .col-md-4
         %img.img-rounded.frontpage-logo{alt: "KO Pool Logo", src: asset_path('kopool_c_med.png')}
-        %div.title-text.text-center Round {{week.week_number}}
+        %div.title-text.text-center Round {{current_week.week_number}}
 .container
 
   .row
@@ -21,13 +21,13 @@
       %h2 Your Picks This Week
       %p View all of the Matchups for this week and make your winning picks. You will not be able to make or change any picks after the first game of the week begins.
       %p
-        %a.btn.btn-primary{href: '#/weeks/{{week.id}}/matchups', role: "button"} Your Picks »
+        %a.btn.btn-primary{href: '#/weeks/{{web_state.current_week.id}}/matchups', role: "button"} Your Picks »
 
     .col-md-4
       %h2 This Week's Results
       %p View the Results LIVE for the week. This page will open once the games begin for the week.
       %p
-        %a.btn.btn-primary{href: '#/weeks/{{week.id}}/results', role: "button"} Results »
+        %a.btn.btn-primary{href: '#/weeks/{{web_state.current_week.id}}/results', role: "button"} Results »
 
   .admin-panel{"ng-show" => "is_admin()"}
     .row
@@ -47,7 +47,7 @@
         %h2 Score Matchups
         %p Click here to score the matchups for this week!
         %p
-          %a.btn.btn-info{href: "#/weeks/{{week.id}}/matchups/scoring", role: "button"} Score Matchups »
+          %a.btn.btn-info{href: "#/weeks/{{web_state.current_week.id}}/matchups/scoring", role: "button"} Score Matchups »
     .row
       .col-md-4
         %h2 Commissioner

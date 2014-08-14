@@ -10,10 +10,10 @@ angular.module('navbar', ['ngResource', 'RailsApiResource', 'user'])
     $scope.login_logout = ->
       console.log("(navbarCtrl.login_logout)")
       if AuthService.isAuthenticated()
-        console.log("...Currently Authenticated so Logging OUT")
+        console.log("(navbarCtrl.login_logout) Currently Authenticated so Logging OUT")
         $scope.logout()
       else
-        console.log("...Logging IN with username:" + $scope.login_user.email)
+        console.log("(navbarCtrl.login_logout) Logging IN with username:" + $scope.login_user.email)
         $scope.login()
 
     $scope.login = ->

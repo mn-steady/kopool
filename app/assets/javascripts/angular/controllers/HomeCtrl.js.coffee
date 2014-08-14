@@ -9,7 +9,7 @@ angular.module('Home', ['ngResource', 'RailsApiResource', 'user'])
   .factory 'SeasonWeeks', (RailsApiResource) ->
       RailsApiResource('seasons/:parent_id/weeks', 'weeks')
 
-  .controller 'HomeCtrl', ['$scope', '$location', 'currentUser', 'WebState', 'PoolEntriesThisSeason', 'SeasonWeeks', ($scope, $location, currentUser, WebState, PoolEntriesThisSeason, SeasonWeeks) ->
+  .controller 'HomeCtrl', ['$scope', '$location', 'currentUser', 'AuthService', 'WebState', 'PoolEntriesThisSeason', 'SeasonWeeks', ($scope, $location, currentUser, AuthService, WebState, PoolEntriesThisSeason, SeasonWeeks) ->
     $scope.controller = 'HomeCtrl'
     console.log("(HomeCtrl)")
 
@@ -18,7 +18,6 @@ angular.module('Home', ['ngResource', 'RailsApiResource', 'user'])
     $scope.active_pool_entries = []
     $scope.active_pool_entries_count = 0
     $scope.weeks = {}
-
     $scope.web_state =
       id: 0
       week_id: 0
@@ -34,26 +33,31 @@ angular.module('Home', ['ngResource', 'RailsApiResource', 'user'])
           open_for_registration: false
 
 
-    WebState.get(1).then((web_state) ->
-      console.log("Got a web state")
-      $scope.web_state = web_state
-      $scope.week = web_state.current_week
-      $scope.open_for_picks = web_state.current_week.open_for_picks
-      if $scope.authorized()
-        console.log("*** authorized ***")
-        $scope.reload_pool_entries()
-        $scope.load_season_weeks()
-      else
-        console.log("** Current user is not authorized - no pool entries **")
-    )
+    # Action Functions
 
-    $scope.reload_pool_entries = () ->
-      console.log("(reload_pool_entries)")
-      PoolEntriesThisSeason.nested_query(1).then((pool_entries) ->
-        $scope.pool_entries = pool_entries
-        $scope.getActivePoolEntries()
-        console.log("(reload_pool_entries) Have pool entries")
+    $scope.getWebState = () ->
+      console.log("(HomeCtrl.getWebState) Looking up the WebState")
+      WebState.get(1).then((web_state) ->
+        console.log("(HomeCtrl.getWebState) Back from the WebState lookup")
+        $scope.web_state = web_state
+        if currentUser.authorized
+          console.log("(HomeCtrl.getWebState) user is authorized. Loading Pool Entries")
+          $scope.loadPoolEntries()
+        else
+          console.log("(HomeCtrl.getWebState) user is not yet authorized.")
       )
+
+    $scope.loadPoolEntries = () ->
+      console.log("(loadPoolEntries)")
+      if $scope.pool_entries.length == 0
+        PoolEntriesThisSeason.nested_query($scope.web_state.current_week.season.id).then((pool_entries) ->
+          console.log("(loadPoolEntries) returned with pool_entries ="+pool_entries)
+          $scope.pool_entries = pool_entries
+          $scope.getActivePoolEntries()
+          console.log("(loadPoolEntries) Have pool entries")
+        )
+      else
+        console.log("(loadPoolEntries) ALREADY LOADED")
 
     $scope.getActivePoolEntries = () ->
       console.log("(getActivePoolEntries)")
@@ -63,22 +67,23 @@ angular.module('Home', ['ngResource', 'RailsApiResource', 'user'])
       $scope.active_pool_entries_count = $scope.active_pool_entries.length
       $scope.getTotalPot()
 
-    $scope.load_season_weeks = () ->
-      console.log("(load_season_weeks)")
-      SeasonWeeks.nested_query($scope.web_state.current_week.season.id).then((weeks) ->
-        console.log("(load_season_weeks) *** Have All Weeks ***")
-        $scope.weeks = weeks
-      )
-
     $scope.getTotalPot = () ->
       $scope.total_pot = $scope.active_pool_entries_count * 50
       console.log("Calculated total pot")
 
-    $scope.username = ->
-      currentUser.username
 
-    $scope.authorized = ->
-      currentUser.authorized
+    # Main Controller Actions
+
+    $scope.getWebState()
+
+    $scope.$on 'auth-login-success', ((event) ->
+      console.log("(HomeCtrl) Caught auth-login-success broadcasted event!!")
+      $scope.loadPoolEntries()
+    )
+
+
+
+    # Display and utility functions
 
     $scope.is_admin = ->
       currentUser.admin
@@ -103,7 +108,6 @@ angular.module('Home', ['ngResource', 'RailsApiResource', 'user'])
 
     $scope.register_button_show = () ->
       $scope.web_state.current_week.week_number == 1 && $scope.web_state.current_week.season.open_for_registration == true
-
 
     # Just demonstrating an alternate means of navigation.  Better to use anchor tags.
     $scope.go = ( path ) ->

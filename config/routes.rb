@@ -20,6 +20,7 @@ Kopool::Application.routes.draw do
     post "advance_week", :action => "next_week!"
     get "week_results", :action => "week_results"
     get "week_picks", :controller => "picks", :action => "week_picks"
+    get "filtered_matchups", :controller => "matchups", :action => "filtered_matchups"
     resources :matchups do
       collection do
         post "save_outcome", :action => "save_outcome"

@@ -52,7 +52,7 @@ angular.module('AdminMatchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap
 
 		$scope.loadPicks = () ->
 			console.log("in loadPicks()")
-			PickResults.nested_query(week_id).then(
+			PickResults.nested_query($scope.week_id).then(
 				(picks) ->
 					$scope.picks = picks
 					$scope.associatePicks()
@@ -79,14 +79,15 @@ angular.module('AdminMatchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap
 		$scope.isPicked = (matchup) ->
 			console.log("in isPicked")
 			for pick in $scope.picks
+				console.log("in scope.picks")
 				if pick.team_id == matchup.home_team_id
-					console.log("home team matchups for " + pick.team_name)
+					console.log("home team matches up for " + pick.nfl_team.name)
 					return true
 				else if pick.team_id == matchup.away_team_id
-					console.log("away team matchups for " + pick.team_name)
+					console.log("away team matches up for " + pick.nfl_team.name)
 					return true
 				else
-					console.log("no match for " + pick.team_name)
+					console.log("no match for " + pick.nfl_team.name)
 					return false
 
 		$scope.notPicked = (matchup) ->

@@ -19,7 +19,7 @@
 			%th Away Team
 			%th 
 			%th Game Time (EASTERN)
-	%tbody{"ng-repeat" => "matchup in matchups | filter: isPicked"}
+	%tbody{"ng-repeat" => "matchup in filtered_matchups"}
 		%tr{"ng-hide" => "matchupCompleted(matchup)"}
 			%td
 				%p

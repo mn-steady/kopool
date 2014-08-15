@@ -1,6 +1,9 @@
 angular.module('AdminMatchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 
-	.controller 'AdminMatchupsCtrl', ['$scope', '$location', '$http', '$routeParams', 'Matchup', 'NflTeam', 'PoolEntry', 'currentUser', '$modal', 'WebState', 'Week', 'SeasonWeeks', 'PickResults', ($scope, $location, $http, $routeParams, Matchup, NflTeam, PoolEntry, currentUser, $modal, WebState, Week, SeasonWeeks, PickResults) ->
+	.factory 'FilteredMatchups', (RailsApiResource) ->
+		RailsApiResource('/weeks/:parent_id/filtered_matchups')
+
+	.controller 'AdminMatchupsCtrl', ['$scope', '$location', '$http', '$routeParams', 'Matchup', 'NflTeam', 'PoolEntry', 'currentUser', '$modal', 'WebState', 'Week', 'SeasonWeeks', 'PickResults', 'FilteredMatchups', ($scope, $location, $http, $routeParams, Matchup, NflTeam, PoolEntry, currentUser, $modal, WebState, Week, SeasonWeeks, PickResults, FilteredMatchups) ->
 		console.log("AdminMatchupsCtrl")
 
 		# Getting the current system status
@@ -71,24 +74,26 @@ angular.module('AdminMatchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap
 						console.log("A pick was associated with a pool entry")
 
 		$scope.loadMatchups = () ->
-			Matchup.nested_query($scope.week_id).then((matchups) ->
-				$scope.matchups = matchups
+			FilteredMatchups.nested_query($scope.week_id).then((matchups) ->
+				$scope.filtered_matchups = matchups
 				console.log("*** Have matchups for week:"+$scope.week_id + " ***")
 			)
 
-		$scope.isPicked = (matchup) ->
-			console.log("in isPicked")
-			for pick in $scope.picks
-				console.log("in scope.picks")
-				if pick.team_id == matchup.home_team_id
-					console.log("home team matches up for " + pick.nfl_team.name)
-					return true
-				else if pick.team_id == matchup.away_team_id
-					console.log("away team matches up for " + pick.nfl_team.name)
-					return true
-				else
-					console.log("no match for " + pick.nfl_team.name)
-					return false
+		# Below was used for a while, but problematic with losing certain matchups
+
+		# $scope.isPicked = (matchup) ->
+		# 	console.log("in isPicked")
+		# 	for pick in $scope.picks
+		# 		console.log("in scope.picks")
+		# 		if pick.team_id == matchup.home_team_id
+		# 			console.log("home team matches up for " + pick.nfl_team.name)
+		# 			return true
+		# 		else if pick.team_id == matchup.away_team_id
+		# 			console.log("away team matches up for " + pick.nfl_team.name)
+		# 			return true
+		# 		else
+		# 			console.log("no match for " + pick.nfl_team.name)
+		# 			return false
 
 		$scope.notPicked = (matchup) ->
 			console.log("in notPicked")

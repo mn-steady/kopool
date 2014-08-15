@@ -1,5 +1,5 @@
 class MatchupsController < ApplicationController
-	before_filter :verify_admin_user, only: [:show, :update, :save_week_outcomes, :destroy, :create]
+	before_filter :verify_admin_user, only: [:show, :update, :save_week_outcomes, :destroy, :create, :filtered_matchups]
   before_filter :verify_any_user, only: [:index]
 
   def index
@@ -11,6 +11,37 @@ class MatchupsController < ApplicationController
       format.json {render :json => @matchups.to_json(include: [{ home_team: { only: [:name, :id], :methods => [:logo_url_small] }}, away_team: {only: [:name, :id], :methods => [:logo_url_small]}] ) }
     end
 	end
+
+  def filtered_matchups
+    @week = Week.find(params[:week_id])
+
+    if @week.open_for_picks == true
+      Rails.logger.error("ERROR you can't view the picks for a week before it is closed!")
+      error_message = "You cannot view the picks for this week until the games start!"
+      render :json => [:error => error_message], :status => :bad_request
+    else
+      @this_weeks_picks = Pick.where(week_id: @week.id)
+      @matchups_this_week = Matchup.where(week_id: @week.id)
+      @filtered_matchups = []
+
+      @matchups_this_week.each do |matchup|
+        @this_weeks_picks.each do |pick|
+          if pick.team_id == matchup.home_team_id || pick.team_id == matchup.away_team_id
+            @filtered_matchups.push(matchup)
+          end
+        end
+      end
+
+      @filtered_matchups.uniq!
+
+      respond_to do |format|
+        format.json {render :json => @filtered_matchups.to_json(include: [{home_team: { only: [:name, :id], :methods => [:logo_url_small] }}, away_team: {only: [:name, :id], :methods => [:logo_url_small]}])}
+      end
+    end
+
+
+    
+  end
 
   def show
     @matchup = Matchup.where(id: params[:id]).first

@@ -79,7 +79,15 @@ angular.module('AdminMatchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap
 		$scope.isPicked = (matchup) ->
 			console.log("in isPicked")
 			for pick in $scope.picks
-				if pick.team_id == (matchup.home_team_id or matchup.away_team_id) then return true
+				if pick.team_id == matchup.home_team_id
+					console.log("home team matchups for " + pick.team_name)
+					return true
+				else if pick.team_id == matchup.away_team_id
+					console.log("away team matchups for " + pick.team_name)
+					return true
+				else
+					console.log("no match for " + pick.team_name)
+					return false
 
 		$scope.notPicked = (matchup) ->
 			console.log("in notPicked")

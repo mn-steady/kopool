@@ -125,7 +125,7 @@ class WeeksController < ApplicationController
       render :json => [:error => error_message], :status => :bad_request
     else
       @season = @week.season
-      @pool_entries_this_season = PoolEntry.where(season_id: @season.id)
+      @pool_entries_this_season = PoolEntry.where(season_id: @season.id).order('team_name ASC')
 
       respond_to do | format |
         format.json {render json: @pool_entries_this_season}

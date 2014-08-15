@@ -59,11 +59,12 @@ angular.module('AdminMatchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap
 				(picks) ->
 					$scope.picks = picks
 					$scope.associatePicks()
-					$scope.loadMatchups()
+					$scope.loadFilteredMatchups()
+					$scope.loadAllMatchups()
 					console.log("Have picks")
 				(json_error_data) ->
 					$scope.error_message = json_error_data.data[0].error
-					$scope.loadMatchups()
+					$scope.loadFilteredMatchups()
 			)
 
 		$scope.associatePicks = ->
@@ -73,10 +74,16 @@ angular.module('AdminMatchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap
 						angular.extend(pool_entry, pick)
 						console.log("A pick was associated with a pool entry")
 
-		$scope.loadMatchups = () ->
+		$scope.loadFilteredMatchups = () ->
 			FilteredMatchups.nested_query($scope.week_id).then((matchups) ->
 				$scope.filtered_matchups = matchups
 				console.log("*** Have FILTERED matchups for week:"+$scope.week_id + " ***")
+			)
+
+		$scope.loadAllMatchups = () ->
+			Matchup.nested_query($scope.week_id).then((matchups) ->
+				$scope.all_matchups = matchups
+				console.log("*** Have ALL matchups for week:"+$scope.week_id + " ***")
 			)
 
 		# Below was used for a while, but problematic with losing certain matchups
@@ -154,7 +161,7 @@ angular.module('AdminMatchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap
 			console.log("Saving outcome for matchup"+matchup)
 			week_id = matchup.week_id
 			Matchup.post("save_outcome", matchup, week_id).then(()->
-				$scope.loadMatchups()
+				$scope.loadFilteredMatchups()
 			)
 
 		$scope.matchupCompleted = (matchup) ->

@@ -1,7 +1,7 @@
 angular.module('AdminMatchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 
 	.factory 'FilteredMatchups', (RailsApiResource) ->
-		RailsApiResource('/weeks/:parent_id/filtered_matchups')
+		RailsApiResource('weeks/:parent_id/filtered_matchups', 'matchups')
 
 	.controller 'AdminMatchupsCtrl', ['$scope', '$location', '$http', '$routeParams', 'Matchup', 'NflTeam', 'PoolEntry', 'currentUser', '$modal', 'WebState', 'Week', 'SeasonWeeks', 'PickResults', 'FilteredMatchups', ($scope, $location, $http, $routeParams, Matchup, NflTeam, PoolEntry, currentUser, $modal, WebState, Week, SeasonWeeks, PickResults, FilteredMatchups) ->
 		console.log("AdminMatchupsCtrl")
@@ -76,7 +76,7 @@ angular.module('AdminMatchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap
 		$scope.loadMatchups = () ->
 			FilteredMatchups.nested_query($scope.week_id).then((matchups) ->
 				$scope.filtered_matchups = matchups
-				console.log("*** Have matchups for week:"+$scope.week_id + " ***")
+				console.log("*** Have FILTERED matchups for week:"+$scope.week_id + " ***")
 			)
 
 		# Below was used for a while, but problematic with losing certain matchups

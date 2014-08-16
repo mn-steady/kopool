@@ -1,6 +1,6 @@
 angular.module('PoolEntries', ['ngResource', 'RailsApiResource'])
 
-	.factory 'PoolEntriesThisWeek', (RailsApiResource) ->
+	.factory 'WeekResults', (RailsApiResource) ->
 		RailsApiResource('weeks/:parent_id/week_results', 'pool_entries')
 
 	.factory 'NflTeam', (RailsApiResource) ->
@@ -9,7 +9,7 @@ angular.module('PoolEntries', ['ngResource', 'RailsApiResource'])
 	.factory 'PickResults', (RailsApiResource) ->
 		RailsApiResource('weeks/:parent_id/week_picks', 'picks')
 
-	.controller 'PoolEntriesCtrl', ['$scope', '$location', '$http', '$routeParams', 'NflTeam', 'PoolEntriesThisWeek', 'PickResults', 'WebState', 'SeasonWeeks', ($scope, $location, $http, $routeParams, NflTeam, PoolEntriesThisWeek, PickResults, WebState, SeasonWeeks) ->
+	.controller 'PoolEntriesCtrl', ['$scope', '$location', '$http', '$routeParams', 'NflTeam', 'WeekResults', 'PickResults', 'WebState', 'SeasonWeeks', ($scope, $location, $http, $routeParams, NflTeam, WeekResults, PickResults, WebState, SeasonWeeks) ->
 
 		week_id = parseInt( $routeParams.week_id, 10 )
 		$scope.week_id = week_id
@@ -33,11 +33,13 @@ angular.module('PoolEntries', ['ngResource', 'RailsApiResource'])
 				console.log("*** Have nfl_teams***")
 			)
 
-			PoolEntriesThisWeek.nested_query(week_id).then(
-				(pool_entries) ->
-					$scope.pool_entries = pool_entries
-					$scope.sortPoolEntries(pool_entries)
-					console.log("*** Have pool entries for results ***")
+			WeekResults.nested_query(week_id).then(
+				(week_results) ->
+					$scope.pool_entries_still_alive = week_results[0]
+					$scope.pool_entries_knocked_out_this_week = week_results[1]
+					$scope.pool_entries_knocked_out_previously = week_results[2]
+					$scope.unmatched_pool_entries = week_results[3]
+					console.log("*** Have week results ***")
 				(json_error_data) ->
 					$scope.error_message = json_error_data.data[0].error
 			)

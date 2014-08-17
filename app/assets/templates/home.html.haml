@@ -9,7 +9,7 @@
           %a.btn.btn-primary.btn-lg{href: "#/users/register", role: "button", "ng-show" => "register_button_show()"} {{register_button_text()}}
       .col-md-4
         %img.img-rounded.frontpage-logo{alt: "KO Pool Logo", src: asset_path('kopool_c_med.png')}
-        %div.title-text.text-center Round {{current_week.week_number}}
+        %div.title-text.text-center {{display_round_number()}}
 .container
 
   .row

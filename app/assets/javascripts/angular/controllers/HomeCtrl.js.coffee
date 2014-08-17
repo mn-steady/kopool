@@ -68,7 +68,7 @@ angular.module('Home', ['ngResource', 'RailsApiResource', 'user'])
       $scope.getTotalPot()
 
     $scope.getTotalPot = () ->
-      $scope.total_pot = $scope.active_pool_entries_count * 50
+      $scope.total_pot = $scope.pool_entries.length * 50
       console.log("Calculated total pot")
 
 
@@ -99,6 +99,10 @@ angular.module('Home', ['ngResource', 'RailsApiResource', 'user'])
         "There are currently " + $scope.active_pool_entries_count + " teams remaining in the ring, battling for a sum of $" + $scope.total_pot + "!"
       else
         "Sign-in for the weekly summary"
+
+    $scope.display_round_number = ->
+      if currentUser.authorized
+        "Round " + $scope.web_state.current_week.week_number
 
     $scope.register_button_text = () ->
       if currentUser.authorized

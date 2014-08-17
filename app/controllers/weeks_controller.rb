@@ -124,11 +124,30 @@ class WeeksController < ApplicationController
       error_message = "You can't see the results for this week until this week's games have started."
       render :json => [:error => error_message], :status => :bad_request
     else
+      @pool_entries_knocked_out_this_week = []
+      @pool_entries_still_alive = []
+      @pool_entries_knocked_out_previously = []
+      @unmatched_pool_entries = []
+
       @season = @week.season
       @pool_entries_this_season = PoolEntry.where(season_id: @season.id).order('team_name ASC')
 
+      @pool_entries_this_season.each do |pool_entry|
+        if pool_entry.knocked_out == false
+          @pool_entries_still_alive.push(pool_entry)
+        elsif pool_entry.knocked_out_week_id == @week.id
+          @pool_entries_knocked_out_this_week.push(pool_entry)
+        elsif pool_entry.knocked_out == true
+          @pool_entries_knocked_out_previously.push(pool_entry)
+        else
+          @unmatched_pool_entries.push(pool_entry)
+        end
+      end
+      @week_results = [@pool_entries_still_alive, @pool_entries_knocked_out_this_week, @pool_entries_knocked_out_previously, @unmatched_pool_entries]
+
       respond_to do | format |
-        format.json {render json: @pool_entries_this_season}
+        #need to include pick information
+        format.json {render :json => @week_results.to_json}
       end
     end
   end

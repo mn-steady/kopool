@@ -14,8 +14,13 @@ class PoolEntry < ActiveRecord::Base
     PoolEntry.where(season: week.season).where(knocked_out: false).where.not(id: pools_have_picked).order(:id)
   end
 
-  def most_recent_picks_nfl_team(week_id)
-    @pick = Pick.where(pool_entry_id: self.id).where(week_id: week_id).first
+  def most_recent_picks_nfl_team(week)
+    @pick = Pick
+      .where(pool_entry_id: self.id)
+      .joins(:week)
+      .where('weeks.season_id = ?',week.season_id)
+      .where('week_id <= ?', week)
+      .order('week_id DESC').first
     return {} unless @pick.present?
     @returned_nfl_team = {nfl_team_id: @pick.team_id, logo_url_small: @pick.nfl_team.logo_url_small}
   end

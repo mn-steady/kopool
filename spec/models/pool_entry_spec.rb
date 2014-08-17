@@ -63,7 +63,7 @@ describe PoolEntry do
     end
 
     it "should return a structure with the team and logo" do
-      recent_pick = @pool_entry_pick1.most_recent_picks_nfl_team(@week.id)
+      recent_pick = @pool_entry_pick1.most_recent_picks_nfl_team(@week)
       expect(recent_pick[:nfl_team_id]).to eq(@matchup.away_team.id)
     end
   end

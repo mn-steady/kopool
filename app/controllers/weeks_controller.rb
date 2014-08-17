@@ -129,26 +129,30 @@ class WeeksController < ApplicationController
       @pool_entries_knocked_out_previously = []
       @unmatched_pool_entries = []
 
-      @returned_pool_entry = {}
-
       @season = @week.season
+      Rails.logger.debug("(weeks_controller.week_results) checking seasion #{@season.id} week id:#{@week.id}")
       @pool_entries_this_season = PoolEntry.where(season_id: @season.id).order('team_name ASC')
+      Rails.logger.debug("(weeks_controller.week_results) have #{@pool_entries_this_season.count} pool entries")
 
       @pool_entries_this_season.each do |pool_entry|
 
+        Rails.logger.debug("(weeks_controller.week_results) Examining Pool Entry #{pool_entry.id}")
+
+        @returned_pool_entry = {}
         @returned_pool_entry[:id] = pool_entry.id
         @returned_pool_entry[:team_name] = pool_entry.team_name
-        @returned_pool_entry[:nfl_team] = pool_entry.most_recent_picks_nfl_team(@week.id)
+        @returned_pool_entry[:nfl_team] = pool_entry.most_recent_picks_nfl_team(@week)
 
-        if pool_entry.knocked_out == false
-          @pool_entries_still_alive.push(@returned_pool_entry)
-        elsif pool_entry.knocked_out_week_id == @week.id
+        @pool_entries_still_alive.push(@returned_pool_entry) unless pool_entry.knocked_out
+
+        if pool_entry.knocked_out and pool_entry.knocked_out_week_id == @week.id
           @pool_entries_knocked_out_this_week.push(@returned_pool_entry)
-        elsif pool_entry.knocked_out == true
-          @pool_entries_knocked_out_previously.push(@returned_pool_entry)
-        else
-          @unmatched_pool_entries.push(@returned_pool_entry)
         end
+
+        if pool_entry.knocked_out and pool_entry.knocked_out_week_id != @week.id
+          @pool_entries_knocked_out_previously.push(@returned_pool_entry)
+        end
+
       end
       @week_results = [@pool_entries_still_alive, @pool_entries_knocked_out_this_week, @pool_entries_knocked_out_previously, @unmatched_pool_entries]
 

@@ -100,6 +100,10 @@ angular.module('Home', ['ngResource', 'RailsApiResource', 'user'])
       else
         "Sign-in for the weekly summary"
 
+    $scope.display_round_number = ->
+      if currentUser.authorized
+        "Round " + $scope.web_state.current_week.week_number
+
     $scope.register_button_text = () ->
       if currentUser.authorized
         "Add Pool Entries »"

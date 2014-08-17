@@ -14,9 +14,9 @@ class PoolEntry < ActiveRecord::Base
     PoolEntry.where(season: week.season).where(knocked_out: false).where.not(id: pools_have_picked).order(:id)
   end
 
-  def most_recent_pick
-    # Find the most recent pick, and then the pick's NFL Team, for a given pool entry
-    # Use this in the JSON return for week_results
+  def most_recent_picks_nfl_team(week_id)
+    @pick = Pick.where(pool_entry_id: self.id).where(week_id: week_id).first
+    @returned_nfl_team = {nfl_team_id: @pick.team_id, logo_url_small: @pick.nfl_team.logo_url_small}
   end
 
 end

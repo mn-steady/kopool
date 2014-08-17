@@ -129,24 +129,30 @@ class WeeksController < ApplicationController
       @pool_entries_knocked_out_previously = []
       @unmatched_pool_entries = []
 
+      @returned_pool_entry = {}
+
       @season = @week.season
       @pool_entries_this_season = PoolEntry.where(season_id: @season.id).order('team_name ASC')
 
       @pool_entries_this_season.each do |pool_entry|
+
+        @returned_pool_entry[:id] = pool_entry.id
+        @returned_pool_entry[:team_name] = pool_entry.team_name
+        @returned_pool_entry[:nfl_team] = pool_entry.most_recent_picks_nfl_team(@week.id)
+
         if pool_entry.knocked_out == false
-          @pool_entries_still_alive.push(pool_entry)
+          @pool_entries_still_alive.push(@returned_pool_entry)
         elsif pool_entry.knocked_out_week_id == @week.id
-          @pool_entries_knocked_out_this_week.push(pool_entry)
+          @pool_entries_knocked_out_this_week.push(@returned_pool_entry)
         elsif pool_entry.knocked_out == true
-          @pool_entries_knocked_out_previously.push(pool_entry)
+          @pool_entries_knocked_out_previously.push(@returned_pool_entry)
         else
-          @unmatched_pool_entries.push(pool_entry)
+          @unmatched_pool_entries.push(@returned_pool_entry)
         end
       end
       @week_results = [@pool_entries_still_alive, @pool_entries_knocked_out_this_week, @pool_entries_knocked_out_previously, @unmatched_pool_entries]
 
       respond_to do | format |
-        #need to include pick information
         format.json {render :json => @week_results.to_json}
       end
     end

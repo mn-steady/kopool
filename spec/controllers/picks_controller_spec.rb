@@ -2,13 +2,12 @@ require 'spec_helper'
 
 describe PicksController do
 
-  pending "should gracefully trap if user attempts to change after locked_in"
-
   describe "GET index" do
 
   	before do
 			@user = create(:user, admin: true)
 			sign_in :user, @user
+			@current_user = @user
 
 			@season = Season.create(year: 2014, name: "2014 Season", entry_fee: 50)
 			@week = Week.create(season: @season, week_number: 1, start_date: DateTime.new(2014, 8, 5), deadline: DateTime.new(2014, 8, 8), end_date: DateTime.new(2014, 8, 11))
@@ -23,11 +22,13 @@ describe PicksController do
   	pending "sets @picks to the user's picks from this season" do
   		pick1 = Pick.create(pool_entry: @pool_entry1, week: @week, team_id: @vikings.id)
   		pick2 = Pick.create(pool_entry: @pool_entry2, week: @week, team_id: @broncos.id)
-  		get :index, week_id: @week.id # This isn't working for some reason
+  		get :index, week_id: @week.id, format: :json # not working, likely from use of current user in PicksController#index
   		expect(@picks).to eq([pick1, pick2])
+  	end
+
+  	it "does not include another user's picks in @picks" do
 
   	end
-  	it "does not include another user's picks in @picks"
   	it "does not include picks from a different season in @picks"
   end
 
@@ -51,12 +52,6 @@ describe PicksController do
 	  		it "sets a flash danger message"
 	  	end
 
-	  end
-
-	  context "with an unpaid pool entry" do
-	  	it "does save the pick"
-	  	it "redirects to the My Picks page"
-	  	it "sets a flash warning message about the unpaid balance"
 	  end
 
 	  context "with a knocked out pool entry" do
@@ -90,15 +85,39 @@ describe PicksController do
 			@matchup = Matchup.create(week_id: @week.id, home_team: @broncos, away_team: @vikings, game_time: DateTime.new(2014,8,10,11))
 		end
 
-  	pending "returns the picks from this week" do
-  		pick1 = Pick.create(pool_entry: @pool_entry1, week: @week, team_id: @vikings.id)
-  		pick2 = Pick.create(pool_entry: @pool_entry2, week: @week, team_id: @broncos.id)
-  		get :week_picks, week_id: @week.id, format: :json
-  		@expected = ([pick1, pick2]).to_json(include: [nfl_team: {only: [:id, :name]}])
-  		@expected_parsed = JSON.parse(@expected)
-  		body = JSON.parse(response.body)
-  		expect(body).to eq(@expected_parsed)
+		context "week is closed for picks" do
+
+			before do
+				@week.update_attributes(open_for_picks: false)
+			end
+
+			it "returns the picks from this week" do
+	  		pick1 = Pick.create(pool_entry: @pool_entry1, week: @week, team_id: @vikings.id)
+	  		pick2 = Pick.create(pool_entry: @pool_entry2, week: @week, team_id: @broncos.id)
+	  		get :week_picks, week_id: @week.id, format: :json
+	  		expect(response.status).to eq(Rack::Utils.status_code(:ok))
+
+	  		returned = JSON.parse(response.body)
+
+	  		expect(returned.count).to eq(2)
+	  		expect(returned.first['nfl_team']['name']).to eq("Minnesota Vikings")
+	  	end
   	end
+
+		context "week is open for picks" do
+
+			it "returns an error message" do
+				pick1 = Pick.create(pool_entry: @pool_entry1, week: @week, team_id: @vikings.id)
+	  		pick2 = Pick.create(pool_entry: @pool_entry2, week: @week, team_id: @broncos.id)
+	  		get :week_picks, week_id: @week.id, format: :json
+	  		expect(response.status).to eq(Rack::Utils.status_code(:bad_request))
+
+	  		returned = JSON.parse(response.body)
+
+	  		expect(returned[0]['error']).to be_present
+			end
+			
+		end
   end
 
 end

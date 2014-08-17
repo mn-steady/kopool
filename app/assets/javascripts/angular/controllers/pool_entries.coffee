@@ -40,6 +40,7 @@ angular.module('PoolEntries', ['ngResource', 'RailsApiResource'])
 					$scope.pool_entries_knocked_out_previously = week_results[2]
 					$scope.unmatched_pool_entries = week_results[3]
 					console.log("*** Have week results ***")
+					$scope.gatherPicks()
 				(json_error_data) ->
 					$scope.error_message = json_error_data.data[0].error
 			)
@@ -76,21 +77,27 @@ angular.module('PoolEntries', ['ngResource', 'RailsApiResource'])
 			$scope.picks = []
 			PickResults.nested_query(week_id).then((this_weeks_picks) ->
 				$scope.picks = this_weeks_picks
+				console.log("gathered Picks")
 				$scope.associatePicks()
 			)
 
 		$scope.associatePicks = () ->
 			console.log("in associatePicks")
 			for pool_entry in $scope.pool_entries_knocked_out_this_week
+				console.log("Looking at pool entry of ID " + pool_entry.id + " in knocked_out_this_week")
 				for pick in $scope.picks
 					if pick.pool_entry_id == pool_entry.id
+						console.log("KNOCKED OUT: A pick with pool entry ID of " + pick.pool_entry_id + " was associated with a pool entry of ID: " + pool_entry.id )
 						angular.extend(pool_entry, pick)
-						console.log("A pick was associated with a pool entry that has been knocked out")
+			console.log("Finished knocked out")
+			
 			for pool_entry in $scope.pool_entries_still_alive
+				console.log("Looking at pool entry of ID " + pool_entry.id + " in still_alive")
 				for pick in $scope.picks
 					if pick.pool_entry_id == pool_entry.id
+						console.log("STILL ALIVE: A pick with pool entry ID of " + pick.pool_entry_id + " was associated with a pool entry of ID: " + pool_entry.id )
 						angular.extend(pool_entry, pick)
-						console.log("A pick was associated with a pool entry that is still alive")
+			console.log("Finished still alive")
 
 		$scope.results_header = ->
 			console.log("(matchup_header) week_id:" + parseInt($scope.week_id) + " current_week.id:" + $scope.current_week.id)

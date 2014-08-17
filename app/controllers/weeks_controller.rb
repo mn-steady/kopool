@@ -147,7 +147,7 @@ class WeeksController < ApplicationController
 
       respond_to do | format |
         #need to include pick information
-        format.json {render :json => @week_results.to_json(include: [{}])}
+        format.json {render :json => @week_results.to_json}
       end
     end
   end

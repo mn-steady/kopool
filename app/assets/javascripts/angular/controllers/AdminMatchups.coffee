@@ -37,6 +37,7 @@ angular.module('AdminMatchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap
 				$scope.loadPicks()
 				$scope.loadNflTeams()
 				$scope.load_season_weeks()
+				$scope.loadAllMatchups()
 				console.log("*** Have pool entries, picks, teams, and season-weeks ***")
 			)
 
@@ -60,7 +61,6 @@ angular.module('AdminMatchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap
 					$scope.picks = picks
 					$scope.associatePicks()
 					$scope.loadFilteredMatchups()
-					$scope.loadAllMatchups()
 					console.log("Have picks")
 				(json_error_data) ->
 					$scope.error_message = json_error_data.data[0].error

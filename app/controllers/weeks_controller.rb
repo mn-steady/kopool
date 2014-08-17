@@ -132,7 +132,9 @@ class WeeksController < ApplicationController
       @returned_pool_entry = {}
 
       @season = @week.season
+      Rails.logger.debug("(weeks_controller.week_results) checking seasion #{@season.id} week id:#{@week.id}")
       @pool_entries_this_season = PoolEntry.where(season_id: @season.id).order('team_name ASC')
+      Rails.logger.debug("(weeks_controller.week_results) have #{@pool_entries_this_season.count} pool entries")
 
       @pool_entries_this_season.each do |pool_entry|
 

@@ -16,6 +16,7 @@ class PoolEntry < ActiveRecord::Base
 
   def most_recent_picks_nfl_team(week_id)
     @pick = Pick.where(pool_entry_id: self.id).where(week_id: week_id).first
+    return {} unless @pick.present?
     @returned_nfl_team = {nfl_team_id: @pick.team_id, logo_url_small: @pick.nfl_team.logo_url_small}
   end
 

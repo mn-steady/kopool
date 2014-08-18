@@ -47,6 +47,7 @@ describe PoolEntriesController do
 		end
 
 		context "with invalid input" do
+			
 			before do
 				@user = create(:user, admin: true)
 				sign_in :user, @user

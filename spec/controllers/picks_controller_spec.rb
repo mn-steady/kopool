@@ -7,7 +7,6 @@ describe PicksController do
   	before do
 			@user = create(:user, admin: true)
 			sign_in :user, @user
-			@current_user = @user
 
 			@season = Season.create(year: 2014, name: "2014 Season", entry_fee: 50)
 			@week = Week.create(season: @season, week_number: 1, start_date: DateTime.new(2014, 8, 5), deadline: DateTime.new(2014, 8, 8), end_date: DateTime.new(2014, 8, 11))
@@ -116,8 +115,6 @@ describe PicksController do
 
 	  		expect(returned[0]['error']).to be_present
 			end
-			
 		end
   end
-
 end

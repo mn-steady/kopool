@@ -25,10 +25,21 @@ class PoolEntriesController < ApplicationController
     Rails.logger.debug("(PoolEntries.create)")
     cleaned_params = pool_entries_params
     @pool_entry = PoolEntry.new(user: current_user, team_name: cleaned_params[:team_name])
+    @web_state = WebState.first
+    @week = Week.find(@web_state.week_id)
+    @season = @week.season
+
+    @pool_entry.season_id = @season.id
 
     # @pool_entry.update_attributes(pool_entries_params)
 
-    if @pool_entry.save()
+    if @week.week_number != 1
+      respond_to do | format |
+        error_message = "You cannot create pool entries after the season has started"
+        @pool_entry.errors.each{|attr,msg| error_message << "#{attr} #{msg} " }
+        format.json { render :json => [:error => error_message], :status => :bad_request}
+      end
+    elsif @pool_entry.save()
       respond_to do | format |
         format.json {render json: @pool_entry}
       end

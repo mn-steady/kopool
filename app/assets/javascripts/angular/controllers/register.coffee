@@ -205,7 +205,7 @@ angular.module('Register', ['ngResource', 'RailsApiResource', 'user'])
           false
 
       $scope.open_for_registration = () ->
-        $scope.web_state.current_week.season.open_for_registration
+        $scope.web_state.current_week.open_for_picks
 
       $scope.season_id = () ->
         $scope.web_state.current_week.season.id

@@ -111,7 +111,7 @@ angular.module('Home', ['ngResource', 'RailsApiResource', 'user'])
         "Register »"
 
     $scope.register_button_show = () ->
-      $scope.web_state.current_week.week_number == 1 && $scope.web_state.current_week.season.open_for_registration == true
+      $scope.web_state.current_week.week_number == 1 && $scope.web_state.current_week.open_for_picks == true
 
     # Just demonstrating an alternate means of navigation.  Better to use anchor tags.
     $scope.go = ( path ) ->

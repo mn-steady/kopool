@@ -2,14 +2,11 @@ class PicksController < ApplicationController
 	before_filter :verify_any_user, only: [:create, :update, :week_picks]
 
 	def index
-
 		Rails.logger.debug("PicksController.index")
 		@picks = Pick.where(week_id: params[:week_id]).joins(:pool_entry).where('pool_entries.user_id = ?', current_user.id)
-
 		respond_to do | format |
 			format.json {render :json => @picks.to_json(include: [{pool_entry: {only: [:id, :team_name] }}, nfl_team: {only: [:id, :name], :methods => [:logo_url_small]}] ) }
 		end
-
 	end
 
 	def create
@@ -20,12 +17,12 @@ class PicksController < ApplicationController
 
 		if @pick.save
 			respond_to do | format |
-				format.json {render json: @pick }
+				format.json { render json: @pick }
 			end
 		else
 			respond_to do | format |
 				error_message = ""
-				@pick.errors.each{ |attr,msg| error_message << "#{attr} #{msg}" }
+				@pick.errors.each{ |attr,msg| error_message << "#{attr} #{msg} " }
 				format.json { render :json => [:error =>  error_message], :status => :internal_server_error}
 			end
 		end
@@ -35,7 +32,7 @@ class PicksController < ApplicationController
 		Rails.logger.debug("Picks.update")
 		@pool_entry = PoolEntry.find(params[:pool_entry_id])
 		@pick = Pick.where(week_id: params[:week_id], pool_entry_id: params[:pool_entry_id]).first unless current_user.id != @pool_entry.user_id
-		
+
 		@pick.update_attributes(picks_params)
 
 		if @pick.save
@@ -45,7 +42,7 @@ class PicksController < ApplicationController
 		else
 			respond_to do | format |
 				error_message = ""
-				@pick.errors.each{ |attr,msg| error_message << "#{attr} #{msg}" }
+				@pick.errors.each{ |attr,msg| error_message << "#{attr} #{msg} " }
 				format.json { render :json => [:error =>  error_message], :status => :internal_server_error}
 			end
 		end

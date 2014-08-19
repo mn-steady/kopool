@@ -19,5 +19,4 @@ describe User do
     end
   end
 
-  pending "Add more User tests"
 end

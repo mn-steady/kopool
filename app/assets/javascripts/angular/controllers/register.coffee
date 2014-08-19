@@ -238,6 +238,9 @@ angular.module('Register', ['ngResource', 'RailsApiResource', 'user'])
         else
           return false
 
+      $scope.show_week_1_picks_button = () ->
+        $scope.persist_button_show() and $scope.persist_button_disabled()
+
       $scope.persist_button_text = () ->
         if $scope.pool_entries_persisted == $scope.pool_entries.length
           "Teams have been Setup"

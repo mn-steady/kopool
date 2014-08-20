@@ -138,7 +138,8 @@ describe WeeksController do
 
     it "returns pool entries without a pick for this week" do
       get :unpicked, week_id: @week.id, format: :json
-      expect(response).to eq(Rack::Utils.status_code(:ok))
+
+      expect(response.status).to eq(Rack::Utils.status_code(:ok))
 
       returned = JSON.parse(response.body)
 

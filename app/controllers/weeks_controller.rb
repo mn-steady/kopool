@@ -164,7 +164,6 @@ class WeeksController < ApplicationController
 
   def unpicked
     Rails.logger.debug("weeks_controller.unpicked")
-    binding.pry
     @webstate = WebState.first
     @week = Week.find(params[:week_id])
     @season = @week.season

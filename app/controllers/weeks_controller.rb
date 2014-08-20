@@ -175,9 +175,12 @@ class WeeksController < ApplicationController
 
     @active_pool_entries.each do |pool_entry|
 
+      Rails.logger.debug("(weeks_controller.week_results) Examining Pool Entry #{pool_entry.id}")
+
       @returned_pool_entry = {}
       @returned_pool_entry[:id] = pool_entry.id
       @returned_pool_entry[:team_name] = pool_entry.team_name
+
 
       if pool_entry.picks == []
         @unpicked_pool_entries.push(pool_entry)

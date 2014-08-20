@@ -6,7 +6,7 @@ describe PoolEntriesController do
 
 		before do
 			@season = Season.create(year: 2014, name: "2014 Season", entry_fee: 50)
-      @week = Week.create(season: @season, week_number: 1, start_date: DateTime.new(2014, 8, 5), deadline: DateTime.new(2014, 8, 8), end_date: DateTime.new(2014, 8, 11))
+      @week = Week.create(season: @season, week_number: 1, open_for_picks: true, start_date: DateTime.new(2014, 8, 5), deadline: DateTime.new(2014, 8, 8), end_date: DateTime.new(2014, 8, 11))
       @web_state = FactoryGirl.create(:web_state, current_week: @week)
 		end
 
@@ -51,5 +51,56 @@ describe PoolEntriesController do
 			end
 
 		end
+
+		context "deleting persisted pool entries (possible future functionality)" do
+
+			before do
+				@regular_guy = create(:user)
+				sign_in @regular_guy
+			end
+
+			it "will let a user delete his/her own pool entries if the first week is open for picks" do
+				@params = { 'team_name' => "Test Team", 'format' => 'json'}
+				post :create, @params
+				expect(PoolEntry.first.team_name).to eq("Test Team")
+				pool_entry = PoolEntry.first
+				@params = { 'id' => pool_entry.id, 'format' => 'json'}
+				delete :destroy, @params
+				expect(response.status).to eq(Rack::Utils.status_code(:ok))
+				expect(PoolEntry.count).to eq(0)
+			end
+
+			it "will not let one user delete another users pool entries" do
+				@params = { 'team_name' => "Test Team", 'format' => 'json'}
+				post :create, @params
+				expect(PoolEntry.first.team_name).to eq("Test Team")
+				pool_entry = PoolEntry.first
+				sign_out @regular_guy
+
+				@different_guy = create(:user, email: 'different@test.com')
+				sign_in @different_guy
+				@params = { 'id' => pool_entry.id, 'format' => 'json'}
+				delete :destroy, @params
+				expect(response.status).to eq(Rack::Utils.status_code(:internal_server_error))
+				expect(PoolEntry.count).to eq(1)
+			end
+
+			it "will not delete a new pool entry after the first week" do
+				@params = { 'team_name' => "Test Team", 'format' => 'json'}
+				post :create, @params
+				expect(PoolEntry.first.team_name).to eq("Test Team")
+				pool_entry = PoolEntry.first
+
+				@week.update_attributes(week_number: 2)
+
+				@params = { 'id' => pool_entry.id, 'format' => 'json'}
+				delete :destroy, @params
+				expect(response.status).to eq(Rack::Utils.status_code(:internal_server_error))
+				expect(PoolEntry.count).to eq(1)
+			end
+
+		end
+
+
 	end
 end

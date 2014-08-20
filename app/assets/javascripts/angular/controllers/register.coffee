@@ -163,7 +163,7 @@ angular.module('Register', ['ngResource', 'RailsApiResource', 'user'])
       $scope.$watch 'registering_user.num_pool_entries', (newVal, oldVal) ->
         console.log("(num_pool_entries.watch) old="+oldVal + " new=" + newVal)
         if !$scope.user_needs_registration()
-          console.log("(num_pool_entries.watch) Adding pool entries after registration")
+          console.log("(num_pool_entries.watch) Changing pool entries AFTER registration")
           num_existing_teams = $scope.pool_entries.length
           console.log("(num_pool_entries.watch) existing team count="+ num_existing_teams)
           if newVal > num_existing_teams
@@ -171,15 +171,23 @@ angular.module('Register', ['ngResource', 'RailsApiResource', 'user'])
               console.log("CANNOT ADD ANY MORE TEAMS")
               newVal = oldVal
               $scope.editing_team = oldVal
-              $scope.num_new_pool_entries()
             else
               console.log("Pushing a new team")
               $scope.pool_entries.push(id: newVal, team_name: "", paid: false, persisted: false)
-          if newVal < num_existing_teams
-            console.log("CANNOT REMOVE TEAMS AFTER REGISTERED")
-            $scope.registering_user.num_pool_entries = oldVal
+          if newVal < num_existing_teams and num_existing_teams > 0
+            console.log("(num_pool_entries.watch) Wants to remove a team")
+            team_to_axe = $scope.pool_entries[num_existing_teams-1]
+            if team_to_axe.persisted
+              console.log("(num_pool_entries.watch) This team was persisted!")
+              $scope.registering_user.num_pool_entries = oldVal
+              newVal = oldVal
+            else
+              console.log("(num_pool_entries.watch) Can remove non-persisted team")
+              team_to_axe = $scope.pool_entries.pop()
           if newVal == num_existing_teams
-            console.log("Already have this many teams")
+            console.log("(num_pool_entries.watch) Already have this many teams")
+        else
+          console.log("(num_pool_entries.watch) Changing pool entries BEFORE registration")
 
 
       $scope.set_editing_team = (index) ->

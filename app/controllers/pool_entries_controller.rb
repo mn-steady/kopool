@@ -1,7 +1,7 @@
 class PoolEntriesController < ApplicationController
 
-  before_filter :verify_admin_user, only: [:show, :update, :destroy]
-  before_filter :verify_any_user, only: [:index, :create, :index_even_knocked_out]
+  before_filter :verify_admin_user, only: [:show, :update]
+  before_filter :verify_any_user, only: [:index, :create, :index_even_knocked_out, :destroy]
 
   def index
     Rails.logger.debug("(PoolEntriesController.index) is user")
@@ -73,6 +73,23 @@ class PoolEntriesController < ApplicationController
         error_message = ""
         @pool_entry.errors.each{ |attr,msg| error_message << "#{attr} #{msg}" }
         format.json { render :json => [:error => error_message], :status => :bad_request}
+      end
+    end
+  end
+
+  def destroy
+    Rails.logger.debug("(PoolEntriesController.destroy)")
+    cleaned_params = pool_entries_params
+    @web_state = WebState.first
+    @week = Week.find(@web_state.week_id)
+    @pool_entry = PoolEntry.where(id: cleaned_params[:id]).where(user_id: current_user.id).first
+    if @week.week_number == 1 and @week.open_for_picks == true and @pool_entry.present? and @pool_entry.delete()
+      respond_to do | format |
+        format.json {render json: @pool_entry}
+      end
+    else
+      respond_to do | format |
+        format.json { render :json => [], :status => :internal_server_error }
       end
     end
   end

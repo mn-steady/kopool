@@ -110,6 +110,7 @@ ActiveRecord::Schema.define(version: 20140820020401) do
 
   create_table "web_states", force: true do |t|
     t.integer  "week_id",    null: false
+    t.string   "broadcast_message", default: "", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

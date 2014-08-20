@@ -1,7 +1,7 @@
 angular.module('AdminPoolEntries', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 
 	.factory 'UnpickedPoolEntries', (RailsApiResource) ->
-		RailsApiResource('weeks/:parent_id/unpicked', 'pool_entries')
+		RailsApiResource('weeks/:parent_id/unpicked', 'unpicked_pool_entries')
 
 	.controller 'AdminPoolEntriesCtrl', ['$scope', '$location', '$http', '$routeParams', 'PoolEntriesThisSeason', 'WebState', 'SeasonWeeks', 'PoolEntry', 'UnpickedPoolEntries', ($scope, $location, $http, $routeParams, PoolEntriesThisSeason, WebState, SeasonWeeks, PoolEntry, UnpickedPoolEntries) ->
 

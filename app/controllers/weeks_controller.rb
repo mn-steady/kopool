@@ -164,31 +164,15 @@ class WeeksController < ApplicationController
 
   def unpicked
     Rails.logger.debug("weeks_controller.unpicked")
+    binding.pry
     @webstate = WebState.first
     @week = Week.find(params[:week_id])
     @season = @week.season
 
-    @this_weeks_picks = Pick.where(week_id: params[:week_id])
-    @active_pool_entries = PoolEntry.where(knocked_out: false).where(season_id: @season.id)
+    @unpicked_pool_entries = PoolEntry.where(knocked_out: false).where(season_id: @season.id).all(:conditions => ["pool_entries.id NOT IN (SELECT picks.pool_entry_id FROM picks where week_id = #{@week.id})"])
 
-    @unpicked_pool_entries = []
-
-    @active_pool_entries.each do |pool_entry|
-
-      Rails.logger.debug("(weeks_controller.week_results) Examining Pool Entry #{pool_entry.id}")
-
-      @returned_pool_entry = {}
-      @returned_pool_entry[:id] = pool_entry.id
-      @returned_pool_entry[:team_name] = pool_entry.team_name
-
-
-      if pool_entry.picks == []
-        @unpicked_pool_entries.push(pool_entry)
-
-        respond_to do | format |
-          format.json {render :json => @unpicked_pool_entries.to_json}
-        end
-      end
+    respond_to do | format |
+      format.json {render :json => @unpicked_pool_entries.to_json}
     end
   end
 

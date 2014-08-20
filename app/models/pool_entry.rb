@@ -25,4 +25,9 @@ class PoolEntry < ActiveRecord::Base
     @returned_nfl_team = {nfl_team_id: @pick.team_id, logo_url_small: @pick.nfl_team.logo_url_small}
   end
 
+  def user_information
+    @user = self.user
+    @returned_user = {name: @user.name, phone: @user.phone}
+  end
+
 end

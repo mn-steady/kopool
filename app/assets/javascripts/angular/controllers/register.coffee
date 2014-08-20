@@ -19,7 +19,17 @@ angular.module('Register', ['ngResource', 'RailsApiResource', 'user'])
 
       $scope.pool_entries = []
       $scope.pool_entries_persisted = 0
-      $scope.registering_user = {email: "", password: "", password_confirmation: "", num_pool_entries: 1, teams: $scope.pool_entries, is_registered: false}
+
+      $scope.registering_user =
+        name: ""
+        phone: ""
+        email: ""
+        password: ""
+        password_confirmation: ""
+        num_pool_entries: 1
+        teams: $scope.pool_entries
+        is_registered: false
+
       $scope.register_error = {message: null, errors: {}}
       $scope.editing_team = 1
       $scope.persisting_pool_entries_failed = false
@@ -78,6 +88,8 @@ angular.module('Register', ['ngResource', 'RailsApiResource', 'user'])
           url: KOPOOL_CONFIG.PROTOCOL + '://' + KOPOOL_CONFIG.HOSTNAME + "/users.json"
           data:
             user:
+              name: $scope.registering_user.name
+              phone: $scope.registering_user.phone
               email: $scope.registering_user.email
               password: $scope.registering_user.password
               password_confirmation: $scope.registering_user.password_confirmation

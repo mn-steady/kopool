@@ -162,9 +162,11 @@ angular.module('Register', ['ngResource', 'RailsApiResource', 'user'])
             else
               console.log("Pushing a new team")
               $scope.pool_entries.push(id: newVal, team_name: "", paid: false, persisted: false)
-          if newVal < num_existing_teams
-            console.log("CANNOT REMOVE TEAMS AFTER REGISTERED")
-            $scope.registering_user.num_pool_entries = oldVal
+          if newVal < num_existing_teams and num_existing_teams > 0
+            console.log("(num_pool_entries.watch) Removing a Team")
+            team_to_axe = $scope.pool_entries.pop()
+
+
           if newVal == num_existing_teams
             console.log("Already have this many teams")
 

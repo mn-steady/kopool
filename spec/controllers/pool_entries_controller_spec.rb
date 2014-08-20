@@ -36,6 +36,13 @@ describe PoolEntriesController do
 				sign_in :user, @user
 			end
 
+			it "will not create a new pool entry after the first week is closed for picks" do
+				@week.close_week_for_picks!
+				post :create, user: @user, team_name: "Test Team", format: :json
+				expect(response.status).to eq(Rack::Utils.status_code(:bad_request))
+				expect(PoolEntry.count).to eq(0)
+			end
+
 			it "will not create a new pool entry after the first week" do
 				@week.update_attributes(week_number: 2)
 				post :create, user: @user, team_name: "Test Team", format: :json

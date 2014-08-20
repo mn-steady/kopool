@@ -34,6 +34,22 @@
     .col-sm-2.col-sm-offset-2
       %button.btn.btn-info{"ng-click"=>"save(web_state)", type: "submit"} Save Broadcast Message
 
+.container
+  .row
+    %table.table.table-striped{"ng-controller" => "AdminPoolEntriesCtrl"}
+      %thead
+        %tr
+          %th Person Name
+          %th Pool Entry Name
+          %th Phone Number
+          %th Email
+      %tbody{"ng-repeat" => "pool_entry in unpicked_pool_entries"}
+        %tr
+          %td 
+          %td {{pool_entry.team_name}}
+          %td
+          %td
+
 %div
   %script{:id => "confirmAdvanceWeekModal.html", :type => "text/ng-template"}
     .modal-header

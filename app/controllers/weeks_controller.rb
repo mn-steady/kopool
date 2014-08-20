@@ -162,6 +162,16 @@ class WeeksController < ApplicationController
     end
   end
 
+  def unpicked
+    Rails.logger.debug("weeks_controller.unpicked")
+    @webstate = WebState.first
+    @week = Week.find(params[:week_id])
+    @season = @week.season
+
+    @this_weeks_picks = Pick.where(week_id: params[:week_id])
+    @active_pool_entries = PoolEntry.where(knocked_out: false).where(season_id: @season.id)
+  end
+
 private
 
   def weeks_params

@@ -34,9 +34,9 @@
     .col-sm-2.col-sm-offset-2
       %button.btn.btn-info{"ng-click"=>"save(web_state)", type: "submit"} Save Broadcast Message
 
-.container
+.container{"ng-controller" => "AdminPoolEntriesCtrl"}
   .row
-    %table.table.table-striped{"ng-controller" => "AdminPoolEntriesCtrl"}
+    %table.table.table-striped
       %thead
         %tr
           %th Person Name

@@ -159,6 +159,7 @@ angular.module('Register', ['ngResource', 'RailsApiResource', 'user'])
               console.log("CANNOT ADD ANY MORE TEAMS")
               newVal = oldVal
               $scope.editing_team = oldVal
+              $scope.num_new_pool_entries()
             else
               console.log("Pushing a new team")
               $scope.pool_entries.push(id: newVal, team_name: "", paid: false, persisted: false)
@@ -245,7 +246,7 @@ angular.module('Register', ['ngResource', 'RailsApiResource', 'user'])
         if $scope.pool_entries_persisted == $scope.pool_entries.length
           "Teams have been Setup"
         else
-          "Setup the Teams Below"
+          "PERMANENTLY SAVE the Teams Below"
 
       $scope.password_is_valid = (entry) ->
         if entry.length >= 8

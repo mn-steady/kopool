@@ -32,10 +32,14 @@
             .col-sm-3
               {{total_charges()}}
 
+          .form-group
+            .col-sm-12
+              .alert.alert.alert-danger{"ng-show" => "persist_button_show()"} WARNING! Given the nature of this competition, clicking the SAVE button below is PERMANENT. You will not be able to decrease the number of pool entries you have active after you save. You WILL be able to add more before the first week starts.
 
           %a.btn{"ng-click" => "register()", "ng-class" => "register_button_class()", "ng-show" => "user_needs_registration()", "ng-disabled" => "!user_can_register()", role: "button"} Register my Username
           %a.btn{"ng-click" => "persist_pool_entries()", "ng-class" => "persist_button_class()", "ng-disabled" => "persist_button_disabled()", "ng-show" => "persist_button_show()", role: "button"} {{persist_button_text()}}
           %a.btn.btn-info{href: '#/weeks/{{web_state.current_week.id}}/matchups', "ng-if" => "show_week_1_picks_button()", role: "button"} CLICK HERE to make your first pick!
+          
 
   .col-md-4
     %br

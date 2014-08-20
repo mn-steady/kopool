@@ -159,6 +159,7 @@ angular.module('Register', ['ngResource', 'RailsApiResource', 'user'])
               console.log("CANNOT ADD ANY MORE TEAMS")
               newVal = oldVal
               $scope.editing_team = oldVal
+              $scope.num_new_pool_entries()
             else
               console.log("Pushing a new team")
               $scope.pool_entries.push(id: newVal, team_name: "", paid: false, persisted: false)
@@ -205,7 +206,7 @@ angular.module('Register', ['ngResource', 'RailsApiResource', 'user'])
           false
 
       $scope.open_for_registration = () ->
-        $scope.web_state.current_week.season.open_for_registration
+        $scope.web_state.current_week.open_for_picks
 
       $scope.season_id = () ->
         $scope.web_state.current_week.season.id
@@ -238,11 +239,14 @@ angular.module('Register', ['ngResource', 'RailsApiResource', 'user'])
         else
           return false
 
+      $scope.show_week_1_picks_button = () ->
+        $scope.persist_button_show() and $scope.persist_button_disabled()
+
       $scope.persist_button_text = () ->
         if $scope.pool_entries_persisted == $scope.pool_entries.length
           "Teams have been Setup"
         else
-          "Setup the Teams Below"
+          "PERMANENTLY SAVE the Teams Below"
 
       $scope.password_is_valid = (entry) ->
         if entry.length >= 8

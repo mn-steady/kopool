@@ -171,7 +171,7 @@ class WeeksController < ApplicationController
     @unpicked_pool_entries = PoolEntry.where(knocked_out: false).where(season_id: @season.id).all(:conditions => ["pool_entries.id NOT IN (SELECT picks.pool_entry_id FROM picks where week_id = #{@week.id})"])
 
     respond_to do | format |
-      format.json {render :json => @unpicked_pool_entries.to_json}
+      format.json {render :json => @unpicked_pool_entries.to_json(include: [{user: {only: [:name, :phone, :email]}}])}
     end
   end
 

@@ -47,10 +47,10 @@
           %th Email
       %tbody{"ng-repeat" => "pool_entry in unpicked_pool_entries"}
         %tr
-          %td 
+          %td {{pool_entry.user.name}}
           %td {{pool_entry.team_name}}
-          %td
-          %td
+          %td {{pool_entry.user.phone}}
+          %td {{pool_entry.user.email}}
 
 %div
   %script{:id => "confirmAdvanceWeekModal.html", :type => "text/ng-template"}

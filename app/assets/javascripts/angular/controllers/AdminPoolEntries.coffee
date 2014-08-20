@@ -10,7 +10,7 @@ angular.module('AdminPoolEntries', ['ngResource', 'RailsApiResource', 'ui.bootst
 		$scope.unpicked_pool_entries = []
 
 		$scope.getAllPoolEntries = () ->
-			PoolEntriesThisSeason.nested_query(1).then((pool_entries) ->
+			PoolEntriesThisSeason.nested_query($scope.current_week.season.id).then((pool_entries) ->
 				$scope.pool_entries = pool_entries
 				console.log("(getAllPoolEntries) Have pool entries")
 			)
@@ -22,14 +22,16 @@ angular.module('AdminPoolEntries', ['ngResource', 'RailsApiResource', 'ui.bootst
 				$scope.current_week = web_state.current_week
 				$scope.open_for_picks = web_state.current_week.open_for_picks
 				$scope.getUnpickedPoolEntries()
-				$scope.getAllPoolEntries
+				$scope.getAllPoolEntries()
 			)
 
 		$scope.getWebState()
 
 		$scope.getUnpickedPoolEntries = () ->
-			UnpickedPoolEntries.nested_query($scope.current_week.id).then(unpicked_pool_entries) ->
+			UnpickedPoolEntries.nested_query($scope.current_week.id).then((unpicked_pool_entries) ->
+				console.log("in getUnpickedPoolEntries")
 				$scope.unpicked_pool_entries = unpicked_pool_entries
+			)
 
 		$scope.markPaidOrUnpaid = (pool_entry) ->
 			if pool_entry.paid == (false or null)

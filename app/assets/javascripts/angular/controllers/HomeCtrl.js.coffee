@@ -92,7 +92,7 @@ angular.module('Home', ['ngResource', 'RailsApiResource', 'user'])
       if currentUser.authorized
         "You are currently authorized as " + currentUser.username
       else
-        "Please Sign-in at the top or Register"
+        "Please Register below"
 
     $scope.display_battle_summary = ->
       if currentUser.authorized

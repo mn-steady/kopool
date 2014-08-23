@@ -21,6 +21,7 @@ class SessionsController < Devise::SessionsController
   end
 
   def failure
+    Rails.logger.debug("SessionsController **failure***")
   	render :status => 401,
   	       :json => { :success => false,
   	       	          :info => "Login Credentials Failed"

@@ -16,6 +16,7 @@ describe UserMailer do
         expect(subject.subject).to eq('Welcome to the KOPool')
         Rails.logger.debug("EMAIL:\n#{subject.body}")
         expect(subject.body).to match("your username is: #{@user.email}")
+        expect(subject.body).to match("Welcome to Testing Season KOPool")
       end
 
     end

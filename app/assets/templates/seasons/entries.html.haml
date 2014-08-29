@@ -3,19 +3,17 @@
 %table.table.table-striped
 	%thead
 		%tr
+			%th Person Name
 			%th Team Name
 			%th Email
 			%th Paid?
 			%th 
-			%th 
-			%th 
-	%tbody{"ng-repeat" => "pool_entry in pool_entries"}
+	%tbody{"ng-repeat" => "pool_entry in pool_entries | orderBy : '-paid' "}
 		%tr
+			%td {{pool_entry.user.name}}
 			%td {{pool_entry.team_name}}
 			%td {{pool_entry.user.email}}
 			%td{"ng-class" => "getPaidTextClass(pool_entry)"}	{{getPaidOrUnpaidStatusText(pool_entry)}}
 			%td
 				%a.btn.btn-default{"ng-click" => "markPaidOrUnpaid(pool_entry)"} Mark as {{getPaidOrUnpaidButtonText(pool_entry)}}
-			%td
-			%td
 				

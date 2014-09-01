@@ -25,7 +25,6 @@ angular.module('navbar', ['ngResource', 'RailsApiResource', 'user'])
           user:
             email: $scope.login_user.email
             password: $scope.login_user.password
-        success_message: "You have been logged in! Good luck!"
         error_entity: $scope.login_error
 
     $scope.logout = ->
@@ -64,12 +63,15 @@ angular.module('navbar', ['ngResource', 'RailsApiResource', 'user'])
             # https://gist.github.com/jwo/1255275
             $scope.save_user_data(data.user)
         else
+          console.log("Simple unauthorized user scenario")
+          $rootScope.$broadcast('auth-login-failed')
           if data.error
             parameters.error_entity.message = data.error
           else
             parameters.error_entity.message = "Success, but with an unexpected success code, potentially a server error, please report via support channels as this indicates a code defect.  Server response was: " + JSON.stringify(data)
         return
       ).error (data, status) ->
+        console.log("Error in navbarCtrl.submit")
         if status is 422
           parameters.error_entity.errors = data.errors
         else
@@ -91,6 +93,7 @@ angular.module('navbar', ['ngResource', 'RailsApiResource', 'user'])
       currentUser.username = ''
       currentUser.admin = false
       console.log("(navbarCtrl.clear_user_loggedout) cleared username:" + currentUser.username)
+      AuthService.endSession()
 
       # Clear out the UI fields
       $scope.login_user.email = null

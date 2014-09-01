@@ -1,5 +1,8 @@
 .jumbotron
   .container
+    .row{"ng-if" => "session_message"}
+      .col-sm-12.text-center
+        .alert.alert-danger {{session_message}}
     .row
       .col-md-8
         %h2 KO Pool

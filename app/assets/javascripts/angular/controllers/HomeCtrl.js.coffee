@@ -18,6 +18,7 @@ angular.module('Home', ['ngResource', 'RailsApiResource', 'user'])
     $scope.active_pool_entries = []
     $scope.active_pool_entries_count = 0
     $scope.weeks = {}
+    $scope.session_message = null
     $scope.web_state =
       id: 0
       week_id: 0
@@ -78,9 +79,14 @@ angular.module('Home', ['ngResource', 'RailsApiResource', 'user'])
 
     $scope.$on 'auth-login-success', ((event) ->
       console.log("(HomeCtrl) Caught auth-login-success broadcasted event!!")
+      $scope.session_message = null
       $scope.loadPoolEntries()
     )
 
+    $scope.$on 'auth-login-failed', ((event) ->
+      console.log("(HomeCtrl) Caught auth-login-failed broadcasted event!!")
+      $scope.session_message = "Incorrect username or password. Please try again."
+    )
 
 
     # Display and utility functions

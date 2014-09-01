@@ -67,7 +67,6 @@ angular.module('navbar', ['ngResource', 'RailsApiResource', 'user'])
           $rootScope.$broadcast('auth-login-failed')
           if data.error
             parameters.error_entity.message = data.error
-            $scope.session_message = data.error
           else
             parameters.error_entity.message = "Success, but with an unexpected success code, potentially a server error, please report via support channels as this indicates a code defect.  Server response was: " + JSON.stringify(data)
         return

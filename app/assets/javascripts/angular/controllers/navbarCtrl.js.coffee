@@ -91,6 +91,7 @@ angular.module('navbar', ['ngResource', 'RailsApiResource', 'user'])
       currentUser.username = ''
       currentUser.admin = false
       console.log("(navbarCtrl.clear_user_loggedout) cleared username:" + currentUser.username)
+      AuthService.endSession()
 
       # Clear out the UI fields
       $scope.login_user.email = null

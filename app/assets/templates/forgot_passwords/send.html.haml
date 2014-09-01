@@ -1,0 +1,19 @@
+%h1 Reset Your Password
+.row
+  .col-md-12
+
+    .panel.panel-default
+      .panel-heading
+        %h3.panel-title Your User Information
+
+      .row
+        .col-md-6
+          .panel-body
+            %form.form-horizontal{"name" => "passwordForm"}
+
+              .row.form-group
+                %label.col-sm-2 Email
+                .col-sm-10
+                  %input.form-control{"type" => "text", "ng-model" => "user_email", "placeholder"=>"Your Email Address"}
+
+              %a.btn.btn-info.col-sm-offset-2{"ng-click" => "sendResetPasswordEmail()", role: "button"} Send Reset Password Email

@@ -21,7 +21,7 @@ RSpec.configure do |config|
 
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
 
-  config.use_transactional_fixtures = true
+  config.use_transactional_fixtures = false
 
   config.order = "random"
 
@@ -31,6 +31,7 @@ RSpec.configure do |config|
 
   config.before(:each) do
     DatabaseCleaner.strategy = :transaction
+    ActionMailer::Base.deliveries.clear
   end
 
   config.before(:each, :js => true) do

@@ -119,6 +119,7 @@ angular.module('RailsApiResource', ['ngResource'])
 
       Resource.post = (action, data, parent_id) ->
         console.log("Resource.post action="+action)
+        console.log("data: "+data)
         actionUrl = KOPOOL_CONFIG.PROTOCOL + '://' + KOPOOL_CONFIG.HOSTNAME + '/' + resourceName + '/' + action + '.json'
         if actionUrl.indexOf(":parent_id") > -1?
           actionUrl = actionUrl.replace(/:parent_id/, parent_id)

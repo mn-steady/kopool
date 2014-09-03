@@ -159,9 +159,7 @@ describe PicksController do
           expect(Pick.count).to eq(1)
           expect(Pick.last.team_id).to eq(@vikings.id)
         end
-
 	  	end
-
 	  end
 
 	  context "with a knocked out pool entry" do
@@ -169,7 +167,7 @@ describe PicksController do
         pick1 = Pick.create(pool_entry: @pool_entry1, week: @week, team_id: @vikings.id)
         @pool_entry1.update_attributes(knocked_out: true, knocked_out_week_id: @week.id)
 
-         pick_params = {
+          pick_params = {
             id: pick1['id'],
             week_id: @week.id,
             pool_entry_id: @pool_entry1.id,
@@ -184,6 +182,77 @@ describe PicksController do
         expect(Pick.last.team_id).to eq(@vikings.id)
       end
 	  end
+  end
+
+  describe "POST create_or_update_pick" do
+
+    before do
+      @user = create(:user, admin: true)
+      sign_in @user
+
+      @season = Season.create(year: 2014, name: "2014 Season", entry_fee: 50)
+      @week = Week.create(season: @season, week_number: 1, start_date: DateTime.new(2014, 8, 5), deadline: DateTime.new(2014, 8, 8), end_date: DateTime.new(2014, 8, 11))
+      @pool_entry1 = PoolEntry.create(user: @user, team_name: "Test Team", paid: true)
+
+      @broncos = NflTeam.create(name: "Denver Broncos", conference: "NFC", division: "West")
+      @vikings = NflTeam.create(name: "Minnesota Vikings", conference: "NFC", division: "North")
+      @matchup = Matchup.create(week_id: @week.id, home_team: @broncos, away_team: @vikings, game_time: DateTime.new(2014,8,10,11))
+    end
+
+    context "with an existing pick" do
+      it "does save the new pick" do
+        pick1 = Pick.create(pool_entry: @pool_entry1, week: @week, team_id: @vikings.id)
+
+         pick_params = {
+            week_id: @week.id,
+            pool_entry_id: @pool_entry1.id,
+            team_id: @broncos.id,
+            format: :json
+          }
+
+        put :create_or_update_pick, pick_params
+        pick_returned = JSON.parse(response.body)
+        
+        expect(Pick.count).to eq(1)
+        expect(Pick.last.team_id).to eq(@broncos.id)
+      end
+    end
+
+    context "without an existing pick" do
+      it "does save the new pick" do
+
+         pick_params = {
+            week_id: @week.id,
+            pool_entry_id: @pool_entry1.id,
+            team_id: @broncos.id,
+            format: :json
+          }
+
+        put :create_or_update_pick, pick_params
+        pick_returned = JSON.parse(response.body)
+        
+        expect(Pick.count).to eq(1)
+        expect(Pick.last.team_id).to eq(@broncos.id)
+      end
+
+      it "does not save a pick if the pool entry is knocked out" do
+        @pool_entry1.update_attributes(knocked_out: true)
+
+        pick_params = {
+            week_id: @week.id,
+            pool_entry_id: @pool_entry1.id,
+            team_id: @broncos.id,
+            format: :json
+          }
+
+        put :create_or_update_pick, pick_params
+        pick_returned = JSON.parse(response.body)
+        
+        expect(Pick.count).to eq(0)
+        expect(pick_returned).to have_key("error")
+        expect(response.status).to eq(Rack::Utils.status_code(:bad_request))
+      end
+    end
   end
 
   describe "GET missing_picks" do

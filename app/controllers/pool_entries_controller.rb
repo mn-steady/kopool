@@ -1,7 +1,7 @@
 class PoolEntriesController < ApplicationController
 
   before_filter :verify_admin_user, only: [:show, :update]
-  before_filter :verify_any_user, only: [:index, :create, :index_even_knocked_out, :destroy]
+  before_filter :verify_any_user, only: [:index, :create, :index_even_knocked_out, :destroy, :pool_entries_and_picks]
 
   def index
     Rails.logger.debug("(PoolEntriesController.index) is user")
@@ -54,6 +54,41 @@ class PoolEntriesController < ApplicationController
         error_message = ""
         @pool_entry.errors.each{|attr,msg| error_message << "#{attr} #{msg} " }
         format.json { render :json => [:error => error_message], :status => :internal_server_error}
+      end
+    end
+  end
+
+  def pool_entries_and_picks
+    @web_state = WebState.first
+    if @web_state.open_for_picks == false
+      error_message = "You cannot edit picks after the game has started!"
+      render :json => {:error => error_message}, :status => :bad_request
+    else
+      @week = Week.find(params[:week_id])
+      @my_active_pool_entries = PoolEntry.where(user_id: current_user.id).where(knocked_out: false).where(season_id: @web_state.current_week.season.id)
+      # @this_weeks_picks = Pick.where(week_id: params[:week_id])
+
+      unless @my_active_pool_entries.present? 
+        error_message = "All of your pool entries have been knocked out!"
+        render :json => {:error => error_message}, :status => :bad_request
+      else
+        @returned_entries_and_teams = []
+
+        @my_active_pool_entries.each do |pool_entry|
+
+          Rails.logger.debug("(weeks_controller.week_results) Examining Pool Entry #{pool_entry.id}")
+
+          @returned_pool_entry = {}
+          @returned_pool_entry[:id] = pool_entry.id
+          @returned_pool_entry[:team_name] = pool_entry.team_name
+          @returned_pool_entry[:nfl_team] = pool_entry.specific_weeks_nfl_team(@week)
+
+          @returned_entries_and_teams.push(@returned_pool_entry)
+        end
+
+        respond_to do |format|
+          format.json { render :json => @returned_entries_and_teams }
+        end
       end
     end
   end

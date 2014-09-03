@@ -94,31 +94,6 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 				console.log("*** Have pool entries, picks, teams, and season-weeks ***")
 			)
 
-		# $scope.loadNflTeams = () ->
-		# 	NflTeam.query().then((nfl_teams) ->
-		# 		$scope.nfl_teams = nfl_teams
-		# 		console.log("*** Have nfl_teams***")
-		# 	)
-
-		# $scope.loadPicks = () ->
-		# 	$scope.picks = []
-		# 	console.log("in loadPicks()")
-		# 	Pick.nested_query(week_id).then((picks) ->
-		# 		$scope.picks = picks
-		# 		$scope.associatePicks()
-		# 		$scope.loadMatchups()
-		# 		console.log("Have picks")
-		# 	)
-
-		# $scope.associatePicks = ->
-		# 	for pool_entry in $scope.pool_entries
-		# 		for pick in $scope.picks
-		# 			console.log("COMPARING pick ID " + pick.pool_entry_id + "with pool_entry ID " + pool_entry.id)
-		# 			if pick.pool_entry_id is pool_entry.id
-		# 				console.log("ASSOCIATING pick ID " + pick.pool_entry_id + "with pool_entry ID " + pool_entry.id)
-		# 				angular.extend(pool_entry, pick)
-		# 				console.log("A pick was associated with a pool entry")
-
 		$scope.loadMatchups = () ->
 			Matchup.nested_query($scope.week_id).then((matchups) ->
 				$scope.matchups = matchups
@@ -206,29 +181,14 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 			console.log("MatchupsCtrl.savePick...")
 			pool_entry = $scope.editing_pool_entry
 			console.log("Saving pool entry " + $scope.editing_pool_entry.team_name)
-			week_id = matchup.week_id
 			picked_matchup = matchup
 
-			console.log("Sending Pick info to Rails...")
-			if pool_entry.team_id
-				console.log("Sending UPDATE pick to rails")
-				for pick in $scope.picks
-					if pick.pool_entry_id is pool_entry.pool_entry_id
-						existing_pick = pick
-						console.log("Found existing_pick")
-						existing_pick.pool_entry_id = pool_entry.pool_entry_id
-						existing_pick.week_id = week_id
-						existing_pick.team_id = $scope.selectedPick.id
-						existing_pick.matchup_id = picked_matchup.id
-						console.log("Updated existing_pick")
-						Pick.save(existing_pick, week_id).then((existing_pick) ->
-							console.log("existing_pick: " + existing_pick)
-						)
-
-			else
-				$scope.new_pick = {pool_entry_id: pool_entry.id, week_id: week_id, team_id: $scope.selectedPick.id, matchup_id: picked_matchup.id}
-				console.log("Sending CREATE pick to rails")
-				Pick.create($scope.new_pick, week_id)
+			Week.post(":parent_id/create_or_update_pick", {week_id: $scope.week_id, pool_entry_id: pool_entry.id, team_id: $scope.selectedPick.id}, $scope.week_id).then(
+				(data) ->
+					console.log("Back from savePick method")
+				(data) ->
+					console.log("FAILED to create_or_update_pick")
+				)
 
 			$location.path ('/weeks/' + $scope.week_id + '/matchups')
 			$scope.selectedMatchup = ""

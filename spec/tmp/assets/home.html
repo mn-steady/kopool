@@ -1,5 +1,10 @@
 <div class='jumbotron'>
   <div class='container'>
+    <div class='row' ng-if='session_message'>
+      <div class='col-sm-12 text-center'>
+        <div class='alert alert-danger'>{{session_message}}</div>
+      </div>
+    </div>
     <div class='row'>
       <div class='col-md-8'>
         <h2>KO Pool</h2>

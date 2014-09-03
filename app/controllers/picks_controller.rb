@@ -18,44 +18,42 @@ class PicksController < ApplicationController
 		if @pool_entry.knocked_out == true
 			error_message = "You can't change the pick for a knocked_out pool entry!"
       render :json => {:error => error_message}, :status => :bad_request
-    end
+    else
+			@pick_this_week = Pick.where(pool_entry_id: @pool_entry.id).where(week_id: @week.id).first
 
-		@pick_this_week = Pick.where(pool_entry_id: @pool_entry.id).where(week_id: @week.id).first
+			if @pick_this_week.present?
+				@pick_this_week.update_attributes(safe_params)
 
-		if @pick_this_week.present?
-			@pick_this_week.update_attributes(safe_params)
-
-			if @pick_this_week.save
-				respond_to do | format |
-					format.json {render json: @pick_this_week }
+				if @pick_this_week.save
+					respond_to do | format |
+						format.json {render json: @pick_this_week }
+					end
+				else
+					respond_to do | format |
+						error_message = ""
+						@pick_this_week.errors.each{ |attr,msg| error_message << "#{attr} #{msg} " }
+						format.json { render :json => [:error =>  error_message], :status => :internal_server_error}
+					end
 				end
+
 			else
-				respond_to do | format |
-					error_message = ""
-					@pick_this_week.errors.each{ |attr,msg| error_message << "#{attr} #{msg} " }
-					format.json { render :json => [:error =>  error_message], :status => :internal_server_error}
-				end
-			end
+				@pick = Pick.new
 
-		else
-			@pick = Pick.new
+				@pick.update_attributes(safe_params)
 
-			@pick.update_attributes(safe_params)
-
-			if @pick.save
-				respond_to do | format |
-					format.json { render json: @pick }
-				end
-			else
-				respond_to do | format |
-					error_message = ""
-					@pick.errors.each{ |attr,msg| error_message << "#{attr} #{msg} " }
-					format.json { render :json => [:error =>  error_message], :status => :internal_server_error}
+				if @pick.save
+					respond_to do | format |
+						format.json { render json: @pick }
+					end
+				else
+					respond_to do | format |
+						error_message = ""
+						@pick.errors.each{ |attr,msg| error_message << "#{attr} #{msg} " }
+						format.json { render :json => [:error =>  error_message], :status => :internal_server_error}
+					end
 				end
 			end
 		end
-
-
 	end
 
 	def create

@@ -147,6 +147,7 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 		$scope.set_editing_pool_entry = (index) ->
 			$scope.editing_pool_entry = $scope.pool_entries[index]
 			console.log("Set editing_pool_entry to: "+$scope.editing_pool_entry.team_name)
+			console.log("This pool entry has a pick of ID " + $scope.editing_pool_entry.team_id)
 			$scope.showMatchups = true
 
 		$scope.pool_entry_button_class = (pool_entry) ->
@@ -210,17 +211,17 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 			if pool_entry.team_id
 				console.log("Sending UPDATE pick to rails")
 				for pick in $scope.picks
-					if pick.pool_entry_id = pool_entry.pool_entry_id
+					if pick.pool_entry_id is pool_entry.pool_entry_id
 						existing_pick = pick
-				console.log("Found existing_pick")
-				existing_pick.pool_entry_id = pool_entry.pool_entry_id
-				existing_pick.week_id = week_id
-				existing_pick.team_id = $scope.selectedPick.id
-				existing_pick.matchup_id = picked_matchup.id
-				console.log("Updated existing_pick")
-				Pick.save(existing_pick, week_id).then((existing_pick) ->
-					console.log("existing_pick: " + existing_pick)
-				)
+						console.log("Found existing_pick")
+						existing_pick.pool_entry_id = pool_entry.pool_entry_id
+						existing_pick.week_id = week_id
+						existing_pick.team_id = $scope.selectedPick.id
+						existing_pick.matchup_id = picked_matchup.id
+						console.log("Updated existing_pick")
+						Pick.save(existing_pick, week_id).then((existing_pick) ->
+							console.log("existing_pick: " + existing_pick)
+						)
 
 			else
 				$scope.new_pick = {pool_entry_id: pool_entry.id, week_id: week_id, team_id: $scope.selectedPick.id, matchup_id: picked_matchup.id}

@@ -186,6 +186,7 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 			Week.post(":parent_id/create_or_update_pick", {week_id: $scope.week_id, pool_entry_id: pool_entry.id, team_id: $scope.selectedPick.id}, $scope.week_id).then(
 				(data) ->
 					console.log("Back from savePick method")
+					$scope.loadPoolEntries()
 				(data) ->
 					console.log("FAILED to create_or_update_pick")
 				)
@@ -196,7 +197,6 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 			$scope.editing_pool_entry = null
 			$scope.hideMatchups = false
 			$scope.showMatchups = false
-			$scope.loadPoolEntries()
 			$scope.alert = { type: "success", msg: "Your pick was saved! Good luck!" }
 			console.log("End of savePick method")
 

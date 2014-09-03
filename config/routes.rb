@@ -7,7 +7,6 @@ Kopool::Application.routes.draw do
   resources :nfl_teams
   get "pool_entries_index_all", :controller => "pool_entries", :action => "index_all"
   resources :pool_entries
-  get "pool_entries_and_picks", :controller => "pool_entries", :action => "pool_entries_and_picks"
 
 
   resources :seasons, only: [:new, :create, :show] do
@@ -23,6 +22,8 @@ Kopool::Application.routes.draw do
     get "week_picks", :controller => "picks", :action => "week_picks"
     get "unpicked", :action => "unpicked"
     get "filtered_matchups", :controller => "matchups", :action => "filtered_matchups"
+    get "pool_entries_and_picks", :controller => "pool_entries", :action => "pool_entries_and_picks"
+    get "create_or_update_pick", :controller => "picks", :action => "create_or_update_pick"
     resources :matchups do
       collection do
         post "save_outcome", :action => "save_outcome"

@@ -22,7 +22,7 @@
 		.alert{"class" => "alert alert-{{alert.type}}"} {{alert.msg}}
 
 .row
-	.col-md-4{"ng-repeat"=>"pool_entry in pool_entries | filter: {knocked_out: false}"}
+	.col-md-4{"ng-repeat"=>"pool_entry in pool_entries"}
 		%div{"ng-hide" => "notSelectedPoolEntry(pool_entry)", "ng-click" => "set_editing_pool_entry($index)"}
 			.panel.panel-warning
 				.panel-heading

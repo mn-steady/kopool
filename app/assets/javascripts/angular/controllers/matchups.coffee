@@ -13,15 +13,18 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 		RailsApiResource('weeks/:parent_id/picks', 'picks')
 
 	.factory 'WebState', (RailsApiResource) ->
-			RailsApiResource('admin/web_states', 'webstate')
+		RailsApiResource('admin/web_states', 'webstate')
 
 	.factory 'Week', (RailsApiResource) ->
-			RailsApiResource('weeks', 'weeks')
+		RailsApiResource('weeks', 'weeks')
+
+	.factory 'PoolEntriesAndPicks', (RailsApiResource) ->
+		RailsApiResource('weeks/:parent_id/pool_entries_and_picks', 'pool_entries')
 
 	.factory 'SeasonWeeks', (RailsApiResource) ->
 		RailsApiResource('seasons/:parent_id/weeks', 'weeks')
 
-	.controller 'MatchupsCtrl', ['$scope', '$location', '$http', '$routeParams', 'Matchup', 'NflTeam', 'PoolEntry', 'currentUser', 'Pick', '$modal', 'WebState', 'Week', 'SeasonWeeks', ($scope, $location, $http, $routeParams, Matchup, NflTeam, PoolEntry, currentUser, Pick, $modal, WebState, Week, SeasonWeeks) ->
+	.controller 'MatchupsCtrl', ['$scope', '$location', '$http', '$routeParams', 'Matchup', 'NflTeam', 'PoolEntry', 'currentUser', 'Pick', '$modal', 'WebState', 'Week', 'SeasonWeeks', 'PoolEntriesAndPicks', ($scope, $location, $http, $routeParams, Matchup, NflTeam, PoolEntry, currentUser, Pick, $modal, WebState, Week, SeasonWeeks, PoolEntriesAndPicks) ->
 		$scope.controller = 'MatchupsCtrl'
 		console.log("MatchupsCtrl")
 		console.log("$location:" + $location)
@@ -84,38 +87,37 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 
 		# Gather resources and associate relevant pool entries and picks
 		$scope.loadPoolEntries = () ->
-			PoolEntry.query().then((pool_entries) ->
+			PoolEntriesAndPicks.nested_query($scope.week_id).then((pool_entries) ->
 				$scope.pool_entries = pool_entries
-				$scope.loadPicks()
-				$scope.loadNflTeams()
 				$scope.load_season_weeks()
+				$scope.loadMatchups()
 				console.log("*** Have pool entries, picks, teams, and season-weeks ***")
 			)
 
-		$scope.loadNflTeams = () ->
-			NflTeam.query().then((nfl_teams) ->
-				$scope.nfl_teams = nfl_teams
-				console.log("*** Have nfl_teams***")
-			)
+		# $scope.loadNflTeams = () ->
+		# 	NflTeam.query().then((nfl_teams) ->
+		# 		$scope.nfl_teams = nfl_teams
+		# 		console.log("*** Have nfl_teams***")
+		# 	)
 
-		$scope.loadPicks = () ->
-			$scope.picks = []
-			console.log("in loadPicks()")
-			Pick.nested_query(week_id).then((picks) ->
-				$scope.picks = picks
-				$scope.associatePicks()
-				$scope.loadMatchups()
-				console.log("Have picks")
-			)
+		# $scope.loadPicks = () ->
+		# 	$scope.picks = []
+		# 	console.log("in loadPicks()")
+		# 	Pick.nested_query(week_id).then((picks) ->
+		# 		$scope.picks = picks
+		# 		$scope.associatePicks()
+		# 		$scope.loadMatchups()
+		# 		console.log("Have picks")
+		# 	)
 
-		$scope.associatePicks = ->
-			for pool_entry in $scope.pool_entries
-				for pick in $scope.picks
-					console.log("COMPARING pick ID " + pick.pool_entry_id + "with pool_entry ID " + pool_entry.id)
-					if pick.pool_entry_id is pool_entry.id
-						console.log("ASSOCIATING pick ID " + pick.pool_entry_id + "with pool_entry ID " + pool_entry.id)
-						angular.extend(pool_entry, pick)
-						console.log("A pick was associated with a pool entry")
+		# $scope.associatePicks = ->
+		# 	for pool_entry in $scope.pool_entries
+		# 		for pick in $scope.picks
+		# 			console.log("COMPARING pick ID " + pick.pool_entry_id + "with pool_entry ID " + pool_entry.id)
+		# 			if pick.pool_entry_id is pool_entry.id
+		# 				console.log("ASSOCIATING pick ID " + pick.pool_entry_id + "with pool_entry ID " + pool_entry.id)
+		# 				angular.extend(pool_entry, pick)
+		# 				console.log("A pick was associated with a pool entry")
 
 		$scope.loadMatchups = () ->
 			Matchup.nested_query($scope.week_id).then((matchups) ->

@@ -111,7 +111,9 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 		$scope.associatePicks = ->
 			for pool_entry in $scope.pool_entries
 				for pick in $scope.picks
-					if pick.pool_entry_id == pool_entry.id
+					console.log("COMPARING pick ID " + pick.pool_entry_id + "with pool_entry ID " + pool_entry.id)
+					if pick.pool_entry_id is pool_entry.id
+						console.log("ASSOCIATING pick ID " + pick.pool_entry_id + "with pool_entry ID " + pool_entry.id)
 						angular.extend(pool_entry, pick)
 						console.log("A pick was associated with a pool entry")
 
@@ -200,6 +202,7 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 		$scope.savePick = (matchup, editing_pool_entry) ->
 			console.log("MatchupsCtrl.savePick...")
 			pool_entry = $scope.editing_pool_entry
+			console.log("Saving pool entry " + $scope.editing_pool_entry.team_name)
 			week_id = matchup.week_id
 			picked_matchup = matchup
 

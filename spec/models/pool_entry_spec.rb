@@ -69,4 +69,37 @@ describe PoolEntry do
     end
   end
 
+  describe '#specific_weeks_nfl_team' do
+    before(:each) do
+      @season = FactoryGirl.create(:season)
+      @week = FactoryGirl.create(:week, season: @season)
+      @matchup = FactoryGirl.create(:matchup, week_id: @week.id)
+      @pool_entry_nopick1 = FactoryGirl.create(:pool_entry, team_name: "Losers did not pick", season: @season)
+      @pool_entry_nopick2 = FactoryGirl.create(:pool_entry, team_name: "Losers did not pick either", season: @season)
+      @pool_entry_knocked = FactoryGirl.create(:pool_entry, team_name: "We dont matter", knocked_out: true, season: @season)
+      @pool_entry_pick1 = FactoryGirl.create(:pool_entry, season: @season)
+      @pick1 = FactoryGirl.create(:pick, pool_entry: @pool_entry_pick1, week: @week, nfl_team: @matchup.away_team, matchup: @matchup)
+      @pool_entry_pick2 = FactoryGirl.create(:pool_entry, season: @season)
+      @pick2 = FactoryGirl.create(:pick, pool_entry: @pool_entry_pick2, week: @week, nfl_team: @matchup.away_team, matchup: @matchup)
+
+      # some irrelevant data to be sure we don't have totally bogus query
+      @diff_season = FactoryGirl.create(:season)
+      @week2 = FactoryGirl.create(:week, season: @diff_season)
+      @matchup2 = FactoryGirl.create(:matchup, week_id: @week2.id)
+      @i_pool_entry_nopick1 = FactoryGirl.create(:pool_entry, team_name: "Wrong week no pick", season: @diff_season)
+      @i_pool_entry_pick1 = FactoryGirl.create(:pool_entry, season: @diff_season)
+      @i_pick1 = FactoryGirl.create(:pick, pool_entry: @i_pool_entry_pick1, week: @week2, nfl_team: @matchup2.away_team, matchup: @matchup2)
+    end
+
+    it "should return a structure with the team and logo" do
+      recent_pick = @pool_entry_pick1.specific_weeks_nfl_team(@week)
+      expect(recent_pick[:nfl_team_id]).to eq(@matchup.away_team.id)
+    end
+
+    it "should return an empty array if there aren't picks yet that week" do
+      recent_pick = @pool_entry_pick1.specific_weeks_nfl_team(@week2)
+      expect(recent_pick).to eq({})
+    end
+  end
+
 end

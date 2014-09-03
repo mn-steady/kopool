@@ -4,6 +4,8 @@ class WebState < ActiveRecord::Base
 
   validate :only_one_record?, :on => :create
 
+  delegate :open_for_picks, to: :current_week
+
   private
 
   def only_one_record?

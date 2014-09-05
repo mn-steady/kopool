@@ -46,6 +46,24 @@ angular.module('PoolEntries', ['ngResource', 'RailsApiResource'])
 
 		$scope.getResultsResources()
 
+		$scope.still_alive_count = () ->
+			if $scope.pool_entries_still_alive
+				$scope.pool_entries_still_alive.length
+			else
+				"0"
+
+		$scope.knocked_out_this_week_count = () ->
+			if $scope.pool_entries_knocked_out_this_week
+				$scope.pool_entries_knocked_out_this_week.length
+			else
+				"0"
+
+		$scope.knocked_out_previously_count = () ->
+			if $scope.pool_entries_knocked_out_previously
+				$scope.pool_entries_knocked_out_previously.length
+			else
+				"0"
+
 		$scope.load_season_weeks = () ->
 			console.log("(load_season_weeks)")
 			SeasonWeeks.nested_query($scope.web_state.current_week.season.id).then((season_weeks) ->

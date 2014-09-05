@@ -1,18 +1,25 @@
-.row
-	.col-sm-8
-		%h3 {{results_header()}}
+.jumbotron
+	.container
+		.row
+			.col-sm-8
+				%h3 {{results_header()}}
 
-	.col-sm-4
-		%br
-		.btn-group{:dropdown => ""}
-			%button.btn.btn-danger{:type => "button"} Results of Other Weeks
-			%button.btn.btn-danger.dropdown-toggle{:type => "button"}
-				%span.caret
-				%span.sr-only Split button
-			%ul.dropdown-menu{:role => "menu"}
-				%li{"ng-repeat"=>"week in season_weeks"}
-					%a{href:"#/weeks/{{week.id}}/results"}
-						Week {{week.week_number}} Results
+			.col-sm-4
+				%br
+				.btn-group{:dropdown => ""}
+					%button.btn.btn-danger{:type => "button"} Results of Other Weeks
+					%button.btn.btn-danger.dropdown-toggle{:type => "button"}
+						%span.caret
+						%span.sr-only Split button
+					%ul.dropdown-menu{:role => "menu"}
+						%li{"ng-repeat"=>"week in season_weeks"}
+							%a{href:"#/weeks/{{week.id}}/results"}
+								Week {{week.week_number}} Results
+		.row
+			.col-md-6
+				%h4 Still Alive: {{still_alive_count()}}
+				%h4 Knocked Out This Week: {{knocked_out_this_week_count()}}
+				%h4 Knocked Out Previously: {{knocked_out_previously_count()}}
 
 .row{"ng-if" => "error_message"}
 	.col-sm-12.text-center

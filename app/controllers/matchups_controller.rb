@@ -89,9 +89,12 @@ class MatchupsController < ApplicationController
   end
 
   def save_outcome
+    binding.pry
     Rails.logger.debug("in save_outcome method")
 
     Matchup.handle_matchup_outcome!(params[:matchup][:id])
+
+    binding.pry
 
     respond_to do |format|
       format.json {render :json => @picks_this_week.to_json(include: {pool_entry: {only: [:team_name]} } ) }

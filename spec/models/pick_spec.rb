@@ -8,6 +8,9 @@ describe Pick do
   it { should validate_uniqueness_of(:pool_entry_id).scoped_to(:week_id)}
 
   it { should validate_presence_of :team_id }
+  it { should validate_presence_of :matchup_id }
+  it { should validate_presence_of :pool_entry_id }
+  it { should validate_presence_of :week_id }
 
   it "should allow more than one pick for two different pool entries" do
     @user = create(:user)

@@ -183,7 +183,7 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 			console.log("Saving pool entry " + $scope.editing_pool_entry.team_name)
 			picked_matchup = matchup
 
-			Week.post(":parent_id/create_or_update_pick", {week_id: $scope.week_id, pool_entry_id: pool_entry.id, team_id: $scope.selectedPick.id}, $scope.week_id).then(
+			Week.post(":parent_id/create_or_update_pick", {week_id: $scope.week_id, pool_entry_id: pool_entry.id, team_id: $scope.selectedPick.id, matchup_id: picked_matchup.id}, $scope.week_id).then(
 				(data) ->
 					console.log("Back from savePick method")
 					$scope.loadPoolEntries()

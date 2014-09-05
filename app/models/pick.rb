@@ -4,7 +4,7 @@ class Pick < ActiveRecord::Base
 	belongs_to :pool_entry, autosave: true
 	belongs_to :matchup
 
-	validates_presence_of :team_id, :pool_entry_id, :week_id
+	validates_presence_of :team_id, :pool_entry_id, :week_id, :matchup_id
 	validates_uniqueness_of :pool_entry_id, scope: :week_id
 
   validate :cannot_change_locked_in_pick, :on => :update

@@ -24,4 +24,5 @@ spec/tmp/assets/jasmine-specs.js
 
 public
 
+*.dmp
 s3.yml

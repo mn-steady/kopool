@@ -216,7 +216,7 @@ describe PicksController do
 
         put :create_or_update_pick, pick_params
         pick_returned = JSON.parse(response.body)
-        
+
         expect(Pick.count).to eq(1)
         expect(Pick.last.team_id).to eq(@broncos.id)
       end
@@ -235,7 +235,7 @@ describe PicksController do
 
         put :create_or_update_pick, pick_params
         pick_returned = JSON.parse(response.body)
-        
+
         expect(Pick.count).to eq(1)
         expect(Pick.last.team_id).to eq(@broncos.id)
       end
@@ -252,22 +252,13 @@ describe PicksController do
 
         put :create_or_update_pick, pick_params
         pick_returned = JSON.parse(response.body)
-        
+
         expect(Pick.count).to eq(0)
         expect(pick_returned).to have_key("error")
         expect(response.status).to eq(Rack::Utils.status_code(:bad_request))
       end
     end
   end
-
-  describe "GET missing_picks" do
-  	# Will we want this in pool_entries_controller since we'll search
-  	# for pool_entries without a pick for that week?
-  	it "sets @missing_picks to the missing picks from the current week"
-  	it "does not include picks from a later week in @missing_picks"
-  	it "does not include completed picks in @missing_picks"
-  end
-
 
   describe "GET week_picks" do
 

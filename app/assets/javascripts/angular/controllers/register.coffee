@@ -166,6 +166,7 @@ angular.module('Register', ['ngResource', 'RailsApiResource', 'user'])
           console.log("(num_pool_entries.watch) Changing pool entries AFTER registration")
           num_existing_teams = $scope.pool_entries.length
           console.log("(num_pool_entries.watch) existing team count="+ num_existing_teams)
+
           if newVal > num_existing_teams
             if num_existing_teams == 10
               console.log("CANNOT ADD ANY MORE TEAMS")

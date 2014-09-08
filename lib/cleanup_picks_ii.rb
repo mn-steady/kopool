@@ -6,7 +6,7 @@
 # WHERE picks.week_id = 16
 # AND  (picks.team_id NOT IN (matchups.away_team_id,  matchups.home_team_id));
 
-badpicks = Pick.where(id: 267).where(week_id: 16).joins(:matchup).where("picks.team_id NOT IN (matchups.away_team_id,  matchups.home_team_id)")
+badpicks = Pick.where(week_id: 16).joins(:matchup).where("picks.team_id NOT IN (matchups.away_team_id,  matchups.home_team_id)")
 
 badpicks.each do | badpick |
 

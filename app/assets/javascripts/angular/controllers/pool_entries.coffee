@@ -19,8 +19,9 @@ angular.module('PoolEntries', ['ngResource', 'RailsApiResource'])
 
 
 		$scope.getWebState = () ->
-			console.log("...Looking up the WebState")
+			console.log("(PoolEntriesCtrl.getWebState) Looking up the WebState")
 			$scope.web_state = WebState.get(1).then((web_state) ->
+				console.log("(PoolEntriesCtrl.getWebState) Have WebState")
 				$scope.web_state = web_state
 				$scope.current_week = web_state.current_week
 				$scope.open_for_picks = web_state.current_week.open_for_picks
@@ -28,29 +29,32 @@ angular.module('PoolEntries', ['ngResource', 'RailsApiResource'])
 			)
 
 		$scope.getNflTeams = () ->
+			console.log("(PoolEntriesCtrl.getNflTeams) Looking up the NflTeams")
 			NflTeam.query().then((nfl_teams) ->
+				console.log("(PoolEntriesCtrl.getNflTeams) *** Have nfl_teams***")
 				$scope.nfl_teams = nfl_teams
-				console.log("*** Have nfl_teams***")
 				$scope.load_season_weeks()
 			)
 
 		$scope.load_season_weeks = () ->
-			console.log("(load_season_weeks)")
+			console.log("(PoolEntriesCtrl.load_season_weeks) Looking up the season_weeks")
 			SeasonWeeks.nested_query($scope.web_state.current_week.season.id).then((season_weeks) ->
-				console.log("(load_season_weeks) *** Have All Season Weeks ***")
+				console.log("(PoolEntriesCtrl.load_season_weeks) *** Have All Season Weeks ***")
 				$scope.season_weeks = season_weeks
 				$scope.getWeeklyResults()
 			)
 
 		$scope.getWeeklyResults = () ->
-			WeekResults.nested_query(week_id).then(
+			console.log("(PoolEntriesCtrl.getWeeklyResults) Looking up the weekly results for week_id:" + $scope.week_id)
+			WeekResults.nested_query($scope.week_id).then(
 				(week_results) ->
+					console.log("(PoolEntriesCtrl.getWeeklyResults) ...Have Week Results")
 					$scope.pool_entries_still_alive = week_results[0]
 					$scope.pool_entries_knocked_out_this_week = week_results[1]
 					$scope.pool_entries_knocked_out_previously = week_results[2]
 					$scope.unmatched_pool_entries = week_results[3]
-					console.log("*** Have week results ***")
 				(json_error_data) ->
+					console.log("(PoolEntriesCtrl.getWeeklyResults) Error getting Week Results")
 					$scope.error_message = json_error_data.data[0].error
 			)
 

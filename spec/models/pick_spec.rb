@@ -49,6 +49,26 @@ describe Pick do
     }.to raise_error(ActiveRecord::RecordInvalid)
   end
 
+  it "Verifies that the pick.team_id is either the home OR away team of that matchup" do
+    @user = create(:user)
+    @season = create(:season)
+    @week16 = Week.create(week_number: 16, start_date: DateTime.new(2014,8,5), end_date: DateTime.new(2014,8,8), deadline: DateTime.new(2014,8,7), season: @season)
+    @web_state = create(:web_state, week_id: @week16.id)
+    @team1 = FactoryGirl.create(:nfl_team)
+    @team2 = FactoryGirl.create(:nfl_team)
+    @team3 = FactoryGirl.create(:nfl_team)
+    @monday_matchup = Matchup.create(game_time: DateTime.new(2017,8,14,15,00), week_id: @week16.id, home_team_id: @team1.id, away_team_id: @team2.id)
+
+    @pool_entry_1 = FactoryGirl.create(:pool_entry, team_name: "Our pick will be valid", season: @season, user: @user)
+    @pool_entry_2 = FactoryGirl.create(:pool_entry, team_name: "Our pick will not be valid", knocked_out: true, season: @season, user: @user)
+    @pick1 = FactoryGirl.create(:pick, pool_entry: @pool_entry_1, week: @week16, nfl_team: @monday_matchup.away_team, matchup: @monday_matchup)
+    expect {
+        @pick2 = FactoryGirl.create(:pick, pool_entry: @pool_entry_2, week: @week16, nfl_team: @team3, matchup: @monday_matchup)
+      }.to raise_error(ActiveRecord::RecordInvalid)
+
+    expect(Pick.count).to eq(1)
+  end
+
 
   it "should record auto_picked when auto-picked" do
     @season = create(:season)

@@ -14,7 +14,7 @@ class PicksController < ApplicationController
 		safe_params = picks_params
 		@week = Week.find(safe_params[:week_id])
 		@pool_entry = PoolEntry.find(safe_params[:pool_entry_id])
-		
+
 		if @pool_entry.knocked_out == true
 			error_message = "You can't change the pick for a knocked_out pool entry!"
       render :json => {:error => error_message}, :status => :bad_request

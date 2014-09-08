@@ -12,6 +12,7 @@ describe Pick do
   it { should validate_presence_of :pool_entry_id }
   it { should validate_presence_of :week_id }
 
+
   it "should allow more than one pick for two different pool entries" do
     @user = create(:user)
     @season = create(:season)

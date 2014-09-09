@@ -3,8 +3,16 @@ angular.module('ForgotPasswords', ['ngResource', 'RailsApiResource', 'ui.bootstr
 	.factory 'ForgotPassword', (RailsApiResource) ->
 		RailsApiResource('users', 'forgot_password')
 
-	.controller 'ForgotPasswordsCtrl', ['$scope', '$location', '$http', '$routeParams', 'WebState', 'PoolEntry', 'ForgotPassword', ($scope, $location, $http, $routeParams, WebState, PoolEntry, ForgotPassword) ->
+	.factory 'UpdatePassword', (RailsApiResource) ->
+		RailsApiResource('users', 'forgot_password')
+
+	.controller 'ForgotPasswordsCtrl', ['$scope', '$location', '$http', '$routeParams', 'WebState', 'PoolEntry', 'ForgotPassword', 'UpdatePassword', ($scope, $location, $http, $routeParams, WebState, PoolEntry, ForgotPassword, UpdatePassword) ->
 		$scope.user_email = ""
+		$scope.updating_user = 
+			password: ""
+			password_confirmation: ""
+			reset_password_token: "1Lz9Ag4ZS4RreYaxFhES"
+		
 		$scope.alert = {
 			type: null
 			message: null
@@ -22,4 +30,17 @@ angular.module('ForgotPasswords', ['ngResource', 'RailsApiResource', 'ui.bootstr
 					$scope.alert.message = json_error_data.data[0].error
 					$scope.alert.type = "danger"
 			)
+
+		$scope.updatePassword = () ->
+
+			UpdatePassword.put("password", $scope.updating_user).then(
+				(success_response) ->
+					$scope.alert.message = "Your password has been reset. Please sign in."
+					$scope.alert.type = "success"
+				(json_error_data) ->
+					console.log("Password update failed. Please try again or contact the commish.")
+					$scope.alert.message = json_error_data.data[0].error
+					$scope.alert.type = "danger"
+			)
+
 	]

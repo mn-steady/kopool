@@ -13,16 +13,16 @@
 
               .form-group
                 %label.col-md-4 New Password
-                .col-md-5{"ng-class" => "password_is_valid(registering_user.password)"}
-                  %input.form-control{"type" => "password", "ng-model" => "registering_user.password"}
+                .col-md-5{"ng-class" => "password_is_valid(updating_user.password)"}
+                  %input.form-control{"type" => "password", "ng-model" => "updating_user.password"}
 
               .form-group
                 %label.col-md-4 Confirm New Password
-                .col-md-5{"ng-class" => "password_is_valid(registering_user.password_confirmation)"}
-                  %input.form-control{"type" => "password", "ng-model" => "registering_user.password_confirmation"}
+                .col-md-5{"ng-class" => "password_is_valid(updating_user.password_confirmation)"}
+                  %input.form-control{"type" => "password", "ng-model" => "updating_user.password_confirmation"}
 
               %a.btn.btn-info.col-sm-offset-2{"ng-click" => "updatePassword()", role: "button"} Set New Password
 
         .col-md-4{"ng-if" => "error_message"}
-          .alert.alert-danger{"ng-hide" => "passwords_match(registering_user.password, registering_user.password_confirmation)"}
+          .alert.alert-danger{"ng-hide" => "passwords_match(updating_user.password, updating_user.password_confirmation)"}
             Passwords must match

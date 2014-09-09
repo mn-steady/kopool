@@ -130,6 +130,19 @@ angular.module('RailsApiResource', ['ngResource'])
           console.log("(RailsApiResource.post) response="+response.data)
         )
 
+      Resource.put = (action, data, parent_id) ->
+        console.log("Resource.put action="+action)
+        console.log("data: "+data)
+        actionUrl = KOPOOL_CONFIG.PROTOCOL + '://' + KOPOOL_CONFIG.HOSTNAME + '/' + resourceName + '/' + action + '.json'
+        if actionUrl.indexOf(":parent_id") > -1?
+          actionUrl = actionUrl.replace(/:parent_id/, parent_id)
+
+        console.log("actionUrl will be: "+actionUrl)
+        $http.put(actionUrl, data, {params:defaultParams}).then( (response) ->
+          result = []
+          console.log("(RailsApiResource.put) response="+response.data)
+        )
+
       Resource.remove = (data, parent_id) ->
         console.log("Resource.remove")
         nested_url = KOPOOL_CONFIG.PROTOCOL + '://' + KOPOOL_CONFIG.HOSTNAME + '/' + resourceName + '/' + data.id + '.json'

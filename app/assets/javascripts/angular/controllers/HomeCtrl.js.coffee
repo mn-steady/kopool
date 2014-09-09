@@ -91,6 +91,12 @@ angular.module('Home', ['ngResource', 'RailsApiResource', 'user'])
 
     # Display and utility functions
 
+    $scope.is_authorized = ->
+      if currentUser.authorized
+        true
+      else
+        false
+
     $scope.is_admin = ->
       currentUser.admin
 

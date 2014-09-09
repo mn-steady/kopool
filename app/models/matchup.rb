@@ -11,7 +11,6 @@ class Matchup < ActiveRecord::Base
 
 
   def self.handle_matchup_outcome!(matchup_id)
-    binding.pry
     @matchup = Matchup.find_by(id: matchup_id)
     @this_matchups_picks = @matchup.picks
     if @this_matchups_picks.empty?
@@ -19,7 +18,6 @@ class Matchup < ActiveRecord::Base
       @matchup.save!
     else
       @this_matchups_picks.each do |pick|
-        binding.pry
         if @matchup.tie == true
           Matchup.handle_tie_game(@matchup, pick)
         elsif @matchup.winning_team_id == pick.team_id
@@ -48,7 +46,6 @@ private
   end
 
   def self.handle_losing_outcome(matchup, pick)
-    binding.pry
     pick.pool_entry.knocked_out = true
     pick.pool_entry.knocked_out_week_id = matchup.week_id
     pick.save!

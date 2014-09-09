@@ -39,15 +39,12 @@ private
     pick.save!
     matchup.completed = true
     matchup.save!
-    binding.pry
   end
 
   def self.handle_winning_outcome(matchup, pick)
-    binding.pry
     # Send email message or give some other notification that a person will continue?
     matchup.completed = true
     matchup.save!
-    binding.pry
   end
 
   def self.handle_losing_outcome(matchup, pick)
@@ -57,7 +54,6 @@ private
     pick.save!
     matchup.completed = true
     matchup.save!
-    binding.pry
   end
 
 end

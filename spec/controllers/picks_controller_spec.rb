@@ -19,8 +19,8 @@ describe PicksController do
 		end
 
   	it "returns the user's picks from this season" do
-  		pick1 = Pick.create(pool_entry: @pool_entry1, week: @week, team_id: @vikings.id)
-  		pick2 = Pick.create(pool_entry: @pool_entry2, week: @week, team_id: @broncos.id)
+  		pick1 = Pick.create(pool_entry: @pool_entry1, week: @week, team_id: @vikings.id, matchup_id: @matchup.id)
+  		pick2 = Pick.create(pool_entry: @pool_entry2, week: @week, team_id: @broncos.id, matchup_id: @matchup.id)
 
   		get :index, week_id: @week.id, format: :json
       picks_returned = JSON.parse(response.body)
@@ -32,8 +32,8 @@ describe PicksController do
   	it "does not include another user's picks in response" do
       @another_user = create(:user)
       @another_pool_entry = PoolEntry.create(user: @another_user, team_name: "Not Yours", paid: true)
-      pick1 = Pick.create(pool_entry: @pool_entry1, week: @week, team_id: @vikings.id)
-      pick2 = Pick.create(pool_entry: @another_pool_entry, week: @week, team_id: @broncos.id)
+      pick1 = Pick.create(pool_entry: @pool_entry1, week: @week, team_id: @vikings.id, matchup_id: @matchup.id)
+      pick2 = Pick.create(pool_entry: @another_pool_entry, week: @week, team_id: @broncos.id, matchup_id: @matchup.id)
 
       get :index, week_id: @week.id, format: :json
       picks_returned = JSON.parse(response.body)
@@ -45,8 +45,8 @@ describe PicksController do
       @last_season = Season.create(year: 2014, name: "2013 Season", entry_fee: 5)
       @old_week = Week.create(season: @last_season, week_number: 1, start_date: DateTime.new(2013, 8, 5), deadline: DateTime.new(2013, 8, 8), end_date: DateTime.new(2013, 8, 11))
       @old_pool_entry = PoolEntry.create(user: @user, season: @last_season, team_name: "Ancient History", paid: true)
-      pick1 = Pick.create(pool_entry: @pool_entry1, week: @week, team_id: @vikings.id)
-      old_pick1 = Pick.create(pool_entry: @old_pool_entry, week: @old_week, team_id: @broncos.id)
+      pick1 = Pick.create(pool_entry: @pool_entry1, week: @week, team_id: @vikings.id, matchup_id: @matchup.id)
+      old_pick1 = Pick.create(pool_entry: @old_pool_entry, week: @old_week, team_id: @broncos.id, matchup_id: @matchup.id)
 
       get :index, week_id: @week.id, format: :json
       picks_returned = JSON.parse(response.body)
@@ -78,6 +78,7 @@ describe PicksController do
             week_id: @week.id,
             pool_entry_id: @pool_entry1.id,
             team_id: @vikings.id,
+            matchup_id: @matchup.id,
             format: :json
           }
 
@@ -108,6 +109,7 @@ describe PicksController do
             week_id: @week.id,
             pool_entry_id: @pool_entry1.id,
             team_id: @vikings.id,
+            matchup_id: @matchup.id,
             format: :json
           }
 
@@ -136,6 +138,7 @@ describe PicksController do
             week_id: @week.id,
             pool_entry_id: @pool_entry1.id,
             team_id: @vikings.id,
+            matchup_id: @matchup.id,
             format: :json
           }
 
@@ -164,7 +167,7 @@ describe PicksController do
 
 	  context "with a knocked out pool entry" do
 	  	it "does not save the pick" do
-        pick1 = Pick.create(pool_entry: @pool_entry1, week: @week, team_id: @vikings.id)
+        pick1 = Pick.create(pool_entry: @pool_entry1, week: @week, team_id: @vikings.id, matchup_id: @matchup.id)
         @pool_entry1.update_attributes(knocked_out: true, knocked_out_week_id: @week.id)
 
           pick_params = {
@@ -201,18 +204,19 @@ describe PicksController do
 
     context "with an existing pick" do
       it "does save the new pick" do
-        pick1 = Pick.create(pool_entry: @pool_entry1, week: @week, team_id: @vikings.id)
+        pick1 = Pick.create(pool_entry: @pool_entry1, week: @week, team_id: @vikings.id, matchup_id: @matchup.id)
 
          pick_params = {
             week_id: @week.id,
             pool_entry_id: @pool_entry1.id,
             team_id: @broncos.id,
+            matchup_id: @matchup.id,
             format: :json
           }
 
         put :create_or_update_pick, pick_params
         pick_returned = JSON.parse(response.body)
-        
+
         expect(Pick.count).to eq(1)
         expect(Pick.last.team_id).to eq(@broncos.id)
       end
@@ -225,12 +229,13 @@ describe PicksController do
             week_id: @week.id,
             pool_entry_id: @pool_entry1.id,
             team_id: @broncos.id,
+            matchup_id: @matchup.id,
             format: :json
           }
 
         put :create_or_update_pick, pick_params
         pick_returned = JSON.parse(response.body)
-        
+
         expect(Pick.count).to eq(1)
         expect(Pick.last.team_id).to eq(@broncos.id)
       end
@@ -247,22 +252,13 @@ describe PicksController do
 
         put :create_or_update_pick, pick_params
         pick_returned = JSON.parse(response.body)
-        
+
         expect(Pick.count).to eq(0)
         expect(pick_returned).to have_key("error")
         expect(response.status).to eq(Rack::Utils.status_code(:bad_request))
       end
     end
   end
-
-  describe "GET missing_picks" do
-  	# Will we want this in pool_entries_controller since we'll search
-  	# for pool_entries without a pick for that week?
-  	it "sets @missing_picks to the missing picks from the current week"
-  	it "does not include picks from a later week in @missing_picks"
-  	it "does not include completed picks in @missing_picks"
-  end
-
 
   describe "GET week_picks" do
 
@@ -287,8 +283,8 @@ describe PicksController do
 			end
 
 			it "returns the picks from this week" do
-	  		pick1 = Pick.create(pool_entry: @pool_entry1, week: @week, team_id: @vikings.id)
-	  		pick2 = Pick.create(pool_entry: @pool_entry2, week: @week, team_id: @broncos.id)
+	  		pick1 = Pick.create(pool_entry: @pool_entry1, week: @week, team_id: @vikings.id, matchup_id: @matchup.id)
+	  		pick2 = Pick.create(pool_entry: @pool_entry2, week: @week, team_id: @broncos.id, matchup_id: @matchup.id)
 	  		get :week_picks, week_id: @week.id, format: :json
 	  		expect(response.status).to eq(Rack::Utils.status_code(:ok))
 

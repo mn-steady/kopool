@@ -118,8 +118,8 @@ describe PoolEntriesController do
 		end
 
   	it "returns nfl teams for both pool entries when picks exist" do
-  		pick1 = Pick.create(pool_entry: @pool_entry1, week: @week, team_id: @vikings.id)
-  		pick2 = Pick.create(pool_entry: @pool_entry2, week: @week, team_id: @broncos.id)
+  		pick1 = Pick.create(pool_entry: @pool_entry1, week: @week, team_id: @vikings.id, matchup_id: @matchup.id)
+  		pick2 = Pick.create(pool_entry: @pool_entry2, week: @week, team_id: @broncos.id, matchup_id: @matchup.id)
 
   		get :pool_entries_and_picks, week_id: @week.id, format: :json
       pool_entries_and_teams = JSON.parse(response.body)

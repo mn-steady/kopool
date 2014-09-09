@@ -120,30 +120,31 @@ describe WeeksController do
     before (:each) do
       @regular_guy = create(:user)
       sign_in @regular_guy
-
       @season = Season.create(year: 2014, name: "2014 Season", entry_fee: 50)
       @week = Week.create(season: @season, week_number: 1, start_date: DateTime.new(2014, 8, 5), deadline: DateTime.new(2014, 8, 8), end_date: DateTime.new(2014, 8, 11))
-
+      @week2 = Week.create(season: @season, week_number: 2, start_date: DateTime.new(2014, 8, 12), deadline: DateTime.new(2014, 8, 15), end_date: DateTime.new(2014, 8, 18))
       @web_state = FactoryGirl.create(:web_state, current_week: @week)
+
       @pool_entry = FactoryGirl.create(:pool_entry, user: @regular_guy, team_name: "First Pool Entry", paid: true, season: @season)
       @pool_entry_2 = FactoryGirl.create(:pool_entry, user: @regular_guy, team_name: "Second Pool Entry", paid: true, season: @season)
 
-
       @broncos = NflTeam.create(name: "Denver Broncos", conference: "NFC", division: "West")
       @vikings = NflTeam.create(name: "Minnesota Vikings", conference: "NFC", division: "North")
+      @seahawks = NflTeam.create(name: "Seattle Seahawks", conference: "NFC", division: "North")
       @matchup = Matchup.create(week_id: @week.id, home_team: @broncos, away_team: @vikings, game_time: DateTime.new(2014,8,10,11))
+      @matchup2 = Matchup.create(week_id: @week2.id, home_team: @vikings, away_team: @seahawks, game_time: DateTime.new(2014,8,13,11))
 
       @pick1 = FactoryGirl.create(:pick, pool_entry: @pool_entry, week: @week, nfl_team: @vikings, matchup: @matchup)
+      @pick2 = FactoryGirl.create(:pick, pool_entry: @pool_entry, week: @week2, nfl_team: @seahawks, matchup: @matchup2)
     end
 
-    it "returns pool entries without a pick for this week" do
+    it "returns only pool entries without a pick for this week only" do
       get :unpicked, week_id: @week.id, format: :json
-
       expect(response.status).to eq(Rack::Utils.status_code(:ok))
-
-      returned = JSON.parse(response.body)
-
-      expect(returned.count).to eq(1)
+      unpicked_results = JSON.parse(response.body)
+      expect(unpicked_results.count).to eq(1)
+      expect(unpicked_results[0]['id']).to eq(@pool_entry_2.id)
     end
+
   end
 end

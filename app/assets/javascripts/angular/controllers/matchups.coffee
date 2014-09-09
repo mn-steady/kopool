@@ -13,15 +13,18 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 		RailsApiResource('weeks/:parent_id/picks', 'picks')
 
 	.factory 'WebState', (RailsApiResource) ->
-			RailsApiResource('admin/web_states', 'webstate')
+		RailsApiResource('admin/web_states', 'webstate')
 
 	.factory 'Week', (RailsApiResource) ->
-			RailsApiResource('weeks', 'weeks')
+		RailsApiResource('weeks', 'weeks')
+
+	.factory 'PoolEntriesAndPicks', (RailsApiResource) ->
+		RailsApiResource('weeks/:parent_id/pool_entries_and_picks', 'pool_entries')
 
 	.factory 'SeasonWeeks', (RailsApiResource) ->
 		RailsApiResource('seasons/:parent_id/weeks', 'weeks')
 
-	.controller 'MatchupsCtrl', ['$scope', '$location', '$http', '$routeParams', 'Matchup', 'NflTeam', 'PoolEntry', 'currentUser', 'Pick', '$modal', 'WebState', 'Week', 'SeasonWeeks', ($scope, $location, $http, $routeParams, Matchup, NflTeam, PoolEntry, currentUser, Pick, $modal, WebState, Week, SeasonWeeks) ->
+	.controller 'MatchupsCtrl', ['$scope', '$location', '$http', '$routeParams', 'Matchup', 'NflTeam', 'PoolEntry', 'currentUser', 'Pick', '$modal', 'WebState', 'Week', 'SeasonWeeks', 'PoolEntriesAndPicks', ($scope, $location, $http, $routeParams, Matchup, NflTeam, PoolEntry, currentUser, Pick, $modal, WebState, Week, SeasonWeeks, PoolEntriesAndPicks) ->
 		$scope.controller = 'MatchupsCtrl'
 		console.log("MatchupsCtrl")
 		console.log("$location:" + $location)
@@ -84,36 +87,12 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 
 		# Gather resources and associate relevant pool entries and picks
 		$scope.loadPoolEntries = () ->
-			PoolEntry.query().then((pool_entries) ->
+			PoolEntriesAndPicks.nested_query($scope.week_id).then((pool_entries) ->
 				$scope.pool_entries = pool_entries
-				$scope.loadPicks()
-				$scope.loadNflTeams()
 				$scope.load_season_weeks()
+				$scope.loadMatchups()
 				console.log("*** Have pool entries, picks, teams, and season-weeks ***")
 			)
-
-		$scope.loadNflTeams = () ->
-			NflTeam.query().then((nfl_teams) ->
-				$scope.nfl_teams = nfl_teams
-				console.log("*** Have nfl_teams***")
-			)
-
-		$scope.loadPicks = () ->
-			$scope.picks = []
-			console.log("in loadPicks()")
-			Pick.nested_query(week_id).then((picks) ->
-				$scope.picks = picks
-				$scope.associatePicks()
-				$scope.loadMatchups()
-				console.log("Have picks")
-			)
-
-		$scope.associatePicks = ->
-			for pool_entry in $scope.pool_entries
-				for pick in $scope.picks
-					if pick.pool_entry_id == pool_entry.id
-						angular.extend(pool_entry, pick)
-						console.log("A pick was associated with a pool entry")
 
 		$scope.loadMatchups = () ->
 			Matchup.nested_query($scope.week_id).then((matchups) ->
@@ -144,7 +123,8 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 
 		$scope.set_editing_pool_entry = (index) ->
 			$scope.editing_pool_entry = $scope.pool_entries[index]
-			console.log("Set editing_pool_entry to: "+$scope.editing_pool_entry)
+			console.log("Set editing_pool_entry to: "+$scope.editing_pool_entry.team_name)
+			console.log("This pool entry has a pick of ID " + $scope.editing_pool_entry.team_id)
 			$scope.showMatchups = true
 
 		$scope.pool_entry_button_class = (pool_entry) ->
@@ -200,29 +180,16 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 		$scope.savePick = (matchup, editing_pool_entry) ->
 			console.log("MatchupsCtrl.savePick...")
 			pool_entry = $scope.editing_pool_entry
-			week_id = matchup.week_id
+			console.log("Saving pool entry " + $scope.editing_pool_entry.team_name)
 			picked_matchup = matchup
 
-			console.log("Sending Pick info to Rails...")
-			if pool_entry.team_id
-				console.log("Sending UPDATE pick to rails")
-				for pick in $scope.picks
-					if pick.pool_entry_id = pool_entry.pool_entry_id
-						existing_pick = pick
-				console.log("Found existing_pick")
-				existing_pick.pool_entry_id = pool_entry.pool_entry_id
-				existing_pick.week_id = week_id
-				existing_pick.team_id = $scope.selectedPick.id
-				existing_pick.matchup_id = picked_matchup.id
-				console.log("Updated existing_pick")
-				Pick.save(existing_pick, week_id).then((existing_pick) ->
-					console.log("existing_pick: " + existing_pick)
+			Week.post(":parent_id/create_or_update_pick", {week_id: $scope.week_id, pool_entry_id: pool_entry.id, team_id: $scope.selectedPick.id, matchup_id: picked_matchup.id}, $scope.week_id).then(
+				(data) ->
+					console.log("Back from savePick method")
+					$scope.loadPoolEntries()
+				(data) ->
+					console.log("FAILED to create_or_update_pick")
 				)
-
-			else
-				$scope.new_pick = {pool_entry_id: pool_entry.id, week_id: week_id, team_id: $scope.selectedPick.id, matchup_id: picked_matchup.id}
-				console.log("Sending CREATE pick to rails")
-				Pick.create($scope.new_pick, week_id)
 
 			$location.path ('/weeks/' + $scope.week_id + '/matchups')
 			$scope.selectedMatchup = ""
@@ -230,7 +197,6 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 			$scope.editing_pool_entry = null
 			$scope.hideMatchups = false
 			$scope.showMatchups = false
-			$scope.loadPoolEntries()
 			$scope.alert = { type: "success", msg: "Your pick was saved! Good luck!" }
 			console.log("End of savePick method")
 

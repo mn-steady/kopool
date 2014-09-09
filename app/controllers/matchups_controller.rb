@@ -16,7 +16,7 @@ class MatchupsController < ApplicationController
     @week = Week.find(params[:week_id])
 
     if @week.open_for_picks == true
-      Rails.logger.error("ERROR you can't view the picks for a week before it is closed!")
+      Rails.logger.error("ERROR You cannot view the picks for this week until the games start! Week must be closed for picks")
       error_message = "You cannot view the picks for this week until the games start!"
       render :json => [:error => error_message], :status => :bad_request
     else

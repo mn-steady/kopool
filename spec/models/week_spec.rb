@@ -9,6 +9,8 @@ describe Week do
   it { should validate_presence_of :start_date }
   it { should validate_presence_of :end_date }
   it { should validate_presence_of :deadline }
+  it { should validate_presence_of :season_id }
+
 
   describe "#week_number unique in season" do
     it "should not allow you to save a dup week_number in the same season" do

@@ -14,89 +14,70 @@ angular.module('PoolEntries', ['ngResource', 'RailsApiResource'])
 		week_id = parseInt( $routeParams.week_id, 10 )
 		$scope.week_id = week_id
 		console.log("The passed-in week's ID is: " + $scope.week_id)
+		$scope.current_week = {}
+		$scope.season_weeks = {}
 
-		$scope.getResultsResources = () ->
 
-			$scope.current_week = {}
-			$scope.season_weeks = {}
-
-			console.log("...Looking up the WebState")
+		$scope.getWebState = () ->
+			console.log("(PoolEntriesCtrl.getWebState) Looking up the WebState")
 			$scope.web_state = WebState.get(1).then((web_state) ->
+				console.log("(PoolEntriesCtrl.getWebState) Have WebState")
 				$scope.web_state = web_state
 				$scope.current_week = web_state.current_week
 				$scope.open_for_picks = web_state.current_week.open_for_picks
+				$scope.getNflTeams()
+			)
+
+		$scope.getNflTeams = () ->
+			console.log("(PoolEntriesCtrl.getNflTeams) Looking up the NflTeams")
+			NflTeam.query().then((nfl_teams) ->
+				console.log("(PoolEntriesCtrl.getNflTeams) *** Have nfl_teams***")
+				$scope.nfl_teams = nfl_teams
 				$scope.load_season_weeks()
 			)
 
-			NflTeam.query().then((nfl_teams) ->
-				$scope.nfl_teams = nfl_teams
-				console.log("*** Have nfl_teams***")
+		$scope.load_season_weeks = () ->
+			console.log("(PoolEntriesCtrl.load_season_weeks) Looking up the season_weeks")
+			SeasonWeeks.nested_query($scope.web_state.current_week.season.id).then((season_weeks) ->
+				console.log("(PoolEntriesCtrl.load_season_weeks) *** Have All Season Weeks ***")
+				$scope.season_weeks = season_weeks
+				$scope.getWeeklyResults()
 			)
 
-			WeekResults.nested_query(week_id).then(
+		$scope.getWeeklyResults = () ->
+			console.log("(PoolEntriesCtrl.getWeeklyResults) Looking up the weekly results for week_id:" + $scope.week_id)
+			WeekResults.nested_query($scope.week_id).then(
 				(week_results) ->
+					console.log("(PoolEntriesCtrl.getWeeklyResults) ...Have Week Results")
 					$scope.pool_entries_still_alive = week_results[0]
 					$scope.pool_entries_knocked_out_this_week = week_results[1]
 					$scope.pool_entries_knocked_out_previously = week_results[2]
 					$scope.unmatched_pool_entries = week_results[3]
-					console.log("*** Have week results ***")
 				(json_error_data) ->
+					console.log("(PoolEntriesCtrl.getWeeklyResults) Error getting Week Results")
 					$scope.error_message = json_error_data.data[0].error
 			)
 
-		$scope.getResultsResources()
+		$scope.still_alive_count = () ->
+			if $scope.pool_entries_still_alive
+				$scope.pool_entries_still_alive.length
+			else
+				"0"
 
-		$scope.load_season_weeks = () ->
-			console.log("(load_season_weeks)")
-			SeasonWeeks.nested_query($scope.web_state.current_week.season.id).then((season_weeks) ->
-				console.log("(load_season_weeks) *** Have All Season Weeks ***")
-				$scope.season_weeks = season_weeks
-			)
+		$scope.knocked_out_this_week_count = () ->
+			if $scope.pool_entries_knocked_out_this_week
+				$scope.pool_entries_knocked_out_this_week.length
+			else
+				"0"
 
-		# $scope.sortPoolEntries = (pool_entries) ->
-		# 	$scope.pool_entries_knocked_out_this_week = []
-		# 	$scope.pool_entries_still_alive = []
-		# 	$scope.pool_entries_knocked_out_previously = []
-		# 	$scope.pool_entries_not_yet_paid = [] # Still need to support this below
+		$scope.knocked_out_previously_count = () ->
+			if $scope.pool_entries_knocked_out_previously
+				$scope.pool_entries_knocked_out_previously.length
+			else
+				"0"
 
-		# 	console.log("sorting pool entries")
+		$scope.getWebState()
 
-		# 	for pool_entry in pool_entries
-		# 		if pool_entry.knocked_out == false
-		# 			$scope.pool_entries_still_alive.push pool_entry
-		# 		else if pool_entry.knocked_out_week_id == week_id
-		# 			$scope.pool_entries_knocked_out_this_week.push pool_entry
-		# 		else if pool_entry.knocked_out == true
-		# 			$scope.pool_entries_knocked_out_previously.push pool_entry
-
-		# 	$scope.gatherPicks()
-
-
-		# $scope.gatherPicks = () ->
-		# 	$scope.picks = []
-		# 	PickResults.nested_query(week_id).then((this_weeks_picks) ->
-		# 		$scope.picks = this_weeks_picks
-		# 		console.log("gathered Picks")
-		# 		$scope.associatePicks()
-		# 	)
-
-		# $scope.associatePicks = () ->
-		# 	console.log("in associatePicks")
-		# 	for pool_entry in $scope.pool_entries_knocked_out_this_week
-		# 		console.log("Looking at pool entry of ID " + pool_entry.id + " in knocked_out_this_week")
-		# 		for pick in $scope.picks
-		# 			if pick.pool_entry_id == pool_entry.id
-		# 				console.log("KNOCKED OUT: A pick with pool entry ID of " + pick.pool_entry_id + " was associated with a pool entry of ID: " + pool_entry.id )
-		# 				angular.extend(pool_entry, pick)
-		# 	console.log("Finished knocked out")
-			
-		# 	for pool_entry in $scope.pool_entries_still_alive
-		# 		console.log("Looking at pool entry of ID " + pool_entry.id + " in still_alive")
-		# 		for pick in $scope.picks
-		# 			if pick.pool_entry_id == pool_entry.id
-		# 				console.log("STILL ALIVE: A pick with pool entry ID of " + pick.pool_entry_id + " was associated with a pool entry of ID: " + pool_entry.id )
-		# 				angular.extend(pool_entry, pick)
-		# 	console.log("Finished still alive")
 
 		$scope.results_header = ->
 			console.log("(matchup_header) week_id:" + parseInt($scope.week_id) + " current_week.id:" + $scope.current_week.id)

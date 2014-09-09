@@ -56,7 +56,11 @@
 		}).
 		when('/weeks/:week_id/matchups/:matchup_id', {
 			templateUrl:'<%= asset_path("matchups/edit.html") %>',
-			controller: 'MatchupsCtrl'
+			controller: 'AdminMatchupsCtrl'
+		}).
+		when('/weeks/:week_id/matchups/new', {
+			templateUrl:'<%= asset_path("matchups/edit.html") %>',
+			controller: 'AdminMatchupsCtrl'
 		}).
 		when('/weeks/:week_id/matchups', {
 			templateUrl:'<%= asset_path("matchups/index.html") %>',

@@ -11,7 +11,7 @@ angular.module('ForgotPasswords', ['ngResource', 'RailsApiResource', 'ui.bootstr
 		$scope.updating_user = 
 			password: ""
 			password_confirmation: ""
-			reset_password_token: "1Lz9Ag4ZS4RreYaxFhES"
+			reset_password_token: $routeParams.reset_password_token
 		
 		$scope.alert = {
 			type: null
@@ -37,6 +37,7 @@ angular.module('ForgotPasswords', ['ngResource', 'RailsApiResource', 'ui.bootstr
 				(success_response) ->
 					$scope.alert.message = "Your password has been reset. Please sign in."
 					$scope.alert.type = "success"
+					$location.path ('/')
 				(json_error_data) ->
 					console.log("Password update failed. Please try again or contact the commish.")
 					$scope.alert.message = json_error_data.data[0].error

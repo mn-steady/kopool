@@ -10,7 +10,7 @@
 #= depend_on_asset "weeks/results.html"
 #= depend_on_asset "home.html"
 
-@kopool = angular.module("kopool", ["ngRoute", "ngResource", "ngCookies", "Home", "user", "navbar", "NflTeams", "Weeks", "Matchups", "PoolEntries", "Register", "WebStates", "ngAnimate", "ui.bootstrap", "AdminMatchups", "AdminPoolEntries"])
+@kopool = angular.module("kopool", ["ngRoute", "ngResource", "ngCookies", "Home", "user", "navbar", "NflTeams", "Weeks", "Matchups", "PoolEntries", "Register", "WebStates", "ngAnimate", "ui.bootstrap", "AdminMatchups", "AdminPoolEntries", "ForgotPasswords"])
 	.config(["$httpProvider", ($httpProvider) ->
 		$httpProvider.defaults.headers.common["X-CSRF-Token"] = $("meta[name=csrf-token]").attr("content")
 		interceptor = ["$location", "$rootScope", "$q", ($location, $rootScope, $q) ->
@@ -101,6 +101,14 @@
 		when('/users/:user_id/profile', {
 			templateUrl:'<%= asset_path("users/profile.html") %>',
 			controller: 'RegisterCtrl'
+		}).
+		when('/users/passwords/send', {
+			templateUrl:'<%= asset_path("forgot_passwords/send.html") %>',
+			controller: 'ForgotPasswordsCtrl'
+		}).
+		when('/users/password/edit', {
+			templateUrl:'<%= asset_path("forgot_passwords/reset.html") %>',
+			controller: 'ForgotPasswordsCtrl'
 		}).
 		when('/registration/rules', {
 			templateUrl:'<%= asset_path("registration/rules.html") %>',

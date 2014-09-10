@@ -119,21 +119,6 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
       $scope.loadPoolEntries()
     )
 
-		# $scope.getAlert = () ->
-		# 	console.log("in getAlert")
-		# 	if currentUser.authorized == false
-		# 		$scope.alert = { type: "danger", msg: "You are not signed in. Please Sign In to view your picks." }
-		# 		console.log("User is not authorized.")
-		# 	else if	$scope.pool_entries.length == 0
-		# 		$scope.alert = { type: "danger", msg: "All of your pool entries have been knocked out!" }
-		# 		console.log("All of your pool entries have been knocked out")
-		# 	else if $scope.open_for_picks == false
-		# 		$scope.alert = { type: "danger", msg: "This week is closed! Your picks are locked in." }
-		# 		console.log("This week is closed for addiitonal picks")
-		# 	else
-		# 		$scope.alert = ""
-		# 		console.log("Week is open - don't show an alert")
-
 		# User Action of Selecting a Pick
 
 		$scope.set_editing_pool_entry = (index) ->

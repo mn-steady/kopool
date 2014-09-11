@@ -334,13 +334,13 @@ describe PicksController do
       @steelers = NflTeam.create(name: "Pittsburg Steelers", conference: "NFC", division: "North")
       @matchup2 = Matchup.create(week_id: @week.id, home_team: @colts, away_team: @steelers, game_time: DateTime.new(2014,8,12,11))
 
-      @pickV1 = Pick.create(pool_entry: @pool_entry1, week: @week, team_id: @vikings.id, matchup_id: @matchup.id)
-      @pickV2 = Pick.create(pool_entry: @pool_entry2, week: @week, team_id: @vikings.id, matchup_id: @matchup.id)
-      @pickV3 = Pick.create(pool_entry: @pool_entry3, week: @week, team_id: @vikings.id, matchup_id: @matchup.id)
       @pickB1 = Pick.create(pool_entry: @pool_entry4, week: @week, team_id: @broncos.id, matchup_id: @matchup.id)
       @pickB2 = Pick.create(pool_entry: @pool_entry5, week: @week, team_id: @broncos.id, matchup_id: @matchup.id)
       @pickC1 = Pick.create(pool_entry: @pool_entry6, week: @week, team_id: @colts.id, matchup_id: @matchup2.id)
       @pickS1 = Pick.create(pool_entry: @pool_entry7, week: @week, team_id: @steelers.id, matchup_id: @matchup2.id)
+      @pickV1 = Pick.create(pool_entry: @pool_entry1, week: @week, team_id: @vikings.id, matchup_id: @matchup.id)
+      @pickV2 = Pick.create(pool_entry: @pool_entry2, week: @week, team_id: @vikings.id, matchup_id: @matchup.id)
+      @pickV3 = Pick.create(pool_entry: @pool_entry3, week: @week, team_id: @vikings.id, matchup_id: @matchup.id)
     end
 
     context "week is closed for picks" do
@@ -350,16 +350,16 @@ describe PicksController do
 
         get :sorted_picks, week_id: @week.id, format: :json
 
-        sorted_hash = JSON.parse(response.body)
+        sorted_picks = JSON.parse(response.body)
 
-        expect(sorted_hash.keys[0]).to eq(@vikings.name)
-        expect(sorted_hash.keys[1]).to eq(@broncos.name)
-        expect(sorted_hash.keys[2]).to eq(@colts.name)
-        expect(sorted_hash.keys[3]).to eq(@steelers.name)
-        expect(sorted_hash.values[0]).to eq(3)
-        expect(sorted_hash.values[1]).to eq(2)
-        expect(sorted_hash.values[2]).to eq(1)
-        expect(sorted_hash.values[3]).to eq(1)
+        expect(sorted_picks[0][0]).to eq(@vikings.name)
+        expect(sorted_picks[1][0]).to eq(@broncos.name)
+        expect(sorted_picks[2][0]).to eq(@colts.name)
+        expect(sorted_picks[3][0]).to eq(@steelers.name)
+        expect(sorted_picks[0][1]).to eq(3)
+        expect(sorted_picks[1][1]).to eq(2)
+        expect(sorted_picks[2][1]).to eq(1)
+        expect(sorted_picks[3][1]).to eq(1)
 
       end
 

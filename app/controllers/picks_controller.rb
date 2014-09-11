@@ -129,8 +129,10 @@ class PicksController < ApplicationController
 				end
 			end
 
+			@sorted_picks = @picks_per_team_hash.sort_by{|k,v| -v}
+
 			respond_to do |format|
-				format.json { render :json => @picks_per_team_hash }
+				format.json { render :json => @sorted_picks }
 			end
 		end
 

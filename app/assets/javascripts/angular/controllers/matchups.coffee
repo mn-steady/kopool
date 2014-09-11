@@ -86,7 +86,7 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 		# Gather resources and associate relevant pool entries and picks
 		$scope.loadPoolEntries = () ->
 			if currentUser.authorized == false
-				$scope.alert = { type: "danger", msg: "You are not signed in. Please Sign In to view your picks. If you think you are signed in, please sign out and try again." }
+				$scope.alert = { type: "danger", msg: "You are not signed in. Please Sign In to view your picks. If you think you are signed in, please sign out and try again. We are in the process of fixing this." }
 				console.log("User is not authorized.")
 			else
 				PoolEntriesAndPicks.nested_query($scope.week_id).then(

@@ -21,6 +21,16 @@
 				%h4 Knocked Out This Week: {{knocked_out_this_week_count()}}
 				%h4 Knocked Out Previously: {{knocked_out_previously_count()}}
 
+		.row
+			.col-md-12
+				%h3 Top Picked Teams:
+				%table
+					%thead
+						%th{"width" => "40%"} Team 
+						%th{"width" => "60%"} # of Picks
+					%tbody
+						%tr{}
+
 .row{"ng-if" => "error_message"}
 	.col-sm-12.text-center
 		.alert.alert-danger {{error_message}}

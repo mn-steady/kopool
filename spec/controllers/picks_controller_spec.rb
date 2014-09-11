@@ -309,4 +309,65 @@ describe PicksController do
 			end
 		end
   end
+
+  describe "GET sorted_picks" do
+
+    before do
+      @user = create(:user)
+      sign_in :user, @user
+
+      @season = Season.create(year: 2014, name: "2014 Season", entry_fee: 50)
+      @week = Week.create(season: @season, week_number: 1, start_date: DateTime.new(2014, 8, 5), deadline: DateTime.new(2014, 8, 8), end_date: DateTime.new(2014, 8, 11))
+      @pool_entry1 = PoolEntry.create(user: @user, team_name: "Test Team", paid: true)
+      @pool_entry2 = PoolEntry.create(user: @user, team_name: "Team Two", paid: true)
+      @pool_entry3 = PoolEntry.create(user: @user, team_name: "Team Three", paid: true)
+      @pool_entry4 = PoolEntry.create(user: @user, team_name: "Team Four", paid: true)
+      @pool_entry5 = PoolEntry.create(user: @user, team_name: "Team Five", paid: true)
+      @pool_entry6 = PoolEntry.create(user: @user, team_name: "Team Six", paid: true)
+      @pool_entry7 = PoolEntry.create(user: @user, team_name: "Team Seven", paid: true)
+
+      @broncos = NflTeam.create(name: "Denver Broncos", conference: "NFC", division: "West")
+      @vikings = NflTeam.create(name: "Minnesota Vikings", conference: "NFC", division: "North")
+      @matchup = Matchup.create(week_id: @week.id, home_team: @broncos, away_team: @vikings, game_time: DateTime.new(2014,8,10,11))
+
+      @colts = NflTeam.create(name: "Indianapolis Colts", conference: "NFC", division: "West")
+      @steelers = NflTeam.create(name: "Pittsburg Steelers", conference: "NFC", division: "North")
+      @matchup2 = Matchup.create(week_id: @week.id, home_team: @colts, away_team: @steelers, game_time: DateTime.new(2014,8,12,11))
+
+      @pickV1 = Pick.create(pool_entry: @pool_entry1, week: @week, team_id: @vikings.id, matchup_id: @matchup.id)
+      @pickV2 = Pick.create(pool_entry: @pool_entry2, week: @week, team_id: @vikings.id, matchup_id: @matchup.id)
+      @pickV3 = Pick.create(pool_entry: @pool_entry3, week: @week, team_id: @vikings.id, matchup_id: @matchup.id)
+      @pickB1 = Pick.create(pool_entry: @pool_entry4, week: @week, team_id: @broncos.id, matchup_id: @matchup.id)
+      @pickB2 = Pick.create(pool_entry: @pool_entry5, week: @week, team_id: @broncos.id, matchup_id: @matchup.id)
+      @pickC1 = Pick.create(pool_entry: @pool_entry6, week: @week, team_id: @colts.id, matchup_id: @matchup2.id)
+      @pickS1 = Pick.create(pool_entry: @pool_entry7, week: @week, team_id: @steelers.id, matchup_id: @matchup2.id)
+    end
+
+    context "week is closed for picks" do
+
+      it "returns a sorted hash in descending order" do
+        @week.update_attributes(open_for_picks: false)
+
+        get :sorted_picks, week_id: @week.id, format: :json
+
+        sorted_hash = JSON.parse(response.body)
+
+        expect(sorted_hash.keys[0]).to eq(@vikings.name)
+        expect(sorted_hash.keys[1]).to eq(@broncos.name)
+        expect(sorted_hash.keys[2]).to eq(@colts.name)
+        expect(sorted_hash.keys[3]).to eq(@steelers.name)
+        expect(sorted_hash.values[0]).to eq(3)
+        expect(sorted_hash.values[1]).to eq(2)
+        expect(sorted_hash.values[2]).to eq(1)
+        expect(sorted_hash.values[3]).to eq(1)
+
+      end
+
+    end
+
+    context "week is open for picks" do
+
+    end
+
+  end
 end

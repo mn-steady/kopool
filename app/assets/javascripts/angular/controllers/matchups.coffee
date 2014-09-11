@@ -41,9 +41,7 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 				$scope.web_state = web_state
 				$scope.current_week = web_state.current_week
 				$scope.open_for_picks = web_state.current_week.open_for_picks
-				$scope.loadPoolEntries().then(() ->
-					$scope.getAlert()
-				)
+				$scope.loadPoolEntries()
 			)
 
 		# Routing for new matchups, or the index action for the week
@@ -87,12 +85,21 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 
 		# Gather resources and associate relevant pool entries and picks
 		$scope.loadPoolEntries = () ->
-			PoolEntriesAndPicks.nested_query($scope.week_id).then((pool_entries) ->
-				$scope.pool_entries = pool_entries
-				$scope.load_season_weeks()
-				$scope.loadMatchups()
-				console.log("*** Have pool entries, picks, teams, and season-weeks ***")
-			)
+			if currentUser.authorized == false
+				$scope.alert = { type: "danger", msg: "You are not signed in. Please Sign In to view your picks. If you think you are signed in, please sign out and try again. We are in the process of fixing this." }
+				console.log("User is not authorized.")
+			else
+				PoolEntriesAndPicks.nested_query($scope.week_id).then(
+					(pool_entries) ->
+						$scope.pool_entries = pool_entries
+						$scope.load_season_weeks()
+						$scope.loadMatchups()
+						console.log("*** Have pool entries, picks, teams, and season-weeks ***")
+						$scope.alert = { type: "success", msg: "Make your picks for this week!" }
+					(json_error_data) ->
+						console.log("Error or unauthorized request to PoolEntriesAndPicks")
+						$scope.alert = { type: "danger", msg: json_error_data.data.error }
+				)
 
 		$scope.loadMatchups = () ->
 			Matchup.nested_query($scope.week_id).then((matchups) ->
@@ -107,17 +114,10 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 			else
 				"Matchups for a different week"
 
-		$scope.getAlert = () ->
-			console.log("in getAlert")
-			if $scope.pool_entries.length == 0
-				$scope.alert = { type: "danger", msg: "All of your pool entries have been knocked out!" }
-				console.log("All of your pool entries have been knocked out")
-			else if $scope.open_for_picks == false
-				$scope.alert = { type: "danger", msg: "This week is closed! Your picks are locked in." }
-				console.log("This week is closed for addiitonal picks")
-			else
-				$scope.alert = ""
-				console.log("Week is open - don't show an alert")
+		$scope.$on 'auth-login-success', ((event) ->
+      console.log("(MatchupsCtrl) Caught auth-login-success broadcasted event!!")
+      $scope.loadPoolEntries()
+    )
 
 		# User Action of Selecting a Pick
 

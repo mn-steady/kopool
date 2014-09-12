@@ -12,6 +12,7 @@
         <p>{{display_battle_summary()}}</p>
         <p>
           <a class='btn btn-primary btn-lg' href='#/users/register' ng-show='register_button_show()' role='button'>{{register_button_text()}}</a>
+          <a class='btn btn-info' href='#/users/passwords/send' ng-hide='is_authorized()'>Reset Password</a>
         </p>
       </div>
       <div class='col-md-4'>

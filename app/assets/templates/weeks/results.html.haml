@@ -21,9 +21,25 @@
 				%h4 Knocked Out This Week: {{knocked_out_this_week_count()}}
 				%h4 Knocked Out Previously: {{knocked_out_previously_count()}}
 
-.row{"ng-if" => "error_message"}
+		.row
+			.col-md-12
+				%h3 Top Picked Teams:
+				%table.table
+					%thead
+						%tr
+							%th{"width" => "30%"} Team 
+							%th{"width" => "70%"} # of Picks
+					%tbody
+						%tr{"ng-repeat" => "team in sorted_picks"}
+							%td
+								%p {{team[0]}}
+							%td
+								%p {{team[1]}}
+
+
+.row
 	.col-sm-12.text-center
-		.alert.alert-danger {{error_message}}
+		.alert{"class" => "alert alert-{{alert.type}}"} {{alert.msg}}
 
 %h4 Still Alive!
 

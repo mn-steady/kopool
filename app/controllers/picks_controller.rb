@@ -1,5 +1,5 @@
 class PicksController < ApplicationController
-	before_filter :verify_any_user, only: [:create, :update, :week_picks, :create_or_update_pick]
+	before_filter :verify_any_user, only: [:create, :update, :week_picks, :create_or_update_pick, :sorted_picks]
 
 	def index
 		Rails.logger.debug("PicksController.index")
@@ -108,6 +108,34 @@ class PicksController < ApplicationController
 				format.json { render :json => @this_weeks_picks.to_json(include: [nfl_team: {only: [:id, :name], :methods => [:logo_url_small]}])}
 			end
 		end
+	end
+
+	def sorted_picks
+		@week = Week.find(params[:week_id])
+
+		if @week.open_for_picks == true
+			Rails.logger.error("ERROR you can't view the sorted picks for a week before it is closed!")
+			error_message = "You cannot view the sorted picks for this week until the games start!"
+			render :json => [:error => error_message], :status => :bad_request
+		else
+			@this_weeks_picks = Pick.where(week_id: params[:week_id])
+			@picks_per_team_hash = {}
+
+			@this_weeks_picks.each do |pick|
+				if @picks_per_team_hash.has_key?(pick.nfl_team.name)
+					@picks_per_team_hash[pick.nfl_team.name] += 1
+				else
+					@picks_per_team_hash[pick.nfl_team.name] = 1
+				end
+			end
+
+			@sorted_picks = @picks_per_team_hash.sort_by{|k,v| -v}
+
+			respond_to do |format|
+				format.json { render :json => @sorted_picks }
+			end
+		end
+
 	end
 
 	private

@@ -67,10 +67,10 @@ angular.module('PoolEntries', ['ngResource', 'RailsApiResource'])
 				)
 
 		$scope.$on 'auth-login-success', ((event) ->
-      console.log("(PoolEntriesCtrl) Caught auth-login-success broadcasted event!!")
-      $scope.getWeeklyResults()
-      $scope.alert = null
-    )
+			console.log("(PoolEntriesCtrl) Caught auth-login-success broadcasted event!!")
+			$scope.getWeeklyResults()
+			$scope.alert = null
+		)
 
 		$scope.getSortedPicks = () ->
 			SortedPicks.nested_query($scope.week_id).then(

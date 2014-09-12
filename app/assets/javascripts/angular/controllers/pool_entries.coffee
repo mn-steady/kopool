@@ -12,7 +12,7 @@ angular.module('PoolEntries', ['ngResource', 'RailsApiResource'])
 	.factory 'SortedPicks', (RailsApiResource) ->
 		RailsApiResource('weeks/:parent_id/sorted_picks', 'picks')
 
-	.controller 'PoolEntriesCtrl', ['$scope', '$location', '$http', '$routeParams', 'NflTeam', 'WeekResults', 'PickResults', 'WebState', 'SeasonWeeks', 'SortedPicks', ($scope, $location, $http, $routeParams, NflTeam, WeekResults, PickResults, WebState, SeasonWeeks, SortedPicks) ->
+	.controller 'PoolEntriesCtrl', ['$scope', '$location', '$http', '$routeParams', 'NflTeam', 'WeekResults', 'PickResults', 'WebState', 'SeasonWeeks', 'SortedPicks', 'currentUser', ($scope, $location, $http, $routeParams, NflTeam, WeekResults, PickResults, WebState, SeasonWeeks, SortedPicks, currentUser) ->
 
 		week_id = parseInt( $routeParams.week_id, 10 )
 		$scope.week_id = week_id
@@ -49,15 +49,36 @@ angular.module('PoolEntries', ['ngResource', 'RailsApiResource'])
 
 		$scope.getWeeklyResults = () ->
 			console.log("(PoolEntriesCtrl.getWeeklyResults) Looking up the weekly results for week_id:" + $scope.week_id)
-			WeekResults.nested_query($scope.week_id).then(
-				(week_results) ->
-					console.log("(PoolEntriesCtrl.getWeeklyResults) ...Have Week Results")
-					$scope.pool_entries_still_alive = week_results[0]
-					$scope.pool_entries_knocked_out_this_week = week_results[1]
-					$scope.pool_entries_knocked_out_previously = week_results[2]
-					$scope.unmatched_pool_entries = week_results[3]
+			if currentUser.authorized == false
+				$scope.alert = { type: "danger", msg: "You are not signed in. Please Sign In to view your picks. If you think you are signed in, please sign out and try again. We are in the process of fixing this." }
+				console.log("User is not authorized.")
+			else
+				WeekResults.nested_query($scope.week_id).then(
+					(week_results) ->
+						console.log("(PoolEntriesCtrl.getWeeklyResults) ...Have Week Results")
+						$scope.pool_entries_still_alive = week_results[0]
+						$scope.pool_entries_knocked_out_this_week = week_results[1]
+						$scope.pool_entries_knocked_out_previously = week_results[2]
+						$scope.unmatched_pool_entries = week_results[3]
+						$scope.getSortedPicks()
+					(json_error_data) ->
+						console.log("(PoolEntriesCtrl.getWeeklyResults) Error getting Week Results")
+						$scope.alert = { type: "danger", msg: json_error_data.data[0].error }
+				)
+
+		$scope.$on 'auth-login-success', ((event) ->
+      console.log("(PoolEntriesCtrl) Caught auth-login-success broadcasted event!!")
+      $scope.getWeeklyResults()
+      $scope.alert = null
+    )
+
+		$scope.getSortedPicks = () ->
+			SortedPicks.nested_query($scope.week_id).then(
+				(sorted_picks) ->
+					$scope.sorted_picks = sorted_picks
+					console.log("Successfully received sorted picks")
 				(json_error_data) ->
-					console.log("(PoolEntriesCtrl.getWeeklyResults) Error getting Week Results")
+					console.log("(PoolEntriesCtrl.getSortedPicks) Cannot get sorted picks")
 					$scope.error_message = json_error_data.data[0].error
 			)
 

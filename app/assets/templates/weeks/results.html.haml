@@ -24,16 +24,22 @@
 		.row
 			.col-md-12
 				%h3 Top Picked Teams:
-				%table
+				%table.table
 					%thead
-						%th{"width" => "40%"} Team 
-						%th{"width" => "60%"} # of Picks
+						%tr
+							%th{"width" => "30%"} Team 
+							%th{"width" => "70%"} # of Picks
 					%tbody
-						%tr{}
+						%tr{"ng-repeat" => "team in sorted_picks"}
+							%td
+								%p {{team[0]}}
+							%td
+								%p {{team[1]}}
 
-.row{"ng-if" => "error_message"}
+
+.row
 	.col-sm-12.text-center
-		.alert.alert-danger {{error_message}}
+		.alert{"class" => "alert alert-{{alert.type}}"} {{alert.msg}}
 
 %h4 Still Alive!
 

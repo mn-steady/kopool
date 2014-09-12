@@ -346,6 +346,7 @@ describe PicksController do
     context "week is closed for picks" do
 
       it "returns a sorted hash in descending order" do
+
         @week.update_attributes(open_for_picks: false)
 
         get :sorted_picks, week_id: @week.id, format: :json
@@ -363,10 +364,43 @@ describe PicksController do
 
       end
 
+      it "doesn't return teams with no picks" do
+        @giants = NflTeam.create(name: "New York Giants", conference: "NFC", division: "West")
+        @chargers = NflTeam.create(name: "San Diego Chargers", conference: "NFC", division: "North")
+        @matchup3 = Matchup.create(week_id: @week.id, home_team: @giants, away_team: @chargers, game_time: DateTime.new(2014,8,14,11))
+
+
+        @week.update_attributes(open_for_picks: false)
+
+        get :sorted_picks, week_id: @week.id, format: :json
+
+        sorted_picks = JSON.parse(response.body)
+
+        expect(sorted_picks[0][0]).to eq(@vikings.name)
+        expect(sorted_picks[1][0]).to eq(@broncos.name)
+        expect(sorted_picks[2][0]).to eq(@colts.name)
+        expect(sorted_picks[3][0]).to eq(@steelers.name)
+        expect(sorted_picks[0][1]).to eq(3)
+        expect(sorted_picks[1][1]).to eq(2)
+        expect(sorted_picks[2][1]).to eq(1)
+        expect(sorted_picks[3][1]).to eq(1)
+        expect(sorted_picks.length).to eq(4)
+      end
+
     end
 
     context "week is open for picks" do
 
+      it "returns an error message and bad request status" do
+        @week.update_attributes(open_for_picks: true)
+
+        get :sorted_picks, week_id: @week.id, format: :json
+
+        returned = JSON.parse(response.body)
+
+        expect(response.status).to eq(Rack::Utils.status_code(:bad_request))
+        expect(returned[0]['error']).to be_present
+      end
     end
 
   end

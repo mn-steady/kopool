@@ -8,6 +8,7 @@
         %h2 KO Pool
         %p Welcome to the brand new KO Pool Website! {{display_authorized()}}.
         %p {{display_battle_summary()}}
+        %div.pot-text.text-center.green{"ng-show" => "is_authorized()"} {{display_pot_amount() | currency}}
         %p
           %a.btn.btn-primary.btn-lg{href: "#/users/register", role: "button", "ng-show" => "register_button_show()"} {{register_button_text()}}
           %a.btn.btn-info{href: "#/users/passwords/send", "ng-hide" => "is_authorized()" } Reset Password

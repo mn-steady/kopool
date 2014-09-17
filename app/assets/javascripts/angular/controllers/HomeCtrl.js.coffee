@@ -38,15 +38,15 @@ angular.module('Home', ['ngResource', 'RailsApiResource', 'user'])
 
     $scope.getWebState = () ->
       console.log("(HomeCtrl.getWebState) Looking up the WebState")
-      WebState.get(1).then((web_state) ->
-        console.log("(HomeCtrl.getWebState) Back from the WebState lookup")
-        $scope.web_state = web_state
-        if currentUser.authorized
-          console.log("(HomeCtrl.getWebState) user is authorized. Loading Pool Entries")
+      if currentUser.authorized
+        console.log("(HomeCtrl.getWebState) user is authorized. Loading Pool Entries")
+        WebState.get(1).then((web_state) ->
+          console.log("(HomeCtrl.getWebState) Back from the WebState lookup")
+          $scope.web_state = web_state
           $scope.loadPoolEntries()
-        else
-          console.log("(HomeCtrl.getWebState) user is not yet authorized.")
-      )
+        )
+      else
+        console.log("(HomeCtrl.getWebState) user is not yet authorized.")
 
     $scope.loadPoolEntries = () ->
       console.log("(loadPoolEntries)")
@@ -80,7 +80,7 @@ angular.module('Home', ['ngResource', 'RailsApiResource', 'user'])
     $scope.$on 'auth-login-success', ((event) ->
       console.log("(HomeCtrl) Caught auth-login-success broadcasted event!!")
       $scope.session_message = null
-      $scope.loadPoolEntries()
+      $scope.getWebState()
     )
 
     $scope.$on 'auth-login-failed', ((event) ->
@@ -108,9 +108,15 @@ angular.module('Home', ['ngResource', 'RailsApiResource', 'user'])
 
     $scope.display_battle_summary = ->
       if currentUser.authorized
-        "There are currently " + $scope.active_pool_entries_count + " teams remaining in the ring, battling for a sum of $" + $scope.total_pot + "!"
+        "There are currently " + $scope.active_pool_entries_count + " teams remaining in the ring, battling for a sum of "
       else
         "Sign-in for the weekly summary"
+
+    $scope.display_pot_amount = ->
+      if currentUser.authorized
+        $scope.total_pot
+      else
+        ""
 
     $scope.display_round_number = ->
       if currentUser.authorized

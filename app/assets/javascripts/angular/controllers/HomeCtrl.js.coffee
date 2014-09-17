@@ -108,7 +108,7 @@ angular.module('Home', ['ngResource', 'RailsApiResource', 'user'])
 
     $scope.display_battle_summary = ->
       if currentUser.authorized
-        "There are currently " + $scope.active_pool_entries_count + " teams remaining in the ring, battling for a sum of "
+        "There are currently " + $scope.active_pool_entries_count + " teams remaining in the ring, battling for "
       else
         "Sign-in for the weekly summary"
 

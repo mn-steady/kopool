@@ -69,7 +69,7 @@ angular.module('Home', ['ngResource', 'RailsApiResource', 'user'])
       $scope.getTotalPot()
 
     $scope.getTotalPot = () ->
-      $scope.total_pot = ($scope.pool_entries.length * 50) - 425
+      $scope.total_pot = ($scope.pool_entries.length * 50) - 625
       console.log("Calculated total pot")
 
 

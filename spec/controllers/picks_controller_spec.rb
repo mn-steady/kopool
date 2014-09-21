@@ -223,7 +223,6 @@ describe PicksController do
     end
 
     context "without an existing pick" do
-
       it "does save the new pick" do
 
          pick_params = {

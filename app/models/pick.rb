@@ -12,7 +12,6 @@ class Pick < ActiveRecord::Base
   validate :cannot_change_pick_during_closed_week, :on => :update
 
   validate :pick_must_be_in_matchup
-  
 
   private
 
@@ -40,5 +39,4 @@ class Pick < ActiveRecord::Base
       self.errors[:base] << "You cannot change a pick when the week is closed "
     end
   end
-
 end

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-feature "user signs in" do
+feature "user signs in", js: true do
 	scenario "with valid email and password" do
 		user = create(:user)
     visit root_path

@@ -40,5 +40,4 @@ class Pick < ActiveRecord::Base
     end
   end
 
-
 end

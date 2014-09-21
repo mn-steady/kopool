@@ -7,6 +7,7 @@ angular.module('RailsApiResource', ['ngResource'])
       # TODO: Make it pull this from an environment variable
       HOSTNAME: 'localhost:3000'
       #HOSTNAME: 'kopool.herokuapp.com'
+      #HOSTNAME: 'www.kopool.org'
     })
 
   .factory 'RailsApiResource', ($http, KOPOOL_CONFIG, $cookieStore) ->
@@ -118,6 +119,7 @@ angular.module('RailsApiResource', ['ngResource'])
 
       Resource.post = (action, data, parent_id) ->
         console.log("Resource.post action="+action)
+        console.log("data: "+data)
         actionUrl = KOPOOL_CONFIG.PROTOCOL + '://' + KOPOOL_CONFIG.HOSTNAME + '/' + resourceName + '/' + action + '.json'
         if actionUrl.indexOf(":parent_id") > -1?
           actionUrl = actionUrl.replace(/:parent_id/, parent_id)
@@ -125,7 +127,20 @@ angular.module('RailsApiResource', ['ngResource'])
         console.log("actionUrl will be: "+actionUrl)
         $http.post(actionUrl, data, {params:defaultParams}).then( (response) ->
           result = []
-          console.log("(RailsApiResource.save_outcome) response="+response.data)
+          console.log("(RailsApiResource.post) response="+response.data)
+        )
+
+      Resource.put = (action, data, parent_id) ->
+        console.log("Resource.put action="+action)
+        console.log("data: "+data)
+        actionUrl = KOPOOL_CONFIG.PROTOCOL + '://' + KOPOOL_CONFIG.HOSTNAME + '/' + resourceName + '/' + action + '.json'
+        if actionUrl.indexOf(":parent_id") > -1?
+          actionUrl = actionUrl.replace(/:parent_id/, parent_id)
+
+        console.log("actionUrl will be: "+actionUrl)
+        $http.put(actionUrl, data, {params:defaultParams}).then( (response) ->
+          result = []
+          console.log("(RailsApiResource.put) response="+response.data)
         )
 
       Resource.remove = (data, parent_id) ->

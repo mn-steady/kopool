@@ -32,7 +32,7 @@ angular.module('user', ['RailsApiResource'])
   .factory('AuthService', ($rootScope, $cookieStore, currentUser, Tokens, AUTH_EVENTS) ->
     return {
       login: (currentUser) ->
-        console.log ("(user.AuthService.login) username=" + currentUser.username)
+        console.log ("(user.AuthService.LOGIN) username=" + currentUser.username)
         tokenRequest = {email: currentUser.username, password: currentUser.password}
         currentUser.password = ''
 

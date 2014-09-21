@@ -1,6 +1,6 @@
 Kopool::Application.routes.draw do
   mount JasmineRails::Engine => '/specs' if defined?(JasmineRails)
-  devise_for :users, :controllers => {:sessions => "sessions"}
+  devise_for :users, :controllers => {:sessions => "sessions", registrations: "registrations", passwords: "forgot_passwords" }
 
   root 'pages#index'
 
@@ -20,7 +20,11 @@ Kopool::Application.routes.draw do
     post "advance_week", :action => "next_week!"
     get "week_results", :action => "week_results"
     get "week_picks", :controller => "picks", :action => "week_picks"
+    get "sorted_picks", :controller => "picks", :action => "sorted_picks"
+    get "unpicked", :action => "unpicked"
     get "filtered_matchups", :controller => "matchups", :action => "filtered_matchups"
+    get "pool_entries_and_picks", :controller => "pool_entries", :action => "pool_entries_and_picks"
+    post "create_or_update_pick", :controller => "picks", :action => "create_or_update_pick"
     resources :matchups do
       collection do
         post "save_outcome", :action => "save_outcome"

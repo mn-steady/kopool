@@ -18,6 +18,7 @@ angular.module('Home', ['ngResource', 'RailsApiResource', 'user'])
     $scope.active_pool_entries = []
     $scope.active_pool_entries_count = 0
     $scope.weeks = {}
+    $scope.session_message = null
     $scope.web_state =
       id: 0
       week_id: 0
@@ -37,15 +38,15 @@ angular.module('Home', ['ngResource', 'RailsApiResource', 'user'])
 
     $scope.getWebState = () ->
       console.log("(HomeCtrl.getWebState) Looking up the WebState")
-      WebState.get(1).then((web_state) ->
-        console.log("(HomeCtrl.getWebState) Back from the WebState lookup")
-        $scope.web_state = web_state
-        if currentUser.authorized
-          console.log("(HomeCtrl.getWebState) user is authorized. Loading Pool Entries")
+      if currentUser.authorized
+        console.log("(HomeCtrl.getWebState) user is authorized. Loading Pool Entries")
+        WebState.get(1).then((web_state) ->
+          console.log("(HomeCtrl.getWebState) Back from the WebState lookup")
+          $scope.web_state = web_state
           $scope.loadPoolEntries()
-        else
-          console.log("(HomeCtrl.getWebState) user is not yet authorized.")
-      )
+        )
+      else
+        console.log("(HomeCtrl.getWebState) user is not yet authorized.")
 
     $scope.loadPoolEntries = () ->
       console.log("(loadPoolEntries)")
@@ -68,7 +69,7 @@ angular.module('Home', ['ngResource', 'RailsApiResource', 'user'])
       $scope.getTotalPot()
 
     $scope.getTotalPot = () ->
-      $scope.total_pot = $scope.pool_entries.length * 50
+      $scope.total_pot = ($scope.pool_entries.length * 50) - 625
       console.log("Calculated total pot")
 
 
@@ -78,12 +79,23 @@ angular.module('Home', ['ngResource', 'RailsApiResource', 'user'])
 
     $scope.$on 'auth-login-success', ((event) ->
       console.log("(HomeCtrl) Caught auth-login-success broadcasted event!!")
-      $scope.loadPoolEntries()
+      $scope.session_message = null
+      $scope.getWebState()
+    )
+
+    $scope.$on 'auth-login-failed', ((event) ->
+      console.log("(HomeCtrl) Caught auth-login-failed broadcasted event!!")
+      $scope.session_message = "Incorrect username or password. Please try again."
     )
 
 
-
     # Display and utility functions
+
+    $scope.is_authorized = ->
+      if currentUser.authorized
+        true
+      else
+        false
 
     $scope.is_admin = ->
       currentUser.admin
@@ -92,13 +104,19 @@ angular.module('Home', ['ngResource', 'RailsApiResource', 'user'])
       if currentUser.authorized
         "You are currently authorized as " + currentUser.username
       else
-        "Please Sign-in at the top or Register"
+        "Please Register below"
 
     $scope.display_battle_summary = ->
       if currentUser.authorized
-        "There are currently " + $scope.active_pool_entries_count + " teams remaining in the ring, battling for a sum of $" + $scope.total_pot + "!"
+        "There are currently " + $scope.active_pool_entries_count + " teams remaining in the ring, battling for "
       else
         "Sign-in for the weekly summary"
+
+    $scope.display_pot_amount = ->
+      if currentUser.authorized
+        $scope.total_pot
+      else
+        ""
 
     $scope.display_round_number = ->
       if currentUser.authorized
@@ -111,7 +129,8 @@ angular.module('Home', ['ngResource', 'RailsApiResource', 'user'])
         "Register »"
 
     $scope.register_button_show = () ->
-      $scope.web_state.current_week.week_number == 1 && $scope.web_state.current_week.season.open_for_registration == true
+      false
+      # $scope.web_state.current_week.week_number == 1 && $scope.web_state.current_week.open_for_picks == true
 
     # Just demonstrating an alternate means of navigation.  Better to use anchor tags.
     $scope.go = ( path ) ->

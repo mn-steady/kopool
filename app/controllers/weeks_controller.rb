@@ -162,6 +162,18 @@ class WeeksController < ApplicationController
     end
   end
 
+  def unpicked
+    Rails.logger.debug("weeks_controller.unpicked week: #{params[:week_id]}")
+    @week = Week.find(params[:week_id])
+    @season = @week.season
+
+    @unpicked_pool_entries = PoolEntry.where(knocked_out: false).where(season_id: @season.id).where("pool_entries.id NOT IN (SELECT picks.pool_entry_id FROM picks where week_id = #{@week.id})")
+
+    respond_to do | format |
+      format.json {render :json => @unpicked_pool_entries.to_json(include: [{user: {only: [:name, :phone, :email]}}])}
+    end
+  end
+
 private
 
   def weeks_params

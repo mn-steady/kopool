@@ -5,5 +5,6 @@ describe NflTeam do
   it { should validate_presence_of :conference }
   it { should validate_presence_of :division }
 
-  pending "Add more NflTeam tests"
+  it { should respond_to :logo_url_small }
+
 end

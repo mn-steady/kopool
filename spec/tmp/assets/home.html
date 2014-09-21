@@ -1,12 +1,18 @@
 <div class='jumbotron'>
   <div class='container'>
+    <div class='row' ng-if='session_message'>
+      <div class='col-sm-12 text-center'>
+        <div class='alert alert-danger'>{{session_message}}</div>
+      </div>
+    </div>
     <div class='row'>
       <div class='col-md-8'>
         <h2>KO Pool</h2>
-        <p>The system is in TEST MODE.  {{display_authorized()}}.</p>
+        <p>Welcome to the brand new KO Pool Website! {{display_authorized()}}.</p>
         <p>{{display_battle_summary()}}</p>
         <p>
           <a class='btn btn-primary btn-lg' href='#/users/register' ng-show='register_button_show()' role='button'>{{register_button_text()}}</a>
+          <a class='btn btn-info' href='#/users/passwords/send' ng-hide='is_authorized()'>Reset Password</a>
         </p>
       </div>
       <div class='col-md-4'>
@@ -16,69 +22,69 @@
     </div>
   </div>
 </div>
-<div class='container'>
-  <div class='row'>
-    <div class='col-md-12'></div>
-    <div class='lead text-center'>{{web_state.broadcast_message}}</div>
+<div class='row'>
+  <div class='col-md-12'>
+    <p class='text-center'>From the Office of the Commish:</p>
+    <div class='alert alert-info lead text-center'>{{web_state.broadcast_message}}</div>
   </div>
+</div>
+<div class='row'>
+  <div class='col-md-4'>
+    <h2>Your Picks This Week</h2>
+    <p>View all of the Matchups for this week and make your winning picks. You will not be able to make or change any picks after the first game of the week begins.</p>
+    <p>
+      <a class='btn btn-primary' href='#/weeks/{{web_state.current_week.id}}/matchups' role='button'>Your Picks »</a>
+    </p>
+  </div>
+  <div class='col-md-4'>
+    <h2>This Week's Results</h2>
+    <p>View the Results LIVE for the week. This page will open once the games begin for the week.</p>
+    <p>
+      <a class='btn btn-primary' href='#/weeks/{{web_state.current_week.id}}/results' role='button'>Results »</a>
+    </p>
+  </div>
+</div>
+<div class='admin-panel' ng-show='is_admin()'>
   <div class='row'>
+    <div class='col-sm-12 text-center'>
+      <h4>Admin Panel</h4>
+    </div>
     <div class='col-md-4'>
-      <h2>Your Picks This Week</h2>
-      <p>View all of the Matchups for this week and make your winning picks. You will not be able to make or change any picks after the first game of the week begins.</p>
+      <h2>NFL Teams</h2>
+      <p>Administrators can use this 'NFL Teams' button to view, edit, and update NFL teams.  Make sure the teams are all in the correct Conference and Division.  Upload a nice looking logo for each team.  Any logo you upload will automatically be stored on your Amazon S3 account and will automatically be scaled to "Medium" (300x300) and "Thumbnail" (100x100) sizes.</p>
       <p>
-        <a class='btn btn-primary' href='#/weeks/{{web_state.current_week.id}}/matchups' role='button'>Your Picks »</a>
+        <a class='btn btn-primary' ng-click="go('/nfl_teams')" role='button'>NFL Teams »</a>
       </p>
     </div>
     <div class='col-md-4'>
-      <h2>This Week's Results</h2>
-      <p>View the Results LIVE for the week. This page will open once the games begin for the week.</p>
+      <h2>View All Weeks</h2>
+      <p>Administrators can use this 'Weeks' button to view, edit, and update weeks.  Make sure all of the dates are correct.  You must always enter and edit them in international format: yyyy-mm-dd.  Also, currently there is a bug where the timezone is messing up the weeks.  You may have to enter hours also:  yyyy-mm-dd hh:mm.  Jack and Dave will discuss.</p>
       <p>
-        <a class='btn btn-primary' href='#/weeks/{{web_state.current_week.id}}/results' role='button'>Results »</a>
+        <a class='btn btn-success' href='#/seasons/1/weeks' role='button'>View Weeks »</a>
+      </p>
+    </div>
+    <div class='col-md-4'>
+      <h2>Score Matchups</h2>
+      <p>Click here to score the matchups for this week!</p>
+      <p>
+        <a class='btn btn-info' href='#/weeks/{{web_state.current_week.id}}/matchups/scoring' role='button'>Score Matchups »</a>
       </p>
     </div>
   </div>
-  <div class='admin-panel' ng-show='is_admin()'>
-    <div class='row'>
-      <div class='col-sm-12 text-center'>
-        <h4>Admin Panel</h4>
-      </div>
-      <div class='col-md-4'>
-        <h2>NFL Teams</h2>
-        <p>Administrators can use this 'NFL Teams' button to view, edit, and update NFL teams.  Make sure the teams are all in the correct Conference and Division.  Upload a nice looking logo for each team.  Any logo you upload will automatically be stored on your Amazon S3 account and will automatically be scaled to "Medium" (300x300) and "Thumbnail" (100x100) sizes.</p>
-        <p>
-          <a class='btn btn-primary' ng-click="go('/nfl_teams')" role='button'>NFL Teams »</a>
-        </p>
-      </div>
-      <div class='col-md-4'>
-        <h2>View All Weeks</h2>
-        <p>Administrators can use this 'Weeks' button to view, edit, and update weeks.  Make sure all of the dates are correct.  You must always enter and edit them in international format: yyyy-mm-dd.  Also, currently there is a bug where the timezone is messing up the weeks.  You may have to enter hours also:  yyyy-mm-dd hh:mm.  Jack and Dave will discuss.</p>
-        <p>
-          <a class='btn btn-success' href='#/seasons/1/weeks' role='button'>View Weeks »</a>
-        </p>
-      </div>
-      <div class='col-md-4'>
-        <h2>Score Matchups</h2>
-        <p>Click here to score the matchups for this week!</p>
-        <p>
-          <a class='btn btn-info' href='#/weeks/{{web_state.current_week.id}}/matchups/scoring' role='button'>Score Matchups »</a>
-        </p>
-      </div>
+  <div class='row'>
+    <div class='col-md-4'>
+      <h2>Commissioner</h2>
+      <p>Commissioner maintenance page - for the commish only!  Lets you open/close a week for picks and also move to the next week.</p>
+      <p>
+        <a class='btn btn-info' href='#/admin/web_state' role='button'>Commissioner »</a>
+      </p>
     </div>
-    <div class='row'>
-      <div class='col-md-4'>
-        <h2>Commissioner</h2>
-        <p>Commissioner maintenance page - for the commish only!  Lets you open/close a week for picks and also move to the next week.</p>
-        <p>
-          <a class='btn btn-info' href='#/admin/web_state' role='button'>Commissioner »</a>
-        </p>
-      </div>
-      <div class='col-md-4'>
-        <h2>View All Entries</h2>
-        <p>Use this page to view all of the entries to the competition. You can mark specific teams as paid or unpaid here.</p>
-        <p>
-          <a class='btn btn-info' href='#/seasons/1/entries' role='button'>View All Entries»</a>
-        </p>
-      </div>
+    <div class='col-md-4'>
+      <h2>View All Entries</h2>
+      <p>Use this page to view all of the entries to the competition. You can mark specific teams as paid or unpaid here.</p>
+      <p>
+        <a class='btn btn-info' href='#/seasons/1/entries' role='button'>View All Entries»</a>
+      </p>
     </div>
   </div>
   <hr>

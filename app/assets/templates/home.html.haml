@@ -1,64 +1,69 @@
 .jumbotron
   .container
+    .row{"ng-if" => "session_message"}
+      .col-sm-12.text-center
+        .alert.alert-danger {{session_message}}
     .row
       .col-md-8
         %h2 KO Pool
-        %p The system is in TEST MODE.  {{display_authorized()}}.
+        %p Welcome to the brand new KO Pool Website! {{display_authorized()}}.
         %p {{display_battle_summary()}}
+        %div.pot-text.text-center.green{"ng-show" => "is_authorized()"} {{display_pot_amount() | currency}}
         %p
           %a.btn.btn-primary.btn-lg{href: "#/users/register", role: "button", "ng-show" => "register_button_show()"} {{register_button_text()}}
+          %a.btn.btn-info{href: "#/users/passwords/send", "ng-hide" => "is_authorized()" } Reset Password
       .col-md-4
         %img.img-rounded.frontpage-logo{alt: "KO Pool Logo", src: asset_path('kopool_c_med.png')}
         %div.title-text.text-center {{display_round_number()}}
-.container
 
+.row
+  .col-md-12
+    %p.text-center From the Office of the Commish:
+    .alert.alert-info.lead.text-center {{web_state.broadcast_message}}
+
+.row
+  .col-md-4
+    %h2 Your Picks This Week
+    %p View all of the Matchups for this week and make your winning picks. Thursday night picks will be posted on the front page and will be considered locked in. All other picks must be made by 11 AM on Sunday morning.
+    %p
+      %a.btn.btn-primary{href: '#/weeks/{{web_state.current_week.id}}/matchups', role: "button"} Your Picks »
+
+  .col-md-4
+    %h2 This Week's Results
+    %p View the Results LIVE for the week. You can also see results of previous weeks.
+    %p
+      %a.btn.btn-primary{href: '#/weeks/{{web_state.current_week.id}}/results', role: "button"} Results »
+
+.admin-panel{"ng-show" => "is_admin()"}
   .row
-    .col-md-12
-    .lead.text-center {{web_state.broadcast_message}}
-
+    .col-sm-12.text-center
+      %h4 Admin Panel
+    .col-md-4
+      %h2 NFL Teams
+      %p Administrators can use this 'NFL Teams' button to view, edit, and update NFL teams.  Make sure the teams are all in the correct Conference and Division.  Upload a nice looking logo for each team.  Any logo you upload will automatically be stored on your Amazon S3 account and will automatically be scaled to "Medium" (300x300) and "Thumbnail" (100x100) sizes.
+      %p
+        %a.btn.btn-primary{"ng-click" => "go('/nfl_teams')", role: "button"} NFL Teams »
+    .col-md-4
+      %h2 View All Weeks
+      %p Administrators can use this 'Weeks' button to view, edit, and update weeks.  Make sure all of the dates are correct.  You must always enter and edit them in international format: yyyy-mm-dd.  Also, currently there is a bug where the timezone is messing up the weeks.  You may have to enter hours also:  yyyy-mm-dd hh:mm.  Jack and Dave will discuss.
+      %p
+        %a.btn.btn-success{href: "#/seasons/1/weeks", role: "button"} View Weeks »
+    .col-md-4
+      %h2 Score Matchups
+      %p Click here to score the matchups for this week!
+      %p
+        %a.btn.btn-info{href: "#/weeks/{{web_state.current_week.id}}/matchups/scoring", role: "button"} Score Matchups »
   .row
     .col-md-4
-      %h2 Your Picks This Week
-      %p View all of the Matchups for this week and make your winning picks. You will not be able to make or change any picks after the first game of the week begins.
+      %h2 Commissioner
+      %p Commissioner maintenance page - for the commish only!  Lets you open/close a week for picks and also move to the next week.
       %p
-        %a.btn.btn-primary{href: '#/weeks/{{web_state.current_week.id}}/matchups', role: "button"} Your Picks »
-
+        %a.btn.btn-info{href: "#/admin/web_state", role: "button"} Commissioner »
     .col-md-4
-      %h2 This Week's Results
-      %p View the Results LIVE for the week. This page will open once the games begin for the week.
+      %h2 View All Entries
+      %p Use this page to view all of the entries to the competition. You can mark specific teams as paid or unpaid here.
       %p
-        %a.btn.btn-primary{href: '#/weeks/{{web_state.current_week.id}}/results', role: "button"} Results »
-
-  .admin-panel{"ng-show" => "is_admin()"}
-    .row
-      .col-sm-12.text-center
-        %h4 Admin Panel
-      .col-md-4
-        %h2 NFL Teams
-        %p Administrators can use this 'NFL Teams' button to view, edit, and update NFL teams.  Make sure the teams are all in the correct Conference and Division.  Upload a nice looking logo for each team.  Any logo you upload will automatically be stored on your Amazon S3 account and will automatically be scaled to "Medium" (300x300) and "Thumbnail" (100x100) sizes.
-        %p
-          %a.btn.btn-primary{"ng-click" => "go('/nfl_teams')", role: "button"} NFL Teams »
-      .col-md-4
-        %h2 View All Weeks
-        %p Administrators can use this 'Weeks' button to view, edit, and update weeks.  Make sure all of the dates are correct.  You must always enter and edit them in international format: yyyy-mm-dd.  Also, currently there is a bug where the timezone is messing up the weeks.  You may have to enter hours also:  yyyy-mm-dd hh:mm.  Jack and Dave will discuss.
-        %p
-          %a.btn.btn-success{href: "#/seasons/1/weeks", role: "button"} View Weeks »
-      .col-md-4
-        %h2 Score Matchups
-        %p Click here to score the matchups for this week!
-        %p
-          %a.btn.btn-info{href: "#/weeks/{{web_state.current_week.id}}/matchups/scoring", role: "button"} Score Matchups »
-    .row
-      .col-md-4
-        %h2 Commissioner
-        %p Commissioner maintenance page - for the commish only!  Lets you open/close a week for picks and also move to the next week.
-        %p
-          %a.btn.btn-info{href: "#/admin/web_state", role: "button"} Commissioner »
-      .col-md-4
-        %h2 View All Entries
-        %p Use this page to view all of the entries to the competition. You can mark specific teams as paid or unpaid here.
-        %p
-          %a.btn.btn-info{href: "#/seasons/1/entries", role: "button"} View All Entries»
+        %a.btn.btn-info{href: "#/seasons/1/entries", role: "button"} View All Entries»
 
   %hr/
   %footer

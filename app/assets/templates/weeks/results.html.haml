@@ -1,37 +1,45 @@
+.jumbotron
+	.container
+		.row
+			.col-sm-8
+				%h3 {{results_header()}}
+
+			.col-sm-4
+				%br
+				.btn-group{:dropdown => ""}
+					%button.btn.btn-danger{:type => "button"} Results of Other Weeks
+					%button.btn.btn-danger.dropdown-toggle{:type => "button"}
+						%span.caret
+						%span.sr-only Split button
+					%ul.dropdown-menu{:role => "menu"}
+						%li{"ng-repeat"=>"week in season_weeks"}
+							%a{href:"#/weeks/{{week.id}}/results"}
+								Week {{week.week_number}} Results
+		.row
+			.col-md-6
+				%h4 Still Alive: {{still_alive_count()}}
+				%h4 Knocked Out This Week: {{knocked_out_this_week_count()}}
+				%h4 Knocked Out Previously: {{knocked_out_previously_count()}}
+
+		.row
+			.col-md-12
+				%h3 Top Picked Teams:
+				%table.table
+					%thead
+						%tr
+							%th{"width" => "30%"} Team 
+							%th{"width" => "70%"} # of Picks
+					%tbody
+						%tr{"ng-repeat" => "team in sorted_picks"}
+							%td
+								%p {{team[0]}}
+							%td
+								%p {{team[1]}}
+
+
 .row
-	.col-sm-8
-		%h3 {{results_header()}}
-
-	.col-sm-4
-		%br
-		.btn-group{:dropdown => ""}
-			%button.btn.btn-danger{:type => "button"} Results of Other Weeks
-			%button.btn.btn-danger.dropdown-toggle{:type => "button"}
-				%span.caret
-				%span.sr-only Split button
-			%ul.dropdown-menu{:role => "menu"}
-				%li{"ng-repeat"=>"week in season_weeks"}
-					%a{href:"#/weeks/{{week.id}}/results"}
-						Week {{week.week_number}} Results
-
-.row{"ng-if" => "error_message"}
 	.col-sm-12.text-center
-		.alert.alert-danger {{error_message}}
-
-%h4 Still Alive!
-
-%table.table.table-striped
-	%thead
-		%tr
-			%th{"width" => "40%"} Team Name
-			%th{"width" => "60%"} Team Chosen
-
-	%tbody{"ng-repeat" => "pool_entry in pool_entries_still_alive"}
-		%tr
-			%td
-				%p.team-name {{ pool_entry.team_name}} 
-			%td 
-				%img{"src" => "{{pool_entry.nfl_team.logo_url_small}}" }
+		.alert{"class" => "alert alert-{{alert.type}}"} {{alert.msg}}
 
 %h4 Knocked Out This Week:
 
@@ -48,7 +56,23 @@
 			%td
 				%img{"src" => "{{pool_entry.nfl_team.logo_url_small}}" }
 
-%h4 Knocked Out Previously
+%h4 Still Alive!
+%p Teams returned here are those still alive currently. At this time we are not able to show who was alive during a given week - only those who were knocked out during a given week. This feature will be added in the future.
+
+%table.table.table-striped
+	%thead
+		%tr
+			%th{"width" => "40%"} Team Name
+			%th{"width" => "60%"} Team Chosen
+
+	%tbody{"ng-repeat" => "pool_entry in pool_entries_still_alive"}
+		%tr
+			%td
+				%p.team-name {{ pool_entry.team_name}} 
+			%td 
+				%img{"src" => "{{pool_entry.nfl_team.logo_url_small}}" }
+
+%h4 Knocked Out During a Different Week
 
 %table.table.table-striped
 	%thead

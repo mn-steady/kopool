@@ -19,7 +19,17 @@ angular.module('Register', ['ngResource', 'RailsApiResource', 'user'])
 
       $scope.pool_entries = []
       $scope.pool_entries_persisted = 0
-      $scope.registering_user = {email: "", password: "", password_confirmation: "", num_pool_entries: 1, teams: $scope.pool_entries, is_registered: false}
+
+      $scope.registering_user =
+        name: ""
+        phone: ""
+        email: ""
+        password: ""
+        password_confirmation: ""
+        num_pool_entries: 1
+        teams: $scope.pool_entries
+        is_registered: false
+
       $scope.register_error = {message: null, errors: {}}
       $scope.editing_team = 1
       $scope.persisting_pool_entries_failed = false
@@ -78,6 +88,8 @@ angular.module('Register', ['ngResource', 'RailsApiResource', 'user'])
           url: KOPOOL_CONFIG.PROTOCOL + '://' + KOPOOL_CONFIG.HOSTNAME + "/users.json"
           data:
             user:
+              name: $scope.registering_user.name
+              phone: $scope.registering_user.phone
               email: $scope.registering_user.email
               password: $scope.registering_user.password
               password_confirmation: $scope.registering_user.password_confirmation
@@ -151,9 +163,10 @@ angular.module('Register', ['ngResource', 'RailsApiResource', 'user'])
       $scope.$watch 'registering_user.num_pool_entries', (newVal, oldVal) ->
         console.log("(num_pool_entries.watch) old="+oldVal + " new=" + newVal)
         if !$scope.user_needs_registration()
-          console.log("(num_pool_entries.watch) Adding pool entries after registration")
+          console.log("(num_pool_entries.watch) Changing pool entries AFTER registration")
           num_existing_teams = $scope.pool_entries.length
           console.log("(num_pool_entries.watch) existing team count="+ num_existing_teams)
+
           if newVal > num_existing_teams
             if num_existing_teams == 10
               console.log("CANNOT ADD ANY MORE TEAMS")
@@ -162,11 +175,20 @@ angular.module('Register', ['ngResource', 'RailsApiResource', 'user'])
             else
               console.log("Pushing a new team")
               $scope.pool_entries.push(id: newVal, team_name: "", paid: false, persisted: false)
-          if newVal < num_existing_teams
-            console.log("CANNOT REMOVE TEAMS AFTER REGISTERED")
-            $scope.registering_user.num_pool_entries = oldVal
+          if newVal < num_existing_teams and num_existing_teams > 0
+            console.log("(num_pool_entries.watch) Wants to remove a team")
+            team_to_axe = $scope.pool_entries[num_existing_teams-1]
+            if team_to_axe.persisted
+              console.log("(num_pool_entries.watch) This team was persisted!")
+              $scope.registering_user.num_pool_entries = oldVal
+              newVal = oldVal
+            else
+              console.log("(num_pool_entries.watch) Can remove non-persisted team")
+              team_to_axe = $scope.pool_entries.pop()
           if newVal == num_existing_teams
-            console.log("Already have this many teams")
+            console.log("(num_pool_entries.watch) Already have this many teams")
+        else
+          console.log("(num_pool_entries.watch) Changing pool entries BEFORE registration")
 
 
       $scope.set_editing_team = (index) ->
@@ -205,7 +227,7 @@ angular.module('Register', ['ngResource', 'RailsApiResource', 'user'])
           false
 
       $scope.open_for_registration = () ->
-        $scope.web_state.current_week.season.open_for_registration
+        $scope.web_state.current_week.open_for_picks
 
       $scope.season_id = () ->
         $scope.web_state.current_week.season.id
@@ -238,11 +260,14 @@ angular.module('Register', ['ngResource', 'RailsApiResource', 'user'])
         else
           return false
 
+      $scope.show_week_1_picks_button = () ->
+        $scope.persist_button_show() and $scope.persist_button_disabled()
+
       $scope.persist_button_text = () ->
         if $scope.pool_entries_persisted == $scope.pool_entries.length
           "Teams have been Setup"
         else
-          "Setup the Teams Below"
+          "PERMANENTLY SAVE the Teams Below"
 
       $scope.password_is_valid = (entry) ->
         if entry.length >= 8

@@ -29,6 +29,8 @@ class Matchup < ActiveRecord::Base
     end
   end
 
+private
+
   def self.handle_tie_game(matchup, pick)
     pick.pool_entry.knocked_out = true
     pick.pool_entry.knocked_out_week_id = matchup.week_id

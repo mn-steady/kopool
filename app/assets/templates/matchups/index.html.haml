@@ -3,18 +3,6 @@
 	.col-sm-8
 		%h3 {{matchup_header()}}
 
-	.col-sm-4
-		%br
-		.btn-group{:dropdown => ""}
-			%button.btn.btn-danger{:type => "button"} Other Matchups
-			%button.btn.btn-danger.dropdown-toggle{:type => "button"}
-				%span.caret
-				%span.sr-only Split button
-			%ul.dropdown-menu{:role => "menu"}
-				%li{"ng-repeat"=>"week in season_weeks"}
-					%a{href:"#/weeks/{{week.id}}/matchups"}
-						Week {{week.week_number}}
-
 %br
 
 .row
@@ -22,7 +10,7 @@
 		.alert{"class" => "alert alert-{{alert.type}}"} {{alert.msg}}
 
 .row
-	.col-md-4{"ng-repeat"=>"pool_entry in pool_entries | filter: {knocked_out: false}"}
+	.col-md-4{"ng-repeat"=>"pool_entry in pool_entries"}
 		%div{"ng-hide" => "notSelectedPoolEntry(pool_entry)", "ng-click" => "set_editing_pool_entry($index)"}
 			.panel.panel-warning
 				.panel-heading

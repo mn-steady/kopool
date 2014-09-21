@@ -39,6 +39,4 @@ class Pick < ActiveRecord::Base
       self.errors[:base] << "You cannot change a pick when the week is closed "
     end
   end
-
-
 end

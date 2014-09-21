@@ -22,7 +22,7 @@ class PoolEntry < ActiveRecord::Base
       .where('week_id <= ?', week)
       .order('week_id DESC').first
     return {} unless @pick.present?
-    @returned_nfl_team = {nfl_team_id: @pick.team_id, logo_url_small: @pick.nfl_team.logo_url_small}
+    @returned_nfl_team = {nfl_team_id: @pick.team_id, logo_url_small: @pick.nfl_team.logo_url_small, nfl_team_name: @pick.nfl_team.name}
   end
 
   def specific_weeks_nfl_team(week)
@@ -32,7 +32,7 @@ class PoolEntry < ActiveRecord::Base
       .where('weeks.season_id = ?',week.season_id)
       .where('week_id = ?', week).first
     return {} unless @pick.present?
-    @returned_nfl_team = {nfl_team_id: @pick.team_id, logo_url_small: @pick.nfl_team.logo_url_small}
+    @returned_nfl_team = {nfl_team_id: @pick.team_id, logo_url_small: @pick.nfl_team.logo_url_small, nfl_team_name: @pick.nfl_team.name}
   end
 
   def user_information

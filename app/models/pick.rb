@@ -12,6 +12,7 @@ class Pick < ActiveRecord::Base
   validate :cannot_change_pick_during_closed_week, :on => :update
 
   validate :pick_must_be_in_matchup
+  
 
   private
 

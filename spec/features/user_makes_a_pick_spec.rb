@@ -3,10 +3,11 @@ require 'spec_helper'
 feature "user makes a pick", js: true do
 
 	before do
+		@user = create(:user)
 		@season = Season.create(year: 2014, name: "2014 Season", entry_fee: 50)
     @week = Week.create(season: @season, week_number: 1, start_date: DateTime.new(2014, 8, 5), deadline: DateTime.new(2014, 8, 8), end_date: DateTime.new(2014, 8, 11))
     @webstate = WebState.create(week_id: @week.id)
-    @pool_entry1 = PoolEntry.create(user: @user, team_name: "Test Team", paid: true)
+    @pool_entry1 = PoolEntry.create(user: @user, team_name: "Test Team", paid: true, season_id: @season.id)
 
     @broncos = NflTeam.create(name: "Denver Broncos", conference: "NFC", division: "West")
     @vikings = NflTeam.create(name: "Minnesota Vikings", conference: "NFC", division: "North")
@@ -14,10 +15,9 @@ feature "user makes a pick", js: true do
 	end
 
 	scenario "with an open week" do
-		user = create(:user)
+		current_user = @user
+		login_as current_user, scope: :user
     visit root_path
-    fill_in 'sign_on_field', with: user.email
-    fill_in 'password_field', with: user.password
 
     click_button("Sign In")
 

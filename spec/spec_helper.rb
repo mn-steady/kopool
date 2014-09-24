@@ -5,6 +5,8 @@ require 'rspec/rails'
 require 'capybara/rails'
 require 'capybara/rspec'
 
+include Warden::Test::Helpers
+
 Capybara.app_host = "http://localhost:3000"
 Capybara.server_host = "localhost"
 Capybara.server_port = "3000"
@@ -43,6 +45,7 @@ RSpec.configure do |config|
   end
 
   config.before(:each, :js => true) do
+    Warden.test_mode!
     DatabaseCleaner.strategy = :truncation
   end
 
@@ -52,5 +55,6 @@ RSpec.configure do |config|
 
   config.after(:each) do
     DatabaseCleaner.clean
+    Warden.test_reset!
   end
 end

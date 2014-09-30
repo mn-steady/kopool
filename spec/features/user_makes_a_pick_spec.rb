@@ -31,4 +31,19 @@ feature "user makes a pick", js: true do
 
     expect(page).to have_content("Denver Broncos")
 	end
+
+	scenario "with a closed week", js: true do
+		@week.update_attribute(:open_for_picks, false)
+
+		current_user = @user
+		login_as current_user, scope: :user
+    visit root_path
+
+    click_button("Sign In")
+
+    click_link("Your Picks")
+
+    expect(page).to have_css(".alert.alert-danger")
+    @week.update_attribute(:open_for_picks, true)
+	end
 end

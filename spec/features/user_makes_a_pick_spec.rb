@@ -14,7 +14,7 @@ feature "user makes a pick", js: true do
     @matchup = Matchup.create(week_id: @week.id, home_team: @broncos, away_team: @vikings, game_time: DateTime.new(2014,8,10,11))
 	end
 
-	scenario "with an open week" do
+	scenario "with an open week", js: true do
 		current_user = @user
 		login_as current_user, scope: :user
     visit root_path
@@ -23,11 +23,11 @@ feature "user makes a pick", js: true do
 
     click_link("Your Picks")
 
-    click_button("Select Pick for Test Team")
+    find(:css, "#select-pick").click
 
-    click_button("Pick Denver Broncos to win!")
+    find(:css, "#select-home-#{@matchup.id}").click
 
-    click_button("Save Pick")
+    find(:css, "#save-matchup-#{@matchup.id}").click
 
     expect(page).to have_content("Denver Broncos")
 	end

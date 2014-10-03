@@ -53,7 +53,7 @@
 						%button.btn.btn-default.btn-lg
 							%span.glyphicon.glyphicon-sound-dolby
 			.text-center
-				%a.btn{"id" => "select-pick", "ng-click" => "set_editing_pool_entry($index)", "ng-class" => "pool_entry_button_class(pool_entry)", "ng-hide" => "weekIsClosed()", role: "button"} Select Pick for {{pool_entry.team_name}}
+				%a.btn{"id" => "select-pick-{{pool_entry.id}}", "ng-click" => "set_editing_pool_entry($index)", "ng-class" => "pool_entry_button_class(pool_entry)", "ng-hide" => "weekIsClosed()", role: "button"} Select Pick for {{pool_entry.team_name}}
 
 .animate-show{"ng-show" => "showMatchups"}
 	%table.table.table-striped

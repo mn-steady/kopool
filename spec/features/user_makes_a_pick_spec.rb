@@ -23,7 +23,7 @@ feature "user makes a pick", js: true do
 
     click_link("Your Picks")
 
-    find(:css, "#select-pick").click
+    find(:css, "#select-pick-#{@pool_entry1.id}").click
 
     find(:css, "#select-home-#{@matchup.id}").click
 

@@ -89,6 +89,7 @@ feature "pick and score a week", js: true do
 
     find(:css, "#select-away-#{@matchup.id}").click
     find(:css, "#save-outcome-#{@matchup.id}").click
+    save_and_open_page
     find('button', :text => "Save Outcome").click # Doesn't pass the appropriate params to the controller
 
 

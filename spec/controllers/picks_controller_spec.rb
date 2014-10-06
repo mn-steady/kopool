@@ -8,14 +8,14 @@ describe PicksController do
 			@user = create(:user, admin: true)
 			sign_in @user
 
-			@season = Season.create(year: 2014, name: "2014 Season", entry_fee: 50)
-			@week = Week.create(season: @season, week_number: 1, start_date: DateTime.new(2014, 8, 5), deadline: DateTime.new(2014, 8, 8), end_date: DateTime.new(2014, 8, 11))
-			@pool_entry1 = PoolEntry.create(user: @user, team_name: "Test Team", paid: true)
-			@pool_entry2 = PoolEntry.create(user: @user, team_name: "Team Two", paid: true)
+			@season = Season.create!(year: 2014, name: "2014 Season", entry_fee: 50)
+			@week = Week.create!(season: @season, week_number: 1, start_date: DateTime.new(2014, 8, 5), deadline: DateTime.new(2014, 8, 8), end_date: DateTime.new(2014, 8, 11))
+			@pool_entry1 = PoolEntry.create!(user: @user, team_name: "Test Team", paid: true, season: @season)
+			@pool_entry2 = PoolEntry.create!(user: @user, team_name: "Team Two", paid: true, season: @season)
 
-			@broncos = NflTeam.create(name: "Denver Broncos", conference: "NFC", division: "West")
-			@vikings = NflTeam.create(name: "Minnesota Vikings", conference: "NFC", division: "North")
-			@matchup = Matchup.create(week_id: @week.id, home_team: @broncos, away_team: @vikings, game_time: DateTime.new(2014,8,10,11))
+			@broncos = NflTeam.create!(name: "Denver Broncos", conference: "NFC", division: "West")
+			@vikings = NflTeam.create!(name: "Minnesota Vikings", conference: "NFC", division: "North")
+			@matchup = Matchup.create!(week_id: @week.id, home_team: @broncos, away_team: @vikings, game_time: DateTime.new(2014,8,10,11))
 		end
 
   	it "returns the user's picks from this season" do
@@ -63,7 +63,7 @@ describe PicksController do
 
       @season = Season.create(year: 2014, name: "2014 Season", entry_fee: 50)
       @week = Week.create(season: @season, week_number: 1, start_date: DateTime.new(2014, 8, 5), deadline: DateTime.new(2014, 8, 8), end_date: DateTime.new(2014, 8, 11))
-      @pool_entry1 = PoolEntry.create(user: @user, team_name: "Test Team", paid: true)
+      @pool_entry1 = PoolEntry.create(user: @user, team_name: "Test Team", paid: true, season: @season)
 
       @broncos = NflTeam.create(name: "Denver Broncos", conference: "NFC", division: "West")
       @vikings = NflTeam.create(name: "Minnesota Vikings", conference: "NFC", division: "North")
@@ -195,7 +195,7 @@ describe PicksController do
 
       @season = Season.create(year: 2014, name: "2014 Season", entry_fee: 50)
       @week = Week.create(season: @season, week_number: 1, start_date: DateTime.new(2014, 8, 5), deadline: DateTime.new(2014, 8, 8), end_date: DateTime.new(2014, 8, 11))
-      @pool_entry1 = PoolEntry.create(user: @user, team_name: "Test Team", paid: true)
+      @pool_entry1 = PoolEntry.create(user: @user, team_name: "Test Team", paid: true, season: @season)
 
       @broncos = NflTeam.create(name: "Denver Broncos", conference: "NFC", division: "West")
       @vikings = NflTeam.create(name: "Minnesota Vikings", conference: "NFC", division: "North")
@@ -268,8 +268,8 @@ describe PicksController do
 
 			@season = Season.create(year: 2014, name: "2014 Season", entry_fee: 50)
 			@week = Week.create(season: @season, week_number: 1, start_date: DateTime.new(2014, 8, 5), deadline: DateTime.new(2014, 8, 8), end_date: DateTime.new(2014, 8, 11))
-			@pool_entry1 = PoolEntry.create(user: @user, team_name: "Test Team", paid: true)
-			@pool_entry2 = PoolEntry.create(user: @user, team_name: "Team Two", paid: true)
+			@pool_entry1 = PoolEntry.create(user: @user, team_name: "Test Team", paid: true, season: @season)
+			@pool_entry2 = PoolEntry.create(user: @user, team_name: "Team Two", paid: true, season: @season)
 
 			@broncos = NflTeam.create(name: "Denver Broncos", conference: "NFC", division: "West")
 			@vikings = NflTeam.create(name: "Minnesota Vikings", conference: "NFC", division: "North")
@@ -318,13 +318,13 @@ describe PicksController do
 
       @season = Season.create(year: 2014, name: "2014 Season", entry_fee: 50)
       @week = Week.create(season: @season, week_number: 1, start_date: DateTime.new(2014, 8, 5), deadline: DateTime.new(2014, 8, 8), end_date: DateTime.new(2014, 8, 11))
-      @pool_entry1 = PoolEntry.create(user: @user, team_name: "Test Team", paid: true)
-      @pool_entry2 = PoolEntry.create(user: @user, team_name: "Team Two", paid: true)
-      @pool_entry3 = PoolEntry.create(user: @user, team_name: "Team Three", paid: true)
-      @pool_entry4 = PoolEntry.create(user: @user, team_name: "Team Four", paid: true)
-      @pool_entry5 = PoolEntry.create(user: @user, team_name: "Team Five", paid: true)
-      @pool_entry6 = PoolEntry.create(user: @user, team_name: "Team Six", paid: true)
-      @pool_entry7 = PoolEntry.create(user: @user, team_name: "Team Seven", paid: true)
+      @pool_entry1 = PoolEntry.create(user: @user, team_name: "Test Team", paid: true, season: @season)
+      @pool_entry2 = PoolEntry.create(user: @user, team_name: "Team Two", paid: true, season: @season)
+      @pool_entry3 = PoolEntry.create(user: @user, team_name: "Team Three", paid: true, season: @season)
+      @pool_entry4 = PoolEntry.create(user: @user, team_name: "Team Four", paid: true, season: @season)
+      @pool_entry5 = PoolEntry.create(user: @user, team_name: "Team Five", paid: true, season: @season)
+      @pool_entry6 = PoolEntry.create(user: @user, team_name: "Team Six", paid: true, season: @season)
+      @pool_entry7 = PoolEntry.create(user: @user, team_name: "Team Seven", paid: true, season: @season)
 
       @broncos = NflTeam.create(name: "Denver Broncos", conference: "NFC", division: "West")
       @vikings = NflTeam.create(name: "Minnesota Vikings", conference: "NFC", division: "North")

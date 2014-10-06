@@ -8,6 +8,7 @@ feature "pick and score a week", js: true do
     @admin = create(:user, admin: true)
     @season = Season.create(year: 2014, name: "2014 Season", entry_fee: 50)
     @week = Week.create(season: @season, week_number: 1, start_date: DateTime.new(2014, 8, 5), deadline: DateTime.new(2014, 8, 8), end_date: DateTime.new(2014, 8, 11))
+    @week2 = Week.create(season: @season, week_number: 2, start_date: DateTime.new(2014, 8, 14), deadline: DateTime.new(2014, 8, 15), end_date: DateTime.new(2014, 8, 17))
     @webstate = WebState.create(week_id: @week.id)
     @pool_entry1 = PoolEntry.create(user: @user, team_name: "Test Team", paid: true, season_id: @season.id)
     @pool_entry2 = PoolEntry.create(user: @user, team_name: "Test Team 2", paid: true, season_id: @season.id)
@@ -66,7 +67,6 @@ feature "pick and score a week", js: true do
     visit root_path
     fill_in 'sign_on_field', with: @admin.email
     fill_in 'password_field', with: @admin.password
-
     click_button("Sign In")
 
     click_link("Commissioner")
@@ -89,10 +89,58 @@ feature "pick and score a week", js: true do
 
     find(:css, "#select-away-#{@matchup.id}").click
     find(:css, "#save-outcome-#{@matchup.id}").click
-    save_and_open_page
-    find('button', :text => "Save Outcome").click # Doesn't pass the appropriate params to the controller
+    find('button', :text => "Save Outcome").click
 
+    find(:css, "#select-home-#{@matchup2.id}").click
+    find(:css, "#save-outcome-#{@matchup2.id}").click
+    find('button', :text => "Save Outcome").click
 
+    expect(page).to have_content("Winner: Minnesota Vikings")
+    expect(page).to have_content("Winner: Indianapolis Colts")
 
+    # View Results as End User
+
+    logout(@admin)
+    click_button("#{@admin.email}")
+    find('a', :text => "Sign Out").click
+    visit root_path
+
+    fill_in 'sign_on_field', with: @user.email
+    fill_in 'password_field', with: @user.password
+    click_button("Sign In")
+
+    click_link("Results")
+
+    expect(page).to have_content("Knocked Out This Week: 2")
+    expect(page).to have_content("Still Alive: 1")
+
+    logout(@user)
+    click_button("#{@user.email}")
+    find('a', :text => "Sign Out").click
+    visit root_path
+
+    # Move to next week
+
+    fill_in 'sign_on_field', with: @admin.email
+    fill_in 'password_field', with: @admin.password
+    click_button("Sign In")
+    click_link("Commissioner")
+    click_button("Move to Next Week")
+    find('button', :text => "Advance Week").click
+
+    logout(@admin)
+    click_button("#{@admin.email}")
+    find('a', :text => "Sign Out").click
+    visit root_path
+
+    # User should only have one pool entry left
+
+    fill_in 'sign_on_field', with: @user.email
+    fill_in 'password_field', with: @user.password
+    click_button("Sign In")
+    click_link("Your Picks")
+
+    expect(page).to have_content("Test Team 3")
+    expect(page).not_to have_content("Test Team 2")
   end
 end

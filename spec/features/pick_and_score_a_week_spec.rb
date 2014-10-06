@@ -81,6 +81,8 @@ feature "pick and score a week", js: true do
     find(:css, "#save-outcome-#{@matchup.id}").click
     find('button', :text => "Save Outcome").click
 
+    sleep(1)
+
     find(:css, "#select-home-#{@matchup2.id}").click
     find(:css, "#save-outcome-#{@matchup2.id}").click
     find('button', :text => "Save Outcome").click

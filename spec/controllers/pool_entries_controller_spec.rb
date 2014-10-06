@@ -126,10 +126,10 @@ describe PoolEntriesController do
 
   		expect(pool_entries_and_teams[0]['id']).to eq(@pool_entry1.id)
   		expect(pool_entries_and_teams[0]['team_name']).to eq(@pool_entry1.team_name)
-  		expect(pool_entries_and_teams[0]['nfl_team']).to eq({"nfl_team_id" => @vikings.id, "logo_url_small" => @vikings.logo_url_small})
+  		expect(pool_entries_and_teams[0]['nfl_team']).to eq({"nfl_team_id" => @vikings.id, "logo_url_small" => @vikings.logo_url_small, "nfl_team_name"=>"Minnesota Vikings"})
       expect(pool_entries_and_teams[1]['id']).to eq(@pool_entry2.id)
   		expect(pool_entries_and_teams[1]['team_name']).to eq(@pool_entry2.team_name)
-  		expect(pool_entries_and_teams[1]['nfl_team']).to eq({"nfl_team_id" => @broncos.id, "logo_url_small" => @broncos.logo_url_small})
+  		expect(pool_entries_and_teams[1]['nfl_team']).to eq({"nfl_team_id" => @broncos.id, "logo_url_small" => @broncos.logo_url_small, "nfl_team_name"=>"Denver Broncos"})
   	end
 
   	it "returns pool entries but no nfl team when picks don't exist" do

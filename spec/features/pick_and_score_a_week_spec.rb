@@ -30,7 +30,6 @@ feature "pick and score a week", js: true do
     visit root_path
 
     click_button("Sign In")
-
     click_link("Your Picks")
 
     # Select Pick for first Pool Entry
@@ -60,28 +59,19 @@ feature "pick and score a week", js: true do
     # Switch to Admin User
 
     logout(current_user)
-
     click_button("#{@user.email}")
     find('a', :text => "Sign Out").click
-
     visit root_path
-    fill_in 'sign_on_field', with: @admin.email
-    fill_in 'password_field', with: @admin.password
-    click_button("Sign In")
+    angular_login(@admin)
 
     click_link("Commissioner")
     click_button("Close for Picks")
 
     # Need to sign out and in again because of bug in the browser cookie
 
-    logout(@admin)
+    angular_logout(@admin)
 
-    click_button("#{@admin.email}")
-    find('a', :text => "Sign Out").click
-    visit root_path
-    fill_in 'sign_on_field', with: @admin.email
-    fill_in 'password_field', with: @admin.password
-    click_button("Sign In")
+    angular_login(@admin)
 
     click_link("Score Matchups")
 
@@ -100,24 +90,15 @@ feature "pick and score a week", js: true do
 
     # View Results as End User
 
-    logout(@admin)
-    click_button("#{@admin.email}")
-    find('a', :text => "Sign Out").click
-    visit root_path
-
-    fill_in 'sign_on_field', with: @user.email
-    fill_in 'password_field', with: @user.password
-    click_button("Sign In")
+    angular_logout(@admin)
+    angular_login(@user)
 
     click_link("Results")
 
     expect(page).to have_content("Knocked Out This Week: 2")
     expect(page).to have_content("Still Alive: 1")
 
-    logout(@user)
-    click_button("#{@user.email}")
-    find('a', :text => "Sign Out").click
-    visit root_path
+    angular_logout(@user)
 
     # Move to next week
 
@@ -128,19 +109,27 @@ feature "pick and score a week", js: true do
     click_button("Move to Next Week")
     find('button', :text => "Advance Week").click
 
-    logout(@admin)
-    click_button("#{@admin.email}")
-    find('a', :text => "Sign Out").click
-    visit root_path
+    angular_logout(@admin)
 
     # User should only have one pool entry left
 
-    fill_in 'sign_on_field', with: @user.email
-    fill_in 'password_field', with: @user.password
-    click_button("Sign In")
+    angular_login(@user)
     click_link("Your Picks")
 
     expect(page).to have_content("Test Team 3")
     expect(page).not_to have_content("Test Team 2")
+  end
+
+  def angular_logout(user)
+    logout(user)
+    click_button("#{user.email}")
+    find('a', :text => "Sign Out").click
+    visit root_path
+  end
+
+  def angular_login(user)
+    fill_in 'sign_on_field', with: user.email
+    fill_in 'password_field', with: user.password
+    click_button("Sign In")
   end
 end

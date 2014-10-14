@@ -21,7 +21,7 @@
     %p.text-center From the Office of the Commish:
     .alert.alert-info.lead.text-center {{web_state.broadcast_message}}
 
-.row
+.row{"ng-show" => "is_authorized()"}
   .col-md-4
     %h2 Your Picks This Week
     %p View all of the Matchups for this week and make your winning picks. Thursday night picks will be posted on the front page and will be considered locked in. All other picks must be made by 11 AM on Sunday morning.
@@ -64,6 +64,11 @@
       %p Use this page to view all of the entries to the competition. You can mark specific teams as paid or unpaid here.
       %p
         %a.btn.btn-info{href: "#/seasons/1/entries", role: "button"} View All Entries»
+
+.row{"ng-show" => "is_authorized()"}
+  %div{"ng-controller" => "KopoolChartsCtrl"}
+    .col-md-12
+      %h2 Cool Chart
 
   %hr/
   %footer

@@ -11,6 +11,7 @@ Kopool::Application.routes.draw do
 
   resources :seasons, only: [:new, :create, :show] do
     get "season_results", :action => "season_results"
+    get "season_summary", :action => "season_summary"
   	resources :weeks, only: [:index, :new, :create, :edit, :show, :update, :destroy]
   end
 

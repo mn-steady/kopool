@@ -15,5 +15,6 @@
 
 //= require angular
 //= require main
+//= require d3
 
 //= require_tree .

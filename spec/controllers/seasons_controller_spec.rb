@@ -63,6 +63,94 @@ describe SeasonsController do
 			@matchup4_1 = Matchup.create(week_id: @week4.id, home_team: @broncos, away_team: @vikings, game_time: DateTime.new(2014,8,31,11))
 			@matchup4_2 = Matchup.create(week_id: @week4.id, home_team: @packers, away_team: @lions, game_time: DateTime.new(2014,8,31,11))
 			@matchup4_3 = Matchup.create(week_id: @week4.id, home_team: @chargers, away_team: @steelers, game_time: DateTime.new(2014,8,31,11))
+
+			# Week 1 winners: Broncos, Packers, Chargers
+			# Week 2 winners: Vikings, Lions, Steelers
+			# Week 3 winners: Broncos, Packers, Chargers
+			# Week 4 winners: Vikings, Lions, Steelers
+
+			# User 1 will lose 1 entry each in weeks 1, 2, and 3
+			# User 2 will lose 2 entries in week 1 and the third in week 2
+			# User 3 will lose 1 entry each in weeks 2 and 3, with 1 remaining
+			# User 4 will lose 1 entry in week 4, with 2 remaining
+
+			@pick1_1 = Pick.create(pool_entry_id: @pool_entry1.id, week_id: @week1.id, team_id: @vikings.id, matchup_id: @matchup1_1.id)
+			@pick1_2 = Pick.create(pool_entry_id: @pool_entry2.id, week_id: @week1.id, team_id: @packers.id, matchup_id: @matchup1_2.id)
+			@pick1_3 = Pick.create(pool_entry_id: @pool_entry3.id, week_id: @week1.id, team_id: @chargers.id, matchup_id: @matchup1_3.id)
+			@pick1_4 = Pick.create(pool_entry_id: @pool_entry4.id, week_id: @week1.id, team_id: @vikings.id, matchup_id: @matchup1_1.id)
+			@pick1_5 = Pick.create(pool_entry_id: @pool_entry5.id, week_id: @week1.id, team_id: @lions.id, matchup_id: @matchup1_2.id)
+			@pick1_6 = Pick.create(pool_entry_id: @pool_entry6.id, week_id: @week1.id, team_id: @chargers.id, matchup_id: @matchup1_3.id)
+			@pick1_7 = Pick.create(pool_entry_id: @pool_entry7.id, week_id: @week1.id, team_id: @broncos.id, matchup_id: @matchup1_1.id)
+			@pick1_8 = Pick.create(pool_entry_id: @pool_entry8.id, week_id: @week1.id, team_id: @packers.id, matchup_id: @matchup1_2.id)
+			@pick1_9 = Pick.create(pool_entry_id: @pool_entry9.id, week_id: @week1.id, team_id: @chargers.id, matchup_id: @matchup1_3.id)
+			@pick1_10 = Pick.create(pool_entry_id: @pool_entry10.id, week_id: @week1.id, team_id: @broncos.id, matchup_id: @matchup1_1.id)
+			@pick1_11 = Pick.create(pool_entry_id: @pool_entry11.id, week_id: @week1.id, team_id: @packers.id, matchup_id: @matchup1_2.id)
+			@pick1_12 = Pick.create(pool_entry_id: @pool_entry12.id, week_id: @week1.id, team_id: @chargers.id, matchup_id: @matchup1_3.id)
+
+			# Handle Week 1 Outcomes
+
+			@matchup1_1.update_attributes(winning_team_id = @broncos.id)
+			@matchup1_2.update_attributes(winning_team_id = @packers.id)
+			@matchup1_3.update_attributes(winning_team_id = @chargers.id)
+			Matchup.handle_matchup_outcome!(@matchup1_1.id)
+			Matchup.handle_matchup_outcome!(@matchup1_2.id)
+			Matchup.handle_matchup_outcome!(@matchup1_3.id)
+
+			# Week 2 Picks
+
+			@pick2_2 = Pick.create(pool_entry_id: @pool_entry2.id, week_id: @week2.id, team_id: @packers.id, matchup_id: @matchup2_2.id)
+			@pick2_3 = Pick.create(pool_entry_id: @pool_entry3.id, week_id: @week2.id, team_id: @steelers.id, matchup_id: @matchup2_3.id)
+			@pick2_6 = Pick.create(pool_entry_id: @pool_entry6.id, week_id: @week2.id, team_id: @chargers.id, matchup_id: @matchup2_3.id)
+			@pick2_7 = Pick.create(pool_entry_id: @pool_entry7.id, week_id: @week2.id, team_id: @broncos.id, matchup_id: @matchup2_1.id)
+			@pick2_8 = Pick.create(pool_entry_id: @pool_entry8.id, week_id: @week2.id, team_id: @lions.id, matchup_id: @matchup2_2.id)
+			@pick2_9 = Pick.create(pool_entry_id: @pool_entry9.id, week_id: @week2.id, team_id: @steelers.id, matchup_id: @matchup2_3.id)
+			@pick2_10 = Pick.create(pool_entry_id: @pool_entry10.id, week_id: @week2.id, team_id: @vikings.id, matchup_id: @matchup2_1.id)
+			@pick2_11 = Pick.create(pool_entry_id: @pool_entry11.id, week_id: @week2.id, team_id: @lions.id, matchup_id: @matchup2_2.id)
+			@pick2_12 = Pick.create(pool_entry_id: @pool_entry12.id, week_id: @week2.id, team_id: @steelers.id, matchup_id: @matchup2_3.id)
+
+			# Handle Week 2 Outcomes
+
+			@matchup2_1.update_attributes(winning_team_id = @vikings.id)
+			@matchup2_2.update_attributes(winning_team_id = @lions.id)
+			@matchup2_3.update_attributes(winning_team_id = @steelers.id)
+			Matchup.handle_matchup_outcome!(@matchup2_1.id)
+			Matchup.handle_matchup_outcome!(@matchup2_2.id)
+			Matchup.handle_matchup_outcome!(@matchup2_3.id)
+
+			# Week 3 Picks
+
+			@pick3_3 = Pick.create(pool_entry_id: @pool_entry3.id, week_id: @week3.id, team_id: @steelers.id, matchup_id: @matchup3_3.id)
+			@pick3_8 = Pick.create(pool_entry_id: @pool_entry8.id, week_id: @week3.id, team_id: @lions.id, matchup_id: @matchup3_2.id)
+			@pick3_9 = Pick.create(pool_entry_id: @pool_entry9.id, week_id: @week3.id, team_id: @chargers.id, matchup_id: @matchup3_3.id)
+			@pick3_10 = Pick.create(pool_entry_id: @pool_entry10.id, week_id: @week3.id, team_id: @broncos.id, matchup_id: @matchup3_1.id)
+			@pick3_11 = Pick.create(pool_entry_id: @pool_entry11.id, week_id: @week3.id, team_id: @packers.id, matchup_id: @matchup3_2.id)
+			@pick3_12 = Pick.create(pool_entry_id: @pool_entry12.id, week_id: @week3.id, team_id: @chargers.id, matchup_id: @matchup3_3.id)	
+
+			# Handle Week 3 Outcomes
+
+			@matchup3_1.update_attributes(winning_team_id = @broncos.id)
+			@matchup3_2.update_attributes(winning_team_id = @packers.id)
+			@matchup3_3.update_attributes(winning_team_id = @chargers.id)
+			Matchup.handle_matchup_outcome!(@matchup3_1.id)
+			Matchup.handle_matchup_outcome!(@matchup3_2.id)
+			Matchup.handle_matchup_outcome!(@matchup3_3.id)
+
+			# Week 4 Picks
+
+			@pick4_9 = Pick.create(pool_entry_id: @pool_entry9.id, week_id: @week4.id, team_id: @steelers.id, matchup_id: @matchup4_3.id)
+			@pick4_10 = Pick.create(pool_entry_id: @pool_entry10.id, week_id: @week4.id, team_id: @broncos.id, matchup_id: @matchup4_1.id)
+			@pick4_11 = Pick.create(pool_entry_id: @pool_entry11.id, week_id: @week4.id, team_id: @lions.id, matchup_id: @matchup4_2.id)
+			@pick4_12 = Pick.create(pool_entry_id: @pool_entry12.id, week_id: @week4.id, team_id: @steelers.id, matchup_id: @matchup4_3.id)	
+
+			# Handle Week 4 Outcomes
+
+			@matchup4_1.update_attributes(winning_team_id = @vikings.id)
+			@matchup4_2.update_attributes(winning_team_id = @lions.id)
+			@matchup4_3.update_attributes(winning_team_id = @steelers.id)
+			Matchup.handle_matchup_outcome!(@matchup4_1.id)
+			Matchup.handle_matchup_outcome!(@matchup4_2.id)
+			Matchup.handle_matchup_outcome!(@matchup4_3.id)
+
 		end
 
 	end

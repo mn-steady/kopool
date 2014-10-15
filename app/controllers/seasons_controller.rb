@@ -52,9 +52,6 @@ class SeasonsController < ApplicationController
 			@returned_week_numbers_and_values.push(@returned_week)
 		end
 
-		binding.pry
-
-
 		respond_to do |format|
 			format.json { render :json => @returned_week_numbers_and_values}
 		end

@@ -162,6 +162,30 @@ describe SeasonsController do
 			expect(returned.count).to eq(4)
 		end
 
+		it "retuns the correct week numbers for each week" do
+			get :season_summary, season_id: @season.id, format: :json
+
+			expect(response.status).to eq(Rack::Utils.status_code(:ok))
+			returned = JSON.parse(response.body)
+
+			expect(returned[0]["x"]).to eq(1)
+			expect(returned[1]["x"]).to eq(2)
+			expect(returned[2]["x"]).to eq(3)
+			expect(returned[3]["x"]).to eq(4)
+		end
+
+		it "retuns the correct remaining pool entry counts for each week" do
+			get :season_summary, season_id: @season.id, format: :json
+
+			expect(response.status).to eq(Rack::Utils.status_code(:ok))
+			returned = JSON.parse(response.body)
+
+			expect(returned[0]["y"]).to eq(9)
+			expect(returned[1]["y"]).to eq(6)
+			expect(returned[2]["y"]).to eq(4)
+			expect(returned[3]["y"]).to eq(3)
+		end
+
 	end
 
 	describe "POST create" do

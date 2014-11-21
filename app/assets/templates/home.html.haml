@@ -21,6 +21,11 @@
     %p.text-center From the Office of the Commish:
     .alert.alert-info.lead.text-center {{web_state.broadcast_message}}
 
+.row{"ng-controller" => "KopoolChartsCtrl"}
+  .col-md-12
+    %div{"ac-chart" => "line", "ac-data"=>"{{chart_data}}", "ac-config"=>"config", "id"=>"chart", "class"=>"chart"}
+    %p This area
+
 .row{"ng-show" => "is_authorized()"}
   .col-md-4
     %h2 Your Picks This Week

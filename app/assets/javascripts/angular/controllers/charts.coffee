@@ -3,8 +3,16 @@ angular.module('kopoolCharts', ['ngResource', 'RailsApiResource', 'ui.bootstrap'
 	.factory 'KnockoutStats', (RailsApiResource) ->
 		RailsApiResource('seasons/:parent_id/season_summary', 'season_summary')
 
-	.controller 'KopoolChartsCtrl', ['$scope', '$location', '$http', '$routeParams', 'WebState', ($scope, $location, $http, $routeParams, WebState) ->
+	.controller 'KopoolChartsCtrl', ['$scope', '$location', '$http', '$routeParams', 'WebState', 'KnockoutStats', ($scope, $location, $http, $routeParams, WebState, KnockoutStats) ->
 		
+		$scope.config =
+      title: "Knockouts This Season"
+      tooltips: true
+      labels: false
+      legend:
+        display: true
+        position: "left"
+      lineLegend: "lineEnd" # can be also 'traditional'
 
 		$scope.getWebState = () ->
 			WebState.get(1).then((web_state) ->
@@ -19,6 +27,9 @@ angular.module('kopoolCharts', ['ngResource', 'RailsApiResource', 'ui.bootstrap'
 			console.log("(KopoolChartsCtrl) getting Season Summary")
 			KnockoutStats.nested_query($scope.season_id).then((summary_info) ->
 				console.log("(KopoolChartsCtrl) returned with season summary_info")
+				$scope.chart_values = summary_info
+				$scope.series = "Active Teams"
+				$scope.chart_data = {"series":[$scope.series],"data":$scope.chart_values}
 			)
 
 	]

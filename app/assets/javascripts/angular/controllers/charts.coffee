@@ -5,6 +5,7 @@ angular.module('kopoolCharts', ['ngResource', 'RailsApiResource', 'ui.bootstrap'
 
 	.controller 'KopoolChartsCtrl', ['$scope', '$location', '$http', '$routeParams', 'WebState', 'KnockoutStats', ($scope, $location, $http, $routeParams, WebState, KnockoutStats) ->
 		
+		$scope.line_chart = "line"
 		$scope.config =
       title: "Knockouts This Season"
       tooltips: true

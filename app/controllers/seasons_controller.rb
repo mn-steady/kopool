@@ -37,6 +37,7 @@ class SeasonsController < ApplicationController
 		@week_number = @web_state.current_week.week_number
 		@season_weeks = @season.weeks
 		@valid_weeks = @season_weeks.keep_if { |w| w.week_number <= @week_number } # We only want to display current or past weeks on the chart
+		@valid_weeks.sort_by! { |w| w.week_number } # Make sure weeks are in the correct order
 
 		@returned_week_numbers_and_values = []
 

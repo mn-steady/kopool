@@ -8,13 +8,14 @@ angular.module('kopoolCharts', ['ngResource', 'RailsApiResource', 'ui.bootstrap'
 		$scope.loaded = false
 		$scope.line_chart = "line"
 		$scope.config =
-      title: "Knockouts This Season"
+      title: "Remaining Teams"
       tooltips: true
       labels: false
       legend:
-        display: true
+        display: false
         position: "left"
-      lineLegend: "lineEnd" # can be also 'traditional'
+      lineLegend: "traditional" # can be also 'traditional'
+      colors: ['#4B0082']
 
 		$scope.getWebState = () ->
 			WebState.get(1).then((web_state) ->

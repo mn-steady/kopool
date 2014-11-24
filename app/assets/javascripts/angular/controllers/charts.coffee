@@ -1,10 +1,11 @@
-angular.module('kopoolCharts', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
+angular.module('kopoolCharts', ['ngResource', 'RailsApiResource', 'ui.bootstrap', 'angularCharts'])
 
 	.factory 'KnockoutStats', (RailsApiResource) ->
 		RailsApiResource('seasons/:parent_id/season_summary', 'season_summary')
 
 	.controller 'KopoolChartsCtrl', ['$scope', '$location', '$http', '$routeParams', 'WebState', 'KnockoutStats', ($scope, $location, $http, $routeParams, WebState, KnockoutStats) ->
 		
+		$scope.loaded = false
 		$scope.line_chart = "line"
 		$scope.config =
       title: "Knockouts This Season"
@@ -31,6 +32,8 @@ angular.module('kopoolCharts', ['ngResource', 'RailsApiResource', 'ui.bootstrap'
 				$scope.chart_values = summary_info
 				$scope.series = "Active Teams"
 				$scope.chart_data = {"series":[$scope.series],"data":$scope.chart_values}
+				console.log("Setting loaded flag to true for the chart")
+				$scope.loaded = true
 			)
 
 	]

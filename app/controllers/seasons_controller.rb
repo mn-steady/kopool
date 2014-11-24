@@ -45,9 +45,9 @@ class SeasonsController < ApplicationController
 
 		@valid_weeks.each do |week|
 			@returned_week = {}
-			@returned_week["x"] = week.week_number
+			@returned_week["x"] = week.week_number.to_s # Need X values to be a string for the chart
 			@pool_entries_knocked_out_this_week_count = PoolEntry.where(knocked_out_week_id: week.id).count
-			@returned_week["y"] = @total_pool_entries_this_season - (@pool_entries_knocked_out_this_week_count + @pool_entries_knocked_out_so_far)
+			@returned_week["y"] = [@total_pool_entries_this_season - (@pool_entries_knocked_out_this_week_count + @pool_entries_knocked_out_so_far)]
 			@pool_entries_knocked_out_so_far += @pool_entries_knocked_out_this_week_count
 
 			@returned_week_numbers_and_values.push(@returned_week)

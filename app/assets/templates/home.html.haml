@@ -21,10 +21,10 @@
     %p.text-center From the Office of the Commish:
     .alert.alert-info.lead.text-center {{web_state.broadcast_message}}
 
-.row{"ng-controller" => "KopoolChartsCtrl"}
-  .col-md-12
-    %div{"ac-chart" => "$scope.line_chart", "ac-data"=>"{{chart_data}}", "ac-config"=>"{{config}}", "id"=>"chart", "class"=>"chart"}
-    %p This area
+.row
+  .col-md-12{"ng-controller" => "KopoolChartsCtrl"}
+    %div{"ng-if" => "loaded", "ac-chart" => "'line'", "ac-data"=>"chart_data", "ac-config"=>"config", "id"=>"chart", "class"=>"chart"}
+    %p This area {{line_chart}} here
 
 .row{"ng-show" => "is_authorized()"}
   .col-md-4

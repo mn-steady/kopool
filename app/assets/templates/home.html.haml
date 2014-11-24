@@ -23,7 +23,8 @@
 
 .row
   .col-md-12{"ng-controller" => "KopoolChartsCtrl"}
-    %div{"ng-if" => "loaded", "ac-chart" => "'line'", "ac-data"=>"chart_data", "ac-config"=>"config", "id"=>"chart", "class"=>"chart"}
+    %div{"ng-if" => "loaded"}
+      %div{"ac-chart" => "'line'", "ac-data"=>"chart_data", "ac-config"=>"config", "id"=>"chart", "class"=>"chart"}
 
 .row{"ng-show" => "is_authorized()"}
   .col-md-4

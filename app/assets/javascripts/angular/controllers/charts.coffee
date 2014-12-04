@@ -3,7 +3,7 @@ angular.module('kopoolCharts', ['ngResource', 'RailsApiResource', 'ui.bootstrap'
 	.factory 'KnockoutStats', (RailsApiResource) ->
 		RailsApiResource('seasons/:parent_id/season_summary', 'season_summary')
 
-	.controller 'KopoolChartsCtrl', ['$scope', '$location', '$http', '$routeParams', 'WebState', 'KnockoutStats', 'currentUser', ($scope, $location, $http, $routeParams, WebState, KnockoutStats, currentUser) ->
+	.controller 'KopoolChartsCtrl', ['$scope', '$location', '$http', '$routeParams', 'WebState', 'KnockoutStats', 'currentUser', 'SortedPicks', ($scope, $location, $http, $routeParams, WebState, KnockoutStats, currentUser, SortedPicks) ->
 		
 		$scope.line_chart = "line"
 		$scope.line_config =
@@ -15,6 +15,16 @@ angular.module('kopoolCharts', ['ngResource', 'RailsApiResource', 'ui.bootstrap'
         position: "left"
       lineLegend: "traditional" # can be also 'traditional'
       colors: ['#4B0082']
+
+    $scope.pie_config =
+      title: "Picks This Week"
+      tooltips: true
+      labels: true
+      legend:
+        display: true
+        position: "left"
+      lineLegend: "traditional" # can be also 'traditional'
+      innerRadius: 0
 
 		$scope.getWebState = () ->
 			$scope.loaded = false

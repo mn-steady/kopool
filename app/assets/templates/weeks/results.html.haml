@@ -22,7 +22,7 @@
 				%h4 Knocked Out Previously: {{knocked_out_previously_count()}}
 
 		.row
-			.col-md-12
+			.col-md-8
 				%h3 Top Picked Teams:
 				%table.table
 					%thead
@@ -35,6 +35,9 @@
 								%p {{team[0]}}
 							%td
 								%p {{team[1]}}
+			.col-md-4{"ng-controller" => "KopoolChartsCtrl"}
+				%div{"ng-if" => "loaded"}
+					%div{"ac-chart" => "'pie'", "ac-data"=>"pie_data", "ac-config"=>"pie_config", "id"=>"chart", "class"=>"pie-chart"}
 
 
 .row

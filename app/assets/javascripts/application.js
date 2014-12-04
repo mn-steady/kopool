@@ -15,5 +15,7 @@
 
 //= require angular
 //= require main
+//= require d3
+//= require angular-charts
 
 //= require_tree .

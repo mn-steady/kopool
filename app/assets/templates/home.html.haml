@@ -22,6 +22,11 @@
     .alert.alert-info.lead.text-center {{web_state.broadcast_message}}
 
 .row
+  .col-md-12{"ng-controller" => "KopoolChartsCtrl"}
+    %div{"ng-if" => "loaded"}
+      %div{"ac-chart" => "'line'", "ac-data"=>"chart_data", "ac-config"=>"config", "id"=>"chart", "class"=>"chart"}
+
+.row{"ng-show" => "is_authorized()"}
   .col-md-4
     %h2 Your Picks This Week
     %p View all of the Matchups for this week and make your winning picks. Thursday night picks will be posted on the front page and will be considered locked in. All other picks must be made by 11 AM on Sunday morning.
@@ -63,7 +68,7 @@
       %h2 View All Entries
       %p Use this page to view all of the entries to the competition. You can mark specific teams as paid or unpaid here.
       %p
-        %a.btn.btn-info{href: "#/seasons/1/entries", role: "button"} View All Entries»
+        %a.btn.btn-info{href: "#/seasons/1/entries", role: "button"} View All Entries
 
   %hr/
   %footer

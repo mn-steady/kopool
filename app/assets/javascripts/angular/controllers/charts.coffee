@@ -7,24 +7,29 @@ angular.module('kopoolCharts', ['ngResource', 'RailsApiResource', 'ui.bootstrap'
 		
 		$scope.line_chart = "line"
 		$scope.line_config =
-      title: "Remaining Teams"
-      tooltips: true
-      labels: false
-      legend:
-        display: false
-        position: "left"
-      lineLegend: "traditional" # can be also 'traditional'
-      colors: ['#4B0082']
+			title: "Remaining Teams"
+			tooltips: true
+			labels: false
+			legend:
+				display: false
+				position: "left"
+			lineLegend: "traditional" 
+			colors: ['#4B0082']
 
-    $scope.pie_config =
-      title: "Picks This Week"
-      tooltips: true
-      labels: true
-      legend:
-        display: true
-        position: "left"
-      lineLegend: "traditional" # can be also 'traditional'
-      innerRadius: 0
+		$scope.pie_config =
+			title: "Picks This Week"
+			tooltips: true
+			labels: false
+			colors: [
+				'#802F64','#B6478F','#B8669B','#50103A','#4E1A3B',
+				'#A13B45','#E35966','#E77F89','#65141C','#612027',
+				'#428B33','#61C44D','#7DC76E','#1E5712','#26541C',
+				'#809D39'	,'#B7DE56','#C4E17C','#4B6214','#4C5F20'
+			]
+			legend:
+				display: false
+				position: "left"
+			innerRadius: 0
 
 		$scope.getWebState = () ->
 			$scope.loaded = false
@@ -44,8 +49,7 @@ angular.module('kopoolCharts', ['ngResource', 'RailsApiResource', 'ui.bootstrap'
 				$scope.getSeasonSummary()
 			else if /weeks\/\d*\/results/.test($scope.current_path) # RegEx to see if we are on a Week's Results page
 				console.log("KopoolChartsCtrl.getChartData thinks we are on a results page")
-			
-
+				$scope.getSortedPicks()
 
 		$scope.getSeasonSummary = () ->
 			console.log("(KopoolChartsCtrl) getting Season Summary")
@@ -58,9 +62,31 @@ angular.module('kopoolCharts', ['ngResource', 'RailsApiResource', 'ui.bootstrap'
 				$scope.loaded = true
 			)
 
+		$scope.getSortedPicks = () ->
+			console.log("Getting SortedPicks for pie chart")
+			SortedPicks.nested_query($scope.week_id).then(
+				(sorted_picks) ->
+					console.log("Have sorted picks")
+					$scope.pie_values = []
+					for pick in sorted_picks
+						team_count = 
+							x: pick[0] # I don't think this does anything since we are hiding the legend, but is required for the chart
+							y: [pick[1]]
+							tooltip: pick[0] # The tooltip is what actually shows the team name when we hide the legend
+						$scope.pie_values.push(team_count)
+					
+					console.log("Successfully received sorted picks for the pie chart")
+					$scope.series = ""
+					$scope.pie_data = {"series":[$scope.series],"data":$scope.pie_values}
+					$scope.loaded = true
+				(json_error_data) ->
+					console.log("(PoolEntriesCtrl.getSortedPicks) Cannot get sorted picks")
+					$scope.error_message = json_error_data.data[0].error
+			)
+
 		$scope.$on 'auth-login-success', ((event) ->
-      console.log("(KopoolChartsCtrl) Caught auth-login-success broadcasted event!!")
-      $scope.getWebState()
-    )
+			console.log("(KopoolChartsCtrl) Caught auth-login-success broadcasted event!!")
+			$scope.getWebState()
+		)
 
 	]

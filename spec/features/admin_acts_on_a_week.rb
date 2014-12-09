@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-feature 'admin deletes a week', js: true do
+feature 'admin acts on a week', js: true do
 	before do
 
 		@user = create(:user)
@@ -23,7 +23,19 @@ feature 'admin deletes a week', js: true do
 
 	end
 
-	scenario "with an incomplete week" do
+	scenario "edits the week number" do
+		current_user = @admin
+		visit root_path
+		angular_login(current_user)
+		click_link("View Weeks")
+
+		find(:css, "#select-edit-#{@week.id}").click
+		fill_in "week-number", with: "3"
+		click_button("Save")
+		expect(page).to have_content('Score Matchups for Week 3')
+	end
+
+	scenario "deletes an incomplete week" do
 		current_user = @admin
 		visit root_path
 		angular_login(current_user)

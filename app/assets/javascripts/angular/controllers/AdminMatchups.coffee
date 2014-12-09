@@ -86,6 +86,29 @@ angular.module('AdminMatchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap
 				console.log("*** Have ALL matchups for week:"+$scope.week_id + " ***")
 			)
 
+		# Saving the creation or editing of a new Matchup
+
+		$scope.save = (matchup) ->
+			console.log("AdminMatchupsCtrl.save...")
+			week_id = matchup.week_id
+			if matchup.id?
+				console.log("Saving matchup id " + matchup.id)
+				matchup.home_team_id = $scope.matchup.selected_home_team.id
+				matchup.away_team_id = $scope.matchup.selected_away_team.id
+				matchup.game_time = $scope.matchup.selected_game_time
+				Matchup.save(matchup, $scope.week_id).then((matchup) ->
+					$scope.matchup = matchup
+				)
+			else
+				console.log("First-time save need POST new id")
+				matchup.home_team_id = $scope.matchup.selected_home_team.id
+				matchup.away_team_id = $scope.matchup.selected_away_team.id
+				matchup.game_time = $scope.matchup.selected_game_time
+				Matchup.create(matchup, $scope.week_id).then((matchup) ->
+					$scope.matchup = matchup
+				)
+			$location.path ('/weeks/' + $scope.week_id + '/matchups/admin')
+
 		# Below was used for a while, but problematic with losing certain matchups
 
 		# $scope.isPicked = (matchup) ->

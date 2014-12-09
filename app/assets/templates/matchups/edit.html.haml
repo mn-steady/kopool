@@ -8,18 +8,18 @@
   .form-group
     %label.col-sm-2 Home Team
     .col-sm-10
-      %select{"ng-model" => "selected_home_team", "ng-options" => "nfl_team as nfl_team.name for nfl_team in nfl_teams"}
+      %select{"ng-model" => "matchup.selected_home_team", "ng-options" => "nfl_team as nfl_team.name for nfl_team in nfl_teams"}
 
   .form-group
     %label.col-sm-2 Away Team
     .col-sm-10
-      %select{"ng-model" => "selected_away_team", "ng-options" => "nfl_team as nfl_team.name for nfl_team in nfl_teams"}
+      %select{"ng-model" => "matchup.selected_away_team", "ng-options" => "nfl_team as nfl_team.name for nfl_team in nfl_teams"}
 
   .form-group
     %label.col-sm-2 Game Time
     .col-sm-10
       -# %p Selected Date is : {{dt | date:'fullDate'}}
       -# %datepicker.well.well-sm{"ng-model" => "dt"}
-      %input.form-control{"type" => "text", "ng-model" => "selected_game_time"}
+      %input.form-control{"type" => "text", "ng-model" => "matchup.selected_game_time"}
 
   %button.btn.btn-success{"ng-click"=>"save(matchup)", type: "submit"} Save

@@ -17,6 +17,7 @@ Useful Blog Posts
 - [4 lessons learned doing angular on rails](http://gaslight.co/blog/4-lessons-learned-doing-angular-on-rails)
 - [Angular and HTML5 localStorage](http://www.amitavroy.com/justread/content/articles/html5-local-storage-angular-js)
 - [Angular and HTML5 datastore](http://stackoverflow.com/questions/17888884/service-retrieves-data-from-datastore-but-does-not-update-ui)
+- [Sharing code between controllers using services](http://fdietz.github.io/recipes-with-angular-js/controllers/sharing-code-between-controllers-using-services.html)
 
 
 Issue of login page rendering multiple times

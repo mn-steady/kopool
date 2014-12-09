@@ -21,8 +21,8 @@
     %td {{ week.end_date | date : 'shortDate' }}
     %td {{ week.deadline | date : 'shortDate' }}
     %td
-      %a.btn.btn-primary{"ng-href" => "#/seasons/{{season_id}}/weeks/{{week.id}}", role: "button"} Edit
-      %a.btn.btn-danger{"ng-click" => "open('', week)", role: "button"} Delete
+      %a.btn.btn-primary{"id" => "select-edit-{{week.id}}", "ng-href" => "#/seasons/{{season_id}}/weeks/{{week.id}}", role: "button"} Edit
+      %a.btn.btn-danger{"id" => "select-delete-{{week.id}}", "ng-click" => "open('', week)", role: "button"} Delete
     %td
       %a.btn.btn-info{"ng-href" => "#weeks/{{week.id}}/matchups/admin"} Create/Edit Matchups
       %a.btn.btn-success{"ng-href" => "#weeks/{{week.id}}/matchups/scoring"} Score Matchups for Week {{week.week_number}}
@@ -33,7 +33,7 @@
 %div
   %script{:id => "confirmDeletionModal.html", :type => "text/ng-template"}
     .modal-header
-      %h3.modal-title Delete {{week.week_number}}?
+      %h3.modal-title Delete Week {{week.week_number}}?
     .modal-body
       %p This will permanently delete this week! Bad things will happen if this week is completed!
     .modal-footer

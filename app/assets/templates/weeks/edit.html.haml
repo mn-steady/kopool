@@ -20,17 +20,17 @@
   .form-group
     %label.col-sm-2 Start Date
     .col-sm-10
-      %input.form-control{"type" => "text", "ng-model" => "week.start_date"}
+      %input.form-control{"type" => "text", "ng-model" => "week.start_date", "placeholder" => "YYYY-mm-dd"}
 
   .form-group
     %label.col-sm-2 End Date
     .col-sm-10
-      %input.form-control{"type" => "text", "ng-model" => "week.end_date"}
+      %input.form-control{"type" => "text", "ng-model" => "week.end_date", "placeholder" => "YYYY-mm-dd"}
 
   .form-group
     %label.col-sm-2 Deadline
     .col-sm-10
-      %input.form-control{"type" => "text", "ng-model" => "week.deadline"}
+      %input.form-control{"type" => "text", "ng-model" => "week.deadline", "placeholder" => "YYYY-mm-dd"}
 
 
   %button.btn.btn-success{"ng-click"=>"save(week)", type: "submit"} Save

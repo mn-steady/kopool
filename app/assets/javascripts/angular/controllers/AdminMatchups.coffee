@@ -226,7 +226,7 @@ angular.module('AdminMatchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap
 						matchup
 			)
 			modalInstance.result.then ((matchup) ->
-				console.log("first funciton of modalInstance result")
+				console.log("first function of modalInstance result")
 				$scope.saveOutcome(matchup)
 			), ->
 				console.log("Modal dismissed at: " + new Date())

@@ -26,27 +26,62 @@ angular.module('AdminMatchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap
 				$scope.web_state = web_state
 				$scope.current_week = web_state.current_week
 				$scope.open_for_picks = web_state.current_week.open_for_picks
-				$scope.loadPoolEntries()
+				$scope.current_path = $location.path()
+				$scope.loadAdminData()
 			)
 
 		$scope.getWebState()
 
-		$scope.loadPoolEntries = () ->
-			PoolEntry.query().then((pool_entries) ->
-				$scope.pool_entries = pool_entries
-				$scope.loadPicks()
-				$scope.loadNflTeams()
-				$scope.load_season_weeks()
+		$scope.loadAdminData = () ->
+			console.log("In AdminMatchupsCtrl.loadAdminData")
+
+			scoring_path = /weeks\/\d*\/matchups\/scoring/
+			admin_path = /weeks\/\d*\/matchups\/admin/
+			new_path = /weeks\/\d*\/matchups\/new/
+			edit_path = /weeks\/\d*\/matchups\/\d*/
+
+			if scoring_path.test($scope.current_path)
+				console.log("AdminMatchupsCtrl.loadAdminData scoring_path")
+				$scope.loadFilteredMatchups()
+			else if admin_path.test($scope.current_path)
+				console.log("AdminMatchupsCtrl.loadAdminData admin_path")
 				$scope.loadAllMatchups()
-				console.log("*** Have pool entries, picks, teams, and season-weeks ***")
+			else if new_path.test($scope.current_path)
+				console.log("AdminMatchupsCtrl.loadAdminData new_path")
+				$scope.loadNflTeams()
+			else if edit_path.test($scope.current_path)
+				console.log("AdminMatchupsCtrl.loadAdminData edit_path")
+				$scope.matchup_id = $routeParams.matchup_id
+				$scope.loadNflTeams().then(() ->
+					$scope.loadEditingMatchup()
+				)
+			else
+				console.log("no paths were matched in AdminMatchupsCtrl.loadAdminData")
+
+		# $scope.loadPoolEntries = () ->
+		# 	PoolEntry.query().then((pool_entries) ->
+		# 		$scope.pool_entries = pool_entries
+		# 		$scope.loadPicks()
+		# 		$scope.loadNflTeams()
+		# 		$scope.load_season_weeks()
+		# 		$scope.loadAllMatchups()
+		# 		console.log("*** Have pool entries, picks, teams, and season-weeks ***")
+		# 	)
+
+		$scope.loadEditingMatchup = () ->
+			console.log("AdminMatchupsCtrl.loadEditingMatchup")
+			Matchup.get($scope.matchup_id, $scope.week_id).then((returned_matchup) ->
+				$scope.matchup.selected_home_team = returned_matchup.home_team
+				$scope.matchup.selected_away_team = returned_matchup.away_team
+				$scope.matchup.game_time = returned_matchup.game_time
 			)
 
-		$scope.load_season_weeks = () ->
-			console.log("(load_season_weeks)")
-			SeasonWeeks.nested_query($scope.web_state.current_week.season.id).then((season_weeks) ->
-				console.log("(load_season_weeks) *** Have All Season Weeks ***")
-				$scope.season_weeks = season_weeks
-			)
+		# $scope.load_season_weeks = () ->
+		# 	console.log("(load_season_weeks)")
+		# 	SeasonWeeks.nested_query($scope.web_state.current_week.season.id).then((season_weeks) ->
+		# 		console.log("(load_season_weeks) *** Have All Season Weeks ***")
+		# 		$scope.season_weeks = season_weeks
+		# 	)
 
 		$scope.loadNflTeams = () ->
 			NflTeam.query().then((nfl_teams) ->
@@ -54,25 +89,25 @@ angular.module('AdminMatchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap
 				console.log("*** Have nfl_teams***")
 			)
 
-		$scope.loadPicks = () ->
-			console.log("in loadPicks()")
-			PickResults.nested_query($scope.week_id).then(
-				(picks) ->
-					$scope.picks = picks
-					$scope.associatePicks()
-					$scope.loadFilteredMatchups()
-					console.log("Have picks")
-				(json_error_data) ->
-					$scope.error_message = json_error_data.data[0].error
-					$scope.loadFilteredMatchups()
-			)
+		# $scope.loadPicks = () ->
+		# 	console.log("in loadPicks()")
+		# 	PickResults.nested_query($scope.week_id).then(
+		# 		(picks) ->
+		# 			$scope.picks = picks
+		# 			$scope.associatePicks()
+		# 			$scope.loadFilteredMatchups()
+		# 			console.log("Have picks")
+		# 		(json_error_data) ->
+		# 			$scope.error_message = json_error_data.data[0].error
+		# 			$scope.loadFilteredMatchups()
+		# 	)
 
-		$scope.associatePicks = ->
-			for pool_entry in $scope.pool_entries
-				for pick in $scope.picks
-					if pick.pool_entry_id == pool_entry.id
-						angular.extend(pool_entry, pick)
-						console.log("A pick was associated with a pool entry")
+		# $scope.associatePicks = ->
+		# 	for pool_entry in $scope.pool_entries
+		# 		for pick in $scope.picks
+		# 			if pick.pool_entry_id == pool_entry.id
+		# 				angular.extend(pool_entry, pick)
+		# 				console.log("A pick was associated with a pool entry")
 
 		$scope.loadFilteredMatchups = () ->
 			FilteredMatchups.nested_query($scope.week_id).then((matchups) ->

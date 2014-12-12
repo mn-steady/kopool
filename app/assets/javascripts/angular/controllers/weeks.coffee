@@ -3,7 +3,7 @@ angular.module('Weeks', ['ngResource', 'RailsApiResource'])
   .factory 'SeasonWeeks', (RailsApiResource) ->
       RailsApiResource('seasons/:parent_id/weeks', 'weeks')
 
-  .controller 'WeeksCtrl', ['$scope', '$location', '$http', '$routeParams', 'SeasonWeeks', ($scope, $location, $http, $routeParams, SeasonWeeks) ->
+  .controller 'WeeksCtrl', ['$scope', '$location', '$http', '$routeParams', 'SeasonWeeks', '$modal', ($scope, $location, $http, $routeParams, SeasonWeeks, $modal) ->
     $scope.controller = 'WeeksCtrl'
 
     console.log("WeeksCtrl")
@@ -66,4 +66,31 @@ angular.module('Weeks', ['ngResource', 'RailsApiResource'])
         )
       else
         console.log("Cannot Delete)")
+
+    $scope.open = (size, week) ->
+      modalInstance = $modal.open(
+        templateUrl: "confirmDeletionModal.html"
+        controller: ModalInstanceCtrl
+        size: size
+        resolve:
+          week: ->
+            week
+      )
+      modalInstance.result.then ((week) ->
+        console.log("first function of modalInstance result")
+        $scope.deleteWeek(week)
+      ), ->
+        console.log("Modal dismissed at: " + new Date())
+
+    ModalInstanceCtrl = ($scope, $modalInstance, week) ->
+      console.log("In ModalInstanceCtrl")
+      console.log("this is what is in week" + week.id)
+
+      $scope.week = week
+
+      $scope.ok = ->
+        $modalInstance.close(week)
+
+      $scope.cancel = ->
+        $modalInstance.dismiss("cancel")
   ]

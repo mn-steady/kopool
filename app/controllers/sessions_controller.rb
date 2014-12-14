@@ -2,6 +2,7 @@ class SessionsController < Devise::SessionsController
   respond_to :json
   def create
     Rails.logger.debug("(SessionsController.create) ******* ")
+    binding.pry
     user = warden.authenticate!(:scope => :user, :recall => "#{controller_path}#failure")
     Rails.logger.debug("(SessionsController.create) back from warden.authenticate ")
   	render :status => 200,

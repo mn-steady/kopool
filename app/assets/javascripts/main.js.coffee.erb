@@ -10,27 +10,49 @@
 #= depend_on_asset "weeks/results.html"
 #= depend_on_asset "home.html"
 
-@kopool = angular.module("kopool", ["ngRoute", "ngResource", "ngCookies", "Home", "user", "navbar", "NflTeams", "Weeks", "Matchups", "PoolEntries", "Register", "WebStates", "ngAnimate", "ui.bootstrap", "AdminMatchups", "AdminPoolEntries", "ForgotPasswords", "angularCharts", "kopoolCharts", "angularD3"])
+modules = [
+	"ngRoute"
+	"ngResource"
+	"ngCookies"
+	"Home"
+	"user"
+	"navbar"
+	"NflTeams"
+	"Weeks"
+	"Matchups"
+	"PoolEntries"
+	"Register"
+	"WebStates"
+	"ngAnimate"
+	"ui.bootstrap"
+	"AdminMatchups"
+	"AdminPoolEntries"
+	"ForgotPasswords"
+	"angularCharts"
+	"kopoolCharts"
+	"angularD3"
+	"AuthService"
+]
+
+@kopool = angular.module("kopool", modules)
+
 	.config(["$httpProvider", ($httpProvider) ->
+		$provide.factory 'AuthInterceptor' ->
+			# return {
+			# 	request: (config) ->
+			# 		if (AuthService.hasAuthHeader())
+			# 			config.headers['Authorization'] = AuthService.getAuthHeader()
+			# 		return config
+			# 	responseError: (responseRejection) ->
+			# 		if (responseRejection.status === 401)
+			# 			# AuthService.redirectToLogin()
+			# 			console.log("(main) UNAUTHORIZED")
+			# 			$rootScope.$broadcast "event:unauthorized"
+			# 		return $q.reject(responseRejection)
+			# }
 		$httpProvider.defaults.headers.common["X-CSRF-Token"] = $("meta[name=csrf-token]").attr("content")
-		interceptor = ["$location", "$rootScope", "$q", ($location, $rootScope, $q) ->
-			success = (response) ->
-				console.log("Successful interceptor")
-				response
-
-			error = (response) ->
-				console.log("Error interceptor")
-				if response.status is 401
-					console.log("(main) UNAUTHORIZED")
-					$rootScope.$broadcast "event:unauthorized"
-					return response
-				$q.reject response
-
-			(promise) ->
-				promise.then success, error
-		]
-		$httpProvider.responseInterceptors.push(interceptor);
-])
+		$httpProvider.interceptors.push('AuthInterceptor')
+	])
 
 
 @kopool.config(['$routeProvider', ($routeProvider) ->

@@ -1,4 +1,4 @@
-angular.module('user', ['RailsApiResource'])
+angular.module('user', ['RailsApiResource', 'ngCookies'])
 
 
   .factory('currentUser', ($cookieStore) ->
@@ -55,6 +55,12 @@ angular.module('user', ['RailsApiResource'])
         console.log ("(user.AuthService.isAuthenticated) cookieStore.username=" + $cookieStore.get('username'))
         return !!currentUser.username && !!$cookieStore.get('username')
 
+      hasAuthHeader: ->
+        # Function for AuthInterceptor
+
+      getAuthHeader: ->
+        console.log("AuthService.getUserCookie")
+        $cookieStore.get('remember_user_token')
 
       updateCookies: ->
         console.log("(AuthService.updateCookies)")
@@ -64,6 +70,9 @@ angular.module('user', ['RailsApiResource'])
         $cookieStore.remove('username')
         currentUser.reset()
         console.log("Removing cookie AuthService.endSession")
+
+      redirectToLogin: ->
+        $location.path "/users/sign_in"
     }
   )
 

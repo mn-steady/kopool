@@ -71,7 +71,7 @@ angular.module('Register', ['ngResource', 'RailsApiResource', 'user'])
         )
 
       $scope.user_needs_registration = () ->
-        $scope.registering_user.is_registered == false and currentUser.authorized == false
+        $scope.registering_user.is_registered == false and AuthService.isAuthenticated() == false
 
       if $scope.user_needs_registration()
         console.log("(Register) User Needs Registration")

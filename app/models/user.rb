@@ -1,14 +1,9 @@
 class User < ActiveRecord::Base
+  include TokenAuthenticable
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
-
-  # Remember the user by default. Will only be signed out upon logout
-  # Sets a 'remember_user_token' in the browser cookies
-  def remember_me
-    true
-  end
 
   after_create :send_welcome_email
 

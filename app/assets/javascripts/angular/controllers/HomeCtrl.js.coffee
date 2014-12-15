@@ -38,7 +38,7 @@ angular.module('Home', ['ngResource', 'RailsApiResource', 'user'])
 
     $scope.getWebState = () ->
       console.log("(HomeCtrl.getWebState) Looking up the WebState")
-      if currentUser.authorized
+      if AuthService.isAuthenticated()
         console.log("(HomeCtrl.getWebState) user is authorized. Loading Pool Entries")
         WebState.get(1).then((web_state) ->
           console.log("(HomeCtrl.getWebState) Back from the WebState lookup")
@@ -92,7 +92,7 @@ angular.module('Home', ['ngResource', 'RailsApiResource', 'user'])
     # Display and utility functions
 
     $scope.is_authorized = ->
-      if currentUser.authorized
+      if AuthService.isAuthenticated()
         true
       else
         false
@@ -101,29 +101,29 @@ angular.module('Home', ['ngResource', 'RailsApiResource', 'user'])
       currentUser.admin
 
     $scope.display_authorized = ->
-      if currentUser.authorized
+      if AuthService.isAuthenticated()
         "You are currently authorized as " + currentUser.username
       else
         "Please Register below"
 
     $scope.display_battle_summary = ->
-      if currentUser.authorized
+      if AuthService.isAuthenticated()
         "There are currently " + $scope.active_pool_entries_count + " teams remaining in the ring, battling for "
       else
         "Sign-in for the weekly summary"
 
     $scope.display_pot_amount = ->
-      if currentUser.authorized
+      if AuthService.isAuthenticated()
         $scope.total_pot
       else
         ""
 
     $scope.display_round_number = ->
-      if currentUser.authorized
+      if AuthService.isAuthenticated()
         "Round " + $scope.web_state.current_week.week_number
 
     $scope.register_button_text = () ->
-      if currentUser.authorized
+      if AuthService.isAuthenticated()
         "Add Pool Entries »"
       else
         "Register »"

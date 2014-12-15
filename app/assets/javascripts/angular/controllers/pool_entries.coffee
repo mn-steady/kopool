@@ -12,7 +12,7 @@ angular.module('PoolEntries', ['ngResource', 'RailsApiResource'])
 	.factory 'SortedPicks', (RailsApiResource) ->
 		RailsApiResource('weeks/:parent_id/sorted_picks', 'picks')
 
-	.controller 'PoolEntriesCtrl', ['$scope', '$location', '$http', '$routeParams', 'NflTeam', 'WeekResults', 'PickResults', 'WebState', 'SeasonWeeks', 'SortedPicks', 'currentUser', ($scope, $location, $http, $routeParams, NflTeam, WeekResults, PickResults, WebState, SeasonWeeks, SortedPicks, currentUser) ->
+	.controller 'PoolEntriesCtrl', ['$scope', '$location', '$http', '$routeParams', 'NflTeam', 'WeekResults', 'PickResults', 'WebState', 'SeasonWeeks', 'SortedPicks', 'currentUser', 'AuthService', ($scope, $location, $http, $routeParams, NflTeam, WeekResults, PickResults, WebState, SeasonWeeks, SortedPicks, currentUser, AuthService) ->
 
 		week_id = parseInt( $routeParams.week_id, 10 )
 		$scope.week_id = week_id
@@ -49,7 +49,7 @@ angular.module('PoolEntries', ['ngResource', 'RailsApiResource'])
 
 		$scope.getWeeklyResults = () ->
 			console.log("(PoolEntriesCtrl.getWeeklyResults) Looking up the weekly results for week_id:" + $scope.week_id)
-			if currentUser.authorized == false
+			if AuthService.isAuthenticated() == false
 				$scope.alert = { type: "danger", msg: "You are not signed in. Please Sign In to view your picks. If you think you are signed in, please sign out and try again. We are in the process of fixing this." }
 				console.log("User is not authorized.")
 			else

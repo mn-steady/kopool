@@ -6,13 +6,13 @@ angular.module('user', ['RailsApiResource', 'ngCookies'])
       # token:        $cookieStore.get('token')
       # WARNING: Do not save admin status in the Cookie due to possible tampering. You lose admin status on refresh
       username:               $cookieStore.get('username')
-      remember_user_token:    $cookieStore.get('remember_user_token')
+      token:                  $cookieStore.get('token')
       password:               ''
       authorized:             false
       admin:                  false
-      reset: ->
+      #reset: ->
         # @token =    $cookieStore.get('token')
-        @username = $cookieStore.get('username')
+        # @username = $cookieStore.get('username')
     }
   )
 
@@ -54,29 +54,33 @@ angular.module('user', ['RailsApiResource', 'ngCookies'])
         # !!"false" === true  // ...even if it contains a falsy value
         # console.log ("(user.AuthService.isAuthenticated) currentUser.username=" + currentUser.username)
         # console.log ("(user.AuthService.isAuthenticated) cookieStore.username=" + $cookieStore.get('username'))
-        return !!currentUser.username && !!$cookieStore.get('username')
+        return !!$cookieStore.get('token') && !!$cookieStore.get('username')
 
       hasAuthHeader: ->
         console.log("In AuthService.hasAuthHeader")
-        console.log(!!$cookieStore.get('remember_user_token'))
-        !!$cookieStore.get('remember_user_token')
+        console.log(!!$cookieStore.get('token'))
+        !!$cookieStore.get('token')
 
-      getAuthHeader: ->
-        console.log("AuthService.getUserCookie")
-        $cookieStore.get('remember_user_token')
+      getUserToken: ->
+        console.log("AuthService.getUserToken")
+        $cookieStore.get('token')
+
+      getUserEmail: ->
+        $cookieStore.get('username')
 
       updateCookies: ->
         console.log("(AuthService.updateCookies)")
         $cookieStore.put('username', currentUser.username)
-        $cookieStore.put('remember_user_token', currentUser.remember_user_token)
+        $cookieStore.put('token', currentUser.token)
 
       endSession: ->
         $cookieStore.remove('username')
-        currentUser.reset()
+        $cookieStore.remove('token')
+        # currentUser.reset() I don't think this is needed
         console.log("Removing cookie AuthService.endSession")
 
-      redirectToLogin: ->
-        $location.path "/users/sign_in"
+      # redirectToLogin: ->
+      #   $location.path "/"
     }
   )
 

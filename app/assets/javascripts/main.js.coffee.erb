@@ -39,7 +39,8 @@ modules = [
 		console.log("In AuthInterceptor")
 		request: (config) ->
 			if (AuthService.hasAuthHeader())
-				config.headers['Authorization'] = AuthService.getAuthHeader()
+				config.headers['X-User-Token'] = AuthService.getUserToken()
+				config.headers['X-User-Email'] = AuthService.getUserEmail()
 			return config
 		responseError: (responseRejection) ->
 			if (responseRejection.status == 401)

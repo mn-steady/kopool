@@ -33,13 +33,12 @@ angular.module('kopoolCharts', ['ngResource', 'RailsApiResource', 'ui.bootstrap'
 
 		$scope.getWebState = () ->
 			$scope.loaded = false
-			if currentUser.authorized
-				WebState.get(1).then((web_state) ->
-					$scope.web_state = web_state
-					$scope.season_id = web_state.current_week.season.id
-					$scope.current_path = $location.path()
-					$scope.getChartData()
-				)
+			WebState.get(1).then((web_state) ->
+				$scope.web_state = web_state
+				$scope.season_id = web_state.current_week.season.id
+				$scope.current_path = $location.path()
+				$scope.getChartData()
+			)
 
 		$scope.getWebState()
 

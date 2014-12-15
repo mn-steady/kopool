@@ -37,4 +37,6 @@ Kopool::Application.routes.draw do
   namespace :admin do
     resources :web_states
   end
+
+  resources :tokens, :only => [:create, :destroy]
 end

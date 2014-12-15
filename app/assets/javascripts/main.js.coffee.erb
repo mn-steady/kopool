@@ -31,25 +31,24 @@ modules = [
 	"angularCharts"
 	"kopoolCharts"
 	"angularD3"
-	"AuthService"
 ]
 
 @kopool = angular.module("kopool", modules)
 
+	.factory "AuthInterceptor", ($q, AuthService) ->
+		console.log("In AuthInterceptor")
+		request: (config) ->
+			if (AuthService.hasAuthHeader())
+				config.headers['Authorization'] = AuthService.getAuthHeader()
+			return config
+		responseError: (responseRejection) ->
+			if (responseRejection.status == 401)
+				# AuthService.redirectToLogin()
+				console.log("(main) UNAUTHORIZED")
+				$rootScope.$broadcast "event:unauthorized"
+			return $q.reject(responseRejection)
+
 	.config(["$httpProvider", ($httpProvider) ->
-		$provide.factory 'AuthInterceptor' ->
-			# return {
-			# 	request: (config) ->
-			# 		if (AuthService.hasAuthHeader())
-			# 			config.headers['Authorization'] = AuthService.getAuthHeader()
-			# 		return config
-			# 	responseError: (responseRejection) ->
-			# 		if (responseRejection.status === 401)
-			# 			# AuthService.redirectToLogin()
-			# 			console.log("(main) UNAUTHORIZED")
-			# 			$rootScope.$broadcast "event:unauthorized"
-			# 		return $q.reject(responseRejection)
-			# }
 		$httpProvider.defaults.headers.common["X-CSRF-Token"] = $("meta[name=csrf-token]").attr("content")
 		$httpProvider.interceptors.push('AuthInterceptor')
 	])

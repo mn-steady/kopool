@@ -5,10 +5,11 @@ angular.module('user', ['RailsApiResource', 'ngCookies'])
     {
       # token:        $cookieStore.get('token')
       # WARNING: Do not save admin status in the Cookie due to possible tampering. You lose admin status on refresh
-      username:     $cookieStore.get('username')
-      password:     ''
-      authorized:   false
-      admin:        false
+      username:               $cookieStore.get('username')
+      remember_user_token:    $cookieStore.get('remember_user_token')
+      password:               ''
+      authorized:             false
+      admin:                  false
       reset: ->
         # @token =    $cookieStore.get('token')
         @username = $cookieStore.get('username')
@@ -16,8 +17,8 @@ angular.module('user', ['RailsApiResource', 'ngCookies'])
   )
 
 
-  .factory 'Tokens', (RailsApiResource) ->
-    RailsApiResource('tokens')
+  # .factory 'Tokens', (RailsApiResource) ->
+  #   RailsApiResource('tokens')
 
 
   .constant('AUTH_EVENTS', {
@@ -29,7 +30,7 @@ angular.module('user', ['RailsApiResource', 'ngCookies'])
   })
 
 
-  .factory('AuthService', ($rootScope, $cookieStore, currentUser, Tokens, AUTH_EVENTS) ->
+  .factory('AuthService', ($rootScope, $cookieStore, currentUser, AUTH_EVENTS) ->
     return {
       login: (currentUser) ->
         console.log ("(user.AuthService.LOGIN) username=" + currentUser.username)
@@ -51,12 +52,14 @@ angular.module('user', ['RailsApiResource', 'ngCookies'])
         # !!"" === false // empty string is falsy
         # !!"foo" === true  // non-empty string is truthy
         # !!"false" === true  // ...even if it contains a falsy value
-        console.log ("(user.AuthService.isAuthenticated) currentUser.username=" + currentUser.username)
-        console.log ("(user.AuthService.isAuthenticated) cookieStore.username=" + $cookieStore.get('username'))
+        # console.log ("(user.AuthService.isAuthenticated) currentUser.username=" + currentUser.username)
+        # console.log ("(user.AuthService.isAuthenticated) cookieStore.username=" + $cookieStore.get('username'))
         return !!currentUser.username && !!$cookieStore.get('username')
 
       hasAuthHeader: ->
-        # Function for AuthInterceptor
+        console.log("In AuthService.hasAuthHeader")
+        console.log(!!$cookieStore.get('remember_user_token'))
+        !!$cookieStore.get('remember_user_token')
 
       getAuthHeader: ->
         console.log("AuthService.getUserCookie")
@@ -65,6 +68,7 @@ angular.module('user', ['RailsApiResource', 'ngCookies'])
       updateCookies: ->
         console.log("(AuthService.updateCookies)")
         $cookieStore.put('username', currentUser.username)
+        $cookieStore.put('remember_user_token', currentUser.remember_user_token)
 
       endSession: ->
         $cookieStore.remove('username')

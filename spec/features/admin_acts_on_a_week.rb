@@ -46,10 +46,4 @@ feature 'admin acts on a week', js: true do
 		expect(page).not_to have_content('Score Matchups for Week 2')
 		expect(Week.all.count).to eq(1)
 	end
-
-	def angular_login(user)
-    fill_in 'sign_on_field', with: user.email
-    fill_in 'password_field', with: user.password
-    click_button("Sign In")
-  end
 end

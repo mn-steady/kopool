@@ -14,6 +14,8 @@ describe MatchupsController do
 			@broncos = NflTeam.create(name: "Denver Broncos", conference: "NFC", division: "West")
 			@vikings = NflTeam.create(name: "Minnesota Vikings", conference: "NFC", division: "North")
 			@matchup = Matchup.create(week_id: @week.id, home_team: @broncos, away_team: @vikings, game_time: DateTime.new(2014,8,10,11))
+
+			set_auth_headers(@admin)
 		end
 
 		context "game ends in a tie" do
@@ -21,7 +23,7 @@ describe MatchupsController do
 			it "knocks out the pool entry" do
 				@pick = Pick.create(pool_entry: @pool_entry, week: @week, team_id: @vikings.id, matchup: @matchup)
 				@matchup.update_attributes(tie: true)
-				post :save_outcome, week_id: @week.id, matchup: @matchup, format: :json
+				post:save_outcome, week_id: @week.id, matchup: @matchup, format: :json
 				@pool_entry.reload
 				expect(@pool_entry.knocked_out).to eq(true)
 			end

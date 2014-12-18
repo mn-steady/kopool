@@ -16,10 +16,8 @@ feature "user makes a pick", js: true do
 
 	scenario "with an open week", js: true do
 		current_user = @user
-		login_as current_user, scope: :user
 		visit root_path
-
-		click_button("Sign In")
+		angular_login(current_user)
 
 		click_link("Your Picks")
 
@@ -36,10 +34,8 @@ feature "user makes a pick", js: true do
 		@week.update_attribute(:open_for_picks, false)
 
 		current_user = @user
-		login_as current_user, scope: :user
 		visit root_path
-
-		click_button("Sign In")
+		angular_login(current_user)
 
 		click_link("Your Picks")
 

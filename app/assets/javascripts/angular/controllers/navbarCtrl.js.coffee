@@ -20,7 +20,7 @@ angular.module('navbar', ['ngResource', 'RailsApiResource', 'user'])
       console.log("(navbarCtrl.login)")
       $scope.submit
         method: "POST"
-        url: "../users/sign_in.json"
+        url: "../tokens.json"
         data:
           user:
             email: $scope.login_user.email
@@ -61,7 +61,7 @@ angular.module('navbar', ['ngResource', 'RailsApiResource', 'user'])
             #
             # AND HERE:
             # https://gist.github.com/jwo/1255275
-            $scope.save_user_data(data.user)
+            $scope.save_user_data(data)
         else
           console.log("Simple unauthorized user scenario")
           $rootScope.$broadcast('auth-login-failed')
@@ -100,14 +100,15 @@ angular.module('navbar', ['ngResource', 'RailsApiResource', 'user'])
       $scope.login_user.password = null
 
       # Return to main page
-      $location.path "/users/sign_in"
+      $location.path "/"
       return
 
-    $scope.save_user_data = (user_data) ->
+    $scope.save_user_data = (data) ->
       console.log("(navbarCtrl.save_user_data)")
       currentUser.authorized = true
-      currentUser.admin = user_data.admin
-      currentUser.username = user_data.email
+      currentUser.admin = data.user.admin
+      currentUser.username = data.user.email
+      currentUser.token = data.token
       AuthService.updateCookies()
       $rootScope.$broadcast('auth-login-success')
       console.log("(navbarCtrl.save_user_data) saved username:" + currentUser.username)

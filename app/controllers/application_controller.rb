@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery #with: :exception
+  include TokenAuthentication
   helper_method :require_user, :require_admin
 
   after_filter :set_csrf_cookie_for_ng

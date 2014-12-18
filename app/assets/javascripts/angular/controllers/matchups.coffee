@@ -24,7 +24,7 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 	.factory 'SeasonWeeks', (RailsApiResource) ->
 		RailsApiResource('seasons/:parent_id/weeks', 'weeks')
 
-	.controller 'MatchupsCtrl', ['$scope', '$location', '$http', '$routeParams', 'Matchup', 'NflTeam', 'PoolEntry', 'currentUser', 'Pick', '$modal', 'WebState', 'Week', 'SeasonWeeks', 'PoolEntriesAndPicks', ($scope, $location, $http, $routeParams, Matchup, NflTeam, PoolEntry, currentUser, Pick, $modal, WebState, Week, SeasonWeeks, PoolEntriesAndPicks) ->
+	.controller 'MatchupsCtrl', ['$scope', '$location', '$http', '$routeParams', 'Matchup', 'NflTeam', 'PoolEntry', 'currentUser', 'Pick', '$modal', 'WebState', 'Week', 'SeasonWeeks', 'PoolEntriesAndPicks', 'AuthService', ($scope, $location, $http, $routeParams, Matchup, NflTeam, PoolEntry, currentUser, Pick, $modal, WebState, Week, SeasonWeeks, PoolEntriesAndPicks, AuthService) ->
 		$scope.controller = 'MatchupsCtrl'
 		console.log("MatchupsCtrl")
 		console.log("$location:" + $location)
@@ -67,7 +67,7 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 
 		# Gather resources and associate relevant pool entries and picks
 		$scope.authorized = ->
-			currentUser.authorized
+			AuthService.isAuthenticated()
 
 		$scope.weekIsClosed = () ->
 			if $scope.current_week.open_for_picks == false
@@ -85,7 +85,7 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 
 		# Gather resources and associate relevant pool entries and picks
 		$scope.loadPoolEntries = () ->
-			if currentUser.authorized == false
+			if AuthService.isAuthenticated() == false
 				$scope.alert = { type: "danger", msg: "You are not signed in. Please Sign In to view your picks. If you think you are signed in, please sign out and try again. We are in the process of fixing this." }
 				console.log("User is not authorized.")
 			else

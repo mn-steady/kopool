@@ -26,10 +26,9 @@ feature "pick and score a week", js: true do
 
   scenario "with an open week", js: true do
     current_user = @user
-    login_as current_user, scope: :user
     visit root_path
+    angular_login(current_user)
 
-    click_button("Sign In")
     click_link("Your Picks")
 
     # Select Pick for first Pool Entry
@@ -58,10 +57,7 @@ feature "pick and score a week", js: true do
 
     # Switch to Admin User
 
-    logout(current_user)
-    click_button("#{@user.email}")
-    find('a', :text => "Sign Out").click
-    visit root_path
+    angular_logout(current_user)
     angular_login(@admin)
 
     click_link("Commissioner")
@@ -120,18 +116,5 @@ feature "pick and score a week", js: true do
 
     expect(page).to have_content("Test Team 3")
     expect(page).not_to have_content("Test Team 2")
-  end
-
-  def angular_logout(user)
-    logout(user)
-    click_button("#{user.email}")
-    find('a', :text => "Sign Out").click
-    visit root_path
-  end
-
-  def angular_login(user)
-    fill_in 'sign_on_field', with: user.email
-    fill_in 'password_field', with: user.password
-    click_button("Sign In")
   end
 end

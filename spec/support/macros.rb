@@ -10,3 +10,8 @@ def angular_logout(user)
   find('a', :text => "Sign Out").click
   visit root_path
 end
+
+def set_auth_headers(user)
+	request.headers["X-User-Token"] = "#{user.authentication_token}"
+	request.headers["X-User-Email"] = "#{user.email}"
+end

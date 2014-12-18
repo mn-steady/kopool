@@ -11,7 +11,6 @@ class TokensController  < ApplicationController
   respond_to :json
 
   def create
-
     last_sign_in_at = @user.last_sign_in_at || DateTime.now
 
     token = Token.new()

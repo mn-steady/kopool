@@ -47,6 +47,7 @@ modules = [
 				# AuthService.redirectToLogin()
 				console.log("(main) UNAUTHORIZED")
 				$rootScope.$broadcast "event:unauthorized"
+				$location.path("/")
 			return $q.reject(responseRejection)
 
 	.config(["$httpProvider", ($httpProvider) ->

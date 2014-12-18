@@ -44,7 +44,7 @@ angular.module('kopoolCharts', ['ngResource', 'RailsApiResource', 'ui.bootstrap'
 
 		$scope.getChartData = () ->
 			console.log("This is the path variable at this time: " + $scope.current_path)
-			if $scope.current_path == "" or $scope.current_path == "/users/sign_in"
+			if $scope.current_path == "" or $scope.current_path == "/users/sign_in" or $scope.current_path == "/" 
 				$scope.getSeasonSummary()
 			else if /weeks\/\d*\/results/.test($scope.current_path) # RegEx to see if we are on a Week's Results page
 				console.log("KopoolChartsCtrl.getChartData thinks we are on a results page")

@@ -7,7 +7,7 @@ angular.module('RailsApiResource', ['ngResource'])
       # TODO: Make it pull this from an environment variable
       #HOSTNAME: 'localhost:3000'
       #HOSTNAME: 'kopool.herokuapp.com'
-      #HOSTNAME: 'www.kopool.org'
+      HOSTNAME: 'www.kopool.org'
     })
 
   .factory 'RailsApiResource', ($http, KOPOOL_CONFIG, $cookieStore) ->

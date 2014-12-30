@@ -4,17 +4,28 @@
       .col-sm-12.text-center
         .alert.alert-danger {{session_message}}
     .row
-      .col-md-8
-        %h2 KO Pool
-        %p Welcome to the brand new KO Pool Website! {{display_authorized()}}.
-        %p {{display_battle_summary()}}
-        %div.pot-text.text-center.green{"ng-show" => "is_authorized()"} {{display_pot_amount() | currency}}
-        %p
-          %a.btn.btn-primary.btn-lg{href: "#/users/register", role: "button", "ng-show" => "register_button_show()"} {{register_button_text()}}
-          %a.btn.btn-info{href: "#/users/passwords/send", "ng-hide" => "is_authorized()" } Reset Password
-      .col-md-4
+      .col-lg-4
+        %a.btn.btn-primary.btn-lg.btn-block{"ng-show" => "is_authorized()", href: '#/weeks/{{web_state.current_week.id}}/matchups', role: "button"} Picks »
+      .col-lg-4
         %img.img-rounded.frontpage-logo{alt: "KO Pool Logo", src: asset_path('kopool_c_med.png')}
-        %div.title-text.text-center {{display_round_number()}}
+      .col-lg-4
+        %a.btn.btn-primary.btn-lg.btn-block{"ng-show" => "is_authorized()", href: '#/weeks/{{web_state.current_week.id}}/results', role: "button"} Results »
+    %br
+    %p{"ng-if" => "register_button_show()"}
+      %a.btn.btn-primary.btn-lg{href: "#/users/register", role: "button"} {{register_button_text()}}
+    %a.btn.btn-info{href: "#/users/passwords/send", "ng-hide" => "is_authorized()" } Reset Password
+    .row{"ng-show" => "is_authorized()"}
+      .col-md-4
+        %p.text-center.text-muted Round
+        %div.title-text.text-center.text-primary {{display_round_number()}}
+        
+      .col-md-4
+        %p.text-center.text-muted Remaining
+        %div.title-text.text-center.text-danger {{active_pool_entries_count}}
+        
+      .col-md-4
+        %p.text-center.text-muted Payout
+        %div.title-text.text-center.green {{display_pot_amount() | currency}}
 
 .row
   .col-md-12

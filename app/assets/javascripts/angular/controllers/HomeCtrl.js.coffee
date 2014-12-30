@@ -120,7 +120,7 @@ angular.module('Home', ['ngResource', 'RailsApiResource', 'user'])
 
     $scope.display_round_number = ->
       if AuthService.isAuthenticated()
-        "Round " + $scope.web_state.current_week.week_number
+        $scope.web_state.current_week.week_number
 
     $scope.register_button_text = () ->
       if AuthService.isAuthenticated()

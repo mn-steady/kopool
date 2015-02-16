@@ -1,4 +1,4 @@
-angular.module('kopool').controller('homeController', ['$scope', 'seasonDataService', 'WebState', ($scope, seasonDataService, WebState) ->
+angular.module('kopool').controller('homeController', ['$scope', '$rootScope', 'seasonDataService', 'WebState', ($scope, $rootScope, seasonDataService, WebState) ->
 
 	$scope.line_chart = "line"
 	$scope.line_config =
@@ -29,9 +29,8 @@ angular.module('kopool').controller('homeController', ['$scope', 'seasonDataServ
 	$scope.getWebState = () ->
 		$scope.loaded = false
 		WebState.get(1).then((web_state) ->
-			$scope.web_state = web_state
-			$scope.season_id = web_state.current_week.season.id
-			$scope.current_path = $location.path()
+			$rootScope.web_state = web_state
+			$rootScope.season_id = web_state.current_week.season.id
 			$scope.getSeasonSummary()
 		)
 

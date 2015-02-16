@@ -3,7 +3,10 @@
 #= require sinon
 #= require jasmine-sinon
 
-# beforeEach(module('kopool'))
+beforeEach(module('kopool'))
+
+beforeEach inject (AuthService) ->
+  spyOn(AuthService, 'hasAuthHeader').and.returnValue(true)
 
 # beforeEach inject (_$httpBackend_, _$compile_, $rootScope, $controller, $location, $injector, $timeout) ->
 #   @scope = $rootScope.$new()

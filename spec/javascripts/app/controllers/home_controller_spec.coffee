@@ -1,7 +1,6 @@
 #= require spec_helper
 
 describe 'homeController', ->
-  beforeEach module 'kopool'
 
   ctrl = {}
   scope = {}
@@ -21,7 +20,7 @@ describe 'homeController', ->
   describe 'initialization', ->
     it 'gets the WebState', ->
       $httpBackend.expectGET('http://localhost:3000/admin/web_states/1.json')
-      # expect(scope.season_id).toEqual(1)
+      expect(scope.season_id).toEqual(1)
       $httpBackend.verifyNoOutstandingExpectation()
       # expect(scope.chart_data).toEqual({"series":"Active Teams","data":[{"x":"1","y":[9]},{"x":"2","y":[6]},{"x":"3","y":[4]},{"x":"4","y":[3]}]})
 

@@ -1,22 +1,28 @@
 #= require spec_helper
 
-describe 'Home Controller', ->
+describe 'homeController', ->
+  beforeEach module 'kopool'
 
-  # NOTE: Keeping this syntax as a sample, but you don't have to inject these! Done for you in spec_helper.coffee
-  beforeEach inject ($rootScope, $location, $controller) ->
-    @scope       = $rootScope.$new()
-    @location    = $location
+  ctrl = {}
+  scope = {}
+  SeasonDataService = {}
+  webState = {}
 
-    @currentController = 'HomeCtrl'
-    @http.when("GET", "http://localhost:3000/admin/web_states/1.json").respond([{}, {}, {}]);
-    $controller('HomeCtrl', { $scope: @scope, $location: @location })
+  beforeEach inject ($rootScope, $controller, seasonDataService, WebState) ->
+    scope       = $rootScope.$new()
+    SeasonDataService = seasonDataService
+    webState = WebState
+    spyOn(webState, 'get').and.returnValue({"id":1,"week_id":4,"broadcast_message":"Wow this new UI is pretty awesome!","created_at":"2014-12-08T21:39:43.000-05:00","updated_at":"2014-12-17T22:08:35.000-05:00","current_week":{"id":4,"week_number":4,"open_for_picks":false,"season":{"id":1,"year":2014,"name":"2014 Season","open_for_registration":false}}})
 
+    ctrl = $controller('homeController', { $scope: scope })
 
-  describe 'HomeCtrl', ->
-    it 'passes a simple jasmine test', ->
-      expect(1).toEqual(1)
+    spyOn(SeasonDataService, 'season_summary').and.returnValue([{"x":"1","y":[9]},{"x":"2","y":[6]},{"x":"3","y":[4]},{"x":"4","y":[3]}])
 
-    it 'opens up the home controller', ->
-      expect(@scope.controller).toBe(@currentController)
+  describe 'chart', ->
+    it 'gets the season_summary data for display', ->
+      scope.season_id = 1
+      ctrl.getSeasonSummmary()
+      expect(scope.chart_data).toEqual({"series":"Active Teams","data":[{"x":"1","y":[9]},{"x":"2","y":[6]},{"x":"3","y":[4]},{"x":"4","y":[3]}]})
+
 
 

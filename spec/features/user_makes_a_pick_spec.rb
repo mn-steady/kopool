@@ -19,7 +19,7 @@ feature "user makes a pick", js: true do
 		visit root_path
 		angular_login(current_user)
 
-		click_link("Your Picks")
+		click_link("Picks")
 
 		find(:css, "#select-pick-#{@pool_entry1.id}").click
 
@@ -37,7 +37,7 @@ feature "user makes a pick", js: true do
 		visit root_path
 		angular_login(current_user)
 
-		click_link("Your Picks")
+		click_link("Picks")
 
 		expect(page).to have_css(".alert.alert-danger")
 		@week.update_attribute(:open_for_picks, true)

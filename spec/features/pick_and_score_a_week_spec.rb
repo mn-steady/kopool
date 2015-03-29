@@ -29,7 +29,7 @@ feature "pick and score a week", js: true do
     visit root_path
     angular_login(current_user)
 
-    click_link("Your Picks")
+    click_link("Picks")
 
     # Select Pick for first Pool Entry
 
@@ -112,7 +112,7 @@ feature "pick and score a week", js: true do
     # User should only have one pool entry left
 
     angular_login(@user)
-    click_link("Your Picks")
+    click_link("Picks")
 
     expect(page).to have_content("Test Team 3")
     expect(page).not_to have_content("Test Team 2")

@@ -1,84 +1,84 @@
 .row
 
-	.col-sm-8
-		%h3 {{matchup_header()}}
+  .col-sm-8
+    %h3 {{matchup_header()}}
 
 %br
 
 .row
-	.col-sm-12.text-center
-		.alert{"class" => "alert alert-{{alert.type}}"} {{alert.msg}}
+  .col-sm-12.text-center
+    .alert{"class" => "alert alert-{{alert.type}}"} {{alert.msg}}
 
 .row
-	.col-md-4{"ng-repeat"=>"pool_entry in pool_entries"}
-		%div{"ng-hide" => "notSelectedPoolEntry(pool_entry)", "ng-click" => "set_editing_pool_entry($index)"}
-			.panel.panel-warning
-				.panel-heading
-					.panel-title.text-center
-						%h3
-							{{pool_entry.team_name}}
+  .col-md-4{"ng-repeat"=>"pool_entry in pool_entries"}
+    %div{"ng-hide" => "notSelectedPoolEntry(pool_entry)", "ng-click" => "set_editing_pool_entry($index)"}
+      .panel.panel-warning
+        .panel-heading
+          .panel-title.text-center
+            %h3
+              {{pool_entry.team_name}}
 
-				.panel-body
-					.text-center
-						%span
-							%p This week's pick:
-							%img{"ng-src" => "{{pool_entry.nfl_team.logo_url_small}}" }
-							%h4 {{pool_entry.nfl_team.nfl_team_name}}
-					%br
-					.ticket-body
-						%em
-							%h4
-								.text-center {{currentUser.email}}
-						%br
-						%br
-						.text-center
-							%span.glyphicon.glyphicon-arrow-right
-							%span.glyphicon.glyphicon-arrow-right NO REFUNDS
-							%span.glyphicon.glyphicon-arrow-left
-							%span.glyphicon.glyphicon-arrow-left
-						%br
-						.text-center
-							%h3
-								$50.00
-						.text-center
-							%h2
-								%span.label.label-danger
-									KOPOOL 2014
-					%br
-					.text-center
-						%button.btn.btn-default.btn-lg
-							%span.glyphicon.glyphicon-hd-video
-						%button.btn.btn-default.btn-lg
-							%span.glyphicon.glyphicon-sound-7-1
-						%button.btn.btn-default.btn-lg
-							%span.glyphicon.glyphicon-sound-dolby
-			.text-center
-				%a.btn{"id" => "select-pick-{{pool_entry.id}}", "ng-click" => "set_editing_pool_entry($index)", "ng-class" => "pool_entry_button_class(pool_entry)", "ng-hide" => "weekIsClosed()", role: "button"} Select Pick for {{pool_entry.team_name}}
+        .panel-body
+          .text-center
+            %span
+              %p This week's pick:
+              %img{"ng-src" => "{{pool_entry.nfl_team.logo_url_small}}" }
+              %h4 {{pool_entry.nfl_team.nfl_team_name}}
+          %br
+          .ticket-body
+            %em
+              %h4
+                .text-center {{currentUser.email}}
+            %br
+            %br
+            .text-center
+              %span.glyphicon.glyphicon-arrow-right
+              %span.glyphicon.glyphicon-arrow-right NO REFUNDS
+              %span.glyphicon.glyphicon-arrow-left
+              %span.glyphicon.glyphicon-arrow-left
+            %br
+            .text-center
+              %h3
+                $50.00
+            .text-center
+              %h2
+                %span.label.label-danger
+                  KOPOOL 2014
+          %br
+          .text-center
+            %button.btn.btn-default.btn-lg
+              %span.glyphicon.glyphicon-hd-video
+            %button.btn.btn-default.btn-lg
+              %span.glyphicon.glyphicon-sound-7-1
+            %button.btn.btn-default.btn-lg
+              %span.glyphicon.glyphicon-sound-dolby
+      .text-center
+        %a.btn{"id" => "select-pick-{{pool_entry.id}}", "ng-click" => "set_editing_pool_entry($index)", "ng-class" => "pool_entry_button_class(pool_entry)", "ng-hide" => "weekIsClosed()", role: "button"} Select Pick for {{pool_entry.team_name}}
 
 .animate-show{"ng-show" => "showMatchups"}
-	%table.table.table-striped
-		%thead
-			%tr
-				%th Home Team
-				%th
-				%th Away Team
-				%th
-				%th Game Time
-		%tbody{"ng-repeat" => "matchup in matchups"}
-			%tr{"ng-class" => "{'unselected-matchup' : (hideMatchups && !isSelectedMatchup(matchup))}"}
-				%td
-					%img{"ng-src" => "{{matchup.home_team.logo_url_small}}", "ng-class" => "{'unselected-matchup' : isSelectedTeam(matchup.away_team)}"}
-				%td
-					%p.team-name {{ matchup.home_team.name}}
-					%div
-						%a.btn.btn-success{"id" => "select-home-{{matchup.id}}", "ng-click" => "handleTeamSelection(matchup, matchup.home_team)", "ng-class" => "{'unselected-matchup' : isSelectedTeam(matchup.away_team)}"} Pick {{ matchup.home_team.name }} to win!
-				%td
-					%img{"ng-src" => "{{matchup.away_team.logo_url_small}}", "ng-class" => "{'unselected-matchup' : isSelectedTeam(matchup.home_team)}"}
-				%td
-					%p.team-name {{ matchup.away_team.name}}
-					%a.btn.btn-success{"id" => "select-away-{{matchup.id}}", "ng-click" => "handleTeamSelection(matchup, matchup.away_team)", "ng-class" => "{'unselected-matchup' : isSelectedTeam(matchup.home_team)}"} Pick {{ matchup.away_team.name }} to win!
-				%td
-					%p {{ matchup.game_time | date : 'fullDate' }} {{ matchup.game_time | date : 'shortTime' }}
-					%div{"ng-if" => "isSelectedMatchup(matchup)"}
-						%a.btn.btn-primary{"id" => "save-matchup-{{matchup.id}}", "ng-click" => "savePick(matchup, editing_pool_entry)"} Save Pick
-						%a.btn.btn-info{"ng-click" => "cancelTeamSelection()"} Cancel
+  %table.table.table-striped
+    %thead
+      %tr
+        %th Home Team
+        %th
+        %th Away Team
+        %th
+        %th Game Time
+    %tbody{"ng-repeat" => "matchup in matchups"}
+      %tr{"ng-class" => "{'unselected-matchup' : (hideMatchups && !isSelectedMatchup(matchup))}"}
+        %td
+          %img{"ng-src" => "{{matchup.home_team.logo_url_small}}", "ng-class" => "{'unselected-matchup' : isSelectedTeam(matchup.away_team)}"}
+        %td
+          %p.team-name {{ matchup.home_team.name}}
+          %div
+            %a.btn.btn-success{"id" => "select-home-{{matchup.id}}", "ng-click" => "handleTeamSelection(matchup, matchup.home_team)", "ng-class" => "{'unselected-matchup' : isSelectedTeam(matchup.away_team)}"} Pick {{ matchup.home_team.name }} to win!
+        %td
+          %img{"ng-src" => "{{matchup.away_team.logo_url_small}}", "ng-class" => "{'unselected-matchup' : isSelectedTeam(matchup.home_team)}"}
+        %td
+          %p.team-name {{ matchup.away_team.name}}
+          %a.btn.btn-success{"id" => "select-away-{{matchup.id}}", "ng-click" => "handleTeamSelection(matchup, matchup.away_team)", "ng-class" => "{'unselected-matchup' : isSelectedTeam(matchup.home_team)}"} Pick {{ matchup.away_team.name }} to win!
+        %td
+          %p {{ matchup.game_time | date : 'fullDate' }} {{ matchup.game_time | date : 'shortTime' }}
+          %div{"ng-if" => "isSelectedMatchup(matchup)"}
+            %a.btn.btn-primary{"id" => "save-matchup-{{matchup.id}}", "ng-click" => "savePick(matchup, editing_pool_entry)"} Save Pick
+            %a.btn.btn-info{"ng-click" => "cancelTeamSelection()"} Cancel

@@ -35,7 +35,7 @@ modules = [
 
 @kopool = angular.module("kopool", modules)
 
-	.factory "AuthInterceptor", ($q, AuthService) ->
+	.factory "AuthInterceptor", ($q, AuthService, $rootScope, $location) ->
 		console.log("In AuthInterceptor")
 		request: (config) ->
 			if (AuthService.hasAuthHeader())

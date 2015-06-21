@@ -14,17 +14,14 @@ angular.module('kopoolCharts', ['ngResource', 'RailsApiResource', 'ui.bootstrap'
 				display: false
 				position: "left"
 			lineLegend: "traditional" 
-			colors: ['#4B0082']
+			colors: ['#5bc0de']
 
 		$scope.pie_config =
 			title: "Picks This Week"
 			tooltips: true
 			labels: false
 			colors: [
-				'#802F64','#B6478F','#B8669B','#50103A','#4E1A3B',
-				'#A13B45','#E35966','#E77F89','#65141C','#612027',
-				'#428B33','#61C44D','#7DC76E','#1E5712','#26541C',
-				'#809D39'	,'#B7DE56','#C4E17C','#4B6214','#4C5F20'
+				'#7a8288','#5bc0de','#f89406','#62c462','#ee5f5b','#3a3f44'
 			]
 			legend:
 				display: false

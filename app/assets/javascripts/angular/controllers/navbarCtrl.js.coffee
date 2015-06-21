@@ -31,6 +31,7 @@ angular.module('navbar', ['ngResource', 'RailsApiResource', 'user'])
       console.log("(navbarCtrl.logout)")
       currentUser.authorized = false
       currentUser.username = ''
+      AuthService.endSession
       $scope.submit
         method: "DELETE"
         url: "../users/sign_out.json"

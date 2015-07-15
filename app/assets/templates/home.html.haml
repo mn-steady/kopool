@@ -50,7 +50,7 @@
       %h2 View All Weeks
       %p Administrators can use this 'Weeks' button to view, edit, and update weeks.  Make sure all of the dates are correct.  You must always enter and edit them in international format: yyyy-mm-dd.  Also, currently there is a bug where the timezone is messing up the weeks.  You may have to enter hours also:  yyyy-mm-dd hh:mm.  Jack and Dave will discuss.
       %p
-        %a.btn.btn-success{href: "#/seasons/1/weeks", role: "button"} View Weeks »
+        %a.btn.btn-success{href: "#/seasons/{{web_state.season_id}}/weeks", role: "button"} View Weeks »
     .col-md-4
       %h2 Score Matchups
       %p Click here to score the matchups for this week!
@@ -66,7 +66,7 @@
       %h2 View All Entries
       %p Use this page to view all of the entries to the competition. You can mark specific teams as paid or unpaid here.
       %p
-        %a.btn.btn-info{href: "#/seasons/1/entries", role: "button"} View All Entries
+        %a.btn.btn-info{href: "#/seasons/{{web_state.season_id}}/entries", role: "button"} View All Entries
 
   %hr/
   %footer

@@ -9,7 +9,7 @@ feature "pick and score a week", js: true do
     @season = Season.create(year: 2014, name: "2014 Season", entry_fee: 50)
     @week = Week.create(season: @season, week_number: 1, start_date: DateTime.new(2014, 8, 5), deadline: DateTime.new(2014, 8, 8), end_date: DateTime.new(2014, 8, 11))
     @week2 = Week.create(season: @season, week_number: 2, start_date: DateTime.new(2014, 8, 14), deadline: DateTime.new(2014, 8, 15), end_date: DateTime.new(2014, 8, 17))
-    @webstate = WebState.create(week_id: @week.id)
+    @webstate = WebState.create(week_id: @week.id, season_id: @season.id)
     @pool_entry1 = PoolEntry.create(user: @user, team_name: "Test Team", paid: true, season_id: @season.id)
     @pool_entry2 = PoolEntry.create(user: @user, team_name: "Test Team 2", paid: true, season_id: @season.id)
     @pool_entry3 = PoolEntry.create(user: @user, team_name: "Test Team 3", paid: true, season_id: @season.id)
@@ -93,8 +93,8 @@ feature "pick and score a week", js: true do
 
     click_link("Results")
 
-    expect(page).to have_content("Knocked Out This Week: 2")
-    expect(page).to have_content("Still Alive: 1")
+    expect(page).to have_content("KO'd This Week 2")
+    expect(page).to have_content("Still Alive 1")
 
     angular_logout(@user)
 

@@ -32,7 +32,7 @@ class SeasonsController < ApplicationController
 	def season_summary
 		Rails.logger.debug("seasons_controller.season_summary")
 		@web_state = WebState.first
-		@season = Season.find(params[:season_id])
+		@season = @web_state.current_season
 		@total_pool_entries_this_season = PoolEntry.where(season_id: @season.id).count
 		@week_number = @web_state.current_week.week_number
 		@season_weeks = @season.weeks

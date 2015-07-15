@@ -6,7 +6,7 @@ feature "user makes a pick", js: true do
 		@user = create(:user)
 		@season = Season.create(year: 2014, name: "2014 Season", entry_fee: 50)
 		@week = Week.create(season: @season, week_number: 1, start_date: DateTime.new(2014, 8, 5), deadline: DateTime.new(2014, 8, 8), end_date: DateTime.new(2014, 8, 11))
-		@webstate = WebState.create(week_id: @week.id)
+		@webstate = WebState.create(week_id: @week.id, season_id: @season.id)
 		@pool_entry1 = PoolEntry.create(user: @user, team_name: "Test Team", paid: true, season_id: @season.id)
 
 		@broncos = NflTeam.create(name: "Denver Broncos", conference: "NFC", division: "West")

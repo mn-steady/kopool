@@ -11,7 +11,7 @@ describe WeeksController do
       @season = Season.create(year: 2014, name: "2014 Season", entry_fee: 50)
       @week = Week.create(season: @season, week_number: 1, start_date: DateTime.new(2014, 8, 5), deadline: DateTime.new(2014, 8, 8), end_date: DateTime.new(2014, 8, 11))
 
-      @web_state = FactoryGirl.create(:web_state, current_week: @week)
+      @web_state = FactoryGirl.create(:web_state, current_week: @week, season_id: @season.id)
       @pool_entry = FactoryGirl.create(:pool_entry, user: @regular_guy, team_name: "First Pool Entry", paid: true, season: @season)
 
       @broncos = NflTeam.create(name: "Denver Broncos", conference: "NFC", division: "West")
@@ -123,7 +123,7 @@ describe WeeksController do
       @season = Season.create(year: 2014, name: "2014 Season", entry_fee: 50)
       @week = Week.create(season: @season, week_number: 1, start_date: DateTime.new(2014, 8, 5), deadline: DateTime.new(2014, 8, 8), end_date: DateTime.new(2014, 8, 11))
       @week2 = Week.create(season: @season, week_number: 2, start_date: DateTime.new(2014, 8, 12), deadline: DateTime.new(2014, 8, 15), end_date: DateTime.new(2014, 8, 18))
-      @web_state = FactoryGirl.create(:web_state, current_week: @week)
+      @web_state = FactoryGirl.create(:web_state, current_week: @week, season_id: @season.id)
 
       @pool_entry = FactoryGirl.create(:pool_entry, user: @regular_guy, team_name: "First Pool Entry", paid: true, season: @season)
       @pool_entry_2 = FactoryGirl.create(:pool_entry, user: @regular_guy, team_name: "Second Pool Entry", paid: true, season: @season)

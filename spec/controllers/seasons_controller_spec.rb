@@ -29,7 +29,7 @@ describe SeasonsController do
 			@week3 = Week.create(season: @season, week_number: 3, start_date: DateTime.new(2014, 8, 19), deadline: DateTime.new(2014, 8, 22), end_date: DateTime.new(2014, 8, 25))
 			@week4 = Week.create(season: @season, week_number: 4, start_date: DateTime.new(2014, 8, 26), deadline: DateTime.new(2014, 8, 29), end_date: DateTime.new(2014, 9, 1))
 			
-			@web_state = create(:web_state, week_id: @week4.id)
+			@web_state = create(:web_state, week_id: @week4.id, season_id: @season.id)
 
 			@pool_entry1 = PoolEntry.create(user: @user1, team_name: "User 1 Team One", paid: true, season_id: @season.id)
 			@pool_entry2 = PoolEntry.create(user: @user1, team_name: "User 1 Team Two", paid: true, season_id: @season.id)

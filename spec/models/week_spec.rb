@@ -58,7 +58,7 @@ describe Week do
       season = create(:season)
       week16 = Week.create(week_number: 16, start_date: DateTime.new(2014,8,5), end_date: DateTime.new(2014,8,8), deadline: DateTime.new(2014,8,7), season: season)
       week17 = Week.create(week_number: 17, start_date: DateTime.new(2014,8,12), end_date: DateTime.new(2014,8,18), deadline: DateTime.new(2014,8,14), season: season)
-      web_state = create(:web_state, week_id: week17.id)
+      web_state = create(:web_state, week_id: week17.id, season_id: season.id)
       week17.move_to_next_week!
       expect(web_state.reload.week_id).to eq(week17.id)
       expect(Week.where(id: week17.id).first.open_for_picks).to eq(false)
@@ -68,7 +68,7 @@ describe Week do
       season = create(:season)
       week1 = Week.create(week_number: 10, start_date: DateTime.new(2014,8,5), end_date: DateTime.new(2014,8,8), deadline: DateTime.new(2014,8,7), season: season)
       week2 = Week.create(week_number: 11, start_date: DateTime.new(2014,8,12), end_date: DateTime.new(2014,8,18), deadline: DateTime.new(2014,8,14), season: season)
-      web_state = create(:web_state, week_id: week1.id)
+      web_state = create(:web_state, week_id: week1.id, season_id: season.id)
       week1.move_to_next_week!
       expect(web_state.reload.week_id).to eq(week2.id)
       expect(Week.where(id: week2.id).first.open_for_picks).to eq(true)
@@ -81,7 +81,7 @@ describe Week do
       week2 = Week.create(week_number: 2, start_date: DateTime.new(2014,8,12), end_date: DateTime.new(2014,8,18), deadline: DateTime.new(2014,8,14), season: season1)
       week1_2 = Week.create(week_number: 1, start_date: DateTime.new(2015,8,5), end_date: DateTime.new(2015,8,8), deadline: DateTime.new(2015,8,7), season: season2)
       week2_2 = Week.create(week_number: 2, start_date: DateTime.new(2015,8,12), end_date: DateTime.new(2015,8,18), deadline: DateTime.new(2015,8,14), season: season2)
-      web_state = create(:web_state, week_id: week1_2.id)
+      web_state = create(:web_state, week_id: week1_2.id, season_id: season2.id)
       week1_2.move_to_next_week!
       expect(web_state.reload.week_id).to eq(week2_2.id)
     end
@@ -90,7 +90,7 @@ describe Week do
       @season = create(:season)
       @week16 = Week.create(week_number: 16, start_date: DateTime.new(2014,8,5), end_date: DateTime.new(2014,8,8), deadline: DateTime.new(2014,8,7), season: @season)
       @week17 = Week.create(week_number: 17, start_date: DateTime.new(2014,8,12), end_date: DateTime.new(2014,8,18), deadline: DateTime.new(2014,8,14), season: @season)
-      @web_state = create(:web_state, week_id: @week16.id)
+      @web_state = create(:web_state, week_id: @week16.id, season_id: @season.id)
       @team1 = FactoryGirl.create(:nfl_team)
       @team2 = FactoryGirl.create(:nfl_team)
       @monday_matchup = Matchup.create(game_time: DateTime.new(2017,8,14,15,00), week_id: @week16.id, home_team_id: @team1.id, away_team_id: @team2.id)

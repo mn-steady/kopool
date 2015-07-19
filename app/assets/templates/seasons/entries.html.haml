@@ -17,5 +17,14 @@
 			%td {{pool_entry.user.phone}}
 			%td{"ng-class" => "getPaidTextClass(pool_entry)"}	{{getPaidOrUnpaidStatusText(pool_entry)}}
 			%td
-				%a.btn.btn-default{"ng-click" => "markPaidOrUnpaid(pool_entry)"} Mark as {{getPaidOrUnpaidButtonText(pool_entry)}}
+				%a.btn.btn-default{"ng-click" => "open('', pool_entry)"} Mark as {{getPaidOrUnpaidButtonText(pool_entry)}}
 				
+%div
+	%script{:id => "confirmPaymentModal.html", :type => "text/ng-template"}
+		.modal-header
+			%h3.modal-title Mark {{pool_entry.user.name}} as {{pool_entry.paid ? "Not Paid" : "Paid"}}
+		.modal-body
+			%p This will mark {{pool_entry.user.name}} as {{pool_entry.paid ? "Not Paid" : "Paid"}}. Is that correct?
+		.modal-footer
+			%button.btn.btn-primary{"ng-click" => "cancel()"} Cancel
+			%button.btn.btn-info{"ng-click" => "ok()"} Mark as {{pool_entry.paid ? "Not Paid" : "Paid"}}

@@ -3,7 +3,7 @@ angular.module('AdminPoolEntries', ['ngResource', 'RailsApiResource', 'ui.bootst
 	.factory 'UnpickedPoolEntries', (RailsApiResource) ->
 		RailsApiResource('weeks/:parent_id/unpicked', 'unpicked_pool_entries')
 
-	.controller 'AdminPoolEntriesCtrl', ['$scope', '$location', '$http', '$routeParams', 'PoolEntriesThisSeason', 'WebState', 'SeasonWeeks', 'PoolEntry', 'UnpickedPoolEntries', ($scope, $location, $http, $routeParams, PoolEntriesThisSeason, WebState, SeasonWeeks, PoolEntry, UnpickedPoolEntries) ->
+	.controller 'AdminPoolEntriesCtrl', ['$scope', '$location', '$http', '$routeParams', 'PoolEntriesThisSeason', 'WebState', 'SeasonWeeks', 'PoolEntry', 'UnpickedPoolEntries', '$modal', ($scope, $location, $http, $routeParams, PoolEntriesThisSeason, WebState, SeasonWeeks, PoolEntry, UnpickedPoolEntries, $modal) ->
 
 		season_id = parseInt( $routeParams.season_id, 10 )
 		$scope.pool_entries = []
@@ -68,5 +68,28 @@ angular.module('AdminPoolEntries', ['ngResource', 'RailsApiResource', 'ui.bootst
 				"red"
 			else
 				"green"
+
+		$scope.open = (size, pool_entry) ->
+			modalInstance = $modal.open(
+				templateUrl: "confirmPaymentModal.html"
+				controller: ModalInstanceCtrl
+				size: size
+				resolve:
+					pool_entry: ->
+						pool_entry
+			)
+			modalInstance.result.then ((pool_entry) ->
+				$scope.markPaidOrUnpaid(pool_entry)
+			), ->
+				console.log("Modal dismissed at: " + new Date())
+
+		ModalInstanceCtrl = ($scope, $modalInstance, pool_entry) ->
+			$scope.pool_entry = pool_entry
+
+			$scope.ok = ->
+				$modalInstance.close(pool_entry)
+
+			$scope.cancel = ->
+				$modalInstance.dismiss("cancel")
 
 	]

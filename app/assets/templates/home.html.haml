@@ -10,10 +10,13 @@
         %img.img-rounded.frontpage-logo{alt: "KO Pool Logo", src: asset_path('kopool_c_med.png')}
       .col-lg-4
         %a.btn.btn-success.btn-lg.btn-block{"ng-show" => "is_authorized()", href: '#/weeks/{{web_state.current_week.id}}/results', role: "button"} Results »
-    %br
-    %p{"ng-if" => "register_button_show()"}
-      %a.btn.btn-primary.btn-lg{href: "#/users/register", role: "button"} {{register_button_text()}}
-    %a.btn.btn-info{href: "#/users/passwords/send", "ng-hide" => "is_authorized()" } Reset Password
+    .row
+      .col-lg-4
+        %a.btn.btn-info{href: "#/users/passwords/send", "ng-hide" => "is_authorized()" } Reset Password
+      .col-lg-4
+        %a.btn.btn-warning.btn-lg.btn-block{href: "#/users/register", role: "button"} {{register_button_text()}}
+    
+    
     .row{"ng-show" => "is_authorized()"}
       .col-md-4
         %p.text-center Round

@@ -1,15 +1,28 @@
 class Admin::WebStatesController < ApplicationController
   before_action :verify_admin_user, only: :update
+  skip_before_filter :authenticate_user_from_token!
+    # This is Devise's authentication
+  skip_before_filter :authenticate_user!
 
   def show
+    puts "HIT SHOW ACTION"
     @web_state = WebState.first
     respond_to do | format |
       # Jack: If you want to know what a "Law of demeter violation" is... This is it!
       format.json {render :json => @web_state.to_json(
-        include: [{ current_week: { only: [:id, :open_for_picks, :week_number],
-         :include => [{ season: { only: [:id, :year, :name, :open_for_registration]}}]
-         }}])
-      }
+        include: [
+          { current_week: 
+            { only: 
+              [:id, :open_for_picks, :week_number]
+            }
+          }, 
+          { current_season: 
+            { only: 
+              [:id, :year, :name, :open_for_registration]
+            }
+          }
+        ]
+      )}
     end
   end
 

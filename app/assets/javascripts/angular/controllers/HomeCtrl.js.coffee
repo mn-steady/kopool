@@ -37,16 +37,11 @@ angular.module('Home', ['ngResource', 'RailsApiResource', 'user'])
     # Action Functions
 
     $scope.getWebState = () ->
-      console.log("(HomeCtrl.getWebState) Looking up the WebState")
-      if AuthService.isAuthenticated()
-        console.log("(HomeCtrl.getWebState) user is authorized. Loading Pool Entries")
-        WebState.get(1).then((web_state) ->
-          console.log("(HomeCtrl.getWebState) Back from the WebState lookup")
-          $scope.web_state = web_state
-          $scope.loadPoolEntries()
-        )
-      else
-        console.log("(HomeCtrl.getWebState) user is not yet authorized.")
+      WebState.get(1).then((web_state) ->
+        console.log("(HomeCtrl.getWebState) Back from the WebState lookup")
+        $scope.web_state = web_state
+        $scope.loadPoolEntries()
+      )
 
     $scope.loadPoolEntries = () ->
       console.log("(loadPoolEntries)")

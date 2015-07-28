@@ -30,6 +30,7 @@ class ApplicationController < ActionController::Base
   end
 
   def verify_admin_user
+    Rails.logger.debug("in verify_admin_user")
     unless is_admin_user
       Rails.logger.debug("Unauthorized - Must be Admin")
       respond_to do | format |
@@ -39,6 +40,7 @@ class ApplicationController < ActionController::Base
   end
 
   def verify_any_user
+    Rails.logger.debug("in verify_any_user")
     unless user_signed_in?
       Rails.logger.debug("Unauthorized - Must be Logged-in")
       respond_to do | format |

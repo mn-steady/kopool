@@ -1,5 +1,8 @@
 class Admin::WebStatesController < ApplicationController
   before_action :verify_admin_user, only: :update
+  skip_before_filter :authenticate_user_from_token!
+    # This is Devise's authentication
+  skip_before_filter :authenticate_user!
 
   def show
     @web_state = WebState.first

@@ -16,8 +16,10 @@
     .row
       .col-lg-4
         %a.btn.btn-info{href: "#/users/passwords/send", "ng-hide" => "is_authorized()" } Reset Password
-      .col-lg-4
-        %a.btn.btn-warning.btn-lg.btn-block{href: "#/users/register", role: "button", "ng-if" => "web_state.current_season.open_for_registration"} {{register_button_text()}}
+      .col-lg-4{"ng-if" => "web_state.current_season.open_for_registration && !is_authorized()"}
+        %a.btn.btn-warning.btn-lg.btn-block{href: "#/users/register", role: "button"} Register »
+      .col-lg-4{"ng-if" => "web_state.current_season.open_for_registration && is_authorized()"}
+        %a.btn.btn-warning.btn-lg.btn-block{href: "#/seasons/{{web_state.current_season.id}}/add_pool_entries", role: "button"} Add Pool Entries - {{web_state.current_season.name}} » 
     
     
     .row{"ng-show" => "is_authorized()"}

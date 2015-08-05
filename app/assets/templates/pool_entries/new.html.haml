@@ -1,14 +1,25 @@
-%h1 Add Pool Entries for this Season!
+%h1 Add Pool Entries for {{ web_state.current_season.name }}!
 .row
   .col-md-12
-    .panel.panel-default{"ng-show" => "!user_needs_registration()"}
+    .title-text.text-center.green {{ total_entry_count }}
+    %p.text-center Pool Entries
+
+.row
+  .col-md-3.col-md-offset-3
+    %a.btn.btn-info.btn-lg.btn-block{role: "button", "ng-click" => "add_pool_entry()"} Add Pool Entry 
+  .col-md-3
+    %a.btn.btn-success.btn-lg.btn-block{role: "button"} Save Pool Entries
+%br
+.row
+  .col-md-12
+    .panel.panel-default
       .panel-heading
-        %h3.panel-title Information on {{pool_entry_text()}}
+        %h3.panel-title Edit Your Pool Entries
       .panel-body
         %form.form-horizontal
           %div{"ng-repeat" => "pool_entry in registering_user.teams"}
             .col-sm-2
-              %a.btn{"ng-class" => "team_button_class($index)", "ng-click" => "set_editing_team($index)", "ng-disabled" => "team_button_disabled($index)", :role => "button"} {{team_button_text($index)}}
+              %a.btn.btn-info{"ng-click" => "set_editing_team($index)", :role => "button"} {{team_button_text($index)}}
           %br
             %br
               .form-group
@@ -16,7 +27,47 @@
                 .col-sm-10
                   %input.form-control{:min => "1", "ng-disabled" => "team_button_disabled(editing_team-1)", "ng-model" => "registering_user.teams[editing_team-1].team_name", :type => "text"}
 .row
-  .col-md-4{"ng-repeat" => "pool_entry in registering_user.teams", "ng-show" => "!user_needs_registration()"}
+  .col-md-4{"ng-repeat" => "pool_entry in new_entries"}
+    .panel.panel-warning
+      .panel-heading
+        .panel-title.text-center
+          %h3
+            {{pool_entry.team_name}}
+      .panel-body
+        .text-right
+          %span.badge {{team_badge_text($index)}}
+        %br
+          .text-center
+            %h2
+              %span.label.label-danger
+                {{ web_state.current_season.name }}
+          %br
+            .ticket-body
+              %em
+                %h4
+                  .text-center {{currentUser.username}}
+              %br
+                .text-center
+                  Non-refundable - play at your own risk!
+                %br
+                  %span.glyphicon.glyphicon-arrow-right
+                  %span.glyphicon.glyphicon-arrow-right NO REFUNDS
+                  %span.glyphicon.glyphicon-arrow-left
+                  %span.glyphicon.glyphicon-arrow-left
+                  %br
+                    .text-right
+                      %h3
+                        $50.00
+            %br
+              .text-center
+                %button.btn.btn-default.btn-lg
+                  %span.glyphicon.glyphicon-hd-video
+                %button.btn.btn-default.btn-lg
+                  %span.glyphicon.glyphicon-sound-7-1
+                %button.btn.btn-default.btn-lg
+                  %span.glyphicon.glyphicon-sound-dolby
+.row
+  .col-md-4{"ng-repeat" => "pool_entry in existing_entries"}
     .panel.panel-warning
       .panel-heading
         .panel-title.text-center

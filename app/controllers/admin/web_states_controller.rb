@@ -5,7 +5,6 @@ class Admin::WebStatesController < ApplicationController
   skip_before_filter :authenticate_user!
 
   def show
-    puts "HIT SHOW ACTION"
     @web_state = WebState.first
     respond_to do | format |
       # Jack: If you want to know what a "Law of demeter violation" is... This is it!

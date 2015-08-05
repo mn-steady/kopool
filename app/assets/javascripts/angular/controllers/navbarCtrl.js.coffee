@@ -51,6 +51,7 @@ angular.module('navbar', ['ngResource', 'RailsApiResource', 'user'])
       ).success((data, status) ->
         if status is 201 or status is 204 or status is 200
           parameters.error_entity.message = parameters.success_message
+          $rootScope.flash_message = null
           console.log("(navBarCtrl.submit.success)")
           if parameters.method == "DELETE"
             $scope.clear_user_loggedout(data.user)
@@ -75,6 +76,7 @@ angular.module('navbar', ['ngResource', 'RailsApiResource', 'user'])
         return
       ).error (data, status) ->
         console.log("Error in navbarCtrl.submit")
+        $rootScope.$broadcast('auth-login-failed')
         if status is 422
           parameters.error_entity.errors = data.errors
         else

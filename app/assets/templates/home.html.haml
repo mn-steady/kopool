@@ -3,6 +3,9 @@
     .row{"ng-if" => "session_message"}
       .col-sm-12.text-center
         .alert.alert-danger {{session_message}}
+    .row{"ng-if" => "flash_message"}
+      .col-sm-12.text-center
+        .alert.alert-success {{flash_message}}
     .row
       .col-lg-4
         %a.btn.btn-success.btn-lg.btn-block{"ng-show" => "is_authorized()", href: '#/weeks/{{web_state.current_week.id}}/matchups', role: "button"} Picks »
@@ -14,7 +17,7 @@
       .col-lg-4
         %a.btn.btn-info{href: "#/users/passwords/send", "ng-hide" => "is_authorized()" } Reset Password
       .col-lg-4
-        %a.btn.btn-warning.btn-lg.btn-block{href: "#/users/register", role: "button"} {{register_button_text()}}
+        %a.btn.btn-warning.btn-lg.btn-block{href: "#/users/register", role: "button", "ng-if" => "web_state.current_season.open_for_registration"} {{register_button_text()}}
     
     
     .row{"ng-show" => "is_authorized()"}

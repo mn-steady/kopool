@@ -1,88 +1,57 @@
-<h1>Add Pool Entries for this Season!</h1>
-<div class='row'>
-  <div class='col-md-12'>
-    <div class='panel panel-default' ng-show='!user_needs_registration()'>
-      <div class='panel-heading'>
-        <h3 class='panel-title'>Information on {{pool_entry_text()}}</h3>
-      </div>
-      <div class='panel-body'>
-        <form class='form-horizontal'>
-          <div ng-repeat='pool_entry in registering_user.teams'>
-            <div class='col-sm-2'>
-              <a class='btn' ng-class='team_button_class($index)' ng-click='set_editing_team($index)' ng-disabled='team_button_disabled($index)' role='button'>{{team_button_text($index)}}</a>
-            </div>
-          </div>
-          <br>
-          <br>
-          <div class='form-group'>
-            <label class='col-sm-1'>Team Name</label>
-            <div class='col-sm-10'>
-              <input class='form-control' min='1' ng-disabled='team_button_disabled(editing_team-1)' ng-model='registering_user.teams[editing_team-1].team_name' type='text'>
-            </div>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
-<div class='row'>
-  <div class='col-md-4' ng-repeat='pool_entry in registering_user.teams' ng-show='!user_needs_registration()'>
-    <div class='panel panel-warning'>
-      <div class='panel-heading'>
-        <div class='panel-title text-center'>
-          <h3>
+%h1 Add Pool Entries for this Season!
+.row
+  .col-md-12
+    .panel.panel-default{"ng-show" => "!user_needs_registration()"}
+      .panel-heading
+        %h3.panel-title Information on {{pool_entry_text()}}
+      .panel-body
+        %form.form-horizontal
+          %div{"ng-repeat" => "pool_entry in registering_user.teams"}
+            .col-sm-2
+              %a.btn{"ng-class" => "team_button_class($index)", "ng-click" => "set_editing_team($index)", "ng-disabled" => "team_button_disabled($index)", :role => "button"} {{team_button_text($index)}}
+          %br
+            %br
+              .form-group
+                %label.col-sm-1 Team Name
+                .col-sm-10
+                  %input.form-control{:min => "1", "ng-disabled" => "team_button_disabled(editing_team-1)", "ng-model" => "registering_user.teams[editing_team-1].team_name", :type => "text"}
+.row
+  .col-md-4{"ng-repeat" => "pool_entry in registering_user.teams", "ng-show" => "!user_needs_registration()"}
+    .panel.panel-warning
+      .panel-heading
+        .panel-title.text-center
+          %h3
             {{registering_user.teams[$index].team_name}}
-          </h3>
-        </div>
-      </div>
-      <div class='panel-body'>
-        <div class='text-right'>
-          <span class='badge'>{{team_badge_text($index)}}</span>
-        </div>
-        <br>
-        <div class='text-center'>
-          <h2>
-            <span class='label label-danger'>
-              KOPOOL 2014
-            </span>
-          </h2>
-        </div>
-        <br>
-        <div class='ticket-body'>
-          <em>
-            <h4>
-              <div class='text-center'>{{registering_user.email}}</div>
-            </h4>
-          </em>
-          <br>
-          <div class='text-center'>
-            Price includes the price
-          </div>
-          <br>
-          <span class='glyphicon glyphicon-arrow-right'></span>
-          <span class='glyphicon glyphicon-arrow-right'>NO REFUNDS</span>
-          <span class='glyphicon glyphicon-arrow-left'></span>
-          <span class='glyphicon glyphicon-arrow-left'></span>
-          <br>
-          <div class='text-right'>
-            <h3>
-              $50.00
-            </h3>
-          </div>
-        </div>
-        <br>
-        <div class='text-center'>
-          <button class='btn btn-default btn-lg'>
-            <span class='glyphicon glyphicon-hd-video'></span>
-          </button>
-          <button class='btn btn-default btn-lg'>
-            <span class='glyphicon glyphicon-sound-7-1'></span>
-          </button>
-          <button class='btn btn-default btn-lg'>
-            <span class='glyphicon glyphicon-sound-dolby'></span>
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+      .panel-body
+        .text-right
+          %span.badge {{team_badge_text($index)}}
+        %br
+          .text-center
+            %h2
+              %span.label.label-danger
+                KOPOOL 2014
+          %br
+            .ticket-body
+              %em
+                %h4
+                  .text-center {{registering_user.email}}
+              %br
+                .text-center
+                  Price includes the price
+                %br
+                  %span.glyphicon.glyphicon-arrow-right
+                  %span.glyphicon.glyphicon-arrow-right NO REFUNDS
+                  %span.glyphicon.glyphicon-arrow-left
+                  %span.glyphicon.glyphicon-arrow-left
+                  %br
+                    .text-right
+                      %h3
+                        $50.00
+            %br
+              .text-center
+                %button.btn.btn-default.btn-lg
+                  %span.glyphicon.glyphicon-hd-video
+                %button.btn.btn-default.btn-lg
+                  %span.glyphicon.glyphicon-sound-7-1
+                %button.btn.btn-default.btn-lg
+                  %span.glyphicon.glyphicon-sound-dolby

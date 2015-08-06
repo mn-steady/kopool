@@ -74,6 +74,17 @@ angular.module('AddPoolEntries', ['ngResource', 'RailsApiResource', 'user'])
       else
         "btn-default"
 
+    $scope.set_editing_entry = (pool_entry) ->
+      pool_entry.editing = true
+
+    $scope.done_editing_entry = (pool_entry) ->
+      pool_entry.editing = false
+
+    $scope.remove_unsaved_entry = (pool_entry) ->
+      index = $scope.new_entries.indexOf(pool_entry)
+      if index > -1
+        $scope.new_entries.splice(index, 1)
+
     $scope.team_button_text = (team_index) ->
       team_number = team_index + 1
       if $scope.registering_user.teams[team_index].persisted

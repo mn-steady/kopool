@@ -5,34 +5,24 @@
     %p.text-center Pool Entries
 
 .row
-  .col-md-3.col-md-offset-3
-    %a.btn.btn-info.btn-lg.btn-block{role: "button", "ng-click" => "add_pool_entry()"} Add Pool Entry 
-  .col-md-3
-    %a.btn.btn-success.btn-lg.btn-block{role: "button"} Save Pool Entries
-%br
-.row
   .col-md-12
-    .panel.panel-default
-      .panel-heading
-        %h3.panel-title Edit Your Pool Entries
-      .panel-body
-        %form.form-horizontal
-          %div{"ng-repeat" => "pool_entry in registering_user.teams"}
-            .col-sm-2
-              %a.btn.btn-info{"ng-click" => "set_editing_team($index)", :role => "button"} {{team_button_text($index)}}
-          %br
-            %br
-              .form-group
-                %label.col-sm-1 Team Name
-                .col-sm-10
-                  %input.form-control{:min => "1", "ng-disabled" => "team_button_disabled(editing_team-1)", "ng-model" => "registering_user.teams[editing_team-1].team_name", :type => "text"}
+    .text-center
+      %a.btn.btn-info.btn-lg{role: "button", "ng-click" => "add_pool_entry()"} Add Pool Entry 
+  .col-md-3
+    
+%br
 .row
   .col-md-4{"ng-repeat" => "pool_entry in new_entries"}
     .panel.panel-warning
       .panel-heading
-        .panel-title.text-center
+        .panel-title.text-center{"ng-hide" => "pool_entry.editing"}
           %h3
             {{pool_entry.team_name}}
+          %a.btn.btn-info.btn-small{role: "button", "ng-click" => "set_editing_entry(pool_entry)"} Edit Name
+        .panel-title{"ng-show" => "pool_entry.editing"}
+          %form
+            %input.form-control{:placeholder => "Team Name", "ng-model" => "pool_entry.team_name"}
+          %a.btn.btn-info.btn-small{role: "button", "ng-click" => "done_editing_entry(pool_entry)"} Done
       .panel-body
         .text-right
           %span.badge {{team_badge_text($index)}}
@@ -66,6 +56,8 @@
                   %span.glyphicon.glyphicon-sound-7-1
                 %button.btn.btn-default.btn-lg
                   %span.glyphicon.glyphicon-sound-dolby
+            %a.btn.btn-danger.btn-small{role: "button", "ng-click" => "remove_unsaved_entry(pool_entry)"} Remove
+
 .row
   .col-md-4{"ng-repeat" => "pool_entry in existing_entries"}
     .panel.panel-warning
@@ -106,3 +98,7 @@
                   %span.glyphicon.glyphicon-sound-7-1
                 %button.btn.btn-default.btn-lg
                   %span.glyphicon.glyphicon-sound-dolby
+.row
+  .col-md-12
+    .text-center
+      %a.btn.btn-success.btn-lg{role: "button"} Save Pool Entries

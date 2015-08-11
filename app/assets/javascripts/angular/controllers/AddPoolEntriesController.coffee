@@ -1,13 +1,7 @@
 angular.module('AddPoolEntries', ['ngResource', 'RailsApiResource', 'user'])
 
   .controller 'AddPoolEntriesCtrl', ['$scope', '$location', 'currentUser', 'AuthService', 'PoolEntry', 'PoolEntries', 'WebState', 'KOPOOL_CONFIG', ($scope, $location, currentUser, AuthService, PoolEntry, PoolEntries, WebState, KOPOOL_CONFIG) ->
-    $scope.new_entries = []
-    $scope.existing_entries = []
-    $scope.total_entry_count = 0
-
-    $scope.register_error = {message: null, errors: {}}
-    $scope.editing_team = 1
-    $scope.persisting_pool_entries_failed = false
+    $scope.pool_entries = []
 
     WebState.get(1).then((web_state) ->
       $scope.web_state = web_state
@@ -17,24 +11,17 @@ angular.module('AddPoolEntries', ['ngResource', 'RailsApiResource', 'user'])
       console.log("(registerCtrl.load_persisted_pool_entries)")
       PoolEntries.query().then((persisted_pool_entries) ->
         console.log "GOT ENTRIES: ", persisted_pool_entries
-        $scope.existing_entries = persisted_pool_entries
-        # for pool_entry in persisted_pool_entries
-        #   local_pool_entry = {id: pool_entry.id, team_name: pool_entry.team_name, paid: pool_entry.paid, persisted: true, season_id: pool_entry.season_id}
-        #   $scope.pool_entries.push(local_pool_entry)
-        #   $scope.pool_entries_persisted++
-        # $scope.registering_user.num_pool_entries = $scope.pool_entries_persisted
+        for entry in persisted_pool_entries
+          $scope.pool_entries.push entry
       )
-
-    # $scope.create_local_pool_entries = () ->
-    #   for x in [1..$scope.registering_user.num_pool_entries] by 1
-    #     if $scope.pool_entries.length < $scope.registering_user.num_pool_entries
-    #       $scope.pool_entries.push(id: x, team_name: "", paid: false, persisted: false, season_id: $scope.season_id())
-    #   return
 
     $scope.load_persisted_pool_entries()
 
     $scope.add_pool_entry = () ->
-      $scope.new_entries.push(team_name: "")
+      pool_entry = {}
+      pool_entry.team_name = ""
+      pool_entry.editing = true
+      $scope.pool_entries.push(pool_entry)
 
     $scope.persist_pool_entries = (user_data) ->
       console.log("(registerCtrl.create_pool_entries)")
@@ -57,7 +44,7 @@ angular.module('AddPoolEntries', ['ngResource', 'RailsApiResource', 'user'])
       $scope.editing_team = index + 1
 
     $scope.total_charges = () ->
-      "$" + $scope.registering_user.num_pool_entries * 50.00 + ".00"
+      "$" + $scope.pool_entries.length * 50.00 + ".00"
 
     $scope.pool_entry_text = () ->
       if $scope.registering_user.num_pool_entries > 1
@@ -66,7 +53,7 @@ angular.module('AddPoolEntries', ['ngResource', 'RailsApiResource', 'user'])
         "your pool entry"
 
     $scope.team_badge_text = (team_index) ->
-      "Team " + (team_index+1) + " of " + $scope.total_entry_count
+      "Team " + (team_index+1) + " of " + $scope.pool_entries.length
 
     $scope.team_button_class = (index) ->
       if index + 1 == $scope.editing_team
@@ -79,11 +66,31 @@ angular.module('AddPoolEntries', ['ngResource', 'RailsApiResource', 'user'])
 
     $scope.done_editing_entry = (pool_entry) ->
       pool_entry.editing = false
+      if pool_entry.id
+        PoolEntry.update(pool_entry).then((saved_entry) ->
+          console.log("EXISTING entry saved")
 
-    $scope.remove_unsaved_entry = (pool_entry) ->
-      index = $scope.new_entries.indexOf(pool_entry)
+        ,(failed_entry) ->
+          console.log("EXISTING entry failed")
+        )
+      else
+        PoolEntry.create(pool_entry).then((saved_entry) ->
+          console.log "NEW entry saved"
+        ,(failed_entry) ->
+          console.log "NEW entry failed"
+        )
+
+    $scope.remove_pool_entry = (pool_entry) ->
+      index = $scope.pool_entries.indexOf(pool_entry)
       if index > -1
-        $scope.new_entries.splice(index, 1)
+        $scope.pool_entries.splice(index, 1)
+      if pool_entry.id
+        PoolEntry.remove(pool_entry).then((deleted_entry) ->
+          console.log "Deleted pool entry: ", deleted_entry
+        )
+
+    $scope.save_and_return = () ->
+      $location.path('/')
 
     $scope.team_button_text = (team_index) ->
       team_number = team_index + 1
@@ -135,16 +142,12 @@ angular.module('AddPoolEntries', ['ngResource', 'RailsApiResource', 'user'])
       else
         "PERMANENTLY SAVE the Teams Below"
 
-    $scope.$watch 'new_entries.length', (newVal, oldVal) ->
-      console.log "Some shit with entries changed", newVal
-      $scope.total_entry_count = ($scope.new_entries.length + $scope.existing_entries.length)
-
     $scope.$watch 'new_entry_count', (newVal, oldVal) ->
       console.log("(num_pool_entries.watch) old="+oldVal + " new=" + newVal)
       if newVal
-        console.log "newVal + existing: ", (newVal + $scope.existing_entries.length)
-        console.log "existing_entries: ", $scope.existing_entries.length
-        if (newVal + $scope.existing_entries.length) < 10
+        console.log "newVal + existing: ", (newVal + $scope.pool_entries.length)
+        console.log "pool_entries: ", $scope.pool_entries.length
+        if (newVal + $scope.pool_entries.length) < 10
           console.log("Pushing a new team")
           $scope.count_message = null
           

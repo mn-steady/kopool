@@ -1,18 +1,19 @@
 %h1 Add Pool Entries for {{ web_state.current_season.name }}!
 .row
   .col-md-12
-    .title-text.text-center.green {{ total_entry_count }}
+    .title-text.text-center.green{id: 'entry-count'} {{ pool_entries.length }}
     %p.text-center Pool Entries
 
 .row
   .col-md-12
     .text-center
-      %a.btn.btn-info.btn-lg{role: "button", "ng-click" => "add_pool_entry()"} Add Pool Entry 
-  .col-md-3
+      %a.btn.btn-info.btn-lg{id: 'add-entry', role: "button", "ng-click" => "add_pool_entry()"} Add Pool Entry 
+    .text-center
+      %a.btn.btn-success.btn-lg{id: 'save-and-return', role: "button", "ng-if" => "pool_entries.length > 0", "ng-click" => "save_and_return()"} Save and Return
     
 %br
 .row
-  .col-md-4{"ng-repeat" => "pool_entry in new_entries"}
+  .col-md-4{"ng-repeat" => "pool_entry in pool_entries"}
     .panel.panel-warning
       .panel-heading
         .panel-title.text-center{"ng-hide" => "pool_entry.editing"}
@@ -21,84 +22,28 @@
           %a.btn.btn-info.btn-small{role: "button", "ng-click" => "set_editing_entry(pool_entry)"} Edit Name
         .panel-title{"ng-show" => "pool_entry.editing"}
           %form
-            %input.form-control{:placeholder => "Team Name", "ng-model" => "pool_entry.team_name"}
-          %a.btn.btn-info.btn-small{role: "button", "ng-click" => "done_editing_entry(pool_entry)"} Done
+            %input.form-control{:placeholder => "Team Name", "ng-model" => "pool_entry.team_name", "ng-attr-id" => "{{'pool-entry-' + $index}}"}
+          %a.btn.btn-info.btn-small{role: "button", "ng-click" => "done_editing_entry(pool_entry)", "ng-attr-id" => "{{'save-entry-' + $index}}"} Save
       .panel-body
         .text-right
           %span.badge {{team_badge_text($index)}}
         %br
           .text-center
             %h2
-              %span.label.label-danger
+              %span.label.label-success
                 {{ web_state.current_season.name }}
           %br
             .ticket-body
               %em
                 %h4
                   .text-center {{currentUser.username}}
-              %br
-                .text-center
-                  Non-refundable - play at your own risk!
-                %br
-                  %span.glyphicon.glyphicon-arrow-right
-                  %span.glyphicon.glyphicon-arrow-right NO REFUNDS
-                  %span.glyphicon.glyphicon-arrow-left
-                  %span.glyphicon.glyphicon-arrow-left
-                  %br
-                    .text-right
-                      %h3
-                        $50.00
-            %br
-              .text-center
-                %button.btn.btn-default.btn-lg
-                  %span.glyphicon.glyphicon-hd-video
-                %button.btn.btn-default.btn-lg
-                  %span.glyphicon.glyphicon-sound-7-1
-                %button.btn.btn-default.btn-lg
-                  %span.glyphicon.glyphicon-sound-dolby
-            %a.btn.btn-danger.btn-small{role: "button", "ng-click" => "remove_unsaved_entry(pool_entry)"} Remove
-
-.row
-  .col-md-4{"ng-repeat" => "pool_entry in existing_entries"}
-    .panel.panel-warning
-      .panel-heading
-        .panel-title.text-center
-          %h3
-            {{registering_user.teams[$index].team_name}}
-      .panel-body
-        .text-right
-          %span.badge {{team_badge_text($index)}}
-        %br
+            .text-center
+              Non-refundable - play at your own risk!
           .text-center
-            %h2
-              %span.label.label-danger
-                KOPOOL 2014
-          %br
-            .ticket-body
-              %em
-                %h4
-                  .text-center {{registering_user.email}}
-              %br
-                .text-center
-                  Price includes the price
-                %br
-                  %span.glyphicon.glyphicon-arrow-right
-                  %span.glyphicon.glyphicon-arrow-right NO REFUNDS
-                  %span.glyphicon.glyphicon-arrow-left
-                  %span.glyphicon.glyphicon-arrow-left
-                  %br
-                    .text-right
-                      %h3
-                        $50.00
-            %br
-              .text-center
-                %button.btn.btn-default.btn-lg
-                  %span.glyphicon.glyphicon-hd-video
-                %button.btn.btn-default.btn-lg
-                  %span.glyphicon.glyphicon-sound-7-1
-                %button.btn.btn-default.btn-lg
-                  %span.glyphicon.glyphicon-sound-dolby
-.row
-  .col-md-12
-    .text-center
-      %a.btn.btn-success.btn-lg{role: "button"} Save Pool Entries
+            %h3
+              $50.00
+          .text-right
+            %a.btn.btn-danger.btn-small{role: "button", "ng-click" => "remove_pool_entry(pool_entry)", "ng-attr-id" => "{{'remove-entry-' + $index}}"} Remove
+          
+               
+            

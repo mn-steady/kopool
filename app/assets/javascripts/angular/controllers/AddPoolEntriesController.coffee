@@ -12,6 +12,7 @@ angular.module('AddPoolEntries', ['ngResource', 'RailsApiResource', 'user'])
       PoolEntries.query().then((persisted_pool_entries) ->
         console.log "GOT ENTRIES: ", persisted_pool_entries
         for entry in persisted_pool_entries
+          entry.saved = true
           $scope.pool_entries.push entry
       )
 
@@ -21,6 +22,7 @@ angular.module('AddPoolEntries', ['ngResource', 'RailsApiResource', 'user'])
       pool_entry = {}
       pool_entry.team_name = ""
       pool_entry.editing = true
+      pool_entry.saved = false
       $scope.pool_entries.push(pool_entry)
 
     $scope.persist_pool_entries = (user_data) ->
@@ -61,6 +63,13 @@ angular.module('AddPoolEntries', ['ngResource', 'RailsApiResource', 'user'])
       else
         "btn-default"
 
+    $scope.disable_save = () ->
+      disable = false
+      for entry in $scope.pool_entries
+        if entry.saved == false
+          disable = true
+      return disable
+
     $scope.set_editing_entry = (pool_entry) ->
       pool_entry.editing = true
 
@@ -69,15 +78,22 @@ angular.module('AddPoolEntries', ['ngResource', 'RailsApiResource', 'user'])
       if pool_entry.id
         PoolEntry.update(pool_entry).then((saved_entry) ->
           console.log("EXISTING entry saved")
-
-        ,(failed_entry) ->
-          console.log("EXISTING entry failed")
+          pool_entry.error = null
+          pool_entry.saved = true
+        ,(failed_response) ->
+          console.log("EXISTING entry failed", failed_response)
+          pool_entry.error = failed_response.data[0].error
+          pool_entry.saved = false
         )
       else
         PoolEntry.create(pool_entry).then((saved_entry) ->
           console.log "NEW entry saved"
-        ,(failed_entry) ->
-          console.log "NEW entry failed"
+          pool_entry.error = null
+          pool_entry.saved = true
+        ,(failed_response) ->
+          console.log "NEW entry failed", failed_response
+          pool_entry.error = failed_response.data[0].error
+          pool_entry.saved = false
         )
 
     $scope.remove_pool_entry = (pool_entry) ->

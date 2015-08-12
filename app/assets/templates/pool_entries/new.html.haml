@@ -9,7 +9,8 @@
     .text-center
       %a.btn.btn-info.btn-lg{id: 'add-entry', role: "button", "ng-click" => "add_pool_entry()"} Add Pool Entry 
     .text-center
-      %a.btn.btn-success.btn-lg{id: 'save-and-return', role: "button", "ng-if" => "pool_entries.length > 0", "ng-click" => "save_and_return()"} Save and Return
+      %a.btn.btn-success.btn-lg{id: 'save-and-return', role: "button", "ng-if" => "pool_entries.length > 0", "ng-click" => "save_and_return()",  "ng-disabled" => "disable_save()"} Save and Return
+      .alert.alert-danger.inline-alert{"ng-if" => "disable_save()"} Save all names and fix all errors before returning
     
 %br
 .row
@@ -25,6 +26,8 @@
             %input.form-control{:placeholder => "Team Name", "ng-model" => "pool_entry.team_name", "ng-attr-id" => "{{'pool-entry-' + $index}}"}
           %a.btn.btn-info.btn-small{role: "button", "ng-click" => "done_editing_entry(pool_entry)", "ng-attr-id" => "{{'save-entry-' + $index}}"} Save
       .panel-body
+        .errors{"ng-show" => "pool_entry.error"}
+          .alert.alert-danger {{pool_entry.error}}
         .text-right
           %span.badge {{team_badge_text($index)}}
         %br

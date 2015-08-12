@@ -41,7 +41,7 @@ angular.module('PoolEntries', ['ngResource', 'RailsApiResource'])
 
 		$scope.load_season_weeks = () ->
 			console.log("(PoolEntriesCtrl.load_season_weeks) Looking up the season_weeks")
-			SeasonWeeks.nested_query($scope.web_state.current_week.season.id).then((season_weeks) ->
+			SeasonWeeks.nested_query($scope.web_state.current_season.id).then((season_weeks) ->
 				console.log("(PoolEntriesCtrl.load_season_weeks) *** Have All Season Weeks ***")
 				$scope.season_weeks = season_weeks
 				$scope.getWeeklyResults()

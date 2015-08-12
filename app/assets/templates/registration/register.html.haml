@@ -10,45 +10,36 @@
       .panel-body
         %form.form-horizontal{"name" => "registrationForm"}
 
-          .form-group{"ng-show" => "user_needs_registration()"}
+          .form-group
             %label.col-sm-2 Name
             .col-sm-5
-              %input.form-control{"type" => "text", "ng-model" => "registering_user.name", "placeholder"=>"Your Name"}
-
-          .form-group{"ng-show" => "user_needs_registration()"}
-            %label.col-sm-2 Phone
-            .col-sm-5
-              %input.form-control{"type" => "text", "ng-model" => "registering_user.phone", "placeholder"=>"Your Phone #"}
-
-          .form-group{"ng-show" => "user_needs_registration()"}
-            %label.col-sm-2 Email
-            .col-sm-5
-              %input.form-control{"type" => "text", "ng-model" => "registering_user.email", "placeholder"=>"Your Email Address"}
-
-          .form-group{"ng-show" => "user_needs_registration()"}
-            %label.col-sm-2 Password
-            .col-sm-5{"ng-class" => "password_is_valid(registering_user.password)"}
-              %input.form-control{"type" => "password", "ng-model" => "registering_user.password"}
-
-          .form-group{"ng-show" => "user_needs_registration()"}
-            %label.col-sm-2 Confirm Password
-            .col-sm-5{"ng-class" => "password_is_valid(registering_user.password_confirmation)"}
-              %input.form-control{"type" => "password", "ng-model" => "registering_user.password_confirmation"}
+              %input.form-control#name{"type" => "text", "ng-model" => "registering_user.name", "placeholder"=>"Your Name"}
 
           .form-group
-            %label.col-sm-2 How Many Pool Entries?
-            .col-sm-2
-              %input.form-control{"type" => "number", "min" => "1", "max" => "10", "ng-model" => "registering_user.num_pool_entries", "ng-disabled" => "disable_pool_entry_change()"}
-            .col-sm-3
-              {{total_charges()}}
+            %label.col-sm-2 Phone
+            .col-sm-5
+              %input.form-control#phone{"type" => "text", "ng-model" => "registering_user.phone", "placeholder"=>"Your Phone #"}
+
+          .form-group
+            %label.col-sm-2 Email
+            .col-sm-5
+              %input.form-control#email{"type" => "text", "ng-model" => "registering_user.email", "placeholder"=>"Your Email Address"}
+
+          .form-group
+            %label.col-sm-2 Password
+            .col-sm-5{"ng-class" => "password_is_valid(registering_user.password)"}
+              %input.form-control#password{"type" => "password", "ng-model" => "registering_user.password"}
+
+          .form-group
+            %label.col-sm-2 Confirm Password
+            .col-sm-5{"ng-class" => "password_is_valid(registering_user.password_confirmation)"}
+              %input.form-control#password-confirmation{"type" => "password", "ng-model" => "registering_user.password_confirmation"}
 
           .form-group
             .col-sm-12
               .alert.alert.alert-danger{"ng-show" => "persist_button_show()"} WARNING! Given the nature of this competition, clicking the SAVE button below is PERMANENT. You will not be able to decrease the number of pool entries you have active after you save. You WILL be able to add more before the first week starts.
 
-          %a.btn{"ng-click" => "register()", "ng-class" => "register_button_class()", "ng-show" => "user_needs_registration()", "ng-disabled" => "!user_can_register()", role: "button"} Register my Username
-          %a.btn{"ng-click" => "persist_pool_entries()", "ng-class" => "persist_button_class()", "ng-disabled" => "persist_button_disabled()", "ng-show" => "persist_button_show()", role: "button"} {{persist_button_text()}}
-          %a.btn.btn-info{href: '#/weeks/{{web_state.current_week.id}}/matchups', "ng-if" => "show_week_1_picks_button()", role: "button"} CLICK HERE to make your first pick!
+          %a.btn#register{"ng-click" => "register()", "ng-class" => "register_button_class()", "ng-disabled" => "!user_can_register()", role: "button"} Register my Username
 
 
   .col-md-4
@@ -63,7 +54,7 @@
     .alert.alert-danger{"ng-hide" => "passwords_long_enough(registering_user.password, registering_user.password_confirmation)"}
       Passwords must be at least 8 characters
     %br
-    .alert.alert-danger{"ng-hide" => "passwords_match(registering_user.password, registering_user.password_confirmation)"}
+    .alert.alert-danger{"ng-hide" => "registering_user.password == registering_user.password_confirmation"}
       Passwords must match
     %br
     .alert.alert-danger{"ng-show" => "persisting_pool_entries_failed == true"}
@@ -71,64 +62,3 @@
     %br
     .alert.alert-warning{"ng-show" => "disable_pool_entry_change()"}
       Can only add pool entries when "open for registration" and week 1
-
-.row
-  .col-md-12
-
-    .panel.panel-default{"ng-show" => "!user_needs_registration()" }
-      .panel-heading
-        %h3.panel-title Information on {{pool_entry_text()}}
-
-      .panel-body
-        %form.form-horizontal
-          %div{"ng-repeat" => "pool_entry in registering_user.teams"}
-            .col-sm-2
-              %a.btn{"ng-click" => "set_editing_team($index)", "ng-class" => "team_button_class($index)", "ng-disabled" => "team_button_disabled($index)", role: "button"} {{team_button_text($index)}}
-          %br
-          %br
-          .form-group
-            %label.col-sm-1 Team Name
-            .col-sm-10
-              %input.form-control{"type" => "text", "min"=>"1", "ng-model" => "registering_user.teams[editing_team-1].team_name", "ng-disabled" => "team_button_disabled(editing_team-1)"}
-
-.row
-
-  .col-md-4{"ng-repeat"=>"pool_entry in registering_user.teams", "ng-show" => "!user_needs_registration()" }
-    .panel.panel-warning
-      .panel-heading
-        .panel-title.text-center
-          %h3
-            {{registering_user.teams[$index].team_name}}
-      .panel-body
-        .text-right
-          %span.badge {{team_badge_text($index)}}
-        %br
-        .text-center
-          %h2
-            %span.label.label-danger
-              KOPOOL 2014
-        %br
-        .ticket-body
-          %em
-            %h4
-              .text-center {{registering_user.email}}
-          %br
-          .text-center
-            Price includes the price
-          %br
-          %span.glyphicon.glyphicon-arrow-right
-          %span.glyphicon.glyphicon-arrow-right NO REFUNDS
-          %span.glyphicon.glyphicon-arrow-left
-          %span.glyphicon.glyphicon-arrow-left
-          %br
-          .text-right
-            %h3
-              $50.00
-        %br
-        .text-center
-          %button.btn.btn-default.btn-lg
-            %span.glyphicon.glyphicon-hd-video
-          %button.btn.btn-default.btn-lg
-            %span.glyphicon.glyphicon-sound-7-1
-          %button.btn.btn-default.btn-lg
-            %span.glyphicon.glyphicon-sound-dolby

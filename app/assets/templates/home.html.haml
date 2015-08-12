@@ -3,6 +3,9 @@
     .row{"ng-if" => "session_message"}
       .col-sm-12.text-center
         .alert.alert-danger {{session_message}}
+    .row{"ng-if" => "flash_message"}
+      .col-sm-12.text-center
+        .alert.alert-success {{flash_message}}
     .row
       .col-lg-4
         %a.btn.btn-success.btn-lg.btn-block{"ng-show" => "is_authorized()", href: '#/weeks/{{web_state.current_week.id}}/matchups', role: "button"} Picks »
@@ -10,10 +13,15 @@
         %img.img-rounded.frontpage-logo{alt: "KO Pool Logo", src: asset_path('kopool_c_med.png')}
       .col-lg-4
         %a.btn.btn-success.btn-lg.btn-block{"ng-show" => "is_authorized()", href: '#/weeks/{{web_state.current_week.id}}/results', role: "button"} Results »
-    %br
-    %p{"ng-if" => "register_button_show()"}
-      %a.btn.btn-primary.btn-lg{href: "#/users/register", role: "button"} {{register_button_text()}}
-    %a.btn.btn-info{href: "#/users/passwords/send", "ng-hide" => "is_authorized()" } Reset Password
+    .row
+      .col-lg-4
+        %a.btn.btn-info{href: "#/users/passwords/send", "ng-hide" => "is_authorized()" } Reset Password
+      .col-lg-4{"ng-if" => "web_state.current_season.open_for_registration && !is_authorized()"}
+        %a.btn.btn-warning.btn-lg.btn-block{href: "#/users/register", role: "button"} Register »
+      .col-lg-4{"ng-if" => "web_state.current_season.open_for_registration && is_authorized()"}
+        %a.btn.btn-warning.btn-lg.btn-block{id: "add-entries", href: "#/seasons/{{web_state.current_season.id}}/add_pool_entries", role: "button"} Add Pool Entries - {{web_state.current_season.name}} » 
+    
+    
     .row{"ng-show" => "is_authorized()"}
       .col-md-4
         %p.text-center Round

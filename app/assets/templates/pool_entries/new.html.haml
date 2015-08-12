@@ -1,0 +1,52 @@
+%h1 Add Pool Entries for {{ web_state.current_season.name }}!
+.row
+  .col-md-12
+    .title-text.text-center.green{id: 'entry-count'} {{ pool_entries.length }}
+    %p.text-center Pool Entries
+
+.row
+  .col-md-12
+    .text-center
+      %a.btn.btn-info.btn-lg{id: 'add-entry', role: "button", "ng-click" => "add_pool_entry()"} Add Pool Entry 
+    .text-center
+      %a.btn.btn-success.btn-lg{id: 'save-and-return', role: "button", "ng-if" => "pool_entries.length > 0", "ng-click" => "save_and_return()",  "ng-disabled" => "disable_save()"} Save and Return
+      .alert.alert-danger.inline-alert{"ng-if" => "disable_save()"} Save all names and fix all errors before returning
+    
+%br
+.row
+  .col-md-4{"ng-repeat" => "pool_entry in pool_entries"}
+    .panel.panel-warning
+      .panel-heading
+        .panel-title.text-center{"ng-hide" => "pool_entry.editing"}
+          %h3
+            {{pool_entry.team_name}}
+          %a.btn.btn-info.btn-small{role: "button", "ng-click" => "set_editing_entry(pool_entry)"} Edit Name
+        .panel-title{"ng-show" => "pool_entry.editing"}
+          %form
+            %input.form-control{:placeholder => "Team Name", "ng-model" => "pool_entry.team_name", "ng-attr-id" => "{{'pool-entry-' + $index}}"}
+          %a.btn.btn-info.btn-small{role: "button", "ng-click" => "done_editing_entry(pool_entry)", "ng-attr-id" => "{{'save-entry-' + $index}}"} Save
+      .panel-body
+        .errors{"ng-show" => "pool_entry.error"}
+          .alert.alert-danger {{pool_entry.error}}
+        .text-right
+          %span.badge {{team_badge_text($index)}}
+        %br
+          .text-center
+            %h2
+              %span.label.label-success
+                {{ web_state.current_season.name }}
+          %br
+            .ticket-body
+              %em
+                %h4
+                  .text-center {{currentUser.username}}
+            .text-center
+              Non-refundable - play at your own risk!
+          .text-center
+            %h3
+              $50.00
+          .text-right
+            %a.btn.btn-danger.btn-small{role: "button", "ng-click" => "remove_pool_entry(pool_entry)", "ng-attr-id" => "{{'remove-entry-' + $index}}"} Remove
+          
+               
+            

@@ -46,7 +46,7 @@ angular.module('Home', ['ngResource', 'RailsApiResource', 'user'])
     $scope.loadPoolEntries = () ->
       console.log("(loadPoolEntries)")
       if $scope.pool_entries.length == 0
-        PoolEntriesThisSeason.nested_query($scope.web_state.current_week.season.id).then((pool_entries) ->
+        PoolEntriesThisSeason.nested_query($scope.web_state.current_season.id).then((pool_entries) ->
           console.log("(loadPoolEntries) returned with pool_entries ="+pool_entries)
           $scope.pool_entries = pool_entries
           $scope.getActivePoolEntries()
@@ -98,17 +98,8 @@ angular.module('Home', ['ngResource', 'RailsApiResource', 'user'])
       else
         "Please Register below"
 
-    $scope.display_battle_summary = ->
-      if AuthService.isAuthenticated()
-        "There are currently " + $scope.active_pool_entries_count + " teams remaining in the ring, battling for "
-      else
-        "Sign-in for the weekly summary"
-
     $scope.display_pot_amount = ->
-      if AuthService.isAuthenticated()
-        $scope.total_pot
-      else
-        ""
+      if !!AuthService.isAuthenticated() then $scope.total_pot else ''
 
     $scope.display_round_number = ->
       if AuthService.isAuthenticated()
@@ -116,13 +107,9 @@ angular.module('Home', ['ngResource', 'RailsApiResource', 'user'])
 
     $scope.register_button_text = () ->
       if AuthService.isAuthenticated()
-        "Add Pool Entries »"
+        "Add Pool Entries for #{$scope.web_state.current_season.name} »"
       else
         "Register »"
-
-    $scope.register_button_show = () ->
-      false
-      # $scope.web_state.current_week.week_number == 1 && $scope.web_state.current_week.open_for_picks == true
 
     # Just demonstrating an alternate means of navigation.  Better to use anchor tags.
     $scope.go = ( path ) ->

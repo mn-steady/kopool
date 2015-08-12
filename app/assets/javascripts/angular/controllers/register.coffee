@@ -9,7 +9,7 @@ angular.module('Register', ['ngResource', 'RailsApiResource', 'user'])
   .factory 'PoolEntries', (RailsApiResource) ->
       RailsApiResource('pool_entries_index_all', 'pool_entries')
 
-    .controller 'RegisterCtrl', ['$scope', '$location', '$http', '$routeParams', 'currentUser', 'AuthService', 'PoolEntry', 'PoolEntries', 'WebState', 'KOPOOL_CONFIG', ($scope, $location, $http, $routeParams, currentUser, AuthService, PoolEntry, PoolEntries, WebState, KOPOOL_CONFIG) ->
+    .controller 'RegisterCtrl', ['$scope', '$location', '$http', '$routeParams', 'currentUser', 'AuthService', 'PoolEntry', 'PoolEntries', 'WebState', 'KOPOOL_CONFIG', '$rootScope', ($scope, $location, $http, $routeParams, currentUser, AuthService, PoolEntry, PoolEntries, WebState, KOPOOL_CONFIG, $rootScope) ->
       console.log("(RegisterCtrl)")
       $scope.controller = 'RegisterCtrl'
 
@@ -70,16 +70,6 @@ angular.module('Register', ['ngResource', 'RailsApiResource', 'user'])
           $scope.registering_user.num_pool_entries = $scope.pool_entries_persisted
         )
 
-      $scope.user_needs_registration = () ->
-        $scope.registering_user.is_registered == false and AuthService.isAuthenticated() == false
-
-      if $scope.user_needs_registration()
-        console.log("(Register) User Needs Registration")
-      else
-        console.log("(Register) User Already Registered")
-        $scope.registering_user = {email: currentUser.email, password: "", password_confirmation: "", num_pool_entries: 0, teams: $scope.pool_entries, is_registered: true}
-        $scope.load_persisted_pool_entries()
-
 
       $scope.register = ->
         console.log("(registerCtrl.register)")
@@ -106,6 +96,8 @@ angular.module('Register', ['ngResource', 'RailsApiResource', 'user'])
             parameters.error_entity.message = null
             console.log("(registerCtrl.submit.success)")
             $scope.save_user_data(data)
+            $rootScope.flash_message = "Thanks for registering! Please sign in."
+            $location.path('/')
           else
             if data.error
               parameters.error_entity.message = data.error
@@ -114,7 +106,7 @@ angular.module('Register', ['ngResource', 'RailsApiResource', 'user'])
           return
         ).error (data, status) ->
           if status is 422
-            parameters.error_entity.message = "Unable to Register. If already registered: Please sign-in above, then return to this page."
+            parameters.error_entity.message = "Unable to Register. If you've already registered, please sign-in above."
             parameters.error_entity.errors = data.errors
           else
             if data.error
@@ -125,6 +117,13 @@ angular.module('Register', ['ngResource', 'RailsApiResource', 'user'])
           return
         return
 
+      $scope.save_user_data = (data) ->
+        currentUser.authorized = true
+        currentUser.admin = false
+        currentUser.username = data.email
+        # AuthService.login(currentUser)
+        # AuthService.updateCookies()
+        # $rootScope.$broadcast('auth-login-success')
 
       $scope.create_local_pool_entries = () ->
         console.log("(registerCtrl.create_local_pool_entries)")
@@ -132,16 +131,6 @@ angular.module('Register', ['ngResource', 'RailsApiResource', 'user'])
           if $scope.pool_entries.length < $scope.registering_user.num_pool_entries
             $scope.pool_entries.push(id: x, team_name: "", paid: false, persisted: false, season_id: $scope.season_id())
         return
-
-      $scope.save_user_data = (user_data) ->
-        console.log("(registerCtrl.save_user_data)")
-        currentUser.authorized = true
-        currentUser.username = user_data.email
-        AuthService.updateCookies()
-        console.log("(registerCtrl.save_user_data) saved username:" + currentUser.username)
-        $scope.registering_user.is_registered = true
-        $scope.create_local_pool_entries()
-
 
       $scope.persist_pool_entries = (user_data) ->
         console.log("(registerCtrl.create_pool_entries)")
@@ -159,37 +148,6 @@ angular.module('Register', ['ngResource', 'RailsApiResource', 'user'])
               (failure) ->
                 $scope.persisting_pool_entries_failed = true
               )
-
-      $scope.$watch 'registering_user.num_pool_entries', (newVal, oldVal) ->
-        console.log("(num_pool_entries.watch) old="+oldVal + " new=" + newVal)
-        if !$scope.user_needs_registration()
-          console.log("(num_pool_entries.watch) Changing pool entries AFTER registration")
-          num_existing_teams = $scope.pool_entries.length
-          console.log("(num_pool_entries.watch) existing team count="+ num_existing_teams)
-
-          if newVal > num_existing_teams
-            if num_existing_teams == 10
-              console.log("CANNOT ADD ANY MORE TEAMS")
-              newVal = oldVal
-              $scope.editing_team = oldVal
-            else
-              console.log("Pushing a new team")
-              $scope.pool_entries.push(id: newVal, team_name: "", paid: false, persisted: false)
-          if newVal < num_existing_teams and num_existing_teams > 0
-            console.log("(num_pool_entries.watch) Wants to remove a team")
-            team_to_axe = $scope.pool_entries[num_existing_teams-1]
-            if team_to_axe.persisted
-              console.log("(num_pool_entries.watch) This team was persisted!")
-              $scope.registering_user.num_pool_entries = oldVal
-              newVal = oldVal
-            else
-              console.log("(num_pool_entries.watch) Can remove non-persisted team")
-              team_to_axe = $scope.pool_entries.pop()
-          if newVal == num_existing_teams
-            console.log("(num_pool_entries.watch) Already have this many teams")
-        else
-          console.log("(num_pool_entries.watch) Changing pool entries BEFORE registration")
-
 
       $scope.set_editing_team = (index) ->
         $scope.editing_team = index + 1
@@ -232,33 +190,17 @@ angular.module('Register', ['ngResource', 'RailsApiResource', 'user'])
       $scope.season_id = () ->
         $scope.web_state.current_week.season.id
 
-
       $scope.register_button_class = (index) ->
         "btn-primary"
 
       $scope.user_can_register = () ->
-        $scope.user_needs_registration() and $scope.password_is_valid($scope.registering_user.password) and $scope.password_is_valid($scope.registering_user.password_confirmation) and $scope.passwords_long_enough($scope.registering_user.password, $scope.registering_user.password_confirmation) and $scope.email_valid($scope.registering_user.email) and $scope.passwords_match($scope.registering_user.password, $scope.registering_user.password_confirmation)
-
-      $scope.persist_button_class = (index) ->
-        if $scope.user_needs_registration() == false
-          "btn-success"
-        else
-          "btn-warning"
+        $scope.password_is_valid($scope.registering_user.password) and $scope.password_is_valid($scope.registering_user.password_confirmation) and $scope.passwords_long_enough($scope.registering_user.password, $scope.registering_user.password_confirmation) and $scope.email_valid($scope.registering_user.email) and ($scope.registering_user.password == $scope.registering_user.password_confirmation)
 
       $scope.disable_pool_entry_change = () ->
         !$scope.open_for_registration() or $scope.web_state.current_week.week_number != 1
 
       $scope.persist_button_disabled = () ->
         $scope.pool_entries_persisted == $scope.pool_entries.length
-
-      $scope.persist_button_show = () ->
-        if $scope.user_needs_registration() == false
-          all_named = true
-          for pool_entry in $scope.pool_entries
-            if pool_entry.team_name == "" then all_named = false
-          return all_named
-        else
-          return false
 
       $scope.show_week_1_picks_button = () ->
         $scope.persist_button_show() and $scope.persist_button_disabled()
@@ -275,32 +217,17 @@ angular.module('Register', ['ngResource', 'RailsApiResource', 'user'])
         else
           "has-error"
 
-      $scope.passwords_match = (p1, p2) ->
-        if $scope.user_needs_registration() == true
-          if p1 == p2
-            true
-          else
-            false
-        else
-          true
-
       $scope.passwords_long_enough = (p1, p2) ->
-        if $scope.user_needs_registration() == true
-          if p1.length >= 8 and p2.length >= 8
-            true
-          else
-            false
-        else
+        if p1.length >= 8 and p2.length >= 8
           true
+        else
+          false
 
       $scope.email_valid = (email) ->
-        if $scope.user_needs_registration() == true
-          # TODO: Use a regexp
-          if email.length >= 6
-            true
-          else
-            false
-        else
+        # TODO: Use a regexp
+        if email.length >= 6
           true
+        else
+          false
 
     ]

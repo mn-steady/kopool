@@ -31,6 +31,7 @@ modules = [
 	"angularCharts"
 	"kopoolCharts"
 	"angularD3"
+	"AddPoolEntries"
 ]
 
 @kopool = angular.module("kopool", modules)
@@ -100,6 +101,10 @@ modules = [
 		when('/seasons/:season_id/entries', {
 			templateUrl: '<%= asset_path("seasons/entries.html") %>',
 			controller: 'AdminPoolEntriesCtrl'
+		}).
+		when('/seasons/:season_id/add_pool_entries', {
+			templateUrl: '<%= asset_path("pool_entries/new.html") %>',
+			controller: 'AddPoolEntriesCtrl'
 		}).
 		when('/weeks/:week_id/results', {
 			templateUrl: '<%= asset_path("weeks/results.html") %>',

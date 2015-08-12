@@ -75,7 +75,7 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 
 		$scope.load_season_weeks = () ->
 			console.log("(load_season_weeks)")
-			SeasonWeeks.nested_query($scope.web_state.current_week.season.id).then((season_weeks) ->
+			SeasonWeeks.nested_query($scope.web_state.current_season.id).then((season_weeks) ->
 				console.log("(load_season_weeks) *** Have All Season Weeks ***")
 				$scope.season_weeks = season_weeks
 			)

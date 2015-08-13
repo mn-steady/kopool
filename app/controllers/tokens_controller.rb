@@ -16,6 +16,7 @@ class TokensController  < ApplicationController
     token = Token.new()
     token.token = @user.authentication_token
     token.user = @user
+    sign_in(@user)
 
     render :json => token
 

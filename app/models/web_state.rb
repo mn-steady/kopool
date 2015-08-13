@@ -4,7 +4,7 @@ class WebState < ActiveRecord::Base
   belongs_to :current_season, class_name: "Season", :foreign_key => "season_id"
 
   validate :only_one_record?, :on => :create
-  validate :season_matches_week
+  validate :season_matches_week, :on => :update
 
   delegate :open_for_picks, to: :current_week
 

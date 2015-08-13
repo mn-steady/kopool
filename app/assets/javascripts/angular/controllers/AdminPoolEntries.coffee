@@ -10,7 +10,7 @@ angular.module('AdminPoolEntries', ['ngResource', 'RailsApiResource', 'ui.bootst
 		$scope.unpicked_pool_entries = []
 
 		$scope.getAllPoolEntries = () ->
-			PoolEntriesThisSeason.nested_query($scope.current_week.season.id).then((pool_entries) ->
+			PoolEntriesThisSeason.nested_query($scope.web_state.current_season.id).then((pool_entries) ->
 				$scope.pool_entries = pool_entries
 				console.log("(getAllPoolEntries) Have pool entries")
 			)

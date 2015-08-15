@@ -40,6 +40,7 @@ angular.module('Home', ['ngResource', 'RailsApiResource', 'user'])
       WebState.get(1).then((web_state) ->
         console.log("(HomeCtrl.getWebState) Back from the WebState lookup")
         $scope.web_state = web_state
+        console.log $scope.web_state
         $scope.loadPoolEntries()
       )
 
@@ -87,6 +88,7 @@ angular.module('Home', ['ngResource', 'RailsApiResource', 'user'])
     # Display and utility functions
 
     $scope.is_authorized = ->
+      console.log "is authorized? ", !!AuthService.isAuthenticated()
       !!AuthService.isAuthenticated()
 
     $scope.is_admin = ->

@@ -1,7 +1,7 @@
 %h1 Add Pool Entries for {{ web_state.current_season.name }}!
 .row
   .col-md-12
-    .title-text.text-center.green{id: 'entry-count'} {{ pool_entries.length }}
+    .title-text.text-center.green{id: 'entry-count'} {{ pool_entries.length }} - {{ pool_entries.length * 50 | currency }}
     %p.text-center Pool Entries
 
 .row

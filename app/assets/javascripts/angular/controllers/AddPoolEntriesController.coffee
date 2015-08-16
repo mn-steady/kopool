@@ -76,7 +76,7 @@ angular.module('AddPoolEntries', ['ngResource', 'RailsApiResource', 'user'])
     $scope.done_editing_entry = (pool_entry) ->
       pool_entry.editing = false
       if pool_entry.id
-        PoolEntry.update(pool_entry).then((saved_entry) ->
+        PoolEntry.save(pool_entry).then((saved_entry) ->
           console.log("EXISTING entry saved")
           pool_entry.error = null
           pool_entry.saved = true

@@ -1,7 +1,7 @@
 class PoolEntriesController < ApplicationController
 
-  before_filter :verify_admin_user, only: [:show, :update]
-  before_filter :verify_any_user, only: [:index, :create, :index_even_knocked_out, :destroy, :pool_entries_and_picks]
+  before_filter :verify_admin_user, only: [:show]
+  before_filter :verify_any_user, only: [:index, :create, :index_even_knocked_out, :destroy, :pool_entries_and_picks, :update]
 
   def index
     Rails.logger.debug("(PoolEntriesController.index) is user")

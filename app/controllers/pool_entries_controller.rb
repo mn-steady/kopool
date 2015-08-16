@@ -5,7 +5,8 @@ class PoolEntriesController < ApplicationController
 
   def index
     Rails.logger.debug("(PoolEntriesController.index) is user")
-    @pool_entries = PoolEntry.where(user: current_user, knocked_out: false)
+    @web_state = WebState.first
+    @pool_entries = PoolEntry.where(user: current_user, knocked_out: false, season_id: @web_state.current_season.id)
 
     respond_to do | format |
       format.json {render json: @pool_entries}
@@ -14,7 +15,8 @@ class PoolEntriesController < ApplicationController
 
   def index_all
     Rails.logger.debug("(PoolEntriesController.index_even_knocked_out) is user")
-    @pool_entries = PoolEntry.where(user: current_user)
+    @web_state = WebState.first
+    @pool_entries = PoolEntry.where(user: current_user, season_id: @web_state.current_season.id)
 
     respond_to do | format |
       format.json {render json: @pool_entries}
@@ -65,7 +67,7 @@ class PoolEntriesController < ApplicationController
       render :json => {:error => error_message}, :status => :bad_request
     else
       @week = Week.find(params[:week_id])
-      @my_active_pool_entries = PoolEntry.where(user_id: current_user.id).where(knocked_out: false).where(season_id: @web_state.current_week.season.id)
+      @my_active_pool_entries = PoolEntry.where(user_id: current_user.id).where(knocked_out: false).where(season_id: @web_state.current_season.id)
       # @this_weeks_picks = Pick.where(week_id: params[:week_id])
 
       unless @my_active_pool_entries.present? 

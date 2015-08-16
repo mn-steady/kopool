@@ -48,3 +48,42 @@ body {
   margin-top: 40px;
   margin-bottom: 20px;
 }
+
+.rotated-title-left {
+  display: inline-block;
+  float: right;
+  font-size: 20px;
+  /* Safari */
+  -webkit-transform: rotate(-45deg);
+
+  /* Firefox */
+  -moz-transform: rotate(-45deg);
+
+  /* IE */
+  -ms-transform: rotate(-45deg);
+
+  /* Opera */
+  -o-transform: rotate(-45deg);
+
+  /* Internet Explorer */
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=2);
+}
+
+.rotated-title-right {
+  display: inline-block;
+  font-size: 20px;
+  /* Safari */
+  -webkit-transform: rotate(45deg);
+
+  /* Firefox */
+  -moz-transform: rotate(45deg);
+
+  /* IE */
+  -ms-transform: rotate(45deg);
+
+  /* Opera */
+  -o-transform: rotate(45deg);
+
+  /* Internet Explorer */
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=2);
+}

@@ -45,7 +45,7 @@
           %th Pool Entry Name
           %th Phone Number
           %th Email
-      %tbody{"ng-repeat" => "pool_entry in unpicked_pool_entries"}
+      %tbody{"ng-repeat" => "pool_entry in unpicked_pool_entries | orderBy : 'user.name' "}
         %tr
           %td {{pool_entry.user.name}}
           %td {{pool_entry.team_name}}

@@ -49,6 +49,22 @@ body {
   margin-bottom: 20px;
 }
 
+.smaller-title {
+  font-size: 26px;
+  margin-bottom: 10px;
+}
+
+.champions {
+  .alert {
+    margin-left: 5px;
+    margin-right: 5px;
+    height: 70px;
+    .center {
+      vertical-align: middle;
+    }
+  }
+}
+
 .rotated-title-left {
   display: inline-block;
   float: right;

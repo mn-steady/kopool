@@ -21,7 +21,7 @@
       .col-lg-4{"ng-if" => "web_state.current_season.open_for_registration && !is_authorized()"}
         %a.btn.btn-warning.btn-lg.btn-block{href: "#/users/register", role: "button"} New Users Only - Register »
         %br
-        .alert.alert-info If you played in 2014, sign in to add new Pool Entries for this 2015 Season.
+        .alert.alert-info If you played in 2014, sign in to add new Pool Entries for the 2015 Season.
       .col-lg-4{"ng-if" => "web_state.current_season.open_for_registration && is_authorized()"}
         %a.btn.btn-warning.btn-lg.btn-block{id: "add-entries", href: "#/seasons/{{web_state.current_season.id}}/add_pool_entries", role: "button"} Add Pool Entries - {{web_state.current_season.name}} » 
     
@@ -41,13 +41,28 @@
 
 .row
   .col-md-12
-    %p.text-center From the Office of the Commish:
+    %p.text-center.smaller-title From the Office of the Commish:
     .alert.alert-info.lead.text-center {{web_state.broadcast_message}}
 
 .row{"ng-if" => "web_state.current_week.week_number != 1"}
   .col-md-12{"ng-controller" => "KopoolChartsCtrl"}
     %div{"ng-if" => "loaded"}
       %div{"ac-chart" => "'line'", "ac-data"=>"chart_data", "ac-config"=>"line_config", "id"=>"chart", "class"=>"line-chart"}
+
+.row{"ng-if" => "is_authorized()"}
+  .text-center.smaller-title Congratulations to our reigning champions!
+  .text-center.champions
+    .col-sm-1
+    .col-sm-2.alert.alert-success 
+      %span.center PO3 (Al S.)
+    .col-sm-2.alert.alert-success 
+      %span.center deep_end (Andrew S.)
+    .col-sm-2.alert.alert-success 
+      %span.center Matt Batinich (Matt B.)
+    .col-sm-2.alert.alert-success 
+      %span.center Big Mouth Bass on Dolney Lake (S&J)
+    .col-sm-2.alert.alert-success 
+      %span.center shaun#2 (Shaun)
 
 .admin-panel{"ng-show" => "is_admin()"}
   .row

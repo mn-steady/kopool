@@ -25,33 +25,20 @@
               %img{"ng-src" => "{{pool_entry.nfl_team.logo_url_small}}" }
               %h4 {{pool_entry.nfl_team.nfl_team_name}}
           %br
-          .ticket-body
-            %em
-              %h4
-                .text-center {{currentUser.email}}
-            %br
-            %br
             .text-center
-              %span.glyphicon.glyphicon-arrow-right
-              %span.glyphicon.glyphicon-arrow-right NO REFUNDS
-              %span.glyphicon.glyphicon-arrow-left
-              %span.glyphicon.glyphicon-arrow-left
+              %h2
+                %span.label.label-success
+                  {{ web_state.current_season.name }}
             %br
+              .ticket-body
+                %em
+                  %h4
+                    .text-center {{currentUser.username}}
+              .text-center
+                Non-refundable - play at your own risk!
             .text-center
               %h3
                 $50.00
-            .text-center
-              %h2
-                %span.label.label-danger
-                  KOPOOL 2014
-          %br
-          .text-center
-            %button.btn.btn-default.btn-lg
-              %span.glyphicon.glyphicon-hd-video
-            %button.btn.btn-default.btn-lg
-              %span.glyphicon.glyphicon-sound-7-1
-            %button.btn.btn-default.btn-lg
-              %span.glyphicon.glyphicon-sound-dolby
       .text-center
         %a.btn{"id" => "select-pick-{{pool_entry.id}}", "ng-click" => "set_editing_pool_entry($index)", "ng-class" => "pool_entry_button_class(pool_entry)", "ng-hide" => "weekIsClosed()", role: "button"} Select Pick for {{pool_entry.team_name}}
 

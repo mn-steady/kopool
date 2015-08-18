@@ -9,7 +9,7 @@
 			%th Phone
 			%th Paid?
 			%th 
-	%tbody{"ng-repeat" => "pool_entry in pool_entries | orderBy : '-paid' "}
+	%tbody{"ng-repeat" => "pool_entry in pool_entries | orderBy : 'user.name' "}
 		%tr
 			%td {{pool_entry.user.name}}
 			%td {{pool_entry.team_name}}

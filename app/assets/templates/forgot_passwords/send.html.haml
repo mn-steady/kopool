@@ -20,4 +20,6 @@
               %a.btn.btn-info.col-sm-offset-2{"ng-click" => "sendResetPasswordEmail()", role: "button"} Send Reset Password Email
 
         .col-md-6{"ng-if" => "alert"}
-          .alert{"class" => "alert-{{alert.type}}"} {{alert.message}}
+          .alert.center{"class" => "alert-{{alert.type}}"}
+            .ul
+              .li{"ng-repeat" => "error in alert.messages track by $index"} {{error}}

@@ -26,3 +26,8 @@
         .col-md-4{"ng-if" => "error_message"}
           .alert.alert-danger{"ng-hide" => "passwords_match(updating_user.password, updating_user.password_confirmation)"}
             Passwords must match
+
+        .col-md-4{"ng-if" => "alert"}
+          .alert.center{"class" => "alert-{{alert.type}}"}
+            .ul
+              .li{"ng-repeat" => "error in alert.messages"} {{error}}

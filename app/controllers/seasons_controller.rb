@@ -29,6 +29,14 @@ class SeasonsController < ApplicationController
 		end
 	end
 
+	def season_knockout_counts
+		@pool_entries = PoolEntry.where(season_id: params[:season_id]).group(:knocked_out).count
+
+		respond_to do |format|
+			format.json {render :json => @pool_entries.to_json}
+		end
+	end
+
 	def season_summary
 		Rails.logger.debug("seasons_controller.season_summary")
 		@web_state = WebState.first

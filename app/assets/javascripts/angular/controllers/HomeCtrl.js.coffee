@@ -3,13 +3,10 @@ angular.module('Home', ['ngResource', 'RailsApiResource', 'user'])
   .factory 'WebState', (RailsApiResource) ->
       RailsApiResource('admin/web_states', 'webstate')
 
-  .factory 'PoolEntriesThisSeason', (RailsApiResource) ->
-    RailsApiResource('seasons/:parent_id/season_results', 'pool_entries')
-
   .factory 'SeasonWeeks', (RailsApiResource) ->
       RailsApiResource('seasons/:parent_id/weeks', 'weeks')
 
-  .controller 'HomeCtrl', ['$scope', '$location', 'currentUser', 'AuthService', 'WebState', 'PoolEntriesThisSeason', 'SeasonWeeks', ($scope, $location, currentUser, AuthService, WebState, PoolEntriesThisSeason, SeasonWeeks) ->
+  .controller 'HomeCtrl', ['$scope', '$location', 'currentUser', 'AuthService', 'WebState', 'SeasonWeeks', '$http', ($scope, $location, currentUser, AuthService, WebState, SeasonWeeks, $http) ->
     $scope.controller = 'HomeCtrl'
     console.log("(HomeCtrl)")
 
@@ -44,23 +41,16 @@ angular.module('Home', ['ngResource', 'RailsApiResource', 'user'])
       )
 
     $scope.loadPoolEntries = () ->
-      console.log("(loadPoolEntries)")
-      if $scope.pool_entries.length == 0
-        PoolEntriesThisSeason.nested_query($scope.web_state.current_season.id).then((pool_entries) ->
-          console.log("(loadPoolEntries) returned with pool_entries ="+pool_entries)
-          $scope.pool_entries = pool_entries
-          $scope.getActivePoolEntries()
-          console.log("(loadPoolEntries) Have pool entries")
-        )
-      else
-        console.log("(loadPoolEntries) ALREADY LOADED")
+      $http.get("/seasons/#{$scope.web_state.current_season.id}/season_knockout_counts", {params: {format: 'json'}}).then((pool_entry_response) ->
+        console.log("(loadPoolEntries) returned with pool_entries", pool_entry_response)
+        $scope.pool_entry_counts = pool_entry_response['data']
+        console.log "$scope.pool_entry_counts", $scope.pool_entry_counts
+        $scope.getActivePoolEntries()
+        console.log("(loadPoolEntries) Have pool entries")
+      )
 
     $scope.getActivePoolEntries = () ->
-      console.log("(getActivePoolEntries)")
-      for pool_entry in $scope.pool_entries
-        if pool_entry.knocked_out == false
-          $scope.active_pool_entries.push(pool_entry)
-      $scope.active_pool_entries_count = $scope.active_pool_entries.length
+      $scope.active_pool_entries_count = $scope.pool_entry_counts['false']
       $scope.getTotalPot()
 
     $scope.getTotalPot = () ->

@@ -91,6 +91,8 @@ feature "pick and score a week", js: true do
     angular_logout(@admin)
     angular_login(@user)
 
+    expect(page).to have_content("Remaining 1")
+
     click_link("Results")
 
     expect(page).to have_content("KO'd This Week 2")

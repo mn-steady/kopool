@@ -188,6 +188,45 @@ describe SeasonsController do
 
 	end
 
+	describe 'GET season_entries_status' do
+		before do
+			@user1 = create(:user)
+			@user2 = create(:user)
+			@user3 = create(:user)
+			@user4 = create(:user)
+			sign_in @user1
+
+			@season = Season.create(year: 2014, name: "2014 Season", entry_fee: 50)
+			@season_2 = Season.create(year: 2015, name: "2015 Season", entry_fee: 50)
+			@week1 = Week.create(season: @season, week_number: 1, start_date: DateTime.new(2014, 8, 5), deadline: DateTime.new(2014, 8, 8), end_date: DateTime.new(2014, 8, 11))
+			
+			@web_state = create(:web_state, week_id: @week1.id, season_id: @season.id)
+
+			@pool_entry1 = PoolEntry.create(user: @user1, team_name: "User 1 Team One", paid: true, season_id: @season.id)
+			@pool_entry2 = PoolEntry.create(user: @user1, team_name: "User 1 Team Two", paid: true, season_id: @season.id)
+			@pool_entry3 = PoolEntry.create(user: @user1, team_name: "User 1 Team Three", paid: true, season_id: @season.id)
+			@pool_entry4 = PoolEntry.create(user: @user2, team_name: "User 2 Team One", paid: true, season_id: @season.id)
+			@pool_entry5 = PoolEntry.create(user: @user2, team_name: "User 2 Team Two", paid: true, season_id: @season.id)
+			@pool_entry6 = PoolEntry.create(user: @user2, team_name: "User 2 Team Three", paid: true, season_id: @season.id)
+			@pool_entry7 = PoolEntry.create(user: @user3, team_name: "User 3 Team One", paid: true, season_id: @season.id)
+			@pool_entry8 = PoolEntry.create(user: @user3, team_name: "User 3 Team Two", paid: true, season_id: @season.id, knocked_out: true)
+			@pool_entry9 = PoolEntry.create(user: @user3, team_name: "User 3 Team Three", paid: true, season_id: @season.id, knocked_out: true)
+			@pool_entry10 = PoolEntry.create(user: @user4, team_name: "User 4 Team One", paid: true, season_id: @season.id, knocked_out: true)
+			@pool_entry11 = PoolEntry.create(user: @user4, team_name: "User 4 Team Two", paid: true, season_id: @season.id, knocked_out: true)
+			@pool_entry12 = PoolEntry.create(user: @user4, team_name: "User 4 Team Three", paid: true, season_id: @season.id, knocked_out: true)
+
+			@bad_entry_1 = PoolEntry.create(user: @user1, team_name: "User 1 Team One", paid: true, season_id: @season_2.id)
+			@bad_entry_2 = PoolEntry.create(user: @user2, team_name: "User 2 Team One", paid: true, season_id: @season_2.id, knocked_out: true)
+		end
+
+		it 'returns the counts of knocked_out and non-knocked out users' do
+			get :season_knockout_counts, season_id: @season.id, format: :json
+			returned = JSON.parse(response.body)
+			expect(returned['false']).to eql 7
+			expect(returned['true']).to eql 5
+		end
+	end
+
 	describe "POST create" do
 		it_behaves_like "requires sign in" do
 			let(:action) { post :create, season: attributes_for(:season) }

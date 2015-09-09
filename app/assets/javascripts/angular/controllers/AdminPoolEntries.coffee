@@ -3,6 +3,9 @@ angular.module('AdminPoolEntries', ['ngResource', 'RailsApiResource', 'ui.bootst
 	.factory 'UnpickedPoolEntries', (RailsApiResource) ->
 		RailsApiResource('weeks/:parent_id/unpicked', 'unpicked_pool_entries')
 
+	.factory 'PoolEntriesThisSeason', (RailsApiResource) ->
+    RailsApiResource('seasons/:parent_id/season_results', 'pool_entries')
+
 	.controller 'AdminPoolEntriesCtrl', ['$scope', '$location', '$http', '$routeParams', 'PoolEntriesThisSeason', 'WebState', 'SeasonWeeks', 'PoolEntry', 'UnpickedPoolEntries', '$modal', ($scope, $location, $http, $routeParams, PoolEntriesThisSeason, WebState, SeasonWeeks, PoolEntry, UnpickedPoolEntries, $modal) ->
 
 		season_id = parseInt( $routeParams.season_id, 10 )

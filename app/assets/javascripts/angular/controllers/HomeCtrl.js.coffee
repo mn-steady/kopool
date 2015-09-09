@@ -44,6 +44,7 @@ angular.module('Home', ['ngResource', 'RailsApiResource', 'user'])
       $http.get("/seasons/#{$scope.web_state.current_season.id}/season_knockout_counts", {params: {format: 'json'}}).then((pool_entry_response) ->
         console.log("(loadPoolEntries) returned with pool_entries", pool_entry_response)
         $scope.pool_entry_counts = pool_entry_response['data']
+        $scope.total_entry_count = $scope.pool_entry_counts['false'] + $scope.pool_entry_counts['true']
         console.log "$scope.pool_entry_counts", $scope.pool_entry_counts
         $scope.getActivePoolEntries()
         console.log("(loadPoolEntries) Have pool entries")
@@ -54,7 +55,7 @@ angular.module('Home', ['ngResource', 'RailsApiResource', 'user'])
       $scope.getTotalPot()
 
     $scope.getTotalPot = () ->
-      $scope.total_pot = ($scope.pool_entries.length - 5) * 50
+      $scope.total_pot = ($scope.total_entry_count - 5) * 50
       console.log("Calculated total pot")
       
     # Main Controller Actions

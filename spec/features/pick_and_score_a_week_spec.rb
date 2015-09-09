@@ -92,6 +92,7 @@ feature "pick and score a week", js: true do
     angular_login(@user)
 
     expect(page).to have_content("Remaining 1")
+    expect(page).to have_content("Payout ($100.00)")
 
     click_link("Results")
 

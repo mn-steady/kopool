@@ -52,6 +52,11 @@
           %td {{pool_entry.user.phone}}
           %td {{pool_entry.user.email}}
 
+%h3 Lock a Matchup
+
+.matchup-select{"ng-if"=>"matchups"}
+  %select.form-control{"ng-options"=>"matchup.id as (matchup | matchupDisplay) for matchup in matchups | orderBy: 'game_time'", "ng-model"=>"matchupToLock"}
+
 %div
   %script{:id => "confirmAdvanceWeekModal.html", :type => "text/ng-template"}
     .modal-header

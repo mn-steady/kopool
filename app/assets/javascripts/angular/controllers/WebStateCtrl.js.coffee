@@ -6,7 +6,7 @@ angular.module('WebStates', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
   .factory 'Week', (RailsApiResource) ->
       RailsApiResource('weeks', 'weeks')
 
-  .controller 'WebStatesCtrl', ['$scope', '$location', '$http', '$routeParams', 'WebState', 'Week', '$modal', ($scope, $location, $http, $routeParams, WebState, Week, $modal) ->
+  .controller 'WebStatesCtrl', ['$scope', '$location', '$http', '$routeParams', 'WebState', 'Week', '$modal', 'Matchup', ($scope, $location, $http, $routeParams, WebState, Week, $modal, Matchup) ->
     $scope.controller = 'WebStatesCtrl'
 
     console.log("WebStatesCtrl")
@@ -26,13 +26,17 @@ angular.module('WebStates', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
       $scope.web_state = WebState.get(1).then((web_state) ->
         $scope.web_state = web_state
         $scope.season = "TBD"
-
         $scope.reload_week()
+        $scope.loadMatchups()
       )
 
     $scope.getWebState()
 
-
+    $scope.loadMatchups = () ->
+      Matchup.nested_query($scope.web_state.current_week.id).then((matchups) ->
+        $scope.matchups = matchups
+        console.log "Have matchups: ", $scope.matchups
+      )
 
     $scope.reload_week = () ->
       $scope.week = Week.get($scope.web_state.week_id).then((week) ->

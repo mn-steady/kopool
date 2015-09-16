@@ -34,6 +34,18 @@
     .col-sm-2.col-sm-offset-2
       %button.btn.btn-info{"ng-click"=>"save(web_state)", type: "submit"} Save Broadcast Message
 
+%h3 Lock a Matchup
+%p No one will be able to change their pick to or from this game once it is locked.
+
+.row
+  .matchup-select.col-md-6
+    %select.form-control#lock-select{"ng-model"=>"matchupToLock", "ng-options"=>"matchup as (matchup | matchupDisplay | orderBy: 'game_time') for matchup in matchups"}
+  .col-md-6
+    %button.btn.btn-danger{"ng-click"=>"updateMatchupLock(true)"} LOCK Matchup
+    %button.btn.btn-info{"ng-click"=>"updateMatchupLock(false)"} UNLOCK Matchup
+
+%br
+
 %h3 Unpicked Pool Entries
 
 .container{"ng-controller" => "AdminPoolEntriesCtrl"}
@@ -51,18 +63,6 @@
           %td {{pool_entry.team_name}}
           %td {{pool_entry.user.phone}}
           %td {{pool_entry.user.email}}
-
-%h3 Lock a Matchup
-%p No one will be able to change their pick to or from this game once it is locked.
-
-.row
-  .matchup-select.col-md-6
-    %select.form-control#lock-select{"ng-model"=>"matchupToLock", "ng-options"=>"matchup as (matchup | matchupDisplay | orderBy: 'game_time') for matchup in matchups"}
-  .col-md-6
-    %button.btn.btn-danger{"ng-click"=>"updateMatchupLock(true)"} LOCK Matchup
-    %button.btn.btn-info{"ng-click"=>"updateMatchupLock(false)"} UNLOCK Matchup
-
-%br
 
 .row
   .col-sm-12

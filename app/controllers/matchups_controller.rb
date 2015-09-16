@@ -124,7 +124,7 @@ class MatchupsController < ApplicationController
   private
 
     def matchups_params
-      params.permit(:home_team_id, :away_team_id, :game_time, :week_id, :completed, :tie, :winning_team_id)
+      params.permit(:home_team_id, :away_team_id, :game_time, :week_id, :completed, :tie, :winning_team_id, :locked)
     end
 
 end

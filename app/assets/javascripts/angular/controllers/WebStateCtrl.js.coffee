@@ -6,8 +6,9 @@ angular.module('WebStates', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
   .factory 'Week', (RailsApiResource) ->
       RailsApiResource('weeks', 'weeks')
 
-  .controller 'WebStatesCtrl', ['$scope', '$location', '$http', '$routeParams', 'WebState', 'Week', '$modal', ($scope, $location, $http, $routeParams, WebState, Week, $modal) ->
+  .controller 'WebStatesCtrl', ['$scope', '$location', '$http', '$routeParams', 'WebState', 'Week', '$modal', 'Matchup', ($scope, $location, $http, $routeParams, WebState, Week, $modal, Matchup) ->
     $scope.controller = 'WebStatesCtrl'
+    $scope.matchupToLock = {}
 
     console.log("WebStatesCtrl")
     console.log($routeParams)
@@ -26,13 +27,16 @@ angular.module('WebStates', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
       $scope.web_state = WebState.get(1).then((web_state) ->
         $scope.web_state = web_state
         $scope.season = "TBD"
-
         $scope.reload_week()
+        $scope.loadMatchups()
       )
 
     $scope.getWebState()
 
-
+    $scope.loadMatchups = () ->
+      Matchup.nested_query($scope.web_state.current_week.id).then((matchups) ->
+        $scope.matchups = matchups
+      )
 
     $scope.reload_week = () ->
       $scope.week = Week.get($scope.web_state.week_id).then((week) ->
@@ -78,6 +82,12 @@ angular.module('WebStates', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
         "OPEN for picks"
       else
         "CLOSED for picks"
+
+    $scope.updateMatchupLock = (locked = true) ->
+      $scope.matchupToLock.locked = locked
+      Matchup.put($scope.matchupToLock.id, $scope.matchupToLock, $scope.web_state.current_week.id).then((response) ->
+        $scope.savedMessage = "Saved Matchup #{response.data.away_team.name} vs. #{response.data.home_team.name} - Locked = #{response.data.locked}"
+      )
 
     # Modal
     $scope.open = (size) ->

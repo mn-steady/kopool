@@ -141,6 +141,7 @@ angular.module('RailsApiResource', ['ngResource'])
         $http.put(actionUrl, data, {params:defaultParams}).then( (response) ->
           result = []
           console.log("(RailsApiResource.put) response="+response.data)
+          response
         )
 
       Resource.remove = (data, parent_id) ->

@@ -104,4 +104,31 @@ describe PoolEntry do
     end
   end
 
+  describe 'matchup_locked?' do
+    before do
+      @season = FactoryGirl.create(:season)
+      @week = FactoryGirl.create(:week, season: @season)
+      @locked_matchup = FactoryGirl.create(:matchup, week_id: @week.id, locked: true)
+      @unlocked_matchup = FactoryGirl.create(:matchup, week_id: @week.id)
+
+      @unpicked_pool_entry = FactoryGirl.create(:pool_entry, season: @season)
+
+      @locked_pool_entry = FactoryGirl.create(:pool_entry, season: @season)
+      @pick1 = FactoryGirl.create(:pick, pool_entry: @locked_pool_entry, week: @week, nfl_team: @locked_matchup.away_team, matchup: @locked_matchup)
+      @unlocked_pool_entry= FactoryGirl.create(:pool_entry, season: @season)
+      @pick2 = FactoryGirl.create(:pick, pool_entry: @unlocked_pool_entry, week: @week, nfl_team: @unlocked_matchup.away_team, matchup: @unlocked_matchup)
+    end
+
+    it 'returns false if there isnt a pick' do
+      expect(@unpicked_pool_entry.matchup_locked?(@week)).to eql false
+    end
+
+    it 'returns false if the matchup isnt locked' do
+      expect(@unlocked_pool_entry.matchup_locked?(@week)).to eql false
+    end
+
+    it 'returns true if the matchup is locked' do
+      expect(@locked_pool_entry.matchup_locked?(@week)).to eql true
+    end
+  end
 end

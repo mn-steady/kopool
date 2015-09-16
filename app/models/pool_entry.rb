@@ -36,6 +36,16 @@ class PoolEntry < ActiveRecord::Base
     @returned_nfl_team = {nfl_team_id: @pick.team_id, logo_url_small: @pick.nfl_team.logo_url_small, nfl_team_name: @pick.nfl_team.name}
   end
 
+  def matchup_locked?(week)
+    @pick = Pick
+      .where(pool_entry_id: self.id)
+      .joins(:week)
+      .where('weeks.season_id = ?',week.season_id)
+      .where('week_id = ?', week).first
+    return false unless @pick.present?
+    !!@pick.matchup.locked
+  end
+
   def user_information
     @user = self.user
     @returned_user = {name: @user.name, phone: @user.phone}

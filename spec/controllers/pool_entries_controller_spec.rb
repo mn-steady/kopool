@@ -137,8 +137,8 @@ describe PoolEntriesController do
   		get :pool_entries_and_picks, week_id: @week.id, format: :json
       pool_entries_and_teams = JSON.parse(response.body)
 
-  		expect(pool_entries_and_teams[0]).to eq({"id"=>@pool_entry1.id, "team_name"=>@pool_entry1.team_name, "nfl_team"=>{}})
-  		expect(pool_entries_and_teams[1]).to eq({"id"=>@pool_entry2.id, "team_name"=>@pool_entry2.team_name, "nfl_team"=>{}})
+  		expect(pool_entries_and_teams[0]).to eq({"id"=>@pool_entry1.id, "team_name"=>@pool_entry1.team_name, "nfl_team"=>{}, "locked" => false})
+  		expect(pool_entries_and_teams[1]).to eq({"id"=>@pool_entry2.id, "team_name"=>@pool_entry2.team_name, "nfl_team"=>{}, "locked" => false})
   	end
 
   	it "returns an error message when the week is closed for picks" do

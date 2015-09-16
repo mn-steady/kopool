@@ -84,6 +84,7 @@ class PoolEntriesController < ApplicationController
           @returned_pool_entry[:id] = pool_entry.id
           @returned_pool_entry[:team_name] = pool_entry.team_name
           @returned_pool_entry[:nfl_team] = pool_entry.specific_weeks_nfl_team(@week)
+          @returned_pool_entry[:locked] = pool_entry.matchup_locked?(@week)
 
           @returned_entries_and_teams.push(@returned_pool_entry)
         end

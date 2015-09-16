@@ -94,7 +94,7 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 						$scope.pool_entries = pool_entries
 						$scope.load_season_weeks()
 						$scope.loadMatchups()
-						console.log("*** Have pool entries, picks, teams, and season-weeks ***")
+						console.log "*** Have pool entries, picks, teams, and season-weeks ***"
 						$scope.alert = { type: "success", msg: "Make your picks for this week!" }
 					(json_error_data) ->
 						console.log("Error or unauthorized request to PoolEntriesAndPicks")
@@ -122,6 +122,7 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 		# User Action of Selecting a Pick
 
 		$scope.set_editing_pool_entry = (index) ->
+			return if $scope.pool_entries[index].locked
 			$scope.editing_pool_entry = $scope.pool_entries[index]
 			console.log("Set editing_pool_entry to: "+$scope.editing_pool_entry.team_name)
 			console.log("This pool entry has a pick of ID " + $scope.editing_pool_entry.team_id)

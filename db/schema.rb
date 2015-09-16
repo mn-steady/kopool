@@ -26,7 +26,7 @@ ActiveRecord::Schema.define(version: 20150915010359) do
     t.integer  "winning_team_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "locked_in"
+    t.boolean  "locked"
   end
 
   create_table "nfl_teams", force: true do |t|

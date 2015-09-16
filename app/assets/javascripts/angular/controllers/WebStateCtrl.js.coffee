@@ -8,6 +8,7 @@ angular.module('WebStates', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 
   .controller 'WebStatesCtrl', ['$scope', '$location', '$http', '$routeParams', 'WebState', 'Week', '$modal', 'Matchup', ($scope, $location, $http, $routeParams, WebState, Week, $modal, Matchup) ->
     $scope.controller = 'WebStatesCtrl'
+    $scope.matchupToLock = {}
 
     console.log("WebStatesCtrl")
     console.log($routeParams)
@@ -82,6 +83,14 @@ angular.module('WebStates', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
         "OPEN for picks"
       else
         "CLOSED for picks"
+
+    $scope.updateMatchupLock = (locked = true) ->
+      console.log "Locked = ", locked
+      console.log "In updateMatchupLock with matchup: ", $scope.matchupToLock
+      $scope.matchupToLock.locked = locked
+      Matchup.put($scope.matchupToLock.id, $scope.matchupToLock, $scope.web_state.current_week.id).then((response) ->
+        $scope.savedMessage = "Saved Matchup #{response.data.away_team.name} vs. #{response.data.home_team.name} - Locked = #{response.data.locked}"
+      )
 
     # Modal
     $scope.open = (size) ->

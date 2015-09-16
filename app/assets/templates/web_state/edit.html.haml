@@ -57,7 +57,7 @@
 
 .row
   .matchup-select.col-md-6
-    %select.form-control{"ng-model"=>"matchupToLock", "ng-options"=>"matchup as (matchup | matchupDisplay | orderBy: 'game_time') for matchup in matchups"}
+    %select.form-control#lock-select{"ng-model"=>"matchupToLock", "ng-options"=>"matchup as (matchup | matchupDisplay | orderBy: 'game_time') for matchup in matchups"}
   .col-md-6
     %button.btn.btn-danger{"ng-click"=>"updateMatchupLock(true)"} LOCK Matchup
     %button.btn.btn-info{"ng-click"=>"updateMatchupLock(false)"} UNLOCK Matchup

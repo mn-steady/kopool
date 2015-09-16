@@ -36,7 +36,6 @@ angular.module('WebStates', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
     $scope.loadMatchups = () ->
       Matchup.nested_query($scope.web_state.current_week.id).then((matchups) ->
         $scope.matchups = matchups
-        console.log "Have matchups: ", $scope.matchups
       )
 
     $scope.reload_week = () ->
@@ -85,8 +84,6 @@ angular.module('WebStates', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
         "CLOSED for picks"
 
     $scope.updateMatchupLock = (locked = true) ->
-      console.log "Locked = ", locked
-      console.log "In updateMatchupLock with matchup: ", $scope.matchupToLock
       $scope.matchupToLock.locked = locked
       Matchup.put($scope.matchupToLock.id, $scope.matchupToLock, $scope.web_state.current_week.id).then((response) ->
         $scope.savedMessage = "Saved Matchup #{response.data.away_team.name} vs. #{response.data.home_team.name} - Locked = #{response.data.locked}"

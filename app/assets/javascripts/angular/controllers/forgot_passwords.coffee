@@ -20,7 +20,7 @@ angular.module('ForgotPasswords', ['ngResource', 'RailsApiResource', 'ui.bootstr
 
 			ForgotPassword.post("password", $scope.user_params).then(
 				(success_response) ->
-					$scope.alert.message = "An email has been sent. Please follow the instructions in the email to reset your password. NOTE: It may take up to 10 minutes for the email to be delivered. Please do not submit again - it will invalidate the first email."
+					$scope.alert.messages = ["An email has been sent. Please follow the instructions in the email to reset your password. NOTE: It may take up to 10 minutes for the email to be delivered. Please do not submit again - it will invalidate the first email."]
 					$scope.alert.type = "success"
 				(json_error_data) ->
 					console.log("No user found for the given email")

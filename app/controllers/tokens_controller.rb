@@ -6,6 +6,7 @@ class TokensController  < ApplicationController
   before_filter :validate_parameters, only: [:create]
   before_filter :require_proper_credentials, only: [:create]
   before_filter :require_existing_user, only: [:create]
+  before_filter :stop_blocked_users
   before_filter :validate_password, only: [:create]
 
   respond_to :json
@@ -77,5 +78,11 @@ class TokensController  < ApplicationController
       @validated_params = params.permit(:user => [:email, :password], :registration => [ :registration_id, :app_name, :device_id, :device_os ])
       @user = @validated_params[:user]
       @registration = @validated_params[:registration]
+    end
+
+    def stop_blocked_users
+      if @user.blocked
+        return render :status=>401, :json=>{:message=>"Your user account is blocked."}
+      end
     end
 end

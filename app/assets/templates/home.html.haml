@@ -50,15 +50,6 @@
     %div{"ng-if" => "loaded"}
       %div{"ac-chart" => "'line'", "ac-data"=>"chart_data", "ac-config"=>"line_config", "id"=>"chart", "class"=>"line-chart"}
 
-.row{"ng-if" => "is_authorized()"}
-  .text-center.smaller-title Congratulations to our reigning champions!
-  .text-center.champions
-    .col-sm-1
-    .col-sm-5.alert.alert-success
-      %span.center Krafty (Jamie K.)
-    .col-sm-5.alert.alert-success
-      %span.center Safety (Pete S.)
-
 .admin-panel{"ng-show" => "is_admin()"}
   .row
     .col-sm-12.text-center

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="dataSourceStorageLocal">
+    <data-source name="PostgreSQL - kopool_development@localhost" uuid="437f623f-e374-4786-8a52-a6ac7927835b">
+      <secret-storage>master_key</secret-storage>
+      <user-name>kopool</user-name>
+      <schema-pattern>kopool_development.pg_catalog kopool_development.public</schema-pattern>
+      <default-schemas>kopool_development.public</default-schemas>
+    </data-source>
+  </component>
+</project>

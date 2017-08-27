@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" hash="3939136671">
+    <data-source source="LOCAL" name="PostgreSQL - kopool_development@localhost" uuid="437f623f-e374-4786-8a52-a6ac7927835b">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://localhost:5432/kopool_development</jdbc-url>
+    </data-source>
+  </component>
+</project>

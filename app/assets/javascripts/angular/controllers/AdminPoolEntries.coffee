@@ -32,7 +32,6 @@ angular.module('AdminPoolEntries', ['ngResource', 'RailsApiResource', 'ui.bootst
 
 		$scope.getUnpickedPoolEntries = () ->
 			UnpickedPoolEntries.nested_query($scope.current_week.id).then((unpicked_pool_entries) ->
-				console.log("in getUnpickedPoolEntries")
 				$scope.unpicked_pool_entries = unpicked_pool_entries
 			)
 
@@ -51,8 +50,6 @@ angular.module('AdminPoolEntries', ['ngResource', 'RailsApiResource', 'ui.bootst
 			editing_pool_entry = pool_entry
 			editing_pool_entry.paid = null
 			PoolEntry.save(editing_pool_entry)
-
-
 
 		$scope.getPaidOrUnpaidButtonText = (pool_entry) ->
 			if pool_entry.paid is (false or null)

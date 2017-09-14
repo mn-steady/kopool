@@ -114,9 +114,31 @@ class PicksController < ApplicationController
 		@week = Week.find(params[:week_id])
 
 		if @week.open_for_picks == true
-			Rails.logger.error("ERROR you can't view the sorted picks for a week before it is closed!")
-			error_message = "You cannot view the sorted picks for this week until the games start!"
-			render :json => [:error => error_message], :status => :bad_request
+			@season = @week.season
+			locked_matchups = Matchup.where(week_id: @week.id, locked: true)
+			@locked_picks = Pick.includes(:pool_entry).where(pool_entries: {season_id: @season.id}).where(matchup_id: locked_matchups.map(&:id))
+
+			if @locked_picks.present?
+				@picks_per_team_hash = {}
+
+				@locked_picks.each do |pick|
+					if @picks_per_team_hash.has_key?(pick.nfl_team.name)
+						@picks_per_team_hash[pick.nfl_team.name] += 1
+					else
+						@picks_per_team_hash[pick.nfl_team.name] = 1
+					end
+				end
+
+				@sorted_picks = @picks_per_team_hash.sort_by{|k,v| -v}
+
+				respond_to do |format|
+					format.json { render :json => @sorted_picks }
+				end
+			else
+				Rails.logger.error("ERROR you can't view the sorted picks for a week before it is closed!")
+				error_message = "You cannot view the sorted picks for this week until the games start!"
+				render :json => [:error => error_message], :status => :bad_request
+			end
 		else
 			@this_weeks_picks = Pick.where(week_id: params[:week_id])
 			@picks_per_team_hash = {}

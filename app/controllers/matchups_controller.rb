@@ -16,9 +16,20 @@ class MatchupsController < ApplicationController
     @week = Week.find(params[:week_id])
 
     if @week.open_for_picks == true
-      Rails.logger.error("ERROR You cannot view the picks for this week until the games start! Week must be closed for picks")
-      error_message = "You cannot view the picks for this week until the games start!"
-      render :json => [:error => error_message], :status => :bad_request
+      @season = @week.season
+      locked_matchups = Matchup.where(week_id: @week.id, locked: true)
+      @locked_picks = Pick.includes(:pool_entry).where(pool_entries: {season_id: @season.id}).where(matchup_id: locked_matchups.map(&:id))
+      if @locked_picks.present?
+        @filtered_matchups = Matchup.where(week_id: @week.id, id: @locked_picks.map(&:matchup_id))
+
+        respond_to do |format|
+          format.json {render :json => @filtered_matchups.to_json(include: [{home_team: { only: [:name, :id], :methods => [:logo_url_small] }}, away_team: {only: [:name, :id], :methods => [:logo_url_small]}])}
+        end
+      else
+        Rails.logger.error("ERROR You cannot view the picks for this week until the games start! Week must be closed for picks")
+        error_message = "You cannot view the picks for this week until the games start!"
+        render :json => [:error => error_message], :status => :bad_request
+      end
     else
       @this_weeks_picks = Pick.where(week_id: @week.id)
       @matchups_this_week = Matchup.where(week_id: @week.id)

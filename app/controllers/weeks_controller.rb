@@ -120,9 +120,48 @@ class WeeksController < ApplicationController
       error_message = "You cannot view the results of a future week. Nice try!"
       render :json => [:error => error_message], :status => :bad_request
     elsif @week.open_for_picks == true
-      Rails.logger.error("ERROR can't see this weeks results until the week is closed for picks")
-      error_message = "You can't see the results for this week until this week's games have started."
-      render :json => [:error => error_message], :status => :bad_request
+      @season = @week.season
+      locked_matchups = Matchup.where(week_id: @week.id, locked: true)
+      @locked_picks = Pick.includes(:pool_entry).where(pool_entries: {season_id: @season.id}).where(matchup_id: locked_matchups.map(&:id))
+
+      if @locked_picks.present?
+        locked_pool_entry_ids = @locked_picks.pluck(:pool_entry_id)
+        @pool_entries_knocked_out_this_week = []
+        @pool_entries_still_alive = []
+        @pool_entries_knocked_out_previously = []
+        @unmatched_pool_entries = []
+
+        @pool_entries_this_season = PoolEntry.where(season_id: @season.id).order('team_name ASC')
+        @pool_entries_this_season.each do |pool_entry|
+
+          @returned_pool_entry = {}
+          @returned_pool_entry[:id] = pool_entry.id
+          @returned_pool_entry[:team_name] = pool_entry.team_name
+          if locked_pool_entry_ids.include?(pool_entry.id)
+            @returned_pool_entry[:nfl_team] = pool_entry.most_recent_picks_nfl_team(@week)
+          end
+
+          @pool_entries_still_alive.push(@returned_pool_entry) unless pool_entry.knocked_out
+
+          if pool_entry.knocked_out and pool_entry.knocked_out_week_id == @week.id
+            @pool_entries_knocked_out_this_week.push(@returned_pool_entry)
+          end
+
+          if pool_entry.knocked_out and pool_entry.knocked_out_week_id != @week.id
+            @pool_entries_knocked_out_previously.push(@returned_pool_entry)
+          end
+        end
+
+        @week_results = [@pool_entries_still_alive, @pool_entries_knocked_out_this_week, @pool_entries_knocked_out_previously, @unmatched_pool_entries]
+
+        respond_to do | format |
+          format.json {render :json => @week_results.to_json}
+        end
+      else
+        Rails.logger.error("ERROR can't see this weeks results until the week is closed for picks")
+        error_message = "You can't see the results for this week until this week's games have started."
+        render :json => [:error => error_message], :status => :bad_request
+      end
     else
       @pool_entries_knocked_out_this_week = []
       @pool_entries_still_alive = []
@@ -171,6 +210,25 @@ class WeeksController < ApplicationController
 
     respond_to do | format |
       format.json {render :json => @unpicked_pool_entries.to_json(include: [{user: {only: [:name, :phone, :email]}}])}
+    end
+  end
+
+  def locked_picks
+    @week = Week.find(params[:week_id])
+    @season = @week.season
+
+    locked_matchups = Matchup.where(week_id: @week.id, locked: true)
+
+    @locked_picks = Pick.includes(:pool_entry).where(pool_entries: {knocked_out: false, season_id: @season.id}).where(matchup_id: locked_matchups.map(&:id))
+
+    respond_to do | format |
+      format.json {render :json => @locked_picks.to_json(
+        include: [
+          {pool_entry: { only: [:id, :team_name]}},
+          {nfl_team: {only: [:name]}},
+          {user: {only: [:name]}}
+        ]
+      )}
     end
   end
 

@@ -24,6 +24,7 @@ Kopool::Application.routes.draw do
     get "week_picks", :controller => "picks", :action => "week_picks"
     get "sorted_picks", :controller => "picks", :action => "sorted_picks"
     get "unpicked", :action => "unpicked"
+    get "locked_picks", :action => "locked_picks"
     get "filtered_matchups", :controller => "matchups", :action => "filtered_matchups"
     get "pool_entries_and_picks", :controller => "pool_entries", :action => "pool_entries_and_picks"
     post "create_or_update_pick", :controller => "picks", :action => "create_or_update_pick"

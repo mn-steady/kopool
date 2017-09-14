@@ -46,6 +46,25 @@
 
 %br
 
+%h3 Locked Picks
+.container
+  .row
+    %table.table.table-striped
+      %thead
+        %tr
+          %th Pick #
+          %th Person Name
+          %th Pool Entry Name
+          %th Picked Team
+      %tbody{"ng-repeat" => "pick in lockedPicks | orderBy : 'team_id' "}
+        %tr
+          %td {{$index+1}}
+          %td {{pick.user.name}}
+          %td {{pick.pool_entry.team_name}}
+          %td {{pick.nfl_team.name}}
+
+%br
+
 %h3 Unpicked Pool Entries
 
 .container{"ng-controller" => "AdminPoolEntriesCtrl"}

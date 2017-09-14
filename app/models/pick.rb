@@ -13,6 +13,10 @@ class Pick < ActiveRecord::Base
 
   validate :pick_must_be_in_matchup
 
+  def user
+    pool_entry.user
+  end
+
   private
 
   def pick_must_be_in_matchup

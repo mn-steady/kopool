@@ -1,14 +1,13 @@
 class ForgotPasswordsController < Devise::PasswordsController
 
 	def create
-
 		@user = User.where(email: params[:user_email]).first
 
 		if @user
 			@user.send_reset_password_instructions
 
 			respond_to do | format |
-				format.json {render json: @user}
+				format.json { render json: @user }
 			end
 			
 		else

@@ -18,6 +18,7 @@ gem 'faker'
 gem 'paperclip', '~> 4.1'
 # gem 'aws-sdk', '~> 1.5.7'
 gem 'json', '1.8.5'
+gem 'rack-cors'
 
 group :development, :test do
   gem 'rspec-rails', '~> 3.8.2'

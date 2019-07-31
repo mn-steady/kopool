@@ -16,7 +16,7 @@ gem 'factory_girl_rails'
 gem 'faker'
 # gem 'bootstrap-sass', '~> 3.1.1'
 gem 'paperclip', '~> 4.1'
-# gem 'aws-sdk', '~> 1.5.7'
+gem 'aws-sdk-s3'
 gem 'json', '1.8.5'
 gem 'rack-cors'
 

@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 ruby '2.4.6'
 
-gem 'rails', '4.0.0'
+gem 'rails', '4.2.8'
 gem 'pg'
 gem 'sass-rails', '~> 4.0.0'
 gem 'uglifier', '>= 1.3.0'
@@ -10,7 +10,7 @@ gem 'jquery-rails'
 gem 'turbolinks'
 gem 'jbuilder', '~> 1.2'
 gem 'devise'
-gem 'haml-rails'
+gem 'haml-rails', '1.0.0'
 gem 'factory_girl'
 gem 'factory_girl_rails'
 gem 'faker'
@@ -18,10 +18,6 @@ gem 'faker'
 gem 'paperclip', '~> 4.1'
 # gem 'aws-sdk', '~> 1.5.7'
 gem 'json', '1.8.5'
-
-group :development do
-  gem "rails-erd"
-end
 
 group :development, :test do
   gem 'rspec-rails', '~> 3.0.0'

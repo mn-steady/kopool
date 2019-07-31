@@ -21,7 +21,7 @@ Kopool::Application.configure do
 
   # Disable Rails's static asset server (Apache or nginx will already do this).
   # Changed for Heroku
-  config.serve_static_assets = true
+  config.serve_static_files = true
 
   # Compress JavaScripts and CSS.
   config.assets.js_compressor = Uglifier.new(mangle: false)

@@ -2,7 +2,7 @@ angular.module('RailsApiResource', ['ngResource'])
 
   .constant('KOPOOL_CONFIG',
     {
-      PROTOCOL: 'http',
+      PROTOCOL: 'https',
       # You have to manually change these for deployment
       # TODO: Make it pull this from an environment variable
       # HOSTNAME: 'localhost:3000'

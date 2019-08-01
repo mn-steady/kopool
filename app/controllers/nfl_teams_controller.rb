@@ -4,14 +4,11 @@ class NflTeamsController < ApplicationController
   before_filter :verify_any_user, only: [:index]
 
   def index
-
-    Rails.logger.debug("(NflTeamsController.index) is admin")
     @nfl_teams = NflTeam.all
 
     respond_to do | format |
       format.json {render json: @nfl_teams, :methods => [:logo_url_small]}
     end
-
   end
 
   def show

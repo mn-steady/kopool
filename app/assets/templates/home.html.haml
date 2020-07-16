@@ -8,7 +8,7 @@
         .alert.alert-success {{flash_message}}
     .row
       .col-lg-4
-        %div.rotated-title-left{"ng-hide" => "is_authorized()"} 2020 Season Test
+        %div.rotated-title-left{"ng-hide" => "is_authorized()"} 2020 Season
         %a.btn.btn-success.btn-lg.btn-block{"ng-show" => "is_authorized()", href: '#/weeks/{{web_state.current_week.id}}/matchups', role: "button"} Picks »
       .col-lg-4
         %img.img-rounded.frontpage-logo{alt: "KO Pool Logo", src: asset_path('kopool_c_med.png')}

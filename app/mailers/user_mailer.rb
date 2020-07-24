@@ -3,7 +3,7 @@ class UserMailer < ActionMailer::Base
 
   def welcome_email(user)
     @user = user
-    @url  = 'http://www.kopool.org'
+    @url  = 'https://www.kopool.org'
 
     web_state = WebState.first
     if web_state.nil?

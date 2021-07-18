@@ -24,6 +24,8 @@
         .alert.alert-info If you played in previous seasons, sign in to add new Pool Entries for the 2021 Season.
       .col-lg-4{"ng-if" => "web_state.current_season.open_for_registration && is_authorized()"}
         %a.btn.btn-warning.btn-lg.btn-block{id: "add-entries", href: "#/seasons/{{web_state.current_season.id}}/add_pool_entries", role: "button"} Add/Edit Entries - {{web_state.current_season.name}} » 
+      .col-lg-4{"ng-if" => "web_state.current_season.open_for_registration && is_authorized()"}
+        %a.btn.btn-warning.btn-lg.btn-block{id: "add-entries", href: "#/registration/rules", role: "button"} 2021 Rules » 
     
     
     .row{"ng-show" => "is_authorized()"}

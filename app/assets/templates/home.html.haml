@@ -8,12 +8,12 @@
         .alert.alert-success {{flash_message}}
     .row
       .col-lg-4
-        %div.rotated-title-left{"ng-hide" => "is_authorized()"} 2020 Season
+        %div.rotated-title-left{"ng-hide" => "is_authorized()"} 2021 Season
         %a.btn.btn-success.btn-lg.btn-block{"ng-show" => "is_authorized()", href: '#/weeks/{{web_state.current_week.id}}/matchups', role: "button"} Picks »
       .col-lg-4
         %img.img-rounded.frontpage-logo{alt: "KO Pool Logo", src: asset_path('kopool_c_med.png')}
       .col-lg-4
-        %div.rotated-title-right{"ng-hide" => "is_authorized()"} 2020 Season
+        %div.rotated-title-right{"ng-hide" => "is_authorized()"} 2021 Season
         %a.btn.btn-success.btn-lg.btn-block{"ng-show" => "is_authorized()", href: '#/weeks/{{web_state.current_week.id}}/results', role: "button"} Results »
     .row
       .col-lg-4
@@ -21,7 +21,7 @@
       .col-lg-4{"ng-if" => "web_state.current_season.open_for_registration && !is_authorized()"}
         %a.btn.btn-warning.btn-lg.btn-block{href: "#/users/register", role: "button"} New Users Only - Register »
         %br
-        .alert.alert-info If you played in previous seasons, sign in to add new Pool Entries for the 2020 Season.
+        .alert.alert-info If you played in previous seasons, sign in to add new Pool Entries for the 2021 Season.
       .col-lg-4{"ng-if" => "web_state.current_season.open_for_registration && is_authorized()"}
         %a.btn.btn-warning.btn-lg.btn-block{id: "add-entries", href: "#/seasons/{{web_state.current_season.id}}/add_pool_entries", role: "button"} Add/Edit Entries - {{web_state.current_season.name}} » 
     
@@ -83,6 +83,6 @@
 
   %hr/
   %footer
-    %p © Dave Fugh 2020
+    %p © Dave Fugh 2021
 
 

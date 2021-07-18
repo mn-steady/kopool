@@ -3,7 +3,7 @@ namespace :seasons do
 	task :setup_next_season, [:week_1_tuesday] => :environment do |t, args|
 		@first_week_tuesday = DateTime.parse(args[:week_1_tuesday])
 		@season = Season.create!(year: @first_week_tuesday.year, name: "#{@first_week_tuesday.year} KO Pool", entry_fee: 50, open_for_registration: false)
-		(0..16).each do |week|
+		(0..17).each do |week|
 			week_start_tuesday = @first_week_tuesday + week.weeks
 			week_deadline      = week_start_tuesday + 2.days
 			week_end_date      = week_start_tuesday + 6.days

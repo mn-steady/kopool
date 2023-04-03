@@ -1,1 +1,3 @@
-Rails.application.assets.register_engine '.haml', Tilt::HamlTemplate
+Rails.application.config.assets.configure do |env|
+  env.register_engine '.haml', Tilt::HamlTemplate
+end

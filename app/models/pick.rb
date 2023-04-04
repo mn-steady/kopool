@@ -1,4 +1,4 @@
-class Pick < ActiveRecord::Base
+class Pick < ApplicationRecord
 	belongs_to :week
 	belongs_to :nfl_team, foreign_key: :team_id
 	belongs_to :pool_entry, autosave: true

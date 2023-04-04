@@ -1,4 +1,4 @@
-class WebState < ActiveRecord::Base
+class WebState < ApplicationRecord
 
   belongs_to :current_week, class_name: "Week", :foreign_key => "week_id"
   belongs_to :current_season, class_name: "Season", :foreign_key => "season_id"

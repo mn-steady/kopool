@@ -1,4 +1,4 @@
-class NflTeam < ActiveRecord::Base
+class NflTeam < ApplicationRecord
 	validates_presence_of :name, :conference, :division
 
   has_attached_file :logo, :styles => { :medium => "300x300>", :thumb => "100x100>" }, s3_credentials: S3_CREDENTIALS, :default_url => "assets/missing.png"

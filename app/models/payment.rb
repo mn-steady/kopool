@@ -1,3 +1,3 @@
-class Payment < ActiveRecord::Base
+class Payment < ApplicationRecord
 	validates_presence_of :amount
 end

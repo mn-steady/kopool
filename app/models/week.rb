@@ -1,4 +1,4 @@
-class Week < ActiveRecord::Base
+class Week < ApplicationRecord
 	has_many :matchups
 	has_many :picks
 	belongs_to :season

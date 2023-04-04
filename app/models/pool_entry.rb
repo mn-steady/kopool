@@ -1,4 +1,4 @@
-class PoolEntry < ActiveRecord::Base
+class PoolEntry < ApplicationRecord
 	has_many :picks
 	has_many :payments
   belongs_to :user

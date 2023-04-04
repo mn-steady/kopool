@@ -1,4 +1,4 @@
-class Matchup < ActiveRecord::Base
+class Matchup < ApplicationRecord
 
   # may have to specify the fk
   belongs_to :home_team, class_name: "NflTeam"

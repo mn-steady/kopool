@@ -7,6 +7,7 @@ require 'capybara/rspec'
 
 include Warden::Test::Helpers
 
+slots_number = 0
 Capybara.app_host = "http://localhost:3000"
 Capybara.server_host = "localhost"
 Capybara.server_port = "3000"
@@ -29,7 +30,7 @@ ActiveRecord::Migration.check_pending! if defined?(ActiveRecord::Migration)
 RSpec.configure do |config|
   config.infer_spec_type_from_file_location! # Not explicit in RSpec 3.0.0+
 
-  config.include FactoryGirl::Syntax::Methods 
+  config.include FactoryBot::Syntax::Methods
 
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
 
@@ -58,6 +59,6 @@ RSpec.configure do |config|
   config.after(:each) do
     DatabaseCleaner.clean
     Warden.test_reset!
-    slots_number = [slots_number, GC.stat[:heap_live_slot]].max # Fixed a backtrace error in feature specs
+    slots_number = [slots_number, GC.stat[:heap_live_slots]].max # Fixed a backtrace error in feature specs
   end
 end

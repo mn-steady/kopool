@@ -33,14 +33,14 @@ describe NflTeamsController do
     end
 
     it "show an admin the correct team" do
-      put :show, id: @vikings.id, format: :json
+      put :show, params: { id: @vikings.id, format: :json }
       expect(JSON.parse(response.body)['name']).to eq("Minnesota Vikings")
     end
 
     it "will not show a non-admin the correct team" do
       @regular_guy = create(:user)
       sign_in @regular_guy
-      put :show, id: @vikings.id, format: :json
+      put :show, params: { id: @vikings.id, format: :json }
       expect(response.status).to eq(Rack::Utils.status_code(:unauthorized))
     end
 
@@ -58,14 +58,14 @@ describe NflTeamsController do
     end
 
     it "updates the NflTeam if you are an admin" do
-      put :update, id: @broncos.id, nfl_team: {name: "Colorado Broncos"}, format: :json
+      put :update, params: { id: @broncos.id, nfl_team: {name: "Colorado Broncos"}, format: :json }
       expect(NflTeam.first.name).to eq("Colorado Broncos")
     end
 
     it "Will not update the NflTeam if you are not an admin" do
       @regular_guy = create(:user)
       sign_in @regular_guy
-      put :update, id: @broncos.id, nfl_team: {name: "Colorado Broncos"}, format: :json
+      put :update, params: { id: @broncos.id, nfl_team: {name: "Colorado Broncos"}, format: :json }
       expect(NflTeam.first.name).to eq("Denver Broncos")
     end
   end
@@ -83,14 +83,14 @@ describe NflTeamsController do
     end
 
     it "deletes the NflTeam if you are an admin" do
-      delete :destroy, id: @broncos.id, format: :json
+      delete :destroy, params: { id: @broncos.id, format: :json }
       expect(NflTeam.all.count).to eq(0)
     end
 
     it "Will not delete the NflTeam if you are not an admin" do
       @regular_guy = create(:user)
       sign_in @regular_guy
-      delete :destroy, id: @broncos.id, format: :json
+      delete :destroy, params: { id: @broncos.id, format: :json }
       expect(NflTeam.all.count).to eq(1)
     end
 
@@ -111,7 +111,7 @@ describe NflTeamsController do
     end
 
     it "creates an NflTeam if you are an admin" do
-      put :create, nfl_team: @new_team, format: :json
+      put :create, params: { nfl_team: @new_team, format: :json }
       expect(response.status).to eq(Rack::Utils.status_code(:ok))
       expect(NflTeam.last.name).to eq("Minnesota Vikings")
     end
@@ -119,7 +119,7 @@ describe NflTeamsController do
     it "Will not update the NflTeam if you are not an admin" do
       @regular_guy = create(:user)
       sign_in @regular_guy
-      put :create, nfl_team: @new_team, format: :json
+      put :create, params: { nfl_team: @new_team, format: :json }
       expect(response.status).to eq(Rack::Utils.status_code(:unauthorized))
       expect(NflTeam.last.name).to eq("Denver Broncos")
     end

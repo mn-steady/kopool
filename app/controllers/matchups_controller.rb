@@ -1,6 +1,6 @@
 class MatchupsController < ApplicationController
-	before_filter :verify_admin_user, only: [:show, :update, :save_week_outcomes, :destroy, :create]
-  before_filter :verify_any_user, only: [:index, :filtered_matchups]
+	before_action :verify_admin_user, only: [:show, :update, :save_week_outcomes, :destroy, :create]
+  before_action :verify_any_user, only: [:index, :filtered_matchups]
 
   def index
 

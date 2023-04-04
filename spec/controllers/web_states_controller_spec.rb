@@ -14,16 +14,16 @@ describe Admin::WebStatesController do
     end
 
     it "should not allow non-admin to update" do
-      sign_in :user, @regular_guy
+      sign_in(@regular_guy, scope: :user)
       params = { id: 1, current_week: @week17, format: :json }
-      put :update, params
+      put :update, params: params
       expect(response.status).to eq(Rack::Utils.status_code(:unauthorized))
     end
 
     it "should allow admin to update" do
-      sign_in :user, @admin
+      sign_in(@admin, scope: :user)
       params = { id: 1, current_week: @week17, format: :json }
-      put :update, params
+      put :update, params: params
       expect(response.status).to eq(Rack::Utils.status_code(:ok))
     end
   end

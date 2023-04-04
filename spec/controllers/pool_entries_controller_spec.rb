@@ -7,23 +7,23 @@ describe PoolEntriesController do
 		before do
 			@season = Season.create(year: 2014, name: "2014 Season", entry_fee: 50)
       @week = Week.create(season: @season, week_number: 1, open_for_picks: true, start_date: DateTime.new(2014, 8, 5), deadline: DateTime.new(2014, 8, 8), end_date: DateTime.new(2014, 8, 11))
-      @web_state = FactoryGirl.create(:web_state, current_week: @week, season_id: @season.id)
+      @web_state = FactoryBot.create(:web_state, current_week: @week, season_id: @season.id)
 		end
 
 		context "with valid input" do
 
 			before do
 				@user = create(:user, admin: true)
-				sign_in :user, @user
+				sign_in(@user, scope: :user)
 			end
 
 			it "saves the new pool entry" do
-				post :create, user: @user, team_name: "Test Team", format: :json
+				post :create, params: { user: @user, team_name: "Test Team", format: :json }
 				expect(PoolEntry.first.team_name).to eq("Test Team")
 			end
 
 			it "associates the new pool entry with the current season" do
-				post :create, user: @user, team_name: "Test Team", format: :json
+				post :create, params: { user: @user, team_name: "Test Team", format: :json }
 				expect(PoolEntry.first.season_id).to eq(@season.id)
 			end
 
@@ -33,19 +33,19 @@ describe PoolEntriesController do
 
 			before do
 				@user = create(:user, admin: true)
-				sign_in :user, @user
+				sign_in(@user, scope: :user)
 			end
 
 			it "will not create a new pool entry after the first week is closed for picks" do
 				@week.close_week_for_picks!
-				post :create, user: @user, team_name: "Test Team", format: :json
+				post :create, params: { user: @user, team_name: "Test Team", format: :json }
 				expect(response.status).to eq(Rack::Utils.status_code(:bad_request))
 				expect(PoolEntry.count).to eq(0)
 			end
 
 			it "will not create a new pool entry after the first week" do
 				@week.update_attributes(week_number: 2)
-				post :create, user: @user, team_name: "Test Team", format: :json
+				post :create, params: { user: @user, team_name: "Test Team", format: :json }
 				expect(response.status).to eq(Rack::Utils.status_code(:bad_request))
 				expect(PoolEntry.count).to eq(0)
 			end
@@ -61,18 +61,18 @@ describe PoolEntriesController do
 
 			it "will let a user delete his/her own pool entries if the first week is open for picks" do
 				@params = { 'team_name' => "Test Team", 'format' => 'json'}
-				post :create, @params
+				post :create, params: @params
 				expect(PoolEntry.first.team_name).to eq("Test Team")
 				pool_entry = PoolEntry.first
 				@params = { 'id' => pool_entry.id, 'format' => 'json'}
-				delete :destroy, @params
+				delete :destroy, params: @params
 				expect(response.status).to eq(Rack::Utils.status_code(:ok))
 				expect(PoolEntry.count).to eq(0)
 			end
 
 			it "will not let one user delete another users pool entries" do
 				@params = { 'team_name' => "Test Team", 'format' => 'json'}
-				post :create, @params
+				post :create, params: @params
 				expect(PoolEntry.first.team_name).to eq("Test Team")
 				pool_entry = PoolEntry.first
 				sign_out @regular_guy
@@ -80,21 +80,21 @@ describe PoolEntriesController do
 				@different_guy = create(:user, email: 'different@test.com')
 				sign_in @different_guy
 				@params = { 'id' => pool_entry.id, 'format' => 'json'}
-				delete :destroy, @params
+				delete :destroy, params: @params
 				expect(response.status).to eq(Rack::Utils.status_code(:internal_server_error))
 				expect(PoolEntry.count).to eq(1)
 			end
 
 			it "will not delete a new pool entry after the first week" do
 				@params = { 'team_name' => "Test Team", 'format' => 'json'}
-				post :create, @params
+				post :create, params: @params
 				expect(PoolEntry.first.team_name).to eq("Test Team")
 				pool_entry = PoolEntry.first
 
 				@week.update_attributes(week_number: 2)
 
 				@params = { 'id' => pool_entry.id, 'format' => 'json'}
-				delete :destroy, @params
+				delete :destroy, params: @params
 				expect(response.status).to eq(Rack::Utils.status_code(:internal_server_error))
 				expect(PoolEntry.count).to eq(1)
 			end
@@ -121,7 +121,7 @@ describe PoolEntriesController do
   		pick1 = Pick.create(pool_entry: @pool_entry1, week: @week, team_id: @vikings.id, matchup_id: @matchup.id)
   		pick2 = Pick.create(pool_entry: @pool_entry2, week: @week, team_id: @broncos.id, matchup_id: @matchup.id)
 
-  		get :pool_entries_and_picks, week_id: @week.id, format: :json
+  		get :pool_entries_and_picks, params: { week_id: @week.id, format: :json }
       pool_entries_and_teams = JSON.parse(response.body)
 
   		expect(pool_entries_and_teams[0]['id']).to eq(@pool_entry1.id)
@@ -134,7 +134,7 @@ describe PoolEntriesController do
 
   	it "returns pool entries but no nfl team when picks don't exist" do
 
-  		get :pool_entries_and_picks, week_id: @week.id, format: :json
+  		get :pool_entries_and_picks, params: { week_id: @week.id, format: :json }
       pool_entries_and_teams = JSON.parse(response.body)
 
   		expect(pool_entries_and_teams[0]).to eq({"id"=>@pool_entry1.id, "team_name"=>@pool_entry1.team_name, "nfl_team"=>{}, "locked" => false})
@@ -145,7 +145,7 @@ describe PoolEntriesController do
   		@week.open_for_picks = false
   		@week.save!
 
-  		get :pool_entries_and_picks, week_id: @week.id, format: :json
+  		get :pool_entries_and_picks, params: { week_id: @week.id, format: :json }
       pool_entries_and_teams = JSON.parse(response.body)
 
       expect(pool_entries_and_teams).to have_key("error")
@@ -156,7 +156,7 @@ describe PoolEntriesController do
   		@pool_entry1.update_attributes(knocked_out: true)
   		@pool_entry2.update_attributes(knocked_out: true)
 
-  		get :pool_entries_and_picks, week_id: @week.id, format: :json
+  		get :pool_entries_and_picks, params: { week_id: @week.id, format: :json }
       pool_entries_and_teams = JSON.parse(response.body)
 
       expect(pool_entries_and_teams).to have_key("error")

@@ -1,8 +1,8 @@
 class Admin::WebStatesController < ApplicationController
-  before_action :verify_admin_user, only: :update
-  skip_before_filter :authenticate_user_from_token!
+  before_action :verify_admin_user, :set_current_week, only: :update
+  skip_before_action :authenticate_user_from_token!
     # This is Devise's authentication
-  skip_before_filter :authenticate_user!
+  skip_before_action :authenticate_user!
 
   def show
     @web_state = WebState.first
@@ -26,7 +26,7 @@ class Admin::WebStatesController < ApplicationController
   end
 
   def update
-    cleaned_params = webstate_params
+    cleaned_params = webstate_params.except(:current_week).merge(current_week: @current_week)
     Rails.logger.debug("Cleaned Params: #{cleaned_params}")
     @web_state = WebState.first
     if @web_state.update_attributes(cleaned_params)
@@ -46,4 +46,7 @@ private
     params.permit(:id, :current_week, :open_for_registration, :broadcast_message)
   end
 
+  def set_current_week
+    @current_week = Week.find_by(id: params[:current_week])
+  end
 end

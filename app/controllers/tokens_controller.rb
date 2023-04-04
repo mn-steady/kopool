@@ -1,13 +1,13 @@
 class TokensController  < ApplicationController
-  skip_before_filter :verify_authenticity_token
-  skip_before_filter :authenticate_user_from_token!, only: [:create, :destroy]
-  skip_before_filter :authenticate_user!, only: [:create, :destroy]
-  before_filter :require_json_request
-  before_filter :validate_parameters, only: [:create]
-  before_filter :require_proper_credentials, only: [:create]
-  before_filter :require_existing_user, only: [:create]
-  before_filter :stop_blocked_users
-  before_filter :validate_password, only: [:create]
+  skip_before_action :verify_authenticity_token
+  skip_before_action :authenticate_user_from_token!, only: [:create, :destroy]
+  skip_before_action :authenticate_user!, only: [:create, :destroy]
+  before_action :require_json_request
+  before_action :validate_parameters, only: [:create]
+  before_action :require_proper_credentials, only: [:create]
+  before_action :require_existing_user, only: [:create]
+  before_action :stop_blocked_users
+  before_action :validate_password, only: [:create]
 
   respond_to :json
 

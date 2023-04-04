@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Week do
+RSpec.describe Week, type: :model do
 
   it { should have_many :matchups }
   it { should belong_to :season }
@@ -91,14 +91,14 @@ describe Week do
       @week16 = Week.create(week_number: 16, start_date: DateTime.new(2014,8,5), end_date: DateTime.new(2014,8,8), deadline: DateTime.new(2014,8,7), season: @season)
       @week17 = Week.create(week_number: 17, start_date: DateTime.new(2014,8,12), end_date: DateTime.new(2014,8,18), deadline: DateTime.new(2014,8,14), season: @season)
       @web_state = create(:web_state, week_id: @week16.id, season_id: @season.id)
-      @team1 = FactoryGirl.create(:nfl_team)
-      @team2 = FactoryGirl.create(:nfl_team)
+      @team1 = FactoryBot.create(:nfl_team)
+      @team2 = FactoryBot.create(:nfl_team)
       @monday_matchup = Matchup.create(game_time: DateTime.new(2017,8,14,15,00), week_id: @week16.id, home_team_id: @team1.id, away_team_id: @team2.id)
 
-      @pool_entry_nopick1 = FactoryGirl.create(:pool_entry, team_name: "Losers did not pick", season: @season)
-      @pool_entry_knocked = FactoryGirl.create(:pool_entry, team_name: "We dont matter", knocked_out: true, season: @season)
-      @pool_entry_pick1 = FactoryGirl.create(:pool_entry, season: @season)
-      @pick1 = FactoryGirl.create(:pick, pool_entry: @pool_entry_pick1, week: @week16, nfl_team: @monday_matchup.away_team, matchup: @monday_matchup)
+      @pool_entry_nopick1 = FactoryBot.create(:pool_entry, team_name: "Losers did not pick", season: @season)
+      @pool_entry_knocked = FactoryBot.create(:pool_entry, team_name: "We dont matter", knocked_out: true, season: @season)
+      @pool_entry_pick1 = FactoryBot.create(:pool_entry, season: @season)
+      @pick1 = FactoryBot.create(:pick, pool_entry: @pool_entry_pick1, week: @week16, nfl_team: @monday_matchup.away_team, matchup: @monday_matchup)
 
       @week16.move_to_next_week!
 
@@ -114,12 +114,12 @@ describe Week do
   describe "#autopick_matchup_during_week" do
 
     before(:each) do
-      @season = FactoryGirl.create(:season)
-      @week = FactoryGirl.create(:week, week_number: 16, start_date: DateTime.new(2017,8,13), end_date: DateTime.new(2017,8,19), deadline: DateTime.new(2017,8,17), season: @season)
-      @team1 = FactoryGirl.create(:nfl_team)
-      @team2 = FactoryGirl.create(:nfl_team)
-      @team3 = FactoryGirl.create(:nfl_team)
-      @team4 = FactoryGirl.create(:nfl_team)
+      @season = FactoryBot.create(:season)
+      @week = FactoryBot.create(:week, week_number: 16, start_date: DateTime.new(2017,8,13), end_date: DateTime.new(2017,8,19), deadline: DateTime.new(2017,8,17), season: @season)
+      @team1 = FactoryBot.create(:nfl_team)
+      @team2 = FactoryBot.create(:nfl_team)
+      @team3 = FactoryBot.create(:nfl_team)
+      @team4 = FactoryBot.create(:nfl_team)
       @monday_matchup = Matchup.create(game_time: DateTime.new(2017,8,14,15,00), week_id: @week.id, home_team_id: @team1.id, away_team_id: @team2.id)
       @wednesday_matchup = Matchup.create(game_time: DateTime.new(2017,8,16,15,30), week_id: @week.id, home_team_id: @team3.id, away_team_id: @team4.id)
     end
@@ -129,8 +129,8 @@ describe Week do
     end
 
     it "should return the FIRST monday matchup if multiple monday games" do
-      @team5 = FactoryGirl.create(:nfl_team)
-      @team6 = FactoryGirl.create(:nfl_team)
+      @team5 = FactoryBot.create(:nfl_team)
+      @team6 = FactoryBot.create(:nfl_team)
       @monday_matchup2 = Matchup.create(game_time: DateTime.new(2017,8,14,15,45), week_id: @week.id, home_team_id: @team5.id, away_team_id: @team6.id)
       expect(Week.autopick_matchup_during_week(@week.id)).to eq(@monday_matchup)
     end

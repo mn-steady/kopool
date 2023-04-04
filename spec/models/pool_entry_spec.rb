@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe PoolEntry do
+RSpec.describe PoolEntry, type: :model do
 
   it { should have_many :picks }
   it { should have_many :payments }
@@ -14,24 +14,24 @@ describe PoolEntry do
   describe "#needs_autopicking" do
 
     before(:each) do
-      @season = FactoryGirl.create(:season)
-      @week = FactoryGirl.create(:week, season: @season)
-      @matchup = FactoryGirl.create(:matchup, week_id: @week.id)
-      @pool_entry_nopick1 = FactoryGirl.create(:pool_entry, team_name: "Losers did not pick", season: @season)
-      @pool_entry_nopick2 = FactoryGirl.create(:pool_entry, team_name: "Losers did not pick either", season: @season)
-      @pool_entry_knocked = FactoryGirl.create(:pool_entry, team_name: "We dont matter", knocked_out: true, season: @season)
-      @pool_entry_pick1 = FactoryGirl.create(:pool_entry, season: @season)
-      @pick1 = FactoryGirl.create(:pick, pool_entry: @pool_entry_pick1, week: @week, nfl_team: @matchup.away_team, matchup: @matchup)
-      @pool_entry_pick2 = FactoryGirl.create(:pool_entry, season: @season)
-      @pick2 = FactoryGirl.create(:pick, pool_entry: @pool_entry_pick2, week: @week, nfl_team: @matchup.away_team, matchup: @matchup)
+      @season = FactoryBot.create(:season)
+      @week = FactoryBot.create(:week, season: @season)
+      @matchup = FactoryBot.create(:matchup, week_id: @week.id)
+      @pool_entry_nopick1 = FactoryBot.create(:pool_entry, team_name: "Losers did not pick", season: @season)
+      @pool_entry_nopick2 = FactoryBot.create(:pool_entry, team_name: "Losers did not pick either", season: @season)
+      @pool_entry_knocked = FactoryBot.create(:pool_entry, team_name: "We dont matter", knocked_out: true, season: @season)
+      @pool_entry_pick1 = FactoryBot.create(:pool_entry, season: @season)
+      @pick1 = FactoryBot.create(:pick, pool_entry: @pool_entry_pick1, week: @week, nfl_team: @matchup.away_team, matchup: @matchup)
+      @pool_entry_pick2 = FactoryBot.create(:pool_entry, season: @season)
+      @pick2 = FactoryBot.create(:pick, pool_entry: @pool_entry_pick2, week: @week, nfl_team: @matchup.away_team, matchup: @matchup)
 
       # some irrelevant data to be sure we don't have totally bogus query
-      @diff_season = FactoryGirl.create(:season)
-      @week2 = FactoryGirl.create(:week, season: @diff_season)
-      @matchup2 = FactoryGirl.create(:matchup, week_id: @week2.id)
-      @i_pool_entry_nopick1 = FactoryGirl.create(:pool_entry, team_name: "Wrong week no pick", season: @diff_season)
-      @i_pool_entry_pick1 = FactoryGirl.create(:pool_entry, season: @diff_season)
-      @i_pick1 = FactoryGirl.create(:pick, pool_entry: @i_pool_entry_pick1, week: @week2, nfl_team: @matchup2.away_team, matchup: @matchup2)
+      @diff_season = FactoryBot.create(:season)
+      @week2 = FactoryBot.create(:week, season: @diff_season)
+      @matchup2 = FactoryBot.create(:matchup, week_id: @week2.id)
+      @i_pool_entry_nopick1 = FactoryBot.create(:pool_entry, team_name: "Wrong week no pick", season: @diff_season)
+      @i_pool_entry_pick1 = FactoryBot.create(:pool_entry, season: @diff_season)
+      @i_pick1 = FactoryBot.create(:pick, pool_entry: @i_pool_entry_pick1, week: @week2, nfl_team: @matchup2.away_team, matchup: @matchup2)
     end
 
     it "should return any not KO'd PoolEntry with no Pick this season this week" do
@@ -45,24 +45,24 @@ describe PoolEntry do
 
   describe '#most_recent_picks_nfl_team' do
     before(:each) do
-      @season = FactoryGirl.create(:season)
-      @week = FactoryGirl.create(:week, season: @season)
-      @matchup = FactoryGirl.create(:matchup, week_id: @week.id)
-      @pool_entry_nopick1 = FactoryGirl.create(:pool_entry, team_name: "Losers did not pick", season: @season)
-      @pool_entry_nopick2 = FactoryGirl.create(:pool_entry, team_name: "Losers did not pick either", season: @season)
-      @pool_entry_knocked = FactoryGirl.create(:pool_entry, team_name: "We dont matter", knocked_out: true, season: @season)
-      @pool_entry_pick1 = FactoryGirl.create(:pool_entry, season: @season)
-      @pick1 = FactoryGirl.create(:pick, pool_entry: @pool_entry_pick1, week: @week, nfl_team: @matchup.away_team, matchup: @matchup)
-      @pool_entry_pick2 = FactoryGirl.create(:pool_entry, season: @season)
-      @pick2 = FactoryGirl.create(:pick, pool_entry: @pool_entry_pick2, week: @week, nfl_team: @matchup.away_team, matchup: @matchup)
+      @season = FactoryBot.create(:season)
+      @week = FactoryBot.create(:week, season: @season)
+      @matchup = FactoryBot.create(:matchup, week_id: @week.id)
+      @pool_entry_nopick1 = FactoryBot.create(:pool_entry, team_name: "Losers did not pick", season: @season)
+      @pool_entry_nopick2 = FactoryBot.create(:pool_entry, team_name: "Losers did not pick either", season: @season)
+      @pool_entry_knocked = FactoryBot.create(:pool_entry, team_name: "We dont matter", knocked_out: true, season: @season)
+      @pool_entry_pick1 = FactoryBot.create(:pool_entry, season: @season)
+      @pick1 = FactoryBot.create(:pick, pool_entry: @pool_entry_pick1, week: @week, nfl_team: @matchup.away_team, matchup: @matchup)
+      @pool_entry_pick2 = FactoryBot.create(:pool_entry, season: @season)
+      @pick2 = FactoryBot.create(:pick, pool_entry: @pool_entry_pick2, week: @week, nfl_team: @matchup.away_team, matchup: @matchup)
 
       # some irrelevant data to be sure we don't have totally bogus query
-      @diff_season = FactoryGirl.create(:season)
-      @week2 = FactoryGirl.create(:week, season: @diff_season)
-      @matchup2 = FactoryGirl.create(:matchup, week_id: @week2.id)
-      @i_pool_entry_nopick1 = FactoryGirl.create(:pool_entry, team_name: "Wrong week no pick", season: @diff_season)
-      @i_pool_entry_pick1 = FactoryGirl.create(:pool_entry, season: @diff_season)
-      @i_pick1 = FactoryGirl.create(:pick, pool_entry: @i_pool_entry_pick1, week: @week2, nfl_team: @matchup2.away_team, matchup: @matchup2)
+      @diff_season = FactoryBot.create(:season)
+      @week2 = FactoryBot.create(:week, season: @diff_season)
+      @matchup2 = FactoryBot.create(:matchup, week_id: @week2.id)
+      @i_pool_entry_nopick1 = FactoryBot.create(:pool_entry, team_name: "Wrong week no pick", season: @diff_season)
+      @i_pool_entry_pick1 = FactoryBot.create(:pool_entry, season: @diff_season)
+      @i_pick1 = FactoryBot.create(:pick, pool_entry: @i_pool_entry_pick1, week: @week2, nfl_team: @matchup2.away_team, matchup: @matchup2)
     end
 
     it "should return a structure with the team and logo" do
@@ -73,24 +73,24 @@ describe PoolEntry do
 
   describe '#specific_weeks_nfl_team' do
     before(:each) do
-      @season = FactoryGirl.create(:season)
-      @week = FactoryGirl.create(:week, season: @season)
-      @matchup = FactoryGirl.create(:matchup, week_id: @week.id)
-      @pool_entry_nopick1 = FactoryGirl.create(:pool_entry, team_name: "Losers did not pick", season: @season)
-      @pool_entry_nopick2 = FactoryGirl.create(:pool_entry, team_name: "Losers did not pick either", season: @season)
-      @pool_entry_knocked = FactoryGirl.create(:pool_entry, team_name: "We dont matter", knocked_out: true, season: @season)
-      @pool_entry_pick1 = FactoryGirl.create(:pool_entry, season: @season)
-      @pick1 = FactoryGirl.create(:pick, pool_entry: @pool_entry_pick1, week: @week, nfl_team: @matchup.away_team, matchup: @matchup)
-      @pool_entry_pick2 = FactoryGirl.create(:pool_entry, season: @season)
-      @pick2 = FactoryGirl.create(:pick, pool_entry: @pool_entry_pick2, week: @week, nfl_team: @matchup.away_team, matchup: @matchup)
+      @season = FactoryBot.create(:season)
+      @week = FactoryBot.create(:week, season: @season)
+      @matchup = FactoryBot.create(:matchup, week_id: @week.id)
+      @pool_entry_nopick1 = FactoryBot.create(:pool_entry, team_name: "Losers did not pick", season: @season)
+      @pool_entry_nopick2 = FactoryBot.create(:pool_entry, team_name: "Losers did not pick either", season: @season)
+      @pool_entry_knocked = FactoryBot.create(:pool_entry, team_name: "We dont matter", knocked_out: true, season: @season)
+      @pool_entry_pick1 = FactoryBot.create(:pool_entry, season: @season)
+      @pick1 = FactoryBot.create(:pick, pool_entry: @pool_entry_pick1, week: @week, nfl_team: @matchup.away_team, matchup: @matchup)
+      @pool_entry_pick2 = FactoryBot.create(:pool_entry, season: @season)
+      @pick2 = FactoryBot.create(:pick, pool_entry: @pool_entry_pick2, week: @week, nfl_team: @matchup.away_team, matchup: @matchup)
 
       # some irrelevant data to be sure we don't have totally bogus query
-      @diff_season = FactoryGirl.create(:season)
-      @week2 = FactoryGirl.create(:week, season: @diff_season)
-      @matchup2 = FactoryGirl.create(:matchup, week_id: @week2.id)
-      @i_pool_entry_nopick1 = FactoryGirl.create(:pool_entry, team_name: "Wrong week no pick", season: @diff_season)
-      @i_pool_entry_pick1 = FactoryGirl.create(:pool_entry, season: @diff_season)
-      @i_pick1 = FactoryGirl.create(:pick, pool_entry: @i_pool_entry_pick1, week: @week2, nfl_team: @matchup2.away_team, matchup: @matchup2)
+      @diff_season = FactoryBot.create(:season)
+      @week2 = FactoryBot.create(:week, season: @diff_season)
+      @matchup2 = FactoryBot.create(:matchup, week_id: @week2.id)
+      @i_pool_entry_nopick1 = FactoryBot.create(:pool_entry, team_name: "Wrong week no pick", season: @diff_season)
+      @i_pool_entry_pick1 = FactoryBot.create(:pool_entry, season: @diff_season)
+      @i_pick1 = FactoryBot.create(:pick, pool_entry: @i_pool_entry_pick1, week: @week2, nfl_team: @matchup2.away_team, matchup: @matchup2)
     end
 
     it "should return a structure with the team and logo" do
@@ -106,17 +106,17 @@ describe PoolEntry do
 
   describe 'matchup_locked?' do
     before do
-      @season = FactoryGirl.create(:season)
-      @week = FactoryGirl.create(:week, season: @season)
-      @locked_matchup = FactoryGirl.create(:matchup, week_id: @week.id, locked: true)
-      @unlocked_matchup = FactoryGirl.create(:matchup, week_id: @week.id)
+      @season = FactoryBot.create(:season)
+      @week = FactoryBot.create(:week, season: @season)
+      @locked_matchup = FactoryBot.create(:matchup, week_id: @week.id, locked: true)
+      @unlocked_matchup = FactoryBot.create(:matchup, week_id: @week.id)
 
-      @unpicked_pool_entry = FactoryGirl.create(:pool_entry, season: @season)
+      @unpicked_pool_entry = FactoryBot.create(:pool_entry, season: @season)
 
-      @locked_pool_entry = FactoryGirl.create(:pool_entry, season: @season)
-      @pick1 = FactoryGirl.create(:pick, pool_entry: @locked_pool_entry, week: @week, nfl_team: @locked_matchup.away_team, matchup: @locked_matchup)
-      @unlocked_pool_entry= FactoryGirl.create(:pool_entry, season: @season)
-      @pick2 = FactoryGirl.create(:pick, pool_entry: @unlocked_pool_entry, week: @week, nfl_team: @unlocked_matchup.away_team, matchup: @unlocked_matchup)
+      @locked_pool_entry = FactoryBot.create(:pool_entry, season: @season)
+      @pick1 = FactoryBot.create(:pick, pool_entry: @locked_pool_entry, week: @week, nfl_team: @locked_matchup.away_team, matchup: @locked_matchup)
+      @unlocked_pool_entry= FactoryBot.create(:pool_entry, season: @season)
+      @pick2 = FactoryBot.create(:pick, pool_entry: @unlocked_pool_entry, week: @week, nfl_team: @unlocked_matchup.away_team, matchup: @unlocked_matchup)
     end
 
     it 'returns false if there isnt a pick' do

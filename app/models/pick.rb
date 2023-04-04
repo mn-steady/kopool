@@ -7,9 +7,9 @@ class Pick < ApplicationRecord
 	validates_presence_of :team_id, :pool_entry_id, :week_id, :matchup_id
 	validates_uniqueness_of :pool_entry_id, scope: :week_id
 
-  validate :cannot_change_locked_in_pick, :on => :update
-  validate :cannot_change_knocked_out_pick, :on => :update
-  validate :cannot_change_pick_during_closed_week, :on => :update
+  validate :cannot_change_locked_in_pick, on: :update
+  validate :cannot_change_knocked_out_pick, on: :update
+  validate :cannot_change_pick_during_closed_week, on: :update
 
   validate :pick_must_be_in_matchup
 

@@ -1,13 +1,13 @@
 require 'spec_helper'
 
-describe WebState do
+RSpec.describe WebState, type: :model do
 
   it { should belong_to :current_week }
 
   it "does not allow you to have more than 1 WebState record" do
-    season = FactoryGirl.create(:season)
-    week_1 = FactoryGirl.create(:week, week_number: 10, season: season)
-    week_2 = FactoryGirl.create(:week, week_number: 11, season: season)
+    season = FactoryBot.create(:season)
+    week_1 = FactoryBot.create(:week, week_number: 10, season: season)
+    week_2 = FactoryBot.create(:week, week_number: 11, season: season)
 
     ws = WebState.new()
     ws.current_week = week_1
@@ -24,13 +24,13 @@ describe WebState do
 
   describe '#season_matches_week' do
     before do
-      @season_1 = FactoryGirl.create(:season)
-      @week_1_season_1 = FactoryGirl.create(:week, week_number: 1, season: @season_1)
-      @week_2_season_1 = FactoryGirl.create(:week, week_number: 2, season: @season_1)
+      @season_1 = FactoryBot.create(:season)
+      @week_1_season_1 = FactoryBot.create(:week, week_number: 1, season: @season_1)
+      @week_2_season_1 = FactoryBot.create(:week, week_number: 2, season: @season_1)
 
-      @season_2 = FactoryGirl.create(:season)
-      @week_1_season_2 = FactoryGirl.create(:week, week_number: 1, season: @season_2)
-      @week_2_season_2 = FactoryGirl.create(:week, week_number: 2, season: @season_2)
+      @season_2 = FactoryBot.create(:season)
+      @week_1_season_2 = FactoryBot.create(:week, week_number: 1, season: @season_2)
+      @week_2_season_2 = FactoryBot.create(:week, week_number: 2, season: @season_2)
 
       ws = WebState.new()
       ws.current_week = @week_1_season_1

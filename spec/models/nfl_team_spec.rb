@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe NflTeam do
+RSpec.describe NflTeam, type: :model do
   it { should validate_presence_of :name }
   it { should validate_presence_of :conference }
   it { should validate_presence_of :division }

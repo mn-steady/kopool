@@ -1,6 +1,8 @@
 require 'spec_helper'
 
-describe User do
+RSpec.describe User, type: :model do
+  subject { build(:user) }
+
   it { should have_many :pool_entries }
   it { should belong_to :favorite_team }
   it { should validate_presence_of :email }
@@ -11,7 +13,7 @@ describe User do
   context "New User" do
 
     before(:each) do
-      @newuser = User.new()
+      @newuser = User.new
     end
 
     it "should not be an admin" do

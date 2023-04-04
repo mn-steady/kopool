@@ -4,6 +4,7 @@ ruby '2.4.6'
 
 gem 'rails', '~> 5.0.0'
 gem 'pg'
+gem 'puma', '~> 5.0', '>= 5.0.1'
 gem 'sass-rails', '6.0.0'
 gem 'uglifier', '>= 1.3.0'
 gem 'coffee-rails', '4.2.2'
@@ -29,10 +30,10 @@ group :development, :test do
 end
 
 group :test do
-	gem 'shoulda-matchers'
+	gem 'shoulda-matchers', '~> 4.0'
 	gem 'database_cleaner'
 	gem 'capybara'
 	gem 'launchy'
-	gem 'selenium-webdriver'
+	gem 'selenium-webdriver', '~> 4.0.0.alpha1'
 	gem 'rails-controller-testing', '~> 1.0', '>= 1.0.5'
 end

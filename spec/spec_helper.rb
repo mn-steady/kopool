@@ -30,6 +30,9 @@ ActiveRecord::Migration.check_pending! if defined?(ActiveRecord::Migration)
 RSpec.configure do |config|
   config.infer_spec_type_from_file_location! # Not explicit in RSpec 3.0.0+
 
+  config.include(Shoulda::Matchers::ActiveModel, type: :model)
+  config.include(Shoulda::Matchers::ActiveRecord, type: :model)
+
   config.include FactoryBot::Syntax::Methods
 
   config.fixture_path = "#{::Rails.root}/spec/fixtures"

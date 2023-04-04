@@ -1,5 +1,5 @@
 class PicksController < ApplicationController
-	before_filter :verify_any_user, only: [:create, :update, :week_picks, :create_or_update_pick, :sorted_picks]
+	before_action :verify_any_user, only: [:create, :update, :week_picks, :create_or_update_pick, :sorted_picks]
 
 	def index
 		Rails.logger.debug("PicksController.index")

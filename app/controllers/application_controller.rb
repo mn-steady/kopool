@@ -3,7 +3,7 @@ class ApplicationController < ActionController::Base
   include TokenAuthentication
   helper_method :require_user, :require_admin
 
-  after_filter :set_csrf_cookie_for_ng
+  after_action :set_csrf_cookie_for_ng
 
   def set_csrf_cookie_for_ng
     Rails.logger.debug("set_csrf_cookie_for_ng called FAT:#{form_authenticity_token}")

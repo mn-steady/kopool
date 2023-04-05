@@ -10,7 +10,7 @@ gem 'uglifier', '>= 1.3.0'
 gem 'coffee-rails', '4.2.2'
 gem 'jquery-rails', '4.5.1'
 gem 'turbolinks'
-gem 'jbuilder', '~> 1.2'
+gem 'jbuilder', '~> 2.11', '>= 2.11.5'
 gem 'devise', '4.9.1'
 gem 'haml-rails', '1.0.0'
 gem 'factory_bot', '~> 5.2'
@@ -27,6 +27,7 @@ group :development, :test do
   gem 'jasmine-rails', '~> 0.9.0'
   gem 'pry-byebug'
   gem 'letter_opener'
+	gem 'listen', '~> 3.8'
 end
 
 group :test do

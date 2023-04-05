@@ -9,7 +9,7 @@ describe PicksController do
 			sign_in @user
 
 			@season = Season.create!(year: 2014, name: "2014 Season", entry_fee: 50)
-			@week = Week.create!(season: @season, week_number: 1, start_date: DateTime.new(2014, 8, 5), deadline: DateTime.new(2014, 8, 8), end_date: DateTime.new(2014, 8, 11))
+			@week = FactoryBot.create(:week, season: @season, week_number: 1, start_date: DateTime.new(2014, 8, 5), deadline: DateTime.new(2014, 8, 8), end_date: DateTime.new(2014, 8, 11))
 			@pool_entry1 = PoolEntry.create!(user: @user, team_name: "Test Team", paid: true, season: @season)
 			@pool_entry2 = PoolEntry.create!(user: @user, team_name: "Team Two", paid: true, season: @season)
 
@@ -18,16 +18,16 @@ describe PicksController do
 			@matchup = Matchup.create!(week_id: @week.id, home_team: @broncos, away_team: @vikings, game_time: DateTime.new(2014,8,10,11))
 		end
 
-  	it "returns the user's picks from this season" do
-  		pick1 = Pick.create(pool_entry: @pool_entry1, week: @week, team_id: @vikings.id, matchup_id: @matchup.id)
-  		pick2 = Pick.create(pool_entry: @pool_entry2, week: @week, team_id: @broncos.id, matchup_id: @matchup.id)
+    it "returns the user's picks from this season" do
+      pick1 = @pool_entry1.picks.create(week: @week, nfl_team: @vikings, matchup: @matchup)
+      pick2 = @pool_entry2.picks.create(week: @week, nfl_team: @broncos, matchup: @matchup)
 
-  		get :index, params: { week_id: @week.id }, format: :json
+      get :index, params: { week_id: @week.id }, format: :json
       picks_returned = JSON.parse(response.body)
 
-  		expect(picks_returned[0]['id']).to eq(pick1.id)
+      expect(picks_returned[0]['id']).to eq(pick1.id)
       expect(picks_returned[1]['id']).to eq(pick2.id)
-  	end
+    end
 
   	it "does not include another user's picks in response" do
       @another_user = create(:user)
@@ -62,7 +62,7 @@ describe PicksController do
       sign_in @user
 
       @season = Season.create(year: 2014, name: "2014 Season", entry_fee: 50)
-      @week = Week.create(season: @season, week_number: 1, start_date: DateTime.new(2014, 8, 5), deadline: DateTime.new(2014, 8, 8), end_date: DateTime.new(2014, 8, 11))
+      @week = FactoryBot.create(:week, season: @season, week_number: 1, start_date: DateTime.new(2014, 8, 5), deadline: DateTime.new(2014, 8, 8), end_date: DateTime.new(2014, 8, 11))
       @pool_entry1 = PoolEntry.create(user: @user, team_name: "Test Team", paid: true, season: @season)
 
       @broncos = NflTeam.create(name: "Denver Broncos", conference: "NFC", division: "West")
@@ -79,10 +79,9 @@ describe PicksController do
             pool_entry_id: @pool_entry1.id,
             team_id: @vikings.id,
             matchup_id: @matchup.id,
-            format: :json
           }
 
-          post :create, params: pick_params
+          post :create, params: pick_params, format: :json
           pick_returned = JSON.parse(response.body)
           expect(Pick.count).to eq(1)
           expect(pick_returned['pool_entry_id']).to eq(@pool_entry1.id)
@@ -95,10 +94,9 @@ describe PicksController do
           pick_params = {
             week_id: @week.id,
             team_id: @vikings.id,
-            format: :json
           }
 
-          post :create, params: pick_params
+          post :create, params: pick_params, format: :json
           pick_returned = JSON.parse(response.body)
           expect(Pick.count).to eq(0)
           expect(pick_returned[0]['error']).to match /pool_entry_id can't be blank/
@@ -110,10 +108,9 @@ describe PicksController do
             pool_entry_id: @pool_entry1.id,
             team_id: @vikings.id,
             matchup_id: @matchup.id,
-            format: :json
           }
 
-          post :create, params: pick_params
+          post :create, params: pick_params, format: :json
           pick_returned = JSON.parse(response.body)
           expect(Pick.count).to eq(1)
 
@@ -194,7 +191,7 @@ describe PicksController do
       sign_in @user
 
       @season = Season.create(year: 2014, name: "2014 Season", entry_fee: 50)
-      @week = Week.create(season: @season, week_number: 1, start_date: DateTime.new(2014, 8, 5), deadline: DateTime.new(2014, 8, 8), end_date: DateTime.new(2014, 8, 11))
+      @week = FactoryBot.create(:week, season: @season, week_number: 1, start_date: DateTime.new(2014, 8, 5), deadline: DateTime.new(2014, 8, 8), end_date: DateTime.new(2014, 8, 11))
       @pool_entry1 = PoolEntry.create(user: @user, team_name: "Test Team", paid: true, season: @season)
 
       @broncos = NflTeam.create(name: "Denver Broncos", conference: "NFC", division: "West")
@@ -267,7 +264,7 @@ describe PicksController do
       sign_in(@user, scope: :user)
 
 			@season = Season.create(year: 2014, name: "2014 Season", entry_fee: 50)
-			@week = Week.create(season: @season, week_number: 1, start_date: DateTime.new(2014, 8, 5), deadline: DateTime.new(2014, 8, 8), end_date: DateTime.new(2014, 8, 11))
+			@week = FactoryBot.create(:week, season: @season, week_number: 1, start_date: DateTime.new(2014, 8, 5), deadline: DateTime.new(2014, 8, 8), end_date: DateTime.new(2014, 8, 11))
 			@pool_entry1 = PoolEntry.create(user: @user, team_name: "Test Team", paid: true, season: @season)
 			@pool_entry2 = PoolEntry.create(user: @user, team_name: "Team Two", paid: true, season: @season)
 
@@ -317,7 +314,7 @@ describe PicksController do
       sign_in(@user, scope: :user)
 
       @season = Season.create(year: 2014, name: "2014 Season", entry_fee: 50)
-      @week = Week.create(season: @season, week_number: 1, start_date: DateTime.new(2014, 8, 5), deadline: DateTime.new(2014, 8, 8), end_date: DateTime.new(2014, 8, 11))
+      @week = FactoryBot.create(:week, season: @season, week_number: 1, start_date: DateTime.new(2014, 8, 5), deadline: DateTime.new(2014, 8, 8), end_date: DateTime.new(2014, 8, 11))
       @pool_entry1 = PoolEntry.create(user: @user, team_name: "Test Team", paid: true, season: @season)
       @pool_entry2 = PoolEntry.create(user: @user, team_name: "Team Two", paid: true, season: @season)
       @pool_entry3 = PoolEntry.create(user: @user, team_name: "Team Three", paid: true, season: @season)

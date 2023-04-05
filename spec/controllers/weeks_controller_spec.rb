@@ -9,7 +9,7 @@ describe WeeksController do
       sign_in @regular_guy
 
       @season = Season.create(year: 2014, name: "2014 Season", entry_fee: 50)
-      @week = Week.create(season: @season, week_number: 1, start_date: DateTime.new(2014, 8, 5), deadline: DateTime.new(2014, 8, 8), end_date: DateTime.new(2014, 8, 11))
+      @week = FactoryBot.create(:week, season: @season, week_number: 1, start_date: DateTime.new(2014, 8, 5), deadline: DateTime.new(2014, 8, 8), end_date: DateTime.new(2014, 8, 11))
 
       @web_state = FactoryBot.create(:web_state, current_week: @week, season_id: @season.id)
       @pool_entry = FactoryBot.create(:pool_entry, user: @regular_guy, team_name: "First Pool Entry", paid: true, season: @season)
@@ -23,7 +23,7 @@ describe WeeksController do
 
 
     it "won't show results unless week is closed for picks" do
-      get :week_results, params: { week_id: @week.id, format: :json }
+      get :week_results, params: { week_id: @week.id }, format: :json
       expect(response.status).to eq(Rack::Utils.status_code(:bad_request))
       expect(response.body).to match(/You can't see the results for this week until this week's games have started/)
     end
@@ -31,7 +31,7 @@ describe WeeksController do
 
     it "returns correct basic results" do
       @week.update_attributes(open_for_picks: false)
-      get :week_results, params: { week_id: @week.id, format: :json }
+      get :week_results, params: { week_id: @week.id }, format: :json
       expect(response.status).to eq(Rack::Utils.status_code(:ok))
 
       returned = JSON.parse(response.body)
@@ -63,7 +63,7 @@ describe WeeksController do
       @matchup.update_attributes(winning_team_id: @broncos.id)
       Matchup.handle_matchup_outcome!(@matchup.id)
 
-      @week2 = Week.create(season: @season, week_number: 2, start_date: DateTime.new(2014, 8, 12), deadline: DateTime.new(2014, 8, 15), end_date: DateTime.new(2014, 8, 18))
+      @week2 = FactoryBot.create(:week, season: @season, week_number: 2, start_date: DateTime.new(2014, 8, 12), deadline: DateTime.new(2014, 8, 15), end_date: DateTime.new(2014, 8, 18))
       @web_state.update_attributes(current_week: @week2)
 
       @pool_entry_just_ko = FactoryBot.create(:pool_entry, user: @regular_guy, team_name: "Me Just KO", paid: true, season: @season)
@@ -121,8 +121,8 @@ describe WeeksController do
       @regular_guy = create(:user)
       sign_in @regular_guy
       @season = Season.create(year: 2014, name: "2014 Season", entry_fee: 50)
-      @week = Week.create(season: @season, week_number: 1, start_date: DateTime.new(2014, 8, 5), deadline: DateTime.new(2014, 8, 8), end_date: DateTime.new(2014, 8, 11))
-      @week2 = Week.create(season: @season, week_number: 2, start_date: DateTime.new(2014, 8, 12), deadline: DateTime.new(2014, 8, 15), end_date: DateTime.new(2014, 8, 18))
+      @week = FactoryBot.create(:week, season: @season, week_number: 1, start_date: DateTime.new(2014, 8, 5), deadline: DateTime.new(2014, 8, 8), end_date: DateTime.new(2014, 8, 11))
+      @week2 = FactoryBot.create(:week, season: @season, week_number: 2, start_date: DateTime.new(2014, 8, 12), deadline: DateTime.new(2014, 8, 15), end_date: DateTime.new(2014, 8, 18))
       @web_state = FactoryBot.create(:web_state, current_week: @week, season_id: @season.id)
 
       @pool_entry = FactoryBot.create(:pool_entry, user: @regular_guy, team_name: "First Pool Entry", paid: true, season: @season)
@@ -139,7 +139,7 @@ describe WeeksController do
     end
 
     it "returns only pool entries without a pick for this week only" do
-      get :unpicked, params: { week_id: @week.id, format: :json }
+      get :unpicked, params: { week_id: @week.id }, format: :json
       expect(response.status).to eq(Rack::Utils.status_code(:ok))
       unpicked_results = JSON.parse(response.body)
       expect(unpicked_results.count).to eq(1)

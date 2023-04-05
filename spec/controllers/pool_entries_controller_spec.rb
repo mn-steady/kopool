@@ -6,7 +6,7 @@ describe PoolEntriesController do
 
 		before do
 			@season = Season.create(year: 2014, name: "2014 Season", entry_fee: 50)
-      @week = Week.create(season: @season, week_number: 1, open_for_picks: true, start_date: DateTime.new(2014, 8, 5), deadline: DateTime.new(2014, 8, 8), end_date: DateTime.new(2014, 8, 11))
+      @week = FactoryBot.create(:week, season: @season, week_number: 1, open_for_picks: true, start_date: DateTime.new(2014, 8, 5), deadline: DateTime.new(2014, 8, 8), end_date: DateTime.new(2014, 8, 11))
       @web_state = FactoryBot.create(:web_state, current_week: @week, season_id: @season.id)
 		end
 
@@ -107,7 +107,7 @@ describe PoolEntriesController do
 			sign_in @user
 
 			@season = Season.create(year: 2014, name: "2014 Season", entry_fee: 50)
-			@week = Week.create(season: @season, week_number: 1, start_date: DateTime.new(2014, 8, 5), deadline: DateTime.new(2014, 8, 8), end_date: DateTime.new(2014, 8, 11))
+			@week = FactoryBot.create(:week, season: @season, week_number: 1, start_date: DateTime.new(2014, 8, 5), deadline: DateTime.new(2014, 8, 8), end_date: DateTime.new(2014, 8, 11))
 			@web_state = create(:web_state, week_id: @week.id, season_id: @season.id)
 			@pool_entry1 = PoolEntry.create(user: @user, team_name: "Test Team", paid: true, season_id: @season.id)
 			@pool_entry2 = PoolEntry.create(user: @user, team_name: "Team Two", paid: true, season_id: @season.id)

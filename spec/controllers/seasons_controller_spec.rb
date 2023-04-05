@@ -24,10 +24,10 @@ describe SeasonsController do
 			sign_in @user1
 
 			@season = Season.create(year: 2014, name: "2014 Season", entry_fee: 50)
-			@week1 = Week.create(season: @season, week_number: 1, start_date: DateTime.new(2014, 8, 5), deadline: DateTime.new(2014, 8, 8), end_date: DateTime.new(2014, 8, 11))
-			@week2 = Week.create(season: @season, week_number: 2, start_date: DateTime.new(2014, 8, 12), deadline: DateTime.new(2014, 8, 15), end_date: DateTime.new(2014, 8, 18))
-			@week3 = Week.create(season: @season, week_number: 3, start_date: DateTime.new(2014, 8, 19), deadline: DateTime.new(2014, 8, 22), end_date: DateTime.new(2014, 8, 25))
-			@week4 = Week.create(season: @season, week_number: 4, start_date: DateTime.new(2014, 8, 26), deadline: DateTime.new(2014, 8, 29), end_date: DateTime.new(2014, 9, 1))
+			@week1 = FactoryBot.create(:week, season: @season, week_number: 1, start_date: DateTime.new(2014, 8, 5), deadline: DateTime.new(2014, 8, 8), end_date: DateTime.new(2014, 8, 11))
+			@week2 = FactoryBot.create(:week, season: @season, week_number: 2, start_date: DateTime.new(2014, 8, 12), deadline: DateTime.new(2014, 8, 15), end_date: DateTime.new(2014, 8, 18))
+			@week3 = FactoryBot.create(:week, season: @season, week_number: 3, start_date: DateTime.new(2014, 8, 19), deadline: DateTime.new(2014, 8, 22), end_date: DateTime.new(2014, 8, 25))
+			@week4 = FactoryBot.create(:week, season: @season, week_number: 4, start_date: DateTime.new(2014, 8, 26), deadline: DateTime.new(2014, 8, 29), end_date: DateTime.new(2014, 9, 1))
 			
 			@web_state = create(:web_state, week_id: @week4.id, season_id: @season.id)
 
@@ -198,7 +198,7 @@ describe SeasonsController do
 
 			@season = Season.create(year: 2014, name: "2014 Season", entry_fee: 50)
 			@season_2 = Season.create(year: 2015, name: "2015 Season", entry_fee: 50)
-			@week1 = Week.create(season: @season, week_number: 1, start_date: DateTime.new(2014, 8, 5), deadline: DateTime.new(2014, 8, 8), end_date: DateTime.new(2014, 8, 11))
+			@week1 = FactoryBot.create(:week, season: @season, week_number: 1, start_date: DateTime.new(2014, 8, 5), deadline: DateTime.new(2014, 8, 8), end_date: DateTime.new(2014, 8, 11))
 			
 			@web_state = create(:web_state, week_id: @week1.id, season_id: @season.id)
 

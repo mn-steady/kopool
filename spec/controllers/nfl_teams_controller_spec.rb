@@ -8,15 +8,16 @@ describe NflTeamsController do
       sign_in @regular_guy
 
       @season = Season.create(year: 2014, name: "2014 Season", entry_fee: 50)
-      @week = Week.create(season: @season, week_number: 1, start_date: DateTime.new(2014, 8, 5), deadline: DateTime.new(2014, 8, 8), end_date: DateTime.new(2014, 8, 11))
+      @week = FactoryBot.create(:week, season: @season, week_number: 1, start_date: DateTime.new(2014, 8, 5), deadline: DateTime.new(2014, 8, 8), end_date: DateTime.new(2014, 8, 11))
 
       @broncos = NflTeam.create(name: "Denver Broncos", conference: "NFC", division: "West")
       @vikings = NflTeam.create(name: "Minnesota Vikings", conference: "NFC", division: "West")
     end
 
     it "give anyone the index" do
-      put :index, format: :json
-      expect(JSON.parse(response.body).length).to eq(2)
+      get :index, format: :json
+      expect(response).to have_http_status(:ok)
+      expect(JSON.parse(response.body).length).to eq(NflTeam.count)
     end
   end
 
@@ -26,7 +27,7 @@ describe NflTeamsController do
       sign_in @admin
 
       @season = Season.create(year: 2014, name: "2014 Season", entry_fee: 50)
-      @week = Week.create(season: @season, week_number: 1, start_date: DateTime.new(2014, 8, 5), deadline: DateTime.new(2014, 8, 8), end_date: DateTime.new(2014, 8, 11))
+      @week = FactoryBot.create(:week, season: @season, week_number: 1, start_date: DateTime.new(2014, 8, 5), deadline: DateTime.new(2014, 8, 8), end_date: DateTime.new(2014, 8, 11))
 
       @broncos = NflTeam.create(name: "Denver Broncos", conference: "NFC", division: "West")
       @vikings = NflTeam.create(name: "Minnesota Vikings", conference: "NFC", division: "West")
@@ -52,21 +53,21 @@ describe NflTeamsController do
       sign_in @admin
 
       @season = Season.create(year: 2014, name: "2014 Season", entry_fee: 50)
-      @week = Week.create(season: @season, week_number: 1, start_date: DateTime.new(2014, 8, 5), deadline: DateTime.new(2014, 8, 8), end_date: DateTime.new(2014, 8, 11))
+      @week = FactoryBot.create(:week, season: @season, week_number: 1, start_date: DateTime.new(2014, 8, 5), deadline: DateTime.new(2014, 8, 8), end_date: DateTime.new(2014, 8, 11))
 
       @broncos = NflTeam.create(name: "Denver Broncos", conference: "NFC", division: "West")
     end
 
     it "updates the NflTeam if you are an admin" do
-      put :update, params: { id: @broncos.id, nfl_team: {name: "Colorado Broncos"}, format: :json }
-      expect(NflTeam.first.name).to eq("Colorado Broncos")
+      put :update, params: { id: @broncos.id, nfl_team: {name: "Colorado Broncos"} }, format: :json
+      expect(NflTeam.find(@broncos.id).name).to eq("Colorado Broncos")
     end
 
-    it "Will not update the NflTeam if you are not an admin" do
+    it "will not update the NflTeam if you are not an admin" do
       @regular_guy = create(:user)
       sign_in @regular_guy
-      put :update, params: { id: @broncos.id, nfl_team: {name: "Colorado Broncos"}, format: :json }
-      expect(NflTeam.first.name).to eq("Denver Broncos")
+      put :update, params: { id: @broncos.id, nfl_team: {name: "Colorado Broncos"} }, format: :json
+      expect(NflTeam.find(@broncos.id).name).to eq("Denver Broncos")
     end
   end
 
@@ -77,21 +78,23 @@ describe NflTeamsController do
       sign_in @admin
 
       @season = Season.create(year: 2014, name: "2014 Season", entry_fee: 50)
-      @week = Week.create(season: @season, week_number: 1, start_date: DateTime.new(2014, 8, 5), deadline: DateTime.new(2014, 8, 8), end_date: DateTime.new(2014, 8, 11))
+      @week = FactoryBot.create(:week, season: @season, week_number: 1, start_date: DateTime.new(2014, 8, 5), deadline: DateTime.new(2014, 8, 8), end_date: DateTime.new(2014, 8, 11))
 
       @broncos = NflTeam.create(name: "Denver Broncos", conference: "NFC", division: "West")
     end
 
     it "deletes the NflTeam if you are an admin" do
-      delete :destroy, params: { id: @broncos.id, format: :json }
-      expect(NflTeam.all.count).to eq(0)
+      expect { delete :destroy, params: { id: @broncos.id }, format: :json }.to change { NflTeam.count }.by(-1)
+      expect(response).to have_http_status(:ok)
+      expect(NflTeam.find_by_id(@broncos.id)).to be_nil
     end
 
     it "Will not delete the NflTeam if you are not an admin" do
       @regular_guy = create(:user)
       sign_in @regular_guy
-      delete :destroy, params: { id: @broncos.id, format: :json }
-      expect(NflTeam.all.count).to eq(1)
+      expect { delete :destroy, params: { id: @broncos.id, format: :json } }.not_to change { NflTeam.count }
+      expect(response).to have_http_status(:unauthorized)
+      expect(NflTeam.find_by_id(@broncos.id)).not_to be_nil
     end
 
   end
@@ -102,7 +105,7 @@ describe NflTeamsController do
       sign_in @admin
 
       @season = Season.create(year: 2014, name: "2014 Season", entry_fee: 50)
-      @week = Week.create(season: @season, week_number: 1, start_date: DateTime.new(2014, 8, 5), deadline: DateTime.new(2014, 8, 8), end_date: DateTime.new(2014, 8, 11))
+      @week = FactoryBot.create(:week, season: @season, week_number: 1, start_date: DateTime.new(2014, 8, 5), deadline: DateTime.new(2014, 8, 8), end_date: DateTime.new(2014, 8, 11))
 
       @broncos = NflTeam.create(name: "Denver Broncos", conference: "NFC", division: "West")
 
@@ -111,7 +114,7 @@ describe NflTeamsController do
     end
 
     it "creates an NflTeam if you are an admin" do
-      put :create, params: { nfl_team: @new_team, format: :json }
+      post :create, params: { nfl_team: @new_team, format: :json }
       expect(response.status).to eq(Rack::Utils.status_code(:ok))
       expect(NflTeam.last.name).to eq("Minnesota Vikings")
     end
@@ -119,9 +122,11 @@ describe NflTeamsController do
     it "Will not update the NflTeam if you are not an admin" do
       @regular_guy = create(:user)
       sign_in @regular_guy
-      put :create, params: { nfl_team: @new_team, format: :json }
+
+      post :create, params: { nfl_team: @new_team, format: :json }
+
       expect(response.status).to eq(Rack::Utils.status_code(:unauthorized))
-      expect(NflTeam.last.name).to eq("Denver Broncos")
+      expect(NflTeam.last.name).not_to eq("Minnesota Vikings")
     end
   end
 

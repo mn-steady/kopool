@@ -16,8 +16,8 @@ RSpec.describe Pick, type: :model do
   it "should allow more than one pick for two different pool entries" do
     @user = create(:user)
     @season = create(:season)
-    @week16 = Week.create(week_number: 16, start_date: DateTime.new(2014,8,5), end_date: DateTime.new(2014,8,8), deadline: DateTime.new(2014,8,7), season: @season)
-    @week17 = Week.create(week_number: 17, start_date: DateTime.new(2014,8,12), end_date: DateTime.new(2014,8,18), deadline: DateTime.new(2014,8,14), season: @season)
+    @week16 = FactoryBot.create(:week, week_number: 16, start_date: DateTime.new(2014,8,5), end_date: DateTime.new(2014,8,8), deadline: DateTime.new(2014,8,7), season: @season)
+    @week17 = FactoryBot.create(:week, week_number: 17, start_date: DateTime.new(2014,8,12), end_date: DateTime.new(2014,8,18), deadline: DateTime.new(2014,8,14), season: @season)
     @web_state = create(:web_state, week_id: @week16.id, season_id: @season.id)
     @team1 = FactoryBot.create(:nfl_team)
     @team2 = FactoryBot.create(:nfl_team)
@@ -35,8 +35,8 @@ RSpec.describe Pick, type: :model do
   it "should not allow more than one pick for same pool entry" do
     @user = create(:user)
     @season = create(:season)
-    @week16 = Week.create(week_number: 16, start_date: DateTime.new(2014,8,5), end_date: DateTime.new(2014,8,8), deadline: DateTime.new(2014,8,7), season: @season)
-    @week17 = Week.create(week_number: 17, start_date: DateTime.new(2014,8,12), end_date: DateTime.new(2014,8,18), deadline: DateTime.new(2014,8,14), season: @season)
+    @week16 = FactoryBot.create(:week, week_number: 16, start_date: DateTime.new(2014,8,5), end_date: DateTime.new(2014,8,8), deadline: DateTime.new(2014,8,7), season: @season)
+    @week17 = FactoryBot.create(:week, week_number: 17, start_date: DateTime.new(2014,8,12), end_date: DateTime.new(2014,8,18), deadline: DateTime.new(2014,8,14), season: @season)
     @web_state = create(:web_state, week_id: @week16.id, season_id: @season.id)
     @team1 = FactoryBot.create(:nfl_team)
     @team2 = FactoryBot.create(:nfl_team)
@@ -53,8 +53,8 @@ RSpec.describe Pick, type: :model do
   it "does not allow you to save a pick without a matchup" do
     @user = create(:user)
     @season = create(:season)
-    @week16 = Week.create(week_number: 16, start_date: DateTime.new(2014,8,5), end_date: DateTime.new(2014,8,8), deadline: DateTime.new(2014,8,7), season: @season)
-    @week17 = Week.create(week_number: 17, start_date: DateTime.new(2014,8,12), end_date: DateTime.new(2014,8,18), deadline: DateTime.new(2014,8,14), season: @season)
+    @week16 = FactoryBot.create(:week, week_number: 16, start_date: DateTime.new(2014,8,5), end_date: DateTime.new(2014,8,8), deadline: DateTime.new(2014,8,7), season: @season)
+    @week17 = FactoryBot.create(:week, week_number: 17, start_date: DateTime.new(2014,8,12), end_date: DateTime.new(2014,8,18), deadline: DateTime.new(2014,8,14), season: @season)
     @web_state = create(:web_state, week_id: @week16.id, season_id: @season.id)
     @team1 = FactoryBot.create(:nfl_team)
     @team2 = FactoryBot.create(:nfl_team)
@@ -69,7 +69,7 @@ RSpec.describe Pick, type: :model do
   it "Verifies that the pick.team_id is either the home OR away team of that matchup" do
     @user = create(:user)
     @season = create(:season)
-    @week16 = Week.create(week_number: 16, start_date: DateTime.new(2014,8,5), end_date: DateTime.new(2014,8,8), deadline: DateTime.new(2014,8,7), season: @season)
+    @week16 = FactoryBot.create(:week, week_number: 16, start_date: DateTime.new(2014,8,5), end_date: DateTime.new(2014,8,8), deadline: DateTime.new(2014,8,7), season: @season)
     @web_state = create(:web_state, week_id: @week16.id, season_id: @season.id)
     @team1 = FactoryBot.create(:nfl_team)
     @team2 = FactoryBot.create(:nfl_team)
@@ -89,8 +89,8 @@ RSpec.describe Pick, type: :model do
 
   it "should record auto_picked when auto-picked" do
     @season = create(:season)
-    @week16 = Week.create(week_number: 16, start_date: DateTime.new(2014,8,5), end_date: DateTime.new(2014,8,8), deadline: DateTime.new(2014,8,7), season: @season)
-    @week17 = Week.create(week_number: 17, start_date: DateTime.new(2014,8,12), end_date: DateTime.new(2014,8,18), deadline: DateTime.new(2014,8,14), season: @season)
+    @week16 = FactoryBot.create(:week, week_number: 16, start_date: DateTime.new(2014,8,5), end_date: DateTime.new(2014,8,8), deadline: DateTime.new(2014,8,7), season: @season)
+    @week17 = FactoryBot.create(:week, week_number: 17, start_date: DateTime.new(2014,8,12), end_date: DateTime.new(2014,8,18), deadline: DateTime.new(2014,8,14), season: @season)
     @web_state = create(:web_state, week_id: @week16.id, season_id: @season.id)
     @team1 = FactoryBot.create(:nfl_team)
     @team2 = FactoryBot.create(:nfl_team)
@@ -109,8 +109,8 @@ RSpec.describe Pick, type: :model do
   it "can be changed if not locked in" do
     @user = create(:user)
     @season = create(:season)
-    @week16 = Week.create(week_number: 16, start_date: DateTime.new(2014,8,5), end_date: DateTime.new(2014,8,8), deadline: DateTime.new(2014,8,7), season: @season)
-    @week17 = Week.create(week_number: 17, start_date: DateTime.new(2014,8,12), end_date: DateTime.new(2014,8,18), deadline: DateTime.new(2014,8,14), season: @season)
+    @week16 = FactoryBot.create(:week, week_number: 16, start_date: DateTime.new(2014,8,5), end_date: DateTime.new(2014,8,8), deadline: DateTime.new(2014,8,7), season: @season)
+    @week17 = FactoryBot.create(:week, week_number: 17, start_date: DateTime.new(2014,8,12), end_date: DateTime.new(2014,8,18), deadline: DateTime.new(2014,8,14), season: @season)
     @web_state = create(:web_state, week_id: @week16.id, season_id: @season.id)
     @team1 = FactoryBot.create(:nfl_team)
     @team2 = FactoryBot.create(:nfl_team)
@@ -129,8 +129,8 @@ RSpec.describe Pick, type: :model do
   it "cannot be changed if locked in" do
     @user = create(:user)
     @season = create(:season)
-    @week16 = Week.create(week_number: 16, start_date: DateTime.new(2014,8,5), end_date: DateTime.new(2014,8,8), deadline: DateTime.new(2014,8,7), season: @season)
-    @week17 = Week.create(week_number: 17, start_date: DateTime.new(2014,8,12), end_date: DateTime.new(2014,8,18), deadline: DateTime.new(2014,8,14), season: @season)
+    @week16 = FactoryBot.create(:week, week_number: 16, start_date: DateTime.new(2014,8,5), end_date: DateTime.new(2014,8,8), deadline: DateTime.new(2014,8,7), season: @season)
+    @week17 = FactoryBot.create(:week, week_number: 17, start_date: DateTime.new(2014,8,12), end_date: DateTime.new(2014,8,18), deadline: DateTime.new(2014,8,14), season: @season)
     @web_state = create(:web_state, week_id: @week16.id, season_id: @season.id)
     @team1 = FactoryBot.create(:nfl_team)
     @team2 = FactoryBot.create(:nfl_team)

@@ -19,13 +19,15 @@ gem 'faker'
 #gem 'bootstrap-sass', '~> 3.1.1'
 gem 'paperclip', '~> 4.1'
 gem 'aws-sdk'
-gem 'json', '1.8.5'
+gem 'json', '2.6.3'
 gem 'rack-cors'
 # Use your angular templates with rails' asset pipeline
 gem 'angular-rails-templates', '~> 1.2'
+# HTTP client api for Ruby.
+gem 'net-http', '~> 0.3.2'
 
 group :development, :test do
-  gem 'rspec-rails', '~> 3.8.2'
+  gem 'rspec-rails', '5.1.2'
 	gem 'jasmine-rails', '~> 0.15.0'
   gem 'pry-byebug'
   gem 'letter_opener'

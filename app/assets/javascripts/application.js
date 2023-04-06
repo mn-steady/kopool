@@ -28,3 +28,5 @@
 //= require angular-route.js
 //= require static_pages
 //= require ui-bootstrap-tpls-0.11.0.min.js
+//= require angular-rails-templates
+//= require_tree ../templates

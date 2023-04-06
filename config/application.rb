@@ -48,11 +48,8 @@ module Kopool
         resource '*', headers: :any, methods: [:get, :post, :options]
       end
     end
-    config.assets.paths << Rails.root.join('app', 'assets', 'templates')
     config.assets.enabled = true
-    config.assets.precompile += ['vendor/assets/**', 'app/assets/templates/**/*.html']
-    # config.assets.precompile += %w( main.js )
-
+    config.assets.precompile += %w[spec/javascripts/**/*[Ss]pec.{js.coffee,js,coffee} main.js]
     config.generators.template_engine = :haml
   end
 end

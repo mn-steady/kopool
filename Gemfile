@@ -21,10 +21,12 @@ gem 'paperclip', '~> 4.1'
 gem 'aws-sdk'
 gem 'json', '1.8.5'
 gem 'rack-cors'
+# Use your angular templates with rails' asset pipeline
+gem 'angular-rails-templates', '~> 1.2'
 
 group :development, :test do
   gem 'rspec-rails', '~> 3.8.2'
-  gem 'jasmine-rails', '~> 0.9.0'
+	gem 'jasmine-rails', '~> 0.15.0'
   gem 'pry-byebug'
   gem 'letter_opener'
 	gem 'listen', '~> 3.8'

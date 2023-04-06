@@ -1463,9 +1463,9 @@ GEM
     cocaine (0.5.8)
       climate_control (>= 0.0.3, < 1.0)
     coderay (1.1.3)
-    coffee-rails (4.2.2)
+    coffee-rails (5.0.0)
       coffee-script (>= 2.2.0)
-      railties (>= 4.0.0)
+      railties (>= 5.2.0)
     coffee-script (2.4.1)
       coffee-script-source
       execjs
@@ -1499,20 +1499,15 @@ GEM
     ffi (1.15.5)
     globalid (1.1.0)
       activesupport (>= 5.0)
-    haml (5.2.2)
-      temple (>= 0.8.0)
+    haml (6.1.1)
+      temple (>= 0.8.2)
+      thor
       tilt
-    haml-rails (1.0.0)
-      actionpack (>= 4.0.1)
-      activesupport (>= 4.0.1)
-      haml (>= 4.0.6, < 6.0)
-      html2haml (>= 1.0.1)
-      railties (>= 4.0.1)
-    html2haml (2.3.0)
-      erubis (~> 2.7.0)
-      haml (>= 4.0)
-      nokogiri (>= 1.6.0)
-      ruby_parser (~> 3.5)
+    haml-rails (2.1.0)
+      actionpack (>= 5.1)
+      activesupport (>= 5.1)
+      haml (>= 4.0.6)
+      railties (>= 5.1)
     i18n (1.12.0)
       concurrent-ruby (~> 1.0)
     jasmine-core (3.99.0)
@@ -1703,13 +1698,13 @@ DEPENDENCIES
   aws-sdk
   bootsnap
   capybara
-  coffee-rails (= 4.2.2)
+  coffee-rails (~> 5.0)
   database_cleaner
   devise (= 4.9.1)
   factory_bot (~> 5.2)
   factory_bot_rails (~> 5.2)
   faker
-  haml-rails (= 1.0.0)
+  haml-rails (~> 2.1)
   jasmine-rails (~> 0.15.0)
   jbuilder (~> 2.11, >= 2.11.5)
   jquery-rails (= 4.5.1)

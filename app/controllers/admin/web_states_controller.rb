@@ -29,7 +29,7 @@ class Admin::WebStatesController < ApplicationController
     cleaned_params = webstate_params.except(:current_week).merge(current_week: @current_week)
     Rails.logger.debug("Cleaned Params: #{cleaned_params}")
     @web_state = WebState.first
-    if @web_state.update_attributes(cleaned_params)
+    if @web_state.update(cleaned_params)
       respond_to do | format |
         format.json {render json: @web_state}
       end

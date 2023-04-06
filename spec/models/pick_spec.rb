@@ -139,7 +139,7 @@ RSpec.describe Pick, type: :model do
     @pool_entry_1 = FactoryBot.create(:pool_entry, team_name: "We locked in", season: @season, user: @user)
     @pick1 = FactoryBot.create(:pick, pool_entry: @pool_entry_1, week: @week16, nfl_team: @monday_matchup.away_team, matchup: @monday_matchup)
     expect(Pick.last.nfl_team).to eq(@monday_matchup.away_team)
-    @pick1.update_attributes(locked_in: true)
+    @pick1.update(locked_in: true)
     expect {
       @pick1.nfl_team = @monday_matchup.home_team
       @pick1.save!

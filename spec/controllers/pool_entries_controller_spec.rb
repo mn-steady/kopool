@@ -44,7 +44,7 @@ describe PoolEntriesController do
 			end
 
 			it "will not create a new pool entry after the first week" do
-				@week.update_attributes(week_number: 2)
+				@week.update(week_number: 2)
 				post :create, params: { user: @user, team_name: "Test Team", format: :json }
 				expect(response.status).to eq(Rack::Utils.status_code(:bad_request))
 				expect(PoolEntry.count).to eq(0)
@@ -91,7 +91,7 @@ describe PoolEntriesController do
 				expect(PoolEntry.first.team_name).to eq("Test Team")
 				pool_entry = PoolEntry.first
 
-				@week.update_attributes(week_number: 2)
+				@week.update(week_number: 2)
 
 				@params = { 'id' => pool_entry.id, 'format' => 'json'}
 				delete :destroy, params: @params
@@ -153,8 +153,8 @@ describe PoolEntriesController do
   	end
 
   	it "returns an error message when no active pool entries are found" do
-  		@pool_entry1.update_attributes(knocked_out: true)
-  		@pool_entry2.update_attributes(knocked_out: true)
+  		@pool_entry1.update(knocked_out: true)
+  		@pool_entry2.update(knocked_out: true)
 
   		get :pool_entries_and_picks, params: { week_id: @week.id, format: :json }
       pool_entries_and_teams = JSON.parse(response.body)

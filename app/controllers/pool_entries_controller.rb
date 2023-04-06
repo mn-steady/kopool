@@ -100,7 +100,7 @@ class PoolEntriesController < ApplicationController
     Rails.logger.debug("PoolEntries.update")
     @pool_entry = PoolEntry.find(params[:id])
 
-    @pool_entry.update_attributes(pool_entries_params)
+    @pool_entry.update(pool_entries_params)
 
     if @pool_entry.save
       respond_to do | format |

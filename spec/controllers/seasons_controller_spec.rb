@@ -89,9 +89,9 @@ describe SeasonsController do
 
 			# Handle Week 1 Outcomes
 
-			@matchup1_1.update_attributes(winning_team_id: @broncos.id)
-			@matchup1_2.update_attributes(winning_team_id: @packers.id)
-			@matchup1_3.update_attributes(winning_team_id: @chargers.id)
+			@matchup1_1.update(winning_team_id: @broncos.id)
+			@matchup1_2.update(winning_team_id: @packers.id)
+			@matchup1_3.update(winning_team_id: @chargers.id)
 			Matchup.handle_matchup_outcome!(@matchup1_1.id)
 			Matchup.handle_matchup_outcome!(@matchup1_2.id)
 			Matchup.handle_matchup_outcome!(@matchup1_3.id)
@@ -110,9 +110,9 @@ describe SeasonsController do
 
 			# Handle Week 2 Outcomes
 
-			@matchup2_1.update_attributes(winning_team_id: @vikings.id)
-			@matchup2_2.update_attributes(winning_team_id: @lions.id)
-			@matchup2_3.update_attributes(winning_team_id: @steelers.id)
+			@matchup2_1.update(winning_team_id: @vikings.id)
+			@matchup2_2.update(winning_team_id: @lions.id)
+			@matchup2_3.update(winning_team_id: @steelers.id)
 			Matchup.handle_matchup_outcome!(@matchup2_1.id)
 			Matchup.handle_matchup_outcome!(@matchup2_2.id)
 			Matchup.handle_matchup_outcome!(@matchup2_3.id)
@@ -128,9 +128,9 @@ describe SeasonsController do
 
 			# Handle Week 3 Outcomes
 
-			@matchup3_1.update_attributes(winning_team_id: @broncos.id)
-			@matchup3_2.update_attributes(winning_team_id: @packers.id)
-			@matchup3_3.update_attributes(winning_team_id: @chargers.id)
+			@matchup3_1.update(winning_team_id: @broncos.id)
+			@matchup3_2.update(winning_team_id: @packers.id)
+			@matchup3_3.update(winning_team_id: @chargers.id)
 			Matchup.handle_matchup_outcome!(@matchup3_1.id)
 			Matchup.handle_matchup_outcome!(@matchup3_2.id)
 			Matchup.handle_matchup_outcome!(@matchup3_3.id)
@@ -144,9 +144,9 @@ describe SeasonsController do
 
 			# Handle Week 4 Outcomes
 
-			@matchup4_1.update_attributes(winning_team_id: @vikings.id)
-			@matchup4_2.update_attributes(winning_team_id: @lions.id)
-			@matchup4_3.update_attributes(winning_team_id: @steelers.id)
+			@matchup4_1.update(winning_team_id: @vikings.id)
+			@matchup4_2.update(winning_team_id: @lions.id)
+			@matchup4_3.update(winning_team_id: @steelers.id)
 			Matchup.handle_matchup_outcome!(@matchup4_1.id)
 			Matchup.handle_matchup_outcome!(@matchup4_2.id)
 			Matchup.handle_matchup_outcome!(@matchup4_3.id)

@@ -30,7 +30,7 @@ describe WeeksController do
 
 
     it "returns correct basic results" do
-      @week.update_attributes(open_for_picks: false)
+      @week.update(open_for_picks: false)
       get :week_results, params: { week_id: @week.id }, format: :json
       expect(response.status).to eq(Rack::Utils.status_code(:ok))
 
@@ -57,14 +57,14 @@ describe WeeksController do
     end
 
     it "returns correct ko results" do
-      @week.update_attributes(open_for_picks: false)
+      @week.update(open_for_picks: false)
 
       # Now make that first pool entry ko'd in week 1
-      @matchup.update_attributes(winning_team_id: @broncos.id)
+      @matchup.update(winning_team_id: @broncos.id)
       Matchup.handle_matchup_outcome!(@matchup.id)
 
       @week2 = FactoryBot.create(:week, season: @season, week_number: 2, start_date: DateTime.new(2014, 8, 12), deadline: DateTime.new(2014, 8, 15), end_date: DateTime.new(2014, 8, 18))
-      @web_state.update_attributes(current_week: @week2)
+      @web_state.update(current_week: @week2)
 
       @pool_entry_just_ko = FactoryBot.create(:pool_entry, user: @regular_guy, team_name: "Me Just KO", paid: true, season: @season)
       @pool_entry_new = FactoryBot.create(:pool_entry, user: @regular_guy, team_name: "Me New", paid: true, season: @season)
@@ -75,8 +75,8 @@ describe WeeksController do
       @pick2 = FactoryBot.create(:pick, pool_entry: @pool_entry_just_ko, week: @week2, nfl_team: @colts, matchup: @matchup_2)
       @pick3 = FactoryBot.create(:pick, pool_entry: @pool_entry_new, week: @week2, nfl_team: @vikings, matchup: @matchup_2)
 
-      @week2.update_attributes(open_for_picks: false)
-      @matchup_2.update_attributes(winning_team_id: @vikings.id)
+      @week2.update(open_for_picks: false)
+      @matchup_2.update(winning_team_id: @vikings.id)
       Matchup.handle_matchup_outcome!(@matchup_2.id)
 
       get :week_results, params: { week_id: @week2.id, format: :json }

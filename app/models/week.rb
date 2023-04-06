@@ -20,13 +20,13 @@ class Week < ApplicationRecord
 	end
 
 	def close_week_for_picks!
-		self.update_attributes(open_for_picks: false)
+		self.update(open_for_picks: false)
 	end
 
 	def reopen_week_for_picks!
 		# This can only be done if this is still the current week
 		if WebState.first.week_id == self.id
-			self.update_attributes(open_for_picks: true)
+			self.update(open_for_picks: true)
 			return true
 		else
 			Rails.logger.error("Cannot reopen week " + self.id + "because current week is id " + WebState.first.week_id )
@@ -44,7 +44,7 @@ class Week < ApplicationRecord
 			if self.week_number < WEEKS_IN_SEASON # Don't error out if this is the last week in the season
 				next_week_number = self.week_number + 1
 				next_week = Week.where(season: season).where(week_number: next_week_number).first
-				webstate.update_attributes(week_id: next_week.id)
+				webstate.update(week_id: next_week.id)
 				next_week.reopen_week_for_picks!
 				return true
 			else

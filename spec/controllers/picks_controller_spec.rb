@@ -165,7 +165,7 @@ describe PicksController do
 	  context "with a knocked out pool entry" do
 	  	it "does not save the pick" do
         pick1 = Pick.create(pool_entry: @pool_entry1, week: @week, team_id: @vikings.id, matchup_id: @matchup.id)
-        @pool_entry1.update_attributes(knocked_out: true, knocked_out_week_id: @week.id)
+        @pool_entry1.update(knocked_out: true, knocked_out_week_id: @week.id)
 
           pick_params = {
             id: pick1['id'],
@@ -238,7 +238,7 @@ describe PicksController do
       end
 
       it "does not save a pick if the pool entry is knocked out" do
-        @pool_entry1.update_attributes(knocked_out: true)
+        @pool_entry1.update(knocked_out: true)
 
         pick_params = {
             week_id: @week.id,
@@ -276,7 +276,7 @@ describe PicksController do
 		context "week is closed for picks" do
 
 			before do
-				@week.update_attributes(open_for_picks: false)
+				@week.update(open_for_picks: false)
 			end
 
 			it "returns the picks from this week" do
@@ -344,7 +344,7 @@ describe PicksController do
 
       it "returns a sorted hash in descending order" do
 
-        @week.update_attributes(open_for_picks: false)
+        @week.update(open_for_picks: false)
 
         get :sorted_picks, params: { week_id: @week.id }, format: :json
 
@@ -367,7 +367,7 @@ describe PicksController do
         @matchup3 = Matchup.create(week_id: @week.id, home_team: @giants, away_team: @chargers, game_time: DateTime.new(2014,8,14,11))
 
 
-        @week.update_attributes(open_for_picks: false)
+        @week.update(open_for_picks: false)
 
         get :sorted_picks, params: { week_id: @week.id }, format: :json
 
@@ -389,7 +389,7 @@ describe PicksController do
     context "week is open for picks" do
 
       it "returns an error message and bad request status" do
-        @week.update_attributes(open_for_picks: true)
+        @week.update(open_for_picks: true)
 
         get :sorted_picks, params: { week_id: @week.id }, format: :json
 

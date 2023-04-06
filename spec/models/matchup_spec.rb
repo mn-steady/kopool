@@ -39,8 +39,8 @@ RSpec.describe Matchup, type: :model do
     end
 
     it "should handle knockouts according to tie, win, loss rules" do
-      @monday_matchup.update_attributes(completed: true, tie: true)
-      @thursday_matchup.update_attributes(completed: true, winning_team_id: @thursday_matchup.home_team.id)
+      @monday_matchup.update(completed: true, tie: true)
+      @thursday_matchup.update(completed: true, winning_team_id: @thursday_matchup.home_team.id)
 
       Matchup.handle_matchup_outcome!(@monday_matchup.id)
       Matchup.handle_matchup_outcome!(@thursday_matchup.id)

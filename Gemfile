@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
-ruby '2.7.2'
-#ruby '2.6.8'
+
+ruby '3.0.0'
+
 gem 'bootsnap', require: false
 gem 'rails', '6.0.6.1'
 gem 'pg'

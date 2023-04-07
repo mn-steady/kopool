@@ -69,7 +69,9 @@ class PicksController < ApplicationController
 		else
 			respond_to do | format |
 				error_message = ""
-				@pick.errors.each{ |attr,msg| error_message << "#{attr} #{msg} " }
+				@pick.errors.each do |error|
+					error_message += "#{error.attribute.to_s} #{error.message} "
+				end
 				format.json { render :json => [:error =>  error_message], :status => :internal_server_error}
 			end
 		end
@@ -89,7 +91,9 @@ class PicksController < ApplicationController
 		else
 			respond_to do | format |
 				error_message = ""
-				@pick.errors.each{ |attr,msg| error_message << "#{attr} #{msg} " }
+				@pick.errors.each do |error|
+					error_message += "#{error.attribute.to_s} #{error.message} "
+				end
 				format.json { render :json => [:error =>  error_message], :status => :internal_server_error}
 			end
 		end

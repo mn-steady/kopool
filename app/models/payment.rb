@@ -1,3 +1,3 @@
 class Payment < ApplicationRecord
-	validates_presence_of :amount
+	validates :amount, presence: true
 end

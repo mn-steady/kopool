@@ -10,8 +10,8 @@ class User < ApplicationRecord
   has_many :pool_entries
   belongs_to :favorite_team, class_name: "NflTeam"
 
-  validates_presence_of :email, case_sensitive: false
-  validates_presence_of :encrypted_password
+  validates :email, presence: true, uniqueness: { case_sensitive: false }
+  validates :encrypted_password, presence: true
 
   private
 

@@ -7,13 +7,8 @@ class Week < ApplicationRecord
 	WEEKS_IN_SEASON = 17
 	SQL_DOW_MONDAY = 1
 
-	validates_presence_of :week_number
-	validates_presence_of :start_date
-	validates_presence_of :end_date
-	validates_presence_of :deadline
-	validates_presence_of :season_id
-
-	validates :week_number, uniqueness: {scope: :season_id}, presence: true
+	validates :start_date, :end_date, :deadline, :season_id, presence: true
+	validates :week_number, uniqueness: { scope: :season_id }, presence: true
 
 	def self.autopick_matchup_during_week(week_id)
 		Matchup.where(week_id: week_id).where('EXTRACT (dow from game_time) = ?', SQL_DOW_MONDAY).order(:game_time).first

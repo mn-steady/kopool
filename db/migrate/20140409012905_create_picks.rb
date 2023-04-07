@@ -1,4 +1,4 @@
-class CreatePicks < ActiveRecord::Migration
+class CreatePicks < ActiveRecord::Migration[7.0]
   def change
     create_table :picks do |t|
       t.integer :pool_entry_id

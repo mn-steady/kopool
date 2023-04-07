@@ -1,4 +1,4 @@
-class CreateNflTeams < ActiveRecord::Migration
+class CreateNflTeams < ActiveRecord::Migration[7.0]
   def change
     create_table :nfl_teams do |t|
       t.string :name

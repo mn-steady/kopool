@@ -1,4 +1,4 @@
-class SeedPoolEntriesWithSeasonId < ActiveRecord::Migration
+class SeedPoolEntriesWithSeasonId < ActiveRecord::Migration[7.0]
   def up
     execute <<-SQL
       UPDATE pool_entries

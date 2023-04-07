@@ -1,4 +1,4 @@
-class GenerateAuthTokensForExistingUsers < ActiveRecord::Migration
+class GenerateAuthTokensForExistingUsers < ActiveRecord::Migration[7.0]
   def up
   	User.all.each do |user|
   		user.ensure_authentication_token

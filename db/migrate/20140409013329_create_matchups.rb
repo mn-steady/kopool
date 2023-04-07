@@ -1,4 +1,4 @@
-class CreateMatchups < ActiveRecord::Migration
+class CreateMatchups < ActiveRecord::Migration[7.0]
   def change
     create_table :matchups do |t|
       t.integer :week_id

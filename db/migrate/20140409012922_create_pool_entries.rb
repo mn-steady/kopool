@@ -1,4 +1,4 @@
-class CreatePoolEntries < ActiveRecord::Migration
+class CreatePoolEntries < ActiveRecord::Migration[7.0]
   def change
     create_table :pool_entries do |t|
       t.integer :user_id

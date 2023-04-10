@@ -2,7 +2,7 @@ class Week < ApplicationRecord
 	has_many :matchups
 	has_many :picks
 	belongs_to :season
-	belongs_to :default_team, class_name: 'NflTeam'
+	belongs_to :default_team, class_name: 'NflTeam', optional: true
 
 	WEEKS_IN_SEASON = 17
 	SQL_DOW_MONDAY = 1

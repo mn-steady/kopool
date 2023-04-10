@@ -5,7 +5,7 @@ FactoryBot.define do
 		cell { Faker::PhoneNumber.cell_phone }
 		password { "crazyemail8" }
 		password_confirmation { "crazyemail8" }
-		favorite_team { create(:nfl_team) }
+		association :favorite_team, factory: :nfl_team
 	end
 
 	factory :admin, class: User do
@@ -15,7 +15,7 @@ FactoryBot.define do
 		password { "crazyemail8" }
 		password_confirmation { "crazyemail8" }
 		admin { true }
-		favorite_team { create(:nfl_team) }
+		association :favorite_team, factory: :nfl_team
 	end
 
 	factory :season do

@@ -8,7 +8,7 @@ class User < ApplicationRecord
   after_create :send_welcome_email
 
   has_many :pool_entries
-  belongs_to :favorite_team, class_name: "NflTeam"
+  belongs_to :favorite_team, class_name: "NflTeam", optional: true
 
   validates :email, presence: true, uniqueness: { case_sensitive: false }
   validates :encrypted_password, presence: true

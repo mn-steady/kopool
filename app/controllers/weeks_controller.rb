@@ -32,7 +32,7 @@ class WeeksController < ApplicationController
     Rails.logger.debug("(Weeks.create)")
     @week = Week.new()
 
-    @week.update_attributes(weeks_params)
+    @week.update(weeks_params)
 
     if @week.save()
       respond_to do | format |
@@ -54,13 +54,14 @@ class WeeksController < ApplicationController
 
     cleaned_params = weeks_params
     Rails.logger.debug("Cleaned Params: #{cleaned_params}")
-    if @week.update_attributes(cleaned_params)
+    if @week.update(cleaned_params)
       respond_to do | format |
         format.json {render json: @week}
       end
     else
-      respond_to do | format |
-        @week.errors.each{|attr,msg| error_message << "#{attr} #{msg} " }
+      respond_to do |format|
+        error_message = ""
+        @week.errors.each { |attr, msg| error_message << "#{attr} #{msg} " }
         format.json { render :json => [:error => error_message], :status => :internal_server_error }
       end
     end
@@ -77,6 +78,7 @@ class WeeksController < ApplicationController
       end
     else
       respond_to do | format |
+        error_message = ""
         @week.errors.each{|attr,msg| error_message << "#{attr} #{msg} " }
         format.json { render :json => [:error => error_message], :status => :internal_server_error }
       end

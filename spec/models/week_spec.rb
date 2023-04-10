@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Week do
+RSpec.describe Week, type: :model do
 
   it { should have_many :matchups }
   it { should belong_to :season }
@@ -15,7 +15,7 @@ describe Week do
   describe "#week_number unique in season" do
     it "should not allow you to save a dup week_number in the same season" do
       season = create(:season)
-      week1 = Week.create(week_number: 5, start_date: DateTime.new(2014,8,5), end_date: DateTime.new(2014,8,8), deadline: DateTime.new(2014,8,7), season: season)
+      week1 = FactoryBot.create(:week, week_number: 5, start_date: DateTime.new(2014,8,5), end_date: DateTime.new(2014,8,8), deadline: DateTime.new(2014,8,7), season: season)
       week1.save!
       week2 = Week.create(week_number: 5, start_date: DateTime.new(2014,8,12), end_date: DateTime.new(2014,8,18), deadline: DateTime.new(2014,8,14), season: season)
       expect {
@@ -24,10 +24,10 @@ describe Week do
     end
     it "should allow you to save two weeks with dup week number in different season" do
       season = create(:season)
-      week1 = Week.create(week_number: 5, start_date: DateTime.new(2014,8,5), end_date: DateTime.new(2014,8,8), deadline: DateTime.new(2014,8,7), season: season)
+      week1 = FactoryBot.create(:week, week_number: 5, start_date: DateTime.new(2014,8,5), end_date: DateTime.new(2014,8,8), deadline: DateTime.new(2014,8,7), season: season)
       week1.save!
       season_2 = create(:season, year: season.year+1)
-      week2 = Week.create(week_number: 5, start_date: DateTime.new(2014,8,12), end_date: DateTime.new(2014,8,18), deadline: DateTime.new(2014,8,14), season_id: season_2.id)
+      week2 = FactoryBot.create(:week, week_number: 5, start_date: DateTime.new(2014,8,12), end_date: DateTime.new(2014,8,18), deadline: DateTime.new(2014,8,14), season_id: season_2.id)
       expect {
         week2.save!
       }.not_to raise_error
@@ -37,7 +37,7 @@ describe Week do
   describe "#close_week_for_picks" do
   	it "should set open_for_picks for the passed in week to false" do
   		season = create(:season)
-  		week1 = Week.create(week_number: 1, start_date: DateTime.new(2014,8,5), end_date: DateTime.new(2014,8,8), deadline: DateTime.new(2014,8,7), season: season)
+  		week1 = FactoryBot.create(:week, week_number: 1, start_date: DateTime.new(2014,8,5), end_date: DateTime.new(2014,8,8), deadline: DateTime.new(2014,8,7), season: season)
   		#week2 = Week.create(week_number: 2, start_date: DateTime.new(2014,8,12), end_date: DateTime.new(2014,8,18), deadline: DateTime.new(2014,8,14), season_id: season.id)
   		week1.close_week_for_picks!
 
@@ -46,8 +46,8 @@ describe Week do
   	end
   	it "should not set open_for_picks for other weeks to false" do
   		season = create(:season)
-  		week1 = Week.create(week_number: 1, start_date: DateTime.new(2014,8,5), end_date: DateTime.new(2014,8,8), deadline: DateTime.new(2014,8,7), season: season)
-  		week2 = Week.create(week_number: 2, start_date: DateTime.new(2014,8,12), end_date: DateTime.new(2014,8,18), deadline: DateTime.new(2014,8,14), season: season)
+  		week1 = FactoryBot.create(:week, week_number: 1, start_date: DateTime.new(2014,8,5), end_date: DateTime.new(2014,8,8), deadline: DateTime.new(2014,8,7), season: season)
+  		week2 = FactoryBot.create(:week, week_number: 2, start_date: DateTime.new(2014,8,12), end_date: DateTime.new(2014,8,18), deadline: DateTime.new(2014,8,14), season: season)
   		week1.close_week_for_picks!
   		expect(week2.open_for_picks).to eq(true)
   	end
@@ -56,8 +56,8 @@ describe Week do
   describe "#move_to_next_week" do
     it "should not advance the week at the last week of the season" do
       season = create(:season)
-      week16 = Week.create(week_number: 16, start_date: DateTime.new(2014,8,5), end_date: DateTime.new(2014,8,8), deadline: DateTime.new(2014,8,7), season: season)
-      week17 = Week.create(week_number: 17, start_date: DateTime.new(2014,8,12), end_date: DateTime.new(2014,8,18), deadline: DateTime.new(2014,8,14), season: season)
+      week16 = FactoryBot.create(:week, week_number: 16, start_date: DateTime.new(2014,8,5), end_date: DateTime.new(2014,8,8), deadline: DateTime.new(2014,8,7), season: season)
+      week17 = FactoryBot.create(:week, week_number: 17, start_date: DateTime.new(2014,8,12), end_date: DateTime.new(2014,8,18), deadline: DateTime.new(2014,8,14), season: season)
       web_state = create(:web_state, week_id: week17.id, season_id: season.id)
       week17.move_to_next_week!
       expect(web_state.reload.week_id).to eq(week17.id)
@@ -66,8 +66,8 @@ describe Week do
 
     it "should automatically open the next week for picks" do
       season = create(:season)
-      week1 = Week.create(week_number: 10, start_date: DateTime.new(2014,8,5), end_date: DateTime.new(2014,8,8), deadline: DateTime.new(2014,8,7), season: season)
-      week2 = Week.create(week_number: 11, start_date: DateTime.new(2014,8,12), end_date: DateTime.new(2014,8,18), deadline: DateTime.new(2014,8,14), season: season)
+      week1 = FactoryBot.create(:week, week_number: 10, start_date: DateTime.new(2014,8,5), end_date: DateTime.new(2014,8,8), deadline: DateTime.new(2014,8,7), season: season)
+      week2 = FactoryBot.create(:week, week_number: 11, start_date: DateTime.new(2014,8,12), end_date: DateTime.new(2014,8,18), deadline: DateTime.new(2014,8,14), season: season)
       web_state = create(:web_state, week_id: week1.id, season_id: season.id)
       week1.move_to_next_week!
       expect(web_state.reload.week_id).to eq(week2.id)
@@ -77,10 +77,10 @@ describe Week do
     it "should affect only the proper season's week if multiple seasons are in the database" do
       season1 = create(:season)
       season2 = create(:season)
-      week1 = Week.create(week_number: 1, start_date: DateTime.new(2014,8,5), end_date: DateTime.new(2014,8,8), deadline: DateTime.new(2014,8,7), season: season1)
-      week2 = Week.create(week_number: 2, start_date: DateTime.new(2014,8,12), end_date: DateTime.new(2014,8,18), deadline: DateTime.new(2014,8,14), season: season1)
-      week1_2 = Week.create(week_number: 1, start_date: DateTime.new(2015,8,5), end_date: DateTime.new(2015,8,8), deadline: DateTime.new(2015,8,7), season: season2)
-      week2_2 = Week.create(week_number: 2, start_date: DateTime.new(2015,8,12), end_date: DateTime.new(2015,8,18), deadline: DateTime.new(2015,8,14), season: season2)
+      week1 = FactoryBot.create(:week, week_number: 1, start_date: DateTime.new(2014,8,5), end_date: DateTime.new(2014,8,8), deadline: DateTime.new(2014,8,7), season: season1)
+      week2 = FactoryBot.create(:week, week_number: 2, start_date: DateTime.new(2014,8,12), end_date: DateTime.new(2014,8,18), deadline: DateTime.new(2014,8,14), season: season1)
+      week1_2 = FactoryBot.create(:week, week_number: 1, start_date: DateTime.new(2015,8,5), end_date: DateTime.new(2015,8,8), deadline: DateTime.new(2015,8,7), season: season2)
+      week2_2 = FactoryBot.create(:week, week_number: 2, start_date: DateTime.new(2015,8,12), end_date: DateTime.new(2015,8,18), deadline: DateTime.new(2015,8,14), season: season2)
       web_state = create(:web_state, week_id: week1_2.id, season_id: season2.id)
       week1_2.move_to_next_week!
       expect(web_state.reload.week_id).to eq(week2_2.id)
@@ -88,17 +88,17 @@ describe Week do
 
     it "should autopick for a pool entry that had not picked" do
       @season = create(:season)
-      @week16 = Week.create(week_number: 16, start_date: DateTime.new(2014,8,5), end_date: DateTime.new(2014,8,8), deadline: DateTime.new(2014,8,7), season: @season)
-      @week17 = Week.create(week_number: 17, start_date: DateTime.new(2014,8,12), end_date: DateTime.new(2014,8,18), deadline: DateTime.new(2014,8,14), season: @season)
+      @week16 = FactoryBot.create(:week, week_number: 16, start_date: DateTime.new(2014,8,5), end_date: DateTime.new(2014,8,8), deadline: DateTime.new(2014,8,7), season: @season)
+      @week17 = FactoryBot.create(:week, week_number: 17, start_date: DateTime.new(2014,8,12), end_date: DateTime.new(2014,8,18), deadline: DateTime.new(2014,8,14), season: @season)
       @web_state = create(:web_state, week_id: @week16.id, season_id: @season.id)
-      @team1 = FactoryGirl.create(:nfl_team)
-      @team2 = FactoryGirl.create(:nfl_team)
+      @team1 = FactoryBot.create(:nfl_team)
+      @team2 = FactoryBot.create(:nfl_team)
       @monday_matchup = Matchup.create(game_time: DateTime.new(2017,8,14,15,00), week_id: @week16.id, home_team_id: @team1.id, away_team_id: @team2.id)
 
-      @pool_entry_nopick1 = FactoryGirl.create(:pool_entry, team_name: "Losers did not pick", season: @season)
-      @pool_entry_knocked = FactoryGirl.create(:pool_entry, team_name: "We dont matter", knocked_out: true, season: @season)
-      @pool_entry_pick1 = FactoryGirl.create(:pool_entry, season: @season)
-      @pick1 = FactoryGirl.create(:pick, pool_entry: @pool_entry_pick1, week: @week16, nfl_team: @monday_matchup.away_team, matchup: @monday_matchup)
+      @pool_entry_nopick1 = FactoryBot.create(:pool_entry, team_name: "Losers did not pick", season: @season)
+      @pool_entry_knocked = FactoryBot.create(:pool_entry, team_name: "We dont matter", knocked_out: true, season: @season)
+      @pool_entry_pick1 = FactoryBot.create(:pool_entry, season: @season)
+      @pick1 = FactoryBot.create(:pick, pool_entry: @pool_entry_pick1, week: @week16, nfl_team: @monday_matchup.away_team, matchup: @monday_matchup)
 
       @week16.move_to_next_week!
 
@@ -114,12 +114,12 @@ describe Week do
   describe "#autopick_matchup_during_week" do
 
     before(:each) do
-      @season = FactoryGirl.create(:season)
-      @week = FactoryGirl.create(:week, week_number: 16, start_date: DateTime.new(2017,8,13), end_date: DateTime.new(2017,8,19), deadline: DateTime.new(2017,8,17), season: @season)
-      @team1 = FactoryGirl.create(:nfl_team)
-      @team2 = FactoryGirl.create(:nfl_team)
-      @team3 = FactoryGirl.create(:nfl_team)
-      @team4 = FactoryGirl.create(:nfl_team)
+      @season = FactoryBot.create(:season)
+      @week = FactoryBot.create(:week, week_number: 16, start_date: DateTime.new(2017,8,13), end_date: DateTime.new(2017,8,19), deadline: DateTime.new(2017,8,17), season: @season)
+      @team1 = FactoryBot.create(:nfl_team)
+      @team2 = FactoryBot.create(:nfl_team)
+      @team3 = FactoryBot.create(:nfl_team)
+      @team4 = FactoryBot.create(:nfl_team)
       @monday_matchup = Matchup.create(game_time: DateTime.new(2017,8,14,15,00), week_id: @week.id, home_team_id: @team1.id, away_team_id: @team2.id)
       @wednesday_matchup = Matchup.create(game_time: DateTime.new(2017,8,16,15,30), week_id: @week.id, home_team_id: @team3.id, away_team_id: @team4.id)
     end
@@ -129,8 +129,8 @@ describe Week do
     end
 
     it "should return the FIRST monday matchup if multiple monday games" do
-      @team5 = FactoryGirl.create(:nfl_team)
-      @team6 = FactoryGirl.create(:nfl_team)
+      @team5 = FactoryBot.create(:nfl_team)
+      @team6 = FactoryBot.create(:nfl_team)
       @monday_matchup2 = Matchup.create(game_time: DateTime.new(2017,8,14,15,45), week_id: @week.id, home_team_id: @team5.id, away_team_id: @team6.id)
       expect(Week.autopick_matchup_during_week(@week.id)).to eq(@monday_matchup)
     end

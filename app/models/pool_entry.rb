@@ -1,14 +1,11 @@
-class PoolEntry < ActiveRecord::Base
+class PoolEntry < ApplicationRecord
 	has_many :picks
 	has_many :payments
   belongs_to :user
   belongs_to :season
 
-  validates_uniqueness_of :team_name, scope: :season_id
-
-	validates_presence_of :user_id
-	validates_presence_of :team_name
-  validates_presence_of :season_id
+  validates :team_name, presence: true, uniqueness: { scope: :season_id }
+  validates :user_id, :season_id, presence: true
 
   def self.needs_autopicking(week)
     pools_have_picked = Pick.where(week_id: week.id).pluck(:pool_entry_id)

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Season do
+RSpec.describe Season, type: :model do
 
   it { should have_many :weeks }
   it { should have_many :pool_entries }

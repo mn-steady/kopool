@@ -1,4 +1,4 @@
-class CreateWebStates < ActiveRecord::Migration
+class CreateWebStates < ActiveRecord::Migration[7.0]
   def change
     create_table :web_states do |t|
       t.integer :week_id, :null => false

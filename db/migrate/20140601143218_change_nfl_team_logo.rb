@@ -1,4 +1,4 @@
-class ChangeNflTeamLogo < ActiveRecord::Migration
+class ChangeNflTeamLogo < ActiveRecord::Migration[7.0]
   def self.up
     remove_column :nfl_teams, :logo
     add_attachment :nfl_teams, :logo

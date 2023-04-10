@@ -1,4 +1,4 @@
-class SetupWebState < ActiveRecord::Migration
+class SetupWebState < ActiveRecord::Migration[7.0]
   def up
     execute <<-SQL
       INSERT INTO web_states (week_id)

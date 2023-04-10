@@ -1,8 +1,7 @@
-class Season < ActiveRecord::Base
+class Season < ApplicationRecord
 	has_many :weeks
 	has_many :pool_entries
-	validates_presence_of :entry_fee
-	validates_presence_of :name
-	validates_presence_of :year
-	validates_uniqueness_of :name, scope: :year
+
+	validates :entry_fee, :year, presence: true
+	validates :name, presence: true, uniqueness: { scope: :year }
 end

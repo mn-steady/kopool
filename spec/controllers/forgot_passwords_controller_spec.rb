@@ -11,7 +11,7 @@ describe ForgotPasswordsController do
 		context "with existing email" do
 
 			it "sends out an email to the email address" do
-				post :create, user_email: @regular_guy.email, format: :json
+				post :create, params: { user_email: @regular_guy.email, format: :json }
 				expect(ActionMailer::Base.deliveries.last.to).to eq([@regular_guy.email])
 			end
 
@@ -20,7 +20,7 @@ describe ForgotPasswordsController do
 		context "with non-existent email" do
 
 			it "doesn't send an email" do
-				post :create, user_email: 'foo@example.com', format: :json
+				post :create, params: { user_email: 'foo@example.com', format: :json }
 				expect(ActionMailer::Base.deliveries.count).to eq(1) # The welcome email is sent with user creation, so you still have 1 email
 			end
 

@@ -9,7 +9,7 @@ describe PicksController do
 			sign_in @user
 
 			@season = Season.create!(year: 2014, name: "2014 Season", entry_fee: 50)
-			@week = Week.create!(season: @season, week_number: 1, start_date: DateTime.new(2014, 8, 5), deadline: DateTime.new(2014, 8, 8), end_date: DateTime.new(2014, 8, 11))
+			@week = FactoryBot.create(:week, season: @season, week_number: 1, start_date: DateTime.new(2014, 8, 5), deadline: DateTime.new(2014, 8, 8), end_date: DateTime.new(2014, 8, 11))
 			@pool_entry1 = PoolEntry.create!(user: @user, team_name: "Test Team", paid: true, season: @season)
 			@pool_entry2 = PoolEntry.create!(user: @user, team_name: "Team Two", paid: true, season: @season)
 
@@ -18,16 +18,16 @@ describe PicksController do
 			@matchup = Matchup.create!(week_id: @week.id, home_team: @broncos, away_team: @vikings, game_time: DateTime.new(2014,8,10,11))
 		end
 
-  	it "returns the user's picks from this season" do
-  		pick1 = Pick.create(pool_entry: @pool_entry1, week: @week, team_id: @vikings.id, matchup_id: @matchup.id)
-  		pick2 = Pick.create(pool_entry: @pool_entry2, week: @week, team_id: @broncos.id, matchup_id: @matchup.id)
+    it "returns the user's picks from this season" do
+      pick1 = @pool_entry1.picks.create(week: @week, nfl_team: @vikings, matchup: @matchup)
+      pick2 = @pool_entry2.picks.create(week: @week, nfl_team: @broncos, matchup: @matchup)
 
-  		get :index, week_id: @week.id, format: :json
+      get :index, params: { week_id: @week.id }, format: :json
       picks_returned = JSON.parse(response.body)
 
-  		expect(picks_returned[0]['id']).to eq(pick1.id)
+      expect(picks_returned[0]['id']).to eq(pick1.id)
       expect(picks_returned[1]['id']).to eq(pick2.id)
-  	end
+    end
 
   	it "does not include another user's picks in response" do
       @another_user = create(:user)
@@ -35,7 +35,7 @@ describe PicksController do
       pick1 = Pick.create(pool_entry: @pool_entry1, week: @week, team_id: @vikings.id, matchup_id: @matchup.id)
       pick2 = Pick.create(pool_entry: @another_pool_entry, week: @week, team_id: @broncos.id, matchup_id: @matchup.id)
 
-      get :index, week_id: @week.id, format: :json
+      get :index, params: { week_id: @week.id }, format: :json
       picks_returned = JSON.parse(response.body)
       expect(picks_returned.length).to eq(1)
       expect(picks_returned[0]['id']).to eq(pick1.id)
@@ -48,7 +48,7 @@ describe PicksController do
       pick1 = Pick.create(pool_entry: @pool_entry1, week: @week, team_id: @vikings.id, matchup_id: @matchup.id)
       old_pick1 = Pick.create(pool_entry: @old_pool_entry, week: @old_week, team_id: @broncos.id, matchup_id: @matchup.id)
 
-      get :index, week_id: @week.id, format: :json
+      get :index, params: { week_id: @week.id }, format: :json
       picks_returned = JSON.parse(response.body)
       expect(picks_returned.length).to eq(1)
       expect(picks_returned[0]['id']).to eq(pick1.id)
@@ -62,7 +62,7 @@ describe PicksController do
       sign_in @user
 
       @season = Season.create(year: 2014, name: "2014 Season", entry_fee: 50)
-      @week = Week.create(season: @season, week_number: 1, start_date: DateTime.new(2014, 8, 5), deadline: DateTime.new(2014, 8, 8), end_date: DateTime.new(2014, 8, 11))
+      @week = FactoryBot.create(:week, season: @season, week_number: 1, start_date: DateTime.new(2014, 8, 5), deadline: DateTime.new(2014, 8, 8), end_date: DateTime.new(2014, 8, 11))
       @pool_entry1 = PoolEntry.create(user: @user, team_name: "Test Team", paid: true, season: @season)
 
       @broncos = NflTeam.create(name: "Denver Broncos", conference: "NFC", division: "West")
@@ -79,10 +79,9 @@ describe PicksController do
             pool_entry_id: @pool_entry1.id,
             team_id: @vikings.id,
             matchup_id: @matchup.id,
-            format: :json
           }
 
-          post :create, pick_params
+          post :create, params: pick_params, format: :json
           pick_returned = JSON.parse(response.body)
           expect(Pick.count).to eq(1)
           expect(pick_returned['pool_entry_id']).to eq(@pool_entry1.id)
@@ -95,10 +94,9 @@ describe PicksController do
           pick_params = {
             week_id: @week.id,
             team_id: @vikings.id,
-            format: :json
           }
 
-          post :create, pick_params
+          post :create, params: pick_params, format: :json
           pick_returned = JSON.parse(response.body)
           expect(Pick.count).to eq(0)
           expect(pick_returned[0]['error']).to match /pool_entry_id can't be blank/
@@ -110,10 +108,9 @@ describe PicksController do
             pool_entry_id: @pool_entry1.id,
             team_id: @vikings.id,
             matchup_id: @matchup.id,
-            format: :json
           }
 
-          post :create, pick_params
+          post :create, params: pick_params, format: :json
           pick_returned = JSON.parse(response.body)
           expect(Pick.count).to eq(1)
 
@@ -126,7 +123,7 @@ describe PicksController do
             format: :json
           }
 
-          post :create, pick_params
+          post :create, params: pick_params
           pick_returned = JSON.parse(response.body)
           expect(Pick.count).to eq(1)
           expect(pick_returned[0]['error']).to match /pool_entry_id has already been taken/
@@ -142,7 +139,7 @@ describe PicksController do
             format: :json
           }
 
-          post :create, pick_params
+          post :create, params: pick_params
           pick_returned = JSON.parse(response.body)
           expect(Pick.count).to eq(1)
 
@@ -156,7 +153,7 @@ describe PicksController do
             format: :json
           }
 
-          put :update, pick_params
+          put :update, params: pick_params
           pick_returned = JSON.parse(response.body)
           expect(pick_returned[0]['error']).to match /You cannot change a pick when the week is closed/
           expect(Pick.count).to eq(1)
@@ -168,7 +165,7 @@ describe PicksController do
 	  context "with a knocked out pool entry" do
 	  	it "does not save the pick" do
         pick1 = Pick.create(pool_entry: @pool_entry1, week: @week, team_id: @vikings.id, matchup_id: @matchup.id)
-        @pool_entry1.update_attributes(knocked_out: true, knocked_out_week_id: @week.id)
+        @pool_entry1.update(knocked_out: true, knocked_out_week_id: @week.id)
 
           pick_params = {
             id: pick1['id'],
@@ -178,7 +175,7 @@ describe PicksController do
             format: :json
           }
 
-        put :update, pick_params
+        put :update, params: pick_params
         pick_returned = JSON.parse(response.body)
         expect(pick_returned[0]['error']).to match /You cannot change a pick when knocked out/
         expect(Pick.count).to eq(1)
@@ -194,7 +191,7 @@ describe PicksController do
       sign_in @user
 
       @season = Season.create(year: 2014, name: "2014 Season", entry_fee: 50)
-      @week = Week.create(season: @season, week_number: 1, start_date: DateTime.new(2014, 8, 5), deadline: DateTime.new(2014, 8, 8), end_date: DateTime.new(2014, 8, 11))
+      @week = FactoryBot.create(:week, season: @season, week_number: 1, start_date: DateTime.new(2014, 8, 5), deadline: DateTime.new(2014, 8, 8), end_date: DateTime.new(2014, 8, 11))
       @pool_entry1 = PoolEntry.create(user: @user, team_name: "Test Team", paid: true, season: @season)
 
       @broncos = NflTeam.create(name: "Denver Broncos", conference: "NFC", division: "West")
@@ -214,7 +211,7 @@ describe PicksController do
             format: :json
           }
 
-        put :create_or_update_pick, pick_params
+        put :create_or_update_pick, params: pick_params
         pick_returned = JSON.parse(response.body)
 
         expect(Pick.count).to eq(1)
@@ -233,7 +230,7 @@ describe PicksController do
             format: :json
           }
 
-        put :create_or_update_pick, pick_params
+        put :create_or_update_pick, params: pick_params
         pick_returned = JSON.parse(response.body)
 
         expect(Pick.count).to eq(1)
@@ -241,7 +238,7 @@ describe PicksController do
       end
 
       it "does not save a pick if the pool entry is knocked out" do
-        @pool_entry1.update_attributes(knocked_out: true)
+        @pool_entry1.update(knocked_out: true)
 
         pick_params = {
             week_id: @week.id,
@@ -250,7 +247,7 @@ describe PicksController do
             format: :json
           }
 
-        put :create_or_update_pick, pick_params
+        put :create_or_update_pick, params: pick_params
         pick_returned = JSON.parse(response.body)
 
         expect(Pick.count).to eq(0)
@@ -264,10 +261,10 @@ describe PicksController do
 
   	before do
 			@user = create(:user, admin: true)
-			sign_in :user, @user
+      sign_in(@user, scope: :user)
 
 			@season = Season.create(year: 2014, name: "2014 Season", entry_fee: 50)
-			@week = Week.create(season: @season, week_number: 1, start_date: DateTime.new(2014, 8, 5), deadline: DateTime.new(2014, 8, 8), end_date: DateTime.new(2014, 8, 11))
+			@week = FactoryBot.create(:week, season: @season, week_number: 1, start_date: DateTime.new(2014, 8, 5), deadline: DateTime.new(2014, 8, 8), end_date: DateTime.new(2014, 8, 11))
 			@pool_entry1 = PoolEntry.create(user: @user, team_name: "Test Team", paid: true, season: @season)
 			@pool_entry2 = PoolEntry.create(user: @user, team_name: "Team Two", paid: true, season: @season)
 
@@ -279,13 +276,13 @@ describe PicksController do
 		context "week is closed for picks" do
 
 			before do
-				@week.update_attributes(open_for_picks: false)
+				@week.update(open_for_picks: false)
 			end
 
 			it "returns the picks from this week" do
 	  		pick1 = Pick.create(pool_entry: @pool_entry1, week: @week, team_id: @vikings.id, matchup_id: @matchup.id)
 	  		pick2 = Pick.create(pool_entry: @pool_entry2, week: @week, team_id: @broncos.id, matchup_id: @matchup.id)
-	  		get :week_picks, week_id: @week.id, format: :json
+	  		get :week_picks, params: { week_id: @week.id }, format: :json
 	  		expect(response.status).to eq(Rack::Utils.status_code(:ok))
 
 	  		returned = JSON.parse(response.body)
@@ -300,7 +297,7 @@ describe PicksController do
 			it "returns an error message" do
 				pick1 = Pick.create(pool_entry: @pool_entry1, week: @week, team_id: @vikings.id)
 	  		pick2 = Pick.create(pool_entry: @pool_entry2, week: @week, team_id: @broncos.id)
-	  		get :week_picks, week_id: @week.id, format: :json
+	  		get :week_picks, params: { week_id: @week.id }, format: :json
 	  		expect(response.status).to eq(Rack::Utils.status_code(:bad_request))
 
 	  		returned = JSON.parse(response.body)
@@ -314,10 +311,10 @@ describe PicksController do
 
     before do
       @user = create(:user)
-      sign_in :user, @user
+      sign_in(@user, scope: :user)
 
       @season = Season.create(year: 2014, name: "2014 Season", entry_fee: 50)
-      @week = Week.create(season: @season, week_number: 1, start_date: DateTime.new(2014, 8, 5), deadline: DateTime.new(2014, 8, 8), end_date: DateTime.new(2014, 8, 11))
+      @week = FactoryBot.create(:week, season: @season, week_number: 1, start_date: DateTime.new(2014, 8, 5), deadline: DateTime.new(2014, 8, 8), end_date: DateTime.new(2014, 8, 11))
       @pool_entry1 = PoolEntry.create(user: @user, team_name: "Test Team", paid: true, season: @season)
       @pool_entry2 = PoolEntry.create(user: @user, team_name: "Team Two", paid: true, season: @season)
       @pool_entry3 = PoolEntry.create(user: @user, team_name: "Team Three", paid: true, season: @season)
@@ -347,9 +344,9 @@ describe PicksController do
 
       it "returns a sorted hash in descending order" do
 
-        @week.update_attributes(open_for_picks: false)
+        @week.update(open_for_picks: false)
 
-        get :sorted_picks, week_id: @week.id, format: :json
+        get :sorted_picks, params: { week_id: @week.id }, format: :json
 
         sorted_picks = JSON.parse(response.body)
 
@@ -370,9 +367,9 @@ describe PicksController do
         @matchup3 = Matchup.create(week_id: @week.id, home_team: @giants, away_team: @chargers, game_time: DateTime.new(2014,8,14,11))
 
 
-        @week.update_attributes(open_for_picks: false)
+        @week.update(open_for_picks: false)
 
-        get :sorted_picks, week_id: @week.id, format: :json
+        get :sorted_picks, params: { week_id: @week.id }, format: :json
 
         sorted_picks = JSON.parse(response.body)
 
@@ -392,9 +389,9 @@ describe PicksController do
     context "week is open for picks" do
 
       it "returns an error message and bad request status" do
-        @week.update_attributes(open_for_picks: true)
+        @week.update(open_for_picks: true)
 
-        get :sorted_picks, week_id: @week.id, format: :json
+        get :sorted_picks, params: { week_id: @week.id }, format: :json
 
         returned = JSON.parse(response.body)
 

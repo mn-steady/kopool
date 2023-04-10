@@ -1,5 +1,5 @@
 class PicksController < ApplicationController
-	before_filter :verify_any_user, only: [:create, :update, :week_picks, :create_or_update_pick, :sorted_picks]
+	before_action :verify_any_user, only: [:create, :update, :week_picks, :create_or_update_pick, :sorted_picks]
 
 	def index
 		Rails.logger.debug("PicksController.index")
@@ -22,7 +22,7 @@ class PicksController < ApplicationController
 			@pick_this_week = Pick.where(pool_entry_id: @pool_entry.id).where(week_id: @week.id).first
 
 			if @pick_this_week.present?
-				@pick_this_week.update_attributes(safe_params)
+				@pick_this_week.update(safe_params)
 
 				if @pick_this_week.save
 					respond_to do | format |
@@ -39,7 +39,7 @@ class PicksController < ApplicationController
 			else
 				@pick = Pick.new
 
-				@pick.update_attributes(safe_params)
+				@pick.update(safe_params)
 
 				if @pick.save
 					respond_to do | format |
@@ -60,7 +60,7 @@ class PicksController < ApplicationController
 		Rails.logger.debug("Picks.create")
 		@pick = Pick.new
 
-		@pick.update_attributes(picks_params)
+		@pick.update(picks_params)
 
 		if @pick.save
 			respond_to do | format |
@@ -69,7 +69,9 @@ class PicksController < ApplicationController
 		else
 			respond_to do | format |
 				error_message = ""
-				@pick.errors.each{ |attr,msg| error_message << "#{attr} #{msg} " }
+				@pick.errors.each do |error|
+					error_message += "#{error.attribute.to_s} #{error.message} "
+				end
 				format.json { render :json => [:error =>  error_message], :status => :internal_server_error}
 			end
 		end
@@ -80,7 +82,7 @@ class PicksController < ApplicationController
 		@pool_entry = PoolEntry.find(params[:pool_entry_id])
 		@pick = Pick.where(week_id: params[:week_id], pool_entry_id: params[:pool_entry_id]).first unless current_user.id != @pool_entry.user_id
 
-		@pick.update_attributes(picks_params)
+		@pick.update(picks_params)
 
 		if @pick.save
 			respond_to do | format |
@@ -89,7 +91,9 @@ class PicksController < ApplicationController
 		else
 			respond_to do | format |
 				error_message = ""
-				@pick.errors.each{ |attr,msg| error_message << "#{attr} #{msg} " }
+				@pick.errors.each do |error|
+					error_message += "#{error.attribute.to_s} #{error.message} "
+				end
 				format.json { render :json => [:error =>  error_message], :status => :internal_server_error}
 			end
 		end

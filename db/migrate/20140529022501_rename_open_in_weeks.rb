@@ -1,4 +1,4 @@
-class RenameOpenInWeeks < ActiveRecord::Migration
+class RenameOpenInWeeks < ActiveRecord::Migration[7.0]
   def self.up
   	rename_column :weeks, :open, :open_for_picks
   	change_column_default :weeks, :open_for_picks, true

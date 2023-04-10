@@ -9,7 +9,7 @@ describe SeasonsController do
 
 		it "sets the @season variable" do
 			@user = create(:user)
-			sign_in :user, @user
+			sign_in(@user, scope: :user)
 			get :new
 			expect(assigns(:season)).to be_instance_of(Season)
 		end
@@ -24,10 +24,10 @@ describe SeasonsController do
 			sign_in @user1
 
 			@season = Season.create(year: 2014, name: "2014 Season", entry_fee: 50)
-			@week1 = Week.create(season: @season, week_number: 1, start_date: DateTime.new(2014, 8, 5), deadline: DateTime.new(2014, 8, 8), end_date: DateTime.new(2014, 8, 11))
-			@week2 = Week.create(season: @season, week_number: 2, start_date: DateTime.new(2014, 8, 12), deadline: DateTime.new(2014, 8, 15), end_date: DateTime.new(2014, 8, 18))
-			@week3 = Week.create(season: @season, week_number: 3, start_date: DateTime.new(2014, 8, 19), deadline: DateTime.new(2014, 8, 22), end_date: DateTime.new(2014, 8, 25))
-			@week4 = Week.create(season: @season, week_number: 4, start_date: DateTime.new(2014, 8, 26), deadline: DateTime.new(2014, 8, 29), end_date: DateTime.new(2014, 9, 1))
+			@week1 = FactoryBot.create(:week, season: @season, week_number: 1, start_date: DateTime.new(2014, 8, 5), deadline: DateTime.new(2014, 8, 8), end_date: DateTime.new(2014, 8, 11))
+			@week2 = FactoryBot.create(:week, season: @season, week_number: 2, start_date: DateTime.new(2014, 8, 12), deadline: DateTime.new(2014, 8, 15), end_date: DateTime.new(2014, 8, 18))
+			@week3 = FactoryBot.create(:week, season: @season, week_number: 3, start_date: DateTime.new(2014, 8, 19), deadline: DateTime.new(2014, 8, 22), end_date: DateTime.new(2014, 8, 25))
+			@week4 = FactoryBot.create(:week, season: @season, week_number: 4, start_date: DateTime.new(2014, 8, 26), deadline: DateTime.new(2014, 8, 29), end_date: DateTime.new(2014, 9, 1))
 			
 			@web_state = create(:web_state, week_id: @week4.id, season_id: @season.id)
 
@@ -89,9 +89,9 @@ describe SeasonsController do
 
 			# Handle Week 1 Outcomes
 
-			@matchup1_1.update_attributes(winning_team_id: @broncos.id)
-			@matchup1_2.update_attributes(winning_team_id: @packers.id)
-			@matchup1_3.update_attributes(winning_team_id: @chargers.id)
+			@matchup1_1.update(winning_team_id: @broncos.id)
+			@matchup1_2.update(winning_team_id: @packers.id)
+			@matchup1_3.update(winning_team_id: @chargers.id)
 			Matchup.handle_matchup_outcome!(@matchup1_1.id)
 			Matchup.handle_matchup_outcome!(@matchup1_2.id)
 			Matchup.handle_matchup_outcome!(@matchup1_3.id)
@@ -110,9 +110,9 @@ describe SeasonsController do
 
 			# Handle Week 2 Outcomes
 
-			@matchup2_1.update_attributes(winning_team_id: @vikings.id)
-			@matchup2_2.update_attributes(winning_team_id: @lions.id)
-			@matchup2_3.update_attributes(winning_team_id: @steelers.id)
+			@matchup2_1.update(winning_team_id: @vikings.id)
+			@matchup2_2.update(winning_team_id: @lions.id)
+			@matchup2_3.update(winning_team_id: @steelers.id)
 			Matchup.handle_matchup_outcome!(@matchup2_1.id)
 			Matchup.handle_matchup_outcome!(@matchup2_2.id)
 			Matchup.handle_matchup_outcome!(@matchup2_3.id)
@@ -128,9 +128,9 @@ describe SeasonsController do
 
 			# Handle Week 3 Outcomes
 
-			@matchup3_1.update_attributes(winning_team_id: @broncos.id)
-			@matchup3_2.update_attributes(winning_team_id: @packers.id)
-			@matchup3_3.update_attributes(winning_team_id: @chargers.id)
+			@matchup3_1.update(winning_team_id: @broncos.id)
+			@matchup3_2.update(winning_team_id: @packers.id)
+			@matchup3_3.update(winning_team_id: @chargers.id)
 			Matchup.handle_matchup_outcome!(@matchup3_1.id)
 			Matchup.handle_matchup_outcome!(@matchup3_2.id)
 			Matchup.handle_matchup_outcome!(@matchup3_3.id)
@@ -144,9 +144,9 @@ describe SeasonsController do
 
 			# Handle Week 4 Outcomes
 
-			@matchup4_1.update_attributes(winning_team_id: @vikings.id)
-			@matchup4_2.update_attributes(winning_team_id: @lions.id)
-			@matchup4_3.update_attributes(winning_team_id: @steelers.id)
+			@matchup4_1.update(winning_team_id: @vikings.id)
+			@matchup4_2.update(winning_team_id: @lions.id)
+			@matchup4_3.update(winning_team_id: @steelers.id)
 			Matchup.handle_matchup_outcome!(@matchup4_1.id)
 			Matchup.handle_matchup_outcome!(@matchup4_2.id)
 			Matchup.handle_matchup_outcome!(@matchup4_3.id)
@@ -154,7 +154,7 @@ describe SeasonsController do
 		end
 
 		it "returns 4 weeks worth of values" do
-			get :season_summary, season_id: @season.id, format: :json
+			get :season_summary, params: { season_id: @season.id, format: :json }
 
 			expect(response.status).to eq(Rack::Utils.status_code(:ok))
 			returned = JSON.parse(response.body)
@@ -163,7 +163,7 @@ describe SeasonsController do
 		end
 
 		it "retuns the correct week numbers for each week" do
-			get :season_summary, season_id: @season.id, format: :json
+			get :season_summary, params: { season_id: @season.id, format: :json }
 
 			expect(response.status).to eq(Rack::Utils.status_code(:ok))
 			returned = JSON.parse(response.body)
@@ -175,7 +175,7 @@ describe SeasonsController do
 		end
 
 		it "retuns the correct remaining pool entry counts for each week" do
-			get :season_summary, season_id: @season.id, format: :json
+			get :season_summary, params: { season_id: @season.id, format: :json }
 
 			expect(response.status).to eq(Rack::Utils.status_code(:ok))
 			returned = JSON.parse(response.body)
@@ -198,7 +198,7 @@ describe SeasonsController do
 
 			@season = Season.create(year: 2014, name: "2014 Season", entry_fee: 50)
 			@season_2 = Season.create(year: 2015, name: "2015 Season", entry_fee: 50)
-			@week1 = Week.create(season: @season, week_number: 1, start_date: DateTime.new(2014, 8, 5), deadline: DateTime.new(2014, 8, 8), end_date: DateTime.new(2014, 8, 11))
+			@week1 = FactoryBot.create(:week, season: @season, week_number: 1, start_date: DateTime.new(2014, 8, 5), deadline: DateTime.new(2014, 8, 8), end_date: DateTime.new(2014, 8, 11))
 			
 			@web_state = create(:web_state, week_id: @week1.id, season_id: @season.id)
 
@@ -220,7 +220,7 @@ describe SeasonsController do
 		end
 
 		it 'returns the counts of knocked_out and non-knocked out users' do
-			get :season_knockout_counts, season_id: @season.id, format: :json
+			get :season_knockout_counts, params: { season_id: @season.id, format: :json }
 			returned = JSON.parse(response.body)
 			expect(returned['false']).to eql 7
 			expect(returned['true']).to eql 5
@@ -229,30 +229,30 @@ describe SeasonsController do
 
 	describe "POST create" do
 		it_behaves_like "requires sign in" do
-			let(:action) { post :create, season: attributes_for(:season) }
+			let(:action) { post :create, params: { season: attributes_for(:season) } }
 		end
 
 		context "with valid input" do
 			before do
 				@user = create(:user)
-				sign_in :user, @user
+				sign_in(@user, scope: :user)
 			end
 
 			it "saves a new season" do
 				@season = attributes_for(:season)
-				post :create, season: @season
+				post :create, params: { season: @season }
 				expect(Season.count).to eq(1)
 			end
 
 			it "redirects to the season show page" do
 				@season = attributes_for(:season)
-				post :create, season: @season
+				post :create, params: { season: @season }
 				expect(response).to redirect_to season_path(Season.first)
 			end
 
 			it "sets a flash success message" do
 				@season = attributes_for(:season)
-				post :create, season: @season
+				post :create, params: { season: @season }
 				expect(flash[:success]).to be_present
 			end
 		end
@@ -261,21 +261,21 @@ describe SeasonsController do
 
 			before do
 				@user = create(:user)
-				sign_in :user, @user
+				sign_in(@user, scope: :user)
 			end
 
 			it "does not save the season" do
-				post :create, season: { name: "Test Season" }
+				post :create, params: { season: { name: "Test Season" } }
 				expect(Season.count).to eq(0)
 			end
 
 			it "renders the new template" do
-				post :create, season: { name: "Test Season" }
+				post :create, params: { season: { name: "Test Season" } }
 				expect(response).to render_template :new
 			end
 
 			it "sets the flash danger method" do
-				post :create, season: { name: "Test Season" }
+				post :create, params: { season: { name: "Test Season" } }
 				expect(flash[:danger]).to be_present
 			end
 		end

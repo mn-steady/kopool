@@ -1,7 +1,7 @@
 class NflTeamsController < ApplicationController
 
-  before_filter :verify_admin_user, only: [:show, :update, :create, :destroy]
-  before_filter :verify_any_user, only: [:index]
+  before_action :verify_admin_user, only: [:show, :update, :create, :destroy]
+  before_action :verify_any_user, only: [:index]
 
   def index
     @nfl_teams = NflTeam.all
@@ -31,7 +31,7 @@ class NflTeamsController < ApplicationController
     # Todo setup the permitted attributes for Rails 4
     cleaned_params = nfl_teams_params
     Rails.logger.debug("Cleaned Params: #{cleaned_params}")
-    if @nfl_team.update_attributes(cleaned_params)
+    if @nfl_team.update(cleaned_params)
       respond_to do | format |
         format.json {render json: @nfl_team}
       end
@@ -70,7 +70,7 @@ class NflTeamsController < ApplicationController
     @nfl_team = NflTeam.new()
 
     # Todo setup the permitted attributes for Rails 4
-    @nfl_team.update_attributes(nfl_teams_params)
+    @nfl_team.update(nfl_teams_params)
 
     if @nfl_team.save()
       respond_to do | format |

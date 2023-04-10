@@ -1,6 +1,6 @@
 class MatchupsController < ApplicationController
-	before_filter :verify_admin_user, only: [:show, :update, :save_week_outcomes, :destroy, :create]
-  before_filter :verify_any_user, only: [:index, :filtered_matchups]
+	before_action :verify_admin_user, only: [:show, :update, :save_week_outcomes, :destroy, :create]
+  before_action :verify_any_user, only: [:index, :filtered_matchups]
 
   def index
 
@@ -66,7 +66,7 @@ class MatchupsController < ApplicationController
     Rails.logger.debug("(Matchups.create)")
     @matchup = Matchup.new()
 
-    @matchup.update_attributes(matchups_params)
+    @matchup.update(matchups_params)
 
     if @matchup.save()
       respond_to do | format |
@@ -88,7 +88,7 @@ class MatchupsController < ApplicationController
     # Todo setup the permitted attributes for Rails 4
     cleaned_params = matchups_params
     Rails.logger.debug("Cleaned Params: #{cleaned_params}")
-    if @matchup.update_attributes(cleaned_params)
+    if @matchup.update(cleaned_params)
       respond_to do | format |
         format.json {render json: @matchup.to_json(include: [{ home_team: { only: [:name, :id] }}, away_team: {only: [:name, :id]}] )}
       end

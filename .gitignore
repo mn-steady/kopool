@@ -14,6 +14,7 @@
 # Ignore all logfiles and tempfiles.
 /log/*.log
 /tmp
+/node_modules
 
 /vendor/bundle
 sublime-*
@@ -21,6 +22,12 @@ sublime-*
 spec/tmp
 spec/tmp/assets
 spec/tmp/assets/jasmine-specs.js
+
+/.byebug_history
+.rvmrc
+
+# Ignore node_modules
+node_modules/
 
 public
 

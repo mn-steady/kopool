@@ -9,29 +9,29 @@ describe WeeksController do
       sign_in @regular_guy
 
       @season = Season.create(year: 2014, name: "2014 Season", entry_fee: 50)
-      @week = Week.create(season: @season, week_number: 1, start_date: DateTime.new(2014, 8, 5), deadline: DateTime.new(2014, 8, 8), end_date: DateTime.new(2014, 8, 11))
+      @week = FactoryBot.create(:week, season: @season, week_number: 1, start_date: DateTime.new(2014, 8, 5), deadline: DateTime.new(2014, 8, 8), end_date: DateTime.new(2014, 8, 11))
 
-      @web_state = FactoryGirl.create(:web_state, current_week: @week, season_id: @season.id)
-      @pool_entry = FactoryGirl.create(:pool_entry, user: @regular_guy, team_name: "First Pool Entry", paid: true, season: @season)
+      @web_state = FactoryBot.create(:web_state, current_week: @week, season_id: @season.id)
+      @pool_entry = FactoryBot.create(:pool_entry, user: @regular_guy, team_name: "First Pool Entry", paid: true, season: @season)
 
       @broncos = NflTeam.create(name: "Denver Broncos", conference: "NFC", division: "West")
       @vikings = NflTeam.create(name: "Minnesota Vikings", conference: "NFC", division: "North")
       @matchup = Matchup.create(week_id: @week.id, home_team: @broncos, away_team: @vikings, game_time: DateTime.new(2014,8,10,11))
 
-      @pick1 = FactoryGirl.create(:pick, pool_entry: @pool_entry, week: @week, nfl_team: @vikings, matchup: @matchup)
+      @pick1 = FactoryBot.create(:pick, pool_entry: @pool_entry, week: @week, nfl_team: @vikings, matchup: @matchup)
     end
 
 
     it "won't show results unless week is closed for picks" do
-      get :week_results, week_id: @week.id, format: :json
+      get :week_results, params: { week_id: @week.id }, format: :json
       expect(response.status).to eq(Rack::Utils.status_code(:bad_request))
       expect(response.body).to match(/You can't see the results for this week until this week's games have started/)
     end
 
 
     it "returns correct basic results" do
-      @week.update_attributes(open_for_picks: false)
-      get :week_results, week_id: @week.id, format: :json
+      @week.update(open_for_picks: false)
+      get :week_results, params: { week_id: @week.id }, format: :json
       expect(response.status).to eq(Rack::Utils.status_code(:ok))
 
       returned = JSON.parse(response.body)
@@ -57,29 +57,29 @@ describe WeeksController do
     end
 
     it "returns correct ko results" do
-      @week.update_attributes(open_for_picks: false)
+      @week.update(open_for_picks: false)
 
       # Now make that first pool entry ko'd in week 1
-      @matchup.update_attributes(winning_team_id: @broncos.id)
+      @matchup.update(winning_team_id: @broncos.id)
       Matchup.handle_matchup_outcome!(@matchup.id)
 
-      @week2 = Week.create(season: @season, week_number: 2, start_date: DateTime.new(2014, 8, 12), deadline: DateTime.new(2014, 8, 15), end_date: DateTime.new(2014, 8, 18))
-      @web_state.update_attributes(current_week: @week2)
+      @week2 = FactoryBot.create(:week, season: @season, week_number: 2, start_date: DateTime.new(2014, 8, 12), deadline: DateTime.new(2014, 8, 15), end_date: DateTime.new(2014, 8, 18))
+      @web_state.update(current_week: @week2)
 
-      @pool_entry_just_ko = FactoryGirl.create(:pool_entry, user: @regular_guy, team_name: "Me Just KO", paid: true, season: @season)
-      @pool_entry_new = FactoryGirl.create(:pool_entry, user: @regular_guy, team_name: "Me New", paid: true, season: @season)
+      @pool_entry_just_ko = FactoryBot.create(:pool_entry, user: @regular_guy, team_name: "Me Just KO", paid: true, season: @season)
+      @pool_entry_new = FactoryBot.create(:pool_entry, user: @regular_guy, team_name: "Me New", paid: true, season: @season)
 
       @colts = NflTeam.create(name: "Colts", conference: "NFC", division: "West")
       @matchup_2 = Matchup.create(week_id: @week2.id, home_team: @colts, away_team: @vikings, game_time: DateTime.new(2014,8,13,11))
 
-      @pick2 = FactoryGirl.create(:pick, pool_entry: @pool_entry_just_ko, week: @week2, nfl_team: @colts, matchup: @matchup_2)
-      @pick3 = FactoryGirl.create(:pick, pool_entry: @pool_entry_new, week: @week2, nfl_team: @vikings, matchup: @matchup_2)
+      @pick2 = FactoryBot.create(:pick, pool_entry: @pool_entry_just_ko, week: @week2, nfl_team: @colts, matchup: @matchup_2)
+      @pick3 = FactoryBot.create(:pick, pool_entry: @pool_entry_new, week: @week2, nfl_team: @vikings, matchup: @matchup_2)
 
-      @week2.update_attributes(open_for_picks: false)
-      @matchup_2.update_attributes(winning_team_id: @vikings.id)
+      @week2.update(open_for_picks: false)
+      @matchup_2.update(winning_team_id: @vikings.id)
       Matchup.handle_matchup_outcome!(@matchup_2.id)
 
-      get :week_results, week_id: @week2.id, format: :json
+      get :week_results, params: { week_id: @week2.id, format: :json }
       expect(response.status).to eq(Rack::Utils.status_code(:ok))
 
       returned = JSON.parse(response.body)
@@ -121,12 +121,12 @@ describe WeeksController do
       @regular_guy = create(:user)
       sign_in @regular_guy
       @season = Season.create(year: 2014, name: "2014 Season", entry_fee: 50)
-      @week = Week.create(season: @season, week_number: 1, start_date: DateTime.new(2014, 8, 5), deadline: DateTime.new(2014, 8, 8), end_date: DateTime.new(2014, 8, 11))
-      @week2 = Week.create(season: @season, week_number: 2, start_date: DateTime.new(2014, 8, 12), deadline: DateTime.new(2014, 8, 15), end_date: DateTime.new(2014, 8, 18))
-      @web_state = FactoryGirl.create(:web_state, current_week: @week, season_id: @season.id)
+      @week = FactoryBot.create(:week, season: @season, week_number: 1, start_date: DateTime.new(2014, 8, 5), deadline: DateTime.new(2014, 8, 8), end_date: DateTime.new(2014, 8, 11))
+      @week2 = FactoryBot.create(:week, season: @season, week_number: 2, start_date: DateTime.new(2014, 8, 12), deadline: DateTime.new(2014, 8, 15), end_date: DateTime.new(2014, 8, 18))
+      @web_state = FactoryBot.create(:web_state, current_week: @week, season_id: @season.id)
 
-      @pool_entry = FactoryGirl.create(:pool_entry, user: @regular_guy, team_name: "First Pool Entry", paid: true, season: @season)
-      @pool_entry_2 = FactoryGirl.create(:pool_entry, user: @regular_guy, team_name: "Second Pool Entry", paid: true, season: @season)
+      @pool_entry = FactoryBot.create(:pool_entry, user: @regular_guy, team_name: "First Pool Entry", paid: true, season: @season)
+      @pool_entry_2 = FactoryBot.create(:pool_entry, user: @regular_guy, team_name: "Second Pool Entry", paid: true, season: @season)
 
       @broncos = NflTeam.create(name: "Denver Broncos", conference: "NFC", division: "West")
       @vikings = NflTeam.create(name: "Minnesota Vikings", conference: "NFC", division: "North")
@@ -134,12 +134,12 @@ describe WeeksController do
       @matchup = Matchup.create(week_id: @week.id, home_team: @broncos, away_team: @vikings, game_time: DateTime.new(2014,8,10,11))
       @matchup2 = Matchup.create(week_id: @week2.id, home_team: @vikings, away_team: @seahawks, game_time: DateTime.new(2014,8,13,11))
 
-      @pick1 = FactoryGirl.create(:pick, pool_entry: @pool_entry, week: @week, nfl_team: @vikings, matchup: @matchup)
-      @pick2 = FactoryGirl.create(:pick, pool_entry: @pool_entry, week: @week2, nfl_team: @seahawks, matchup: @matchup2)
+      @pick1 = FactoryBot.create(:pick, pool_entry: @pool_entry, week: @week, nfl_team: @vikings, matchup: @matchup)
+      @pick2 = FactoryBot.create(:pick, pool_entry: @pool_entry, week: @week2, nfl_team: @seahawks, matchup: @matchup2)
     end
 
     it "returns only pool entries without a pick for this week only" do
-      get :unpicked, week_id: @week.id, format: :json
+      get :unpicked, params: { week_id: @week.id }, format: :json
       expect(response.status).to eq(Rack::Utils.status_code(:ok))
       unpicked_results = JSON.parse(response.body)
       expect(unpicked_results.count).to eq(1)

@@ -51,8 +51,8 @@
 
 .row{"ng-if" => "web_state.current_week.week_number != 1"}
   .col-md-12{"ng-controller" => "KopoolChartsCtrl"}
-    %div{"ng-if" => "loaded"}
-      %div{"ac-chart" => "'line'", "ac-data"=>"chart_data", "ac-config"=>"line_config", "id"=>"chart", "class"=>"line-chart"}
+    %div{"ng-if" => "loaded && is_authorized()"}
+      %div{"ac-chart" => "'line'", "ac-data"=>"chart_data", "ac-config"=>"line_config", "id"=>"chart", "class"=>"line-chart", "style" => "height: 400px; width: 100%;"}
 
 .admin-panel{"ng-show" => "is_admin()"}
   .row

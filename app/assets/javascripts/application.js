@@ -17,16 +17,7 @@
 //= require main
 //= require d3
 //= require angular-charts
-//= require turbolinks
 
-//= require_tree ./angular
-//= require angular-animate.js
-//= require angular-cookies.js
-//= require angular-file-upload.js
-//= require angular-mocks.js
-//= require angular-resource.js
-//= require angular-route.js
-//= require static_pages
-//= require ui-bootstrap-tpls-0.11.0.min.js
 //= require angular-rails-templates
 //= require_tree ../templates
+//= require_tree .

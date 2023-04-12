@@ -10,7 +10,7 @@ angular.module('RailsApiResource', ['ngResource'])
       HOSTNAME: 'www.kopool.org'
     })
 
-  .factory 'RailsApiResource', ($http, KOPOOL_CONFIG, $cookieStore) ->
+  .factory 'RailsApiResource', ['$http', 'KOPOOL_CONFIG', '$cookieStore', ($http, KOPOOL_CONFIG, $cookieStore) ->
 
     (resourceName, rootNode) ->
       console.log("(RailsApiResource) resourceName:" + resourceName)
@@ -185,4 +185,4 @@ angular.module('RailsApiResource', ['ngResource'])
         Resource.save(this)
 
       Resource
-
+  ]

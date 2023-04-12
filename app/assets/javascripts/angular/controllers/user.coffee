@@ -1,7 +1,7 @@
 angular.module('user', ['RailsApiResource', 'ngCookies'])
 
 
-  .factory('currentUser', ($cookieStore) ->
+  .factory('currentUser', ['$cookieStore', ($cookieStore) ->
     {
       # token:        $cookieStore.get('token')
       # WARNING: Do not save admin status in the Cookie due to possible tampering. You lose admin status on refresh
@@ -14,7 +14,7 @@ angular.module('user', ['RailsApiResource', 'ngCookies'])
         # @token =    $cookieStore.get('token')
         # @username = $cookieStore.get('username')
     }
-  )
+  ])
 
 
   # .factory 'Tokens', (RailsApiResource) ->
@@ -30,7 +30,7 @@ angular.module('user', ['RailsApiResource', 'ngCookies'])
   })
 
 
-  .factory('AuthService', ($rootScope, $cookieStore, currentUser, AUTH_EVENTS) ->
+  .factory('AuthService', ['$rootScope', '$cookieStore', 'currentUser', 'AUTH_EVENTS', ($rootScope, $cookieStore, currentUser, AUTH_EVENTS) ->
     return {
       login: (currentUser) ->
         console.log ("(user.AuthService.LOGIN) username=" + currentUser.username)
@@ -82,10 +82,10 @@ angular.module('user', ['RailsApiResource', 'ngCookies'])
       # redirectToLogin: ->
       #   $location.path "/"
     }
-  )
+  ])
 
 
-  .controller('LoginController', ($scope, $location, currentUser, AUTH_EVENTS, AuthService) ->
+  .controller('LoginController', ['$scope', '$location', 'currentUser', 'AUTH_EVENTS', 'AuthService', ($scope, $location, currentUser, AUTH_EVENTS, AuthService) ->
     console.log "(user.LoginController)"
     AuthService.endSession()
     console.log currentUser
@@ -117,5 +117,5 @@ angular.module('user', ['RailsApiResource', 'ngCookies'])
       AuthService.updateCookies()
     )
 
-  )
+  ])
 

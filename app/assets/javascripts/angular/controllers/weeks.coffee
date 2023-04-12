@@ -1,8 +1,8 @@
 angular.module('Weeks', ['ngResource', 'RailsApiResource'])
 
-  .factory 'SeasonWeeks', (RailsApiResource) ->
+  .factory 'SeasonWeeks', ['RailsApiResource', (RailsApiResource) ->
       RailsApiResource('seasons/:parent_id/weeks', 'weeks')
-
+  ]
   .controller 'WeeksCtrl', ['$scope', '$location', '$http', '$routeParams', 'SeasonWeeks', '$modal', ($scope, $location, $http, $routeParams, SeasonWeeks, $modal) ->
     $scope.controller = 'WeeksCtrl'
 

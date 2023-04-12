@@ -36,21 +36,21 @@ modules = [
 
 @kopool = angular.module("kopool", modules)
 
-	.factory "AuthInterceptor", ($q, AuthService, $rootScope, $location) ->
-		console.log("In AuthInterceptor")
+	.factory "AuthInterceptor", ['$q', 'AuthService', '$rootScope', '$location', ($q, AuthService, $rootScope, $location) ->
+		console.log "In AuthInterceptor"
 		request: (config) ->
-			if (AuthService.hasAuthHeader())
+			if AuthService.hasAuthHeader()
 				config.headers['X-User-Token'] = AuthService.getUserToken()
 				config.headers['X-User-Email'] = AuthService.getUserEmail()
 			return config
 		responseError: (responseRejection) ->
-			if (responseRejection.status == 401)
+			if responseRejection.status == 401
 				# AuthService.redirectToLogin()
 				console.log("(main) UNAUTHORIZED")
 				$rootScope.$broadcast "event:unauthorized"
 				$location.path("/")
 			return $q.reject(responseRejection)
-
+	]
 	.config(["$httpProvider", ($httpProvider) ->
 		$httpProvider.defaults.headers.common["X-CSRF-Token"] = $("meta[name=csrf-token]").attr("content")
 		$httpProvider.interceptors.push('AuthInterceptor')

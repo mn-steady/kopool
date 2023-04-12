@@ -1,14 +1,14 @@
 angular.module('WebStates', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 
-  .factory 'WebState', (RailsApiResource) ->
+  .factory 'WebState', ['RailsApiResource', (RailsApiResource) ->
       RailsApiResource('admin/web_states', 'webstate')
-
-  .factory 'Week', (RailsApiResource) ->
+  ]
+  .factory 'Week', ['RailsApiResource', (RailsApiResource) ->
       RailsApiResource('weeks', 'weeks')
-
-  .factory 'LockedPicks', (RailsApiResource) ->
+  ]
+  .factory 'LockedPicks', ['RailsApiResource', (RailsApiResource) ->
     RailsApiResource('weeks/:parent_id/locked_picks', 'locked_picks')
-
+  ]
   .controller 'WebStatesCtrl', ['$scope', '$location', '$http', '$routeParams', 'WebState', 'Week', '$modal', 'Matchup', 'LockedPicks', ($scope, $location, $http, $routeParams, WebState, Week, $modal, Matchup, LockedPicks) ->
     $scope.controller = 'WebStatesCtrl'
     $scope.matchupToLock = {}

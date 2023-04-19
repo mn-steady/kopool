@@ -11,11 +11,19 @@ angular.module('AdminPoolEntries', ['ngResource', 'RailsApiResource', 'ui.bootst
 		season_id = parseInt( $routeParams.season_id, 10 )
 		$scope.pool_entries = []
 		$scope.unpicked_pool_entries = []
+		$scope.poolEntryToDefault = {}
 
 		$scope.getAllPoolEntries = () ->
 			PoolEntriesThisSeason.nested_query($scope.web_state.current_season.id).then((pool_entries) ->
 				$scope.pool_entries = pool_entries
 				console.log("(getAllPoolEntries) Have pool entries")
+			)
+
+		$scope.beginDefaultUnpickedPoolEntry = ->
+			console.log("...Making your selected entry as default")
+			UnpickedPoolEntries.post("default_pool_entry", $scope.poolEntryToDefault, $scope.current_week.id).then((response) ->
+				$scope.savedMessage = "Completed defaulting unpicked pool entries."
+				$scope.getUnpickedPoolEntries()
 			)
 
 		$scope.getWebState = () ->

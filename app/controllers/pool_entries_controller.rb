@@ -102,6 +102,16 @@ class PoolEntriesController < ApplicationController
     end
   end
 
+  def default_pool_entry
+    pool_entries_need_autopicks = PoolEntry.needs_autopicking(Week.find_by(id: params[:week_id]))
+    new_picks = pool_entries_need_autopicks.map do |pe|
+      Pick.create!(pool_entry_id: pe.id, week_id: params[:week_id], team_id: params[:home_team_id], matchup_id: params[:id])
+    end
+    respond_to do | format |
+      format.json { render json: new_picks }
+    end
+  end
+
   def update
     Rails.logger.debug("PoolEntries.update")
     @pool_entry = PoolEntry.find(params[:id])

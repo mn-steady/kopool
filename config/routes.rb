@@ -30,6 +30,7 @@ Rails.application.routes.draw do
     get "filtered_matchups", :controller => "matchups", :action => "filtered_matchups"
     get "pool_entries_and_picks", :controller => "pool_entries", :action => "pool_entries_and_picks"
     post "create_or_update_pick", :controller => "picks", :action => "create_or_update_pick"
+    post "/unpicked/default_pool_entry", to: 'pool_entries#default_pool_entry'
     resources :matchups do
       collection do
         post "save_outcome", :action => "save_outcome"

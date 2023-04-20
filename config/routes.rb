@@ -34,6 +34,7 @@ Rails.application.routes.draw do
     resources :matchups do
       collection do
         post "save_outcome", :action => "save_outcome"
+        post "revert_outcome", :action => "revert_outcome"
       end
     end
     resources :picks

@@ -38,6 +38,7 @@
 				%a.btn.btn-info{"ng-show" => "displayOutcomeSaveButtons(matchup)", "ng-click" => "cancelOutcomeSelection(matchup)"} Cancel
 		%tr{"ng-show" => "matchupCompleted(matchup)"}
 			%td
+				%a.btn.btn-info{"id" => "revert-outcome-{{matchup.id}}", "ng-click" => "openRevertDialogue('', matchup)"} Revert Outcome
 			%td
 			%td
 				%p.team-name {{ matchup.home_team.name}}
@@ -57,4 +58,12 @@
 			%button.btn.btn-default{"ng-click" => "cancel()"} Cancel
 			%button.btn.btn-success{"ng-click" => "ok()"} Save Outcome
 
-
+%div
+	%script{:id => "revertOutcomeModal.html", :type => "text/ng-template"}
+		.modal-header
+			%h3.modal-title Revert {{matchup.winning_team_text}}
+		.modal-body
+			%p Matchup Outcome will be reverted!
+		.modal-footer
+			%button.btn.btn-default{"ng-click" => "cancel()"} Cancel
+			%button.btn.btn-success{"ng-click" => "ok()"} Revert Outcome

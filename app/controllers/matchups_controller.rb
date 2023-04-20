@@ -109,6 +109,16 @@ class MatchupsController < ApplicationController
     end
   end
 
+  def revert_outcome
+    Rails.logger.debug("in save_outcome method")
+
+    Matchup.revert_matchup_outcome!(params[:matchup][:id])
+
+    respond_to do |format|
+      format.json { render json: @picks_this_week.to_json(include: { pool_entry: { only: [:team_name] } }) }
+    end
+  end
+
   def destroy
     Rails.logger.debug("in delete matchups method")
     @matchup = Matchup.find_by(id: params[:id])

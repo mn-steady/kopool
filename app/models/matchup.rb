@@ -28,6 +28,18 @@ class Matchup < ApplicationRecord
     end
   end
 
+  def self.revert_matchup_outcome!(matchup_id)
+    @matchup = Matchup.includes(:picks).find_by(id: matchup_id)
+
+    return unless @matchup
+
+    @matchup.update!(completed: false, tie: nil, winning_team_id: nil)
+
+    @matchup.picks.each do |pick|
+      pick.pool_entry.update!(knocked_out: false, knocked_out_week_id: nil)
+    end
+  end
+
 private
 
   def self.handle_tie_game(matchup, pick)

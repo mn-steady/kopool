@@ -21,8 +21,8 @@ angular.module('AdminPoolEntries', ['ngResource', 'RailsApiResource', 'ui.bootst
 
 		$scope.beginDefaultUnpickedPoolEntry = ->
 			console.log("...Making your selected entry as default")
-			UnpickedPoolEntries.post("default_pool_entry", $scope.poolEntryToDefault, $scope.current_week.id).then((response) ->
-				$scope.savedMessage = "Completed defaulting unpicked pool entries."
+			UnpickedPoolEntries.post("default_pool_entry", $scope.poolEntryToDefault, $scope.current_week.id).then((picks) ->
+				$scope.message = "Completed defaulting unpicked pool entries."
 				$scope.getUnpickedPoolEntries()
 			)
 

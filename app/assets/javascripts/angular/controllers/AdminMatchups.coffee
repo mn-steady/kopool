@@ -222,6 +222,13 @@ angular.module('AdminMatchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap
 				$scope.loadFilteredMatchups()
 			)
 
+		$scope.revertOutcome = (matchup) ->
+			console.log("Reverting outcome for matchup"+matchup)
+			week_id = matchup.week_id
+			Matchup.post("revert_outcome", matchup, week_id).then(()->
+				$scope.loadFilteredMatchups()
+			)
+
 		$scope.matchupCompleted = (matchup) ->
 			if matchup.completed == true then true
 
@@ -286,6 +293,33 @@ angular.module('AdminMatchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap
 			modalInstance.result.then ((matchup) ->
 				console.log("first function of modalInstance result")
 				$scope.saveOutcome(matchup)
+			), ->
+				console.log("Modal dismissed at: " + new Date())
+
+		ModalInstanceCtrl = ($scope, $modalInstance, matchup) ->
+			console.log("In ModalInstanceCtrl")
+			console.log("this is what is in matchup" + matchup.id)
+
+			$scope.matchup = matchup
+
+			$scope.ok = ->
+				$modalInstance.close(matchup)
+
+			$scope.cancel = ->
+				$modalInstance.dismiss("cancel")
+
+		$scope.openRevertDialogue = (size, matchup) ->
+			modalInstance = $modal.open(
+				templateUrl: "revertOutcomeModal.html"
+				controller: ModalInstanceCtrl
+				size: size
+				resolve:
+					matchup: ->
+						matchup
+			)
+			modalInstance.result.then ((matchup) ->
+				console.log("first function of modalInstance result")
+				$scope.revertOutcome(matchup)
 			), ->
 				console.log("Modal dismissed at: " + new Date())
 

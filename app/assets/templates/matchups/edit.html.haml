@@ -6,15 +6,15 @@
 %form.form-horizontal
 
   .form-group
-    %label.col-sm-2 Away Team
-    .col-sm-10
-      %select{"ng-model" => "matchup.selected_away_team", "ng-options" => "nfl_team as nfl_team.name for nfl_team in nfl_teams | orderBy:'name'"}
-      
-  .form-group
     %label.col-sm-2 Home Team
     .col-sm-10
       %select{"ng-model" => "matchup.selected_home_team", "ng-options" => "nfl_team as nfl_team.name for nfl_team in nfl_teams | orderBy:'name'"}
-  
+
+  .form-group
+    %label.col-sm-2 Away Team
+    .col-sm-10
+      %select{"ng-model" => "matchup.selected_away_team", "ng-options" => "nfl_team as nfl_team.name for nfl_team in nfl_teams | orderBy:'name'"}
+
   .form-group
     %label.col-sm-2 Game Time
     .col-sm-10

@@ -4,7 +4,7 @@ angular.module('Register', ['ngResource', 'RailsApiResource', 'user'])
       RailsApiResource('pool_entries', 'pool_entries')
 
   .factory 'WebState', (RailsApiResource) ->
-      RailsApiResource('admin/web_states', 'webstate')
+      RailsApiResource('commissioner/web_states', 'webstate')
 
   .factory 'PoolEntries', (RailsApiResource) ->
       RailsApiResource('pool_entries_index_all', 'pool_entries')

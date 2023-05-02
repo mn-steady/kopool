@@ -26,6 +26,8 @@ gem 'rack-cors'
 gem 'angular-rails-templates', '~> 1.2'
 # HTTP client api for Ruby.
 gem 'net-http', '~> 0.3.2'
+# A Rails engine for creating super-flexible admin dashboards
+gem 'administrate', '~> 0.18.0'
 
 group :development, :test do
   gem 'rspec-rails', '5.1.2'

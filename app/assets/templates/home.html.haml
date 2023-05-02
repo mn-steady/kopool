@@ -78,12 +78,18 @@
       %h2 Commissioner
       %p Commissioner maintenance page - for the commish only!  Lets you open/close a week for picks and also move to the next week.
       %p
-        %a.btn.btn-info{href: "#/admin/web_state", role: "button"} Commissioner »
+        %a.btn.btn-info{href: "#/commissioner/web_state", role: "button"} Commissioner »
     .col-md-4
       %h2 View All Entries
       %p Use this page to view all of the entries to the competition. You can mark specific teams as paid or unpaid here.
       %p
         %a.btn.btn-info{href: "#/seasons/{{web_state.season_id}}/entries", role: "button"} View All Entries
+  .row
+    .col-md-12
+      %h2 User management
+      %p User management page. Lets you add, update and delete a user.
+      %p
+        %a.btn.btn-warning{href: "/admin/users", role: "button"} User Management »
 
 %hr/
 %footer

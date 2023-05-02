@@ -9,7 +9,7 @@ angular.module('user', ['RailsApiResource', 'ngCookies'])
       token:                  $cookieStore.get('token')
       password:               ''
       authorized:             false
-      admin:                  false
+      admin:                  $cookieStore.get('admin')
       #reset: ->
         # @token =    $cookieStore.get('token')
         # @username = $cookieStore.get('username')
@@ -72,10 +72,12 @@ angular.module('user', ['RailsApiResource', 'ngCookies'])
         console.log("(AuthService.updateCookies)")
         $cookieStore.put('username', currentUser.username)
         $cookieStore.put('token', currentUser.token)
+        $cookieStore.put('admin', currentUser.admin)
 
       endSession: ->
         $cookieStore.remove('username')
         $cookieStore.remove('token')
+        $cookieStore.remove('admin')
         # currentUser.reset() I don't think this is needed
         console.log("Removing cookie AuthService.endSession")
 

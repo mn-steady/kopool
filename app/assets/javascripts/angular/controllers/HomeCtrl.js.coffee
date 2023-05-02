@@ -1,7 +1,7 @@
 angular.module('Home', ['ngResource', 'RailsApiResource', 'user'])
 
   .factory 'WebState', (RailsApiResource) ->
-      RailsApiResource('admin/web_states', 'webstate')
+      RailsApiResource('commissioner/web_states', 'webstate')
 
   .factory 'SeasonWeeks', (RailsApiResource) ->
       RailsApiResource('seasons/:parent_id/weeks', 'weeks')

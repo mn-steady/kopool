@@ -5,6 +5,8 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
+  default_scope { order(created_at: :desc) }
+
   after_create :send_welcome_email
 
   has_many :pool_entries

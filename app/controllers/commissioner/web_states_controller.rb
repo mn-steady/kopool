@@ -1,4 +1,4 @@
-class Admin::WebStatesController < ApplicationController
+class Commissioner::WebStatesController < ApplicationController
   before_action :verify_admin_user, :set_current_week, only: :update
   skip_before_action :authenticate_user_from_token!
     # This is Devise's authentication

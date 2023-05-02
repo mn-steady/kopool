@@ -13,7 +13,7 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 		RailsApiResource('weeks/:parent_id/picks', 'picks')
 
 	.factory 'WebState', (RailsApiResource) ->
-		RailsApiResource('admin/web_states', 'webstate')
+		RailsApiResource('commissioner/web_states', 'webstate')
 
 	.factory 'Week', (RailsApiResource) ->
 		RailsApiResource('weeks', 'weeks')

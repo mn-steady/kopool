@@ -1,7 +1,7 @@
 angular.module('WebStates', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 
   .factory 'WebState', ['RailsApiResource', (RailsApiResource) ->
-      RailsApiResource('admin/web_states', 'webstate')
+      RailsApiResource('commissioner/web_states', 'webstate')
   ]
   .factory 'Week', ['RailsApiResource', (RailsApiResource) ->
       RailsApiResource('weeks', 'weeks')

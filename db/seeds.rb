@@ -101,9 +101,9 @@
 
 			# Handle Week 1 Outcomes
 
-			matchup1_1.update_attributes(winning_team_id: broncos.id)
-			matchup1_2.update_attributes(winning_team_id: packers.id)
-			matchup1_3.update_attributes(winning_team_id: chargers.id)
+			matchup1_1.update(winning_team_id: broncos.id)
+			matchup1_2.update(winning_team_id: packers.id)
+			matchup1_3.update(winning_team_id: chargers.id)
 			Matchup.handle_matchup_outcome!(matchup1_1.id)
 			Matchup.handle_matchup_outcome!(matchup1_2.id)
 			Matchup.handle_matchup_outcome!(matchup1_3.id)

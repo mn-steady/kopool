@@ -1,11 +1,25 @@
 class NflTeam < ApplicationRecord
   validates :name, :conference, :division, presence: true
 
-  has_attached_file :logo, :styles => { :medium => "300x300>", :thumb => "100x100>" }, s3_credentials: S3_CREDENTIALS, :default_url => "assets/missing.png"
-  validates_attachment_content_type :logo, :content_type => /\Aimage\/.*\Z/
+  has_one_attached :logo
+  validate :logo_is_image
 
   def logo_url_small
-    logo.url(:thumb)
+    return default_logo_small_url unless logo.attached?
+
+    begin
+      logo.variant(resize_to_fill: [100, 100]).processed.url
+    rescue => e
+      Rails.logger.error "Error generating thumbnail URL: #{e.message}"
+      default_logo_small_url
+    end
   end
 
+  def default_logo_small_url
+    ActionController::Base.helpers.asset_path('missing.png')
+  end
+
+  def logo_is_image
+    errors.add(:logo, 'must be an image') unless logo.image?
+  end
 end

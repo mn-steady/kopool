@@ -1,4 +1,6 @@
 class PicksController < ApplicationController
+	include ActiveStorage::SetCurrent
+
 	before_action :verify_any_user, only: [:create, :update, :week_picks, :create_or_update_pick, :sorted_picks]
 
 	def index

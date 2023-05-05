@@ -1,4 +1,6 @@
 class MatchupsController < ApplicationController
+  include ActiveStorage::SetCurrent
+
 	before_action :verify_admin_user, only: [:show, :update, :save_week_outcomes, :destroy, :create]
   before_action :verify_any_user, only: [:index, :filtered_matchups]
 

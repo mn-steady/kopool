@@ -26,6 +26,10 @@ spec/tmp/assets/jasmine-specs.js
 /.byebug_history
 .rvmrc
 
+# Ignore uploaded files in development
+/storage/*
+!/storage/.keep
+
 # Ignore node_modules
 node_modules/
 

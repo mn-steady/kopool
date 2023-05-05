@@ -1,4 +1,5 @@
 class NflTeamsController < ApplicationController
+  include ActiveStorage::SetCurrent
 
   before_action :verify_admin_user, only: [:show, :update, :create, :destroy]
   before_action :verify_any_user, only: [:index]
@@ -7,7 +8,7 @@ class NflTeamsController < ApplicationController
     @nfl_teams = NflTeam.all
 
     respond_to do | format |
-      format.json {render json: @nfl_teams, :methods => [:logo_url_small]}
+      format.json { render json: @nfl_teams.as_json({ methods: :logo_url_small }) }
     end
   end
 
@@ -67,12 +68,12 @@ class NflTeamsController < ApplicationController
   def create
 
     Rails.logger.debug("(NflTeamsController.create) is admin")
-    @nfl_team = NflTeam.new()
+    @nfl_team = NflTeam.new
 
     # Todo setup the permitted attributes for Rails 4
     @nfl_team.update(nfl_teams_params)
 
-    if @nfl_team.save()
+    if @nfl_team.save!
       respond_to do | format |
         format.json {render json: @nfl_team}
       end

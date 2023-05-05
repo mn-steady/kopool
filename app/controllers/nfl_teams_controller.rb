@@ -68,12 +68,12 @@ class NflTeamsController < ApplicationController
   def create
 
     Rails.logger.debug("(NflTeamsController.create) is admin")
-    @nfl_team = NflTeam.new()
+    @nfl_team = NflTeam.new
 
     # Todo setup the permitted attributes for Rails 4
     @nfl_team.update(nfl_teams_params)
 
-    if @nfl_team.save()
+    if @nfl_team.save!
       respond_to do | format |
         format.json {render json: @nfl_team}
       end

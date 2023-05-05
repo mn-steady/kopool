@@ -20,6 +20,8 @@ class NflTeam < ApplicationRecord
   end
 
   def logo_is_image
-    errors.add(:logo, 'must be an image') unless logo.image?
+    if logo.attached? && !logo.image?
+      errors.add(:logo, 'must be an image')
+    end
   end
 end

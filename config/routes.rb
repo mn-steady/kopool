@@ -20,6 +20,7 @@ Rails.application.routes.draw do
     get "season_results", :action => "season_results"
     get "season_summary", :action => "season_summary"
     get "season_knockout_counts", :action => "season_knockout_counts"
+    get "pool_image", action: 'pool_image'
   	resources :weeks, only: [:index, :new, :create, :edit, :show, :update, :destroy]
   end
 

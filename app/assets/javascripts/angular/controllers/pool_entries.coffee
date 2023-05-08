@@ -12,7 +12,10 @@ angular.module('PoolEntries', ['ngResource', 'RailsApiResource'])
 	.factory 'SortedPicks', (RailsApiResource) ->
 		RailsApiResource('weeks/:parent_id/sorted_picks', 'picks')
 
-	.controller 'PoolEntriesCtrl', ['$scope', '$location', '$http', '$routeParams', 'NflTeam', 'WeekResults', 'PickResults', 'WebState', 'SeasonWeeks', 'SortedPicks', 'currentUser', 'AuthService', ($scope, $location, $http, $routeParams, NflTeam, WeekResults, PickResults, WebState, SeasonWeeks, SortedPicks, currentUser, AuthService) ->
+	.factory 'BubbleImage', (RailsApiResource) ->
+		RailsApiResource('seasons/:parent_id/pool_image', 'pool')
+
+	.controller 'PoolEntriesCtrl', ['$scope', '$location', '$http', '$routeParams', 'NflTeam', 'BubbleImage', 'WeekResults', 'PickResults', 'WebState', 'SeasonWeeks', 'SortedPicks', 'currentUser', 'AuthService', ($scope, $location, $http, $routeParams, NflTeam, BubbleImage, WeekResults, PickResults, WebState, SeasonWeeks, SortedPicks, currentUser, AuthService) ->
 
 		week_id = parseInt( $routeParams.week_id, 10 )
 		$scope.week_id = week_id
@@ -29,6 +32,7 @@ angular.module('PoolEntries', ['ngResource', 'RailsApiResource'])
 				$scope.current_week = web_state.current_week
 				$scope.open_for_picks = web_state.current_week.open_for_picks
 				$scope.getNflTeams()
+				$scope.load_bubble_image()
 			)
 
 		$scope.getNflTeams = () ->
@@ -65,6 +69,18 @@ angular.module('PoolEntries', ['ngResource', 'RailsApiResource'])
 						console.log("(PoolEntriesCtrl.getWeeklyResults) Error getting Week Results")
 						$scope.alert = { type: "danger", msg: json_error_data.data[0].error }
 				)
+
+		$scope.load_bubble_image = () ->
+			console.log("(PoolEntriesCtrl.load_bubble_image) Looking up the bubble image")
+			BubbleImage.nested_query($scope.web_state.current_season.id).then((url) ->
+				console.log("(PoolEntriesCtrl.load_bubble_image) *** Have your bubble image for the season ***")
+				console.log(url.image_percent)
+				$scope.bubble_image_url = url.image_percent
+
+				(json_error_data) ->
+					console.log("(PoolEntriesCtrl.load_bubble_image) Cannot get bubble image")
+					$scope.error_message = json_error_data.data[0].error
+			)
 
 		$scope.$on 'auth-login-success', ((event) ->
 			console.log("(PoolEntriesCtrl) Caught auth-login-success broadcasted event!!")

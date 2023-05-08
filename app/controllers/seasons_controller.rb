@@ -66,6 +66,22 @@ class SeasonsController < ApplicationController
 		end
 	end
 
+  def pool_image
+		season = Season.includes(:pool_entries).find_by(id: params[:season_id])
+		knocked_out_pool_entries_in_season_count = season.pool_entries.where(knocked_out: false).size
+		total_pool_entries_in_season_count = season.pool_entries.size
+
+		image_url = case (knocked_out_pool_entries_in_season_count.to_f / total_pool_entries_in_season_count * 100).round
+								when 0..20 then 'bubble-5'
+								when 21..40 then 'bubble-4'
+								when 41..60 then 'bubble-3'
+								when 61..80 then 'bubble-2'
+								when 81..100 then 'bubble-1'
+								end
+
+		render json: { image_percent: view_context.asset_path(image_url) }
+	end
+
 	private
 
 	def season_params

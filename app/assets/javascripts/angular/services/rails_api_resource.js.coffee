@@ -76,7 +76,10 @@ angular.module('RailsApiResource', ['ngResource'])
             )
           else
             console.log("is an Object")
-            data_of_interest = eval("response.data."+rootNode)
+            if response.data.hasOwnProperty('image_percent')
+              data_of_interest = response.data
+            else
+              data_of_interest = eval("response.data."+rootNode)
             angular.forEach(data_of_interest, (value, key) ->
               result[key] = new Resource(value)
             )

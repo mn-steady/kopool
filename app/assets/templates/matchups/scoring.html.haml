@@ -10,10 +10,10 @@
 	%thead
 		%tr
 			%th
-			%th Home Team
-			%th 
 			%th Away Team
-			%th 
+			%th
+			%th Home Team
+			%th
 			%th Game Time (EASTERN)
 	%tbody{"ng-repeat" => "matchup in filtered_matchups"}
 		%tr{"ng-hide" => "matchupCompleted(matchup)"}
@@ -21,15 +21,15 @@
 				%p
 				%a{"id" => "select-tie-{{matchup.id}}", "ng-click" => "selectTie(matchup)", "ng-class" => "tie_button_class(matchup)"} Tie Game!
 			%td
-				%img{"ng-src" => "{{matchup.home_team.logo_url_small}}" }
-			%td
-				%p.team_name {{ matchup.home_team.name}}
-				%a{"id" => "select-home-{{matchup.id}}", "ng-click" => "selectHomeTeamWin(matchup)", "ng-class" => "home_button_class(matchup)"} {{ matchup.home_team.name }} won!
-			%td
 				%img{"ng-src" => "{{matchup.away_team.logo_url_small}}" }
 			%td
 				%p.team_name {{ matchup.away_team.name}}
 				%a{"id" => "select-away-{{matchup.id}}", "ng-click" => "selectAwayTeamWin(matchup)", "ng-class" => "away_button_class(matchup)"} {{ matchup.away_team.name }} won!
+			%td
+				%img{"ng-src" => "{{matchup.home_team.logo_url_small}}" }
+			%td
+				%p.team_name {{ matchup.home_team.name}}
+				%a{"id" => "select-home-{{matchup.id}}", "ng-click" => "selectHomeTeamWin(matchup)", "ng-class" => "home_button_class(matchup)"} {{ matchup.home_team.name }} won!
 			%td
 				%p {{ matchup.game_time | date : 'fullDate' }} {{ matchup.game_time | date : 'shortTime' }}
 				%a.btn.btn-info{"ng-href" => "#/weeks/{{week_id}}/matchups/{{matchup.id}}", "ng-show" => "displayMatchupEditButtons(matchup)", role: "button"} Edit
@@ -41,10 +41,10 @@
 				%a.btn.btn-info{"id" => "revert-outcome-{{matchup.id}}", "ng-click" => "openRevertDialogue('', matchup)"} Revert Outcome
 			%td
 			%td
-				%p.team-name {{ matchup.home_team.name}}
-			%td
-			%td
 				%p.team-name {{ matchup.away_team.name}}
+			%td
+			%td
+				%p.team-name {{ matchup.home_team.name}}
 			%td
 				%p.team-name Winner: {{winningTeam(matchup)}}
 

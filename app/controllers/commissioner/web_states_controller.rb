@@ -47,6 +47,6 @@ private
   end
 
   def set_current_week
-    @current_week = Week.find_by(id: params[:current_week])
+    @current_week = Week.find_by(id: params.dig(:current_week, :id))
   end
 end

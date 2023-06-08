@@ -29,10 +29,15 @@
         %div.title-text.text-center {{knocked_out_previously_count()}}
 
     .row
-      .col-md-12
+      .col-md-6.buble-image-container
         %img{ src: "{{bubble_image_url}}", height: "200", width: "200", alt: "bubble-image" }
+
+      .col-md-6{"ng-controller" => "KopoolChartsCtrl"}
+        %div{"ng-if" => "loaded"}
+          %div{"ac-chart" => "'pie'", "ac-data"=>"pie_data", "ac-config"=>"pie_config", "id"=>"pie-chart", "class"=>"pie-chart"}
+
     .row
-      .col-md-6
+      .col-md-12
         %h3 Top Picked Teams:
         %table.table
           %thead
@@ -45,9 +50,6 @@
                 %p {{team[0]}}
               %td
                 %p {{team[1]}}
-      .col-md-6{"ng-controller" => "KopoolChartsCtrl"}
-        %div{"ng-if" => "loaded"}
-          %div{"ac-chart" => "'pie'", "ac-data"=>"pie_data", "ac-config"=>"pie_config", "id"=>"pie-chart", "class"=>"pie-chart"}
 
 
 .row

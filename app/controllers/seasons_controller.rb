@@ -72,11 +72,12 @@ class SeasonsController < ApplicationController
 		total_pool_entries_in_season_count = season.pool_entries.size
 
 		image_url = case (knocked_out_pool_entries_in_season_count.to_f / total_pool_entries_in_season_count * 100).round
-								when 0..20 then 'bubble-5'
-								when 21..40 then 'bubble-4'
-								when 41..60 then 'bubble-3'
-								when 61..80 then 'bubble-2'
-								when 81..100 then 'bubble-1'
+								when 0..3 then 'bubble-5'
+								when 4..19 then 'bubble-5'
+								when 20..36 then 'bubble-4'
+								when 37..70 then 'bubble-3'
+								when 71..99 then 'bubble-2'
+								else 'bubble-1'
 								end
 
 		render json: { image_percent: view_context.asset_path(image_url) }

@@ -1,4 +1,6 @@
 class SeasonsController < ApplicationController
+	include ActiveStorage::SetCurrent
+
 	before_action :require_user
 
 	def new
@@ -71,16 +73,19 @@ class SeasonsController < ApplicationController
 		knocked_out_pool_entries_in_season_count = season.pool_entries.where(knocked_out: false).size
 		total_pool_entries_in_season_count = season.pool_entries.size
 
-		image_url = case (knocked_out_pool_entries_in_season_count.to_f / total_pool_entries_in_season_count * 100).round
-								when 0..3 then 'bubble-5'
-								when 4..19 then 'bubble-5'
-								when 20..36 then 'bubble-4'
-								when 37..70 then 'bubble-3'
-								when 71..99 then 'bubble-2'
-								else 'bubble-1'
-								end
+		image_tier = case (knocked_out_pool_entries_in_season_count.to_f / total_pool_entries_in_season_count * 100).round
+								 when 0..3 then '0_3'
+								 when 4..19 then '4_19'
+								 when 20..36 then '20_36'
+								 when 37..70 then '37_70'
+								 when 71..99 then '71_99'
+								 else '100'
+								 end
 
-		render json: { image_percent: view_context.asset_path(image_url) }
+		bubble_upload = BubbleUpload.find_by(tier: image_tier)
+		image_url = bubble_upload&.image_url || BubbleUpload.default_image_url
+
+		render json: { image_percent: image_url }
 	end
 
 	private

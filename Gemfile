@@ -28,6 +28,8 @@ gem 'angular-rails-templates', '~> 1.2'
 gem 'net-http', '~> 0.3.2'
 # A Rails engine for creating super-flexible admin dashboards
 gem 'administrate', '~> 0.18.0'
+# Administrate fields for active storage
+gem 'administrate-field-active_storage', '~> 0.4.2'
 
 group :development, :test do
   gem 'rspec-rails', '5.1.2'

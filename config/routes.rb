@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   namespace :admin do
       resources :users
+      resources :bubble_uploads
 
       root to: "users#index"
   end

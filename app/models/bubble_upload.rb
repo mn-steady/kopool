@@ -7,7 +7,7 @@ class BubbleUpload < ApplicationRecord
 
   def image_url
     begin
-      image.variant(resize_to_fill: [100, 100]).processed.url
+      image.variant(resize_to_fill: [300, 300]).processed.url
     rescue => e
       Rails.logger.error "Error generating thumbnail URL: #{e.message}"
       BubbleUpload.default_image_url

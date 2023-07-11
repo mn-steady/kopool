@@ -4,7 +4,7 @@ class Week < ApplicationRecord
 	belongs_to :season
 	belongs_to :default_team, class_name: 'NflTeam', optional: true
 
-	WEEKS_IN_SEASON = 17
+	WEEKS_IN_SEASON = 18
 	SQL_DOW_MONDAY = 1
 
 	validates :start_date, :end_date, :deadline, :season_id, presence: true

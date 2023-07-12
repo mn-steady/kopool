@@ -8,13 +8,13 @@
         .alert.alert-success {{flash_message}}
     .row
       .col-lg-4
-        %div.rotated-title-left{"ng-hide" => "is_authorized()"} 2023 Season
-        %a.btn.btn-success.btn-lg.btn-block{"ng-show" => "is_authorized()", href: '#/weeks/{{web_state.current_week.id}}/matchups', role: "button"} Picks »
+        - # %div.rotated-title-left{"ng-hide" => "is_authorized()"} 2023 Season
+        - # %a.btn.btn-success.btn-lg.btn-block{"ng-show" => "is_authorized()", href: '#/weeks/{{web_state.current_week.id}}/matchups', role: "button"} Picks »
       .col-lg-4
         %img.img-rounded.frontpage-logo{alt: "KO Pool Logo", src: asset_path('kopool_c_med.png')}
       .col-lg-4
-        %div.rotated-title-right{"ng-hide" => "is_authorized()"} 2023 Season
-        %a.btn.btn-success.btn-lg.btn-block{"ng-show" => "is_authorized()", href: '#/weeks/{{web_state.current_week.id}}/results', role: "button"} Results »
+       - # %div.rotated-title-right{"ng-hide" => "is_authorized()"} 2023 Season
+       - # %a.btn.btn-success.btn-lg.btn-block{"ng-show" => "is_authorized()", href: '#/weeks/{{web_state.current_week.id}}/results', role: "button"} Results »
     .row
       .col-lg-4
         %a.btn.btn-info{href: "#/users/passwords/send", "ng-hide" => "is_authorized()" } Reset Password

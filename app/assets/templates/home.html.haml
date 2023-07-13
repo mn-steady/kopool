@@ -12,7 +12,7 @@
       .col-lg-4
         %img.img-rounded.frontpage-logo{alt: "KO Pool Logo", src: asset_path('kopool_c_med.png')}
       .col-lg-4
-       %a.btn.btn-success.btn-lg.btn-block{"ng-show" => "is_authorized()", href: '#/weeks/{{web_state.current_week.id}}/results', role: "button"} Results »
+        %a.btn.btn-success.btn-lg.btn-block{"ng-show" => "is_authorized()", href: '#/weeks/{{web_state.current_week.id}}/results', role: "button"} Results »
     .row
       .col-lg-4
         %a.btn.btn-info{href: "#/users/passwords/send", "ng-hide" => "is_authorized()" } Reset Password

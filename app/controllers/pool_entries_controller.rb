@@ -69,7 +69,7 @@ class PoolEntriesController < ApplicationController
   def pool_entries_and_picks
     @web_state = WebState.first
     if @web_state.open_for_picks == false
-      error_message = "You cannot edit picks after the game has started!"
+      error_message = "This weeks deadline has passed."
       render :json => {:error => error_message}, :status => :bad_request
     else
       @week = Week.find(params[:week_id])

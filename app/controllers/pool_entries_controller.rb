@@ -77,7 +77,7 @@ class PoolEntriesController < ApplicationController
       # @this_weeks_picks = Pick.where(week_id: params[:week_id])
 
       unless @my_active_pool_entries.present? 
-        error_message = "No more picks remaining, come back next year!"
+        error_message = "All your teams have been Knocked Out."
         render :json => {:error => error_message}, :status => :bad_request
       else
         @returned_entries_and_teams = []

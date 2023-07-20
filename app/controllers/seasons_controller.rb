@@ -88,6 +88,13 @@ class SeasonsController < ApplicationController
 		render json: { image_percent: image_url }
 	end
 
+	def main_page_image
+		main_page_image = MainPageBubble.last
+		image_url = main_page_image&.image_url || BubbleUpload.default_image_url
+
+		render json: { url: image_url }
+	end
+
 	private
 
 	def season_params

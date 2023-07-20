@@ -3,7 +3,10 @@ angular.module('kopoolCharts', ['ngResource', 'RailsApiResource', 'ui.bootstrap'
 	.factory 'KnockoutStats', (RailsApiResource) ->
 		RailsApiResource('seasons/:parent_id/season_summary', 'season_summary')
 
-	.controller 'KopoolChartsCtrl', ['$scope', '$location', '$http', '$routeParams', 'WebState', 'KnockoutStats', 'currentUser', 'SortedPicks', ($scope, $location, $http, $routeParams, WebState, KnockoutStats, currentUser, SortedPicks) ->
+	.factory 'MainPageImage', (RailsApiResource) ->
+		RailsApiResource('main_image', 'url')
+
+	.controller 'KopoolChartsCtrl', ['$scope', '$location', '$http', '$routeParams', 'WebState', 'KnockoutStats', 'MainPageImage', 'currentUser', 'SortedPicks', ($scope, $location, $http, $routeParams, WebState, KnockoutStats, MainPageImage, currentUser, SortedPicks) ->
 		
 		$scope.line_chart = "line"
 		$scope.line_config =
@@ -35,9 +38,22 @@ angular.module('kopoolCharts', ['ngResource', 'RailsApiResource', 'ui.bootstrap'
 				$scope.season_id = web_state.current_season.id
 				$scope.current_path = $location.path()
 				$scope.getChartData()
+				$scope.loadMainImage()
 			)
 
 		$scope.getWebState()
+
+		$scope.loadMainImage = () ->
+			console.log("(KopoolChartsCtrl.loadMainImage) Looking up the main_page_image")
+			MainPageImage.query().then(
+				(url) ->
+					console.log("(KopoolChartsCtrl.loadMainImage) *** Have your main page image ***")
+					console.log(url)
+					$scope.main_page_image_url = url
+				(json_error_data) ->
+					console.log("(KopoolChartsCtrl.loadMainImage) Cannot get main_page_image")
+					$scope.error_message = json_error_data.data[0].error
+			)
 
 		$scope.getChartData = () ->
 			console.log("This is the path variable at this time: " + $scope.current_path)

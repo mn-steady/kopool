@@ -3,6 +3,7 @@ Rails.application.routes.draw do
       resources :users
       resources :bubble_uploads
       resources :seasons
+      resources :main_page_bubbles
 
       root to: "users#index"
   end
@@ -52,5 +53,6 @@ Rails.application.routes.draw do
     resources :web_states
   end
 
+  get "/main_image", to: 'seasons#main_page_image'
   resources :tokens, :only => [:create, :destroy]
 end

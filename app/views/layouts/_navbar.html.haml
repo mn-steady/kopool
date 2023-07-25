@@ -16,7 +16,7 @@
       %button.btn.btn-success{:id => "sign_in_button", "ng-click"=>"login_logout()", type: "submit"} {{button_sign_in_or_out()}}
 
     .navbar-right.btn-group.navbar-group{"ng-show" => "isSignedIn()", :dropdown => ""}
-      %button.btn.btn-success.dropdown-toggle{:type => "button"} 
+      %button.btn.btn-warning.dropdown-toggle{:type => "button"} 
         {{display_name()}}
         %span.caret
       %ul.dropdown-menu{:role => "menu"}

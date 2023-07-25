@@ -6724,12 +6724,12 @@ button.close {
           filter: none;
 }
 .btn-warning:hover {
-  background-image: -webkit-linear-gradient(#804d03, #9e5f04 40%, #b26a04);
-  background-image: -o-linear-gradient(#804d03, #9e5f04 40%, #b26a04);
-  background-image: -webkit-gradient(linear, left top, left bottom, from(#804d03), color-stop(40%, #9e5f04), to(#b26a04));
-  background-image: linear-gradient(#804d03, #9e5f04 40%, #b26a04);
+  background-image: -webkit-linear-gradient(#66633b, #767344 40%, #86824e);
+  background-image: -o-linear-gradient(#66633b, #767344 40%, #86824e);
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#66633b), color-stop(40%, #767344), to(#86824e));
+  background-image: linear-gradient(#66633b, #767344 40%, #86824e);
   background-repeat: no-repeat;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff804d03', endColorstr='#ffb26a04', GradientType=0);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#66633b', endColorstr='#767344', GradientType=0);
   -webkit-filter: none;
           filter: none;
 }

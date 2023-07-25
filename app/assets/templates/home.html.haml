@@ -15,7 +15,7 @@
         %a.btn.btn-warning.btn-lg.btn-block{"ng-show" => "is_authorized()", href: '#/weeks/{{web_state.current_week.id}}/results', role: "button"} Results »
     .row
       .col-lg-4
-        %a.btn.btn-info{href: "#/users/passwords/send", "ng-hide" => "is_authorized()" } Reset Password
+        %a.btn.btn-warning{href: "#/users/passwords/send", "ng-hide" => "is_authorized()" } Reset Password
       .col-lg-4{"ng-if" => "web_state.current_season.open_for_registration && !is_authorized()"}
         %a.btn.btn-warning.btn-lg.btn-block{href: "#/users/register", role: "button"} New Users Only - Register »
         %br

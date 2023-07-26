@@ -20,11 +20,11 @@
         .panel-title.text-center{"ng-hide" => "pool_entry.editing"}
           %h3
             {{pool_entry.team_name}}
-          %a.btn.btn-info.btn-sm{role: "button", "ng-click" => "set_editing_entry(pool_entry)"} Edit Name
+          %a.btn.btn-success.btn-sm{role: "button", "ng-click" => "set_editing_entry(pool_entry)"} Edit Name
         .panel-title{"ng-show" => "pool_entry.editing"}
           %form
             %input.form-control{:placeholder => "Team Name", "ng-model" => "pool_entry.team_name", "ng-attr-id" => "{{'pool-entry-' + $index}}"}
-          %a.btn.btn-info.btn-sm{role: "button", "ng-click" => "done_editing_entry(pool_entry)", "ng-attr-id" => "{{'save-entry-' + $index}}"} Save
+          %a.btn.btn-success.btn-sm{role: "button", "ng-click" => "done_editing_entry(pool_entry)", "ng-attr-id" => "{{'save-entry-' + $index}}"} Save
       .panel-body
         .errors{"ng-show" => "pool_entry.error"}
           .alert.alert-danger {{pool_entry.error}}

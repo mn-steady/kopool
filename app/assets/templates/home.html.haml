@@ -19,7 +19,7 @@
       .col-lg-4{"ng-if" => "web_state.current_season.open_for_registration && !is_authorized()"}
         %a.btn.btn-warning.btn-lg.btn-block{href: "#/users/register", role: "button"} New Users Only - Register »
         %br
-        .alert.alert-info If you played in previous seasons, sign in to add new Pool Entries for the 2023 Season.
+        .alert.alert-success If you played in previous seasons, sign in to add new Pool Entries for the 2023 Season.
       .col-lg-4{"ng-if" => "web_state.current_season.open_for_registration && is_authorized()"}
         %a.btn.btn-warning.btn-lg.btn-block{id: "add-entries", href: "#/seasons/{{web_state.current_season.id}}/add_pool_entries", role: "button"} Add/Edit Entries - {{web_state.current_season.name}} » 
     .row
@@ -44,7 +44,7 @@
 .row
   .col-md-12
     %p.text-center.smaller-title From the Office of the Commish:
-    .alert.success-info.lead.text-center{"ng-show" => "is_authorized()"} {{web_state.broadcast_message}}
+    .alert.alert-success.lead.text-center{"ng-show" => "is_authorized()"} {{web_state.broadcast_message}}
     .alert.alert-success.lead.text-center{"ng-hide" => "is_authorized()"} ... Please Login ...
 
 .row{"ng-show" => "is_authorized()"}

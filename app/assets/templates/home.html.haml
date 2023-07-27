@@ -8,11 +8,11 @@
         .alert.alert-success {{flash_message}}
     .row
       .col-lg-4
-        %a.btn.btn-success.btn-lg.btn-block{"ng-show" => "is_authorized()", href: '#/weeks/{{web_state.current_week.id}}/matchups', role: "button"} Picks »
+        %a.btn.btn-warning.btn-lg.btn-block{"ng-show" => "is_authorized()", href: '#/weeks/{{web_state.current_week.id}}/matchups', role: "button"} Picks »
       .col-lg-4
         %img.img-rounded.frontpage-logo{alt: "KO Pool Logo", src: asset_path('kopool-logo-2023.png')}
       .col-lg-4
-        %a.btn.btn-success.btn-lg.btn-block{"ng-show" => "is_authorized()", href: '#/weeks/{{web_state.current_week.id}}/results', role: "button"} Results »
+        %a.btn.btn-warning.btn-lg.btn-block{"ng-show" => "is_authorized()", href: '#/weeks/{{web_state.current_week.id}}/results', role: "button"} Results »
     .row
       .col-lg-4
         %a.btn.btn-warning{href: "#/users/passwords/send", "ng-hide" => "is_authorized()" } Reset Password
@@ -44,8 +44,8 @@
 .row
   .col-md-12
     %p.text-center.smaller-title From the Office of the Commish:
-    .alert.alert-info.lead.text-center{"ng-show" => "is_authorized()"} {{web_state.broadcast_message}}
-    .alert.alert-info.lead.text-center{"ng-hide" => "is_authorized()"} ... Please Login ...
+    .alert.success-info.lead.text-center{"ng-show" => "is_authorized()"} {{web_state.broadcast_message}}
+    .alert.alert-success.lead.text-center{"ng-hide" => "is_authorized()"} ... Please Login ...
 
 .row{"ng-show" => "is_authorized()"}
   .col-md-12{ "ng-controller" => "KopoolChartsCtrl" }

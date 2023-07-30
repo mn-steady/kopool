@@ -2,7 +2,7 @@
   .container
     .row{"ng-if" => "session_message"}
       .col-sm-12.text-center
-        .alert.alert-success {{session_message}}
+        .alert.alert-danger {{session_message}}
     .row{"ng-if" => "flash_message"}
       .col-sm-12.text-center
         .alert.alert-success {{flash_message}}
@@ -30,7 +30,7 @@
     
     .row{"ng-show" => "is_authorized()"}
       .col-md-4
-        %p.text-center Round
+        %p.text-center.gold Round
         %div.title-text.text-center.text-info {{display_round_number()}}
         
       .col-md-4

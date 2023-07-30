@@ -34,16 +34,16 @@
         %div.title-text.text-center.text-info {{display_round_number()}}
         
       .col-md-4
-        %p.text-center Remaining
+        %p.text-center.gold Remaining
         %div.title-text.text-center.green {{active_pool_entries_count}}
         
       .col-md-4
-        %p.text-center Purse
+        %p.text-center.gold Purse
         %div.title-text.text-center.gold {{display_pot_amount() | currency}}
 
 .row
   .col-md-12
-    %p.text-center.smaller-title From the Office of the Commish:
+    %p.text-center.smaller-title.gold From the Office of the Commish:
     .alert.alert-success.lead.text-center{"ng-show" => "is_authorized()"} {{web_state.broadcast_message}}
     .alert.alert-success.lead.text-center{"ng-hide" => "is_authorized()"} ... Please Login ...
 

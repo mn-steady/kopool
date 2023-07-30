@@ -42,6 +42,7 @@
                 $50.00
       .text-center
         %a.btn-default{"id" => "select-pick-{{pool_entry.id}}", "ng-click" => "set_editing_pool_entry($index)", "ng-class" => "pool_entry_button_class(pool_entry)", "ng-hide" => "weekIsClosed()", role: "button"} Select Pick for {{pool_entry.team_name}}
+      %br
 
 .animate-show{"ng-show" => "showMatchups"}
   %table.table.table-striped
@@ -74,5 +75,5 @@
         %td
           %p {{ matchup.game_time | date : 'fullDate' }} {{ matchup.game_time | date : 'shortTime' }}
           %div{"ng-if" => "isSelectedMatchup(matchup)"}
-            %a.btn.btn-primary{"id" => "save-matchup-{{matchup.id}}", "ng-click" => "savePick(matchup, editing_pool_entry)"} Save Pick
+            %a.btn.btn-default{"id" => "save-matchup-{{matchup.id}}", "ng-click" => "savePick(matchup, editing_pool_entry)"} Save Pick
             %a.btn.btn-info{"ng-click" => "cancelTeamSelection()"} Cancel

@@ -48,13 +48,14 @@
   %table.table.table-striped
     %thead
       %tr
+        %th
         %th.gold 
           %h3.text-center Away Team
         %th
         %th.gold
           %h3.text-center Home Team
-        %th
-        %th.gold Game Time
+        %th.gold 
+          %h3 Game Time
     %tbody.gold{"ng-repeat" => "matchup in matchups"}
       %tr{"ng-class" => "{'unselected-matchup' : (hideMatchups && !isSelectedMatchup(matchup))}"}
         %td

@@ -1,4 +1,4 @@
-%h1.gold Welcome to KOPOOL Registration!
+%h1.gold.text-center Welcome to KOPOOL Registration!
 %h2.gold Season {{web_state.current_week.season.name}} Week {{web_state.current_week.week_number}}
 .row
   .col-md-8
@@ -16,22 +16,22 @@
               %input.form-control#name{"type" => "text", "ng-model" => "registering_user.name", "placeholder"=>"Your Name"}
 
           .form-group
-            %label.col-sm-2 Phone
+            %label.gold.col-sm-2 Phone
             .col-sm-5
               %input.form-control#phone{"type" => "text", "ng-model" => "registering_user.phone", "placeholder"=>"Your Phone #"}
 
           .form-group
-            %label.col-sm-2 Email
+            %label.gold.col-sm-2 Email
             .col-sm-5
               %input.form-control#email{"type" => "text", "ng-model" => "registering_user.email", "placeholder"=>"Your Email Address"}
 
           .form-group
-            %label.col-sm-2 Password
+            %label.gold.col-sm-2 Password
             .col-sm-5{"ng-class" => "password_is_valid(registering_user.password)"}
               %input.form-control#password{"type" => "password", "ng-model" => "registering_user.password"}
 
           .form-group
-            %label.col-sm-2 Confirm Password
+            %label.gold.col-sm-2 Confirm Password
             .col-sm-5{"ng-class" => "password_is_valid(registering_user.password_confirmation)"}
               %input.form-control#password-confirmation{"type" => "password", "ng-model" => "registering_user.password_confirmation"}
 

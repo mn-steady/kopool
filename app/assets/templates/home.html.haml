@@ -59,34 +59,34 @@
       %h2.gold Admin Panel
     .col-md-4
       %h2.gold NFL Teams
-      %p.gold Administrators can use this 'NFL Teams' button to view, edit, and update NFL teams.  Make sure the teams are all in the correct Conference and Division.  Upload a nice looking logo for each team.  Any logo you upload will automatically be stored on your Amazon S3 account and will automatically be scaled to "Medium" (300x300) and "Thumbnail" (100x100) sizes.
+      %h4.gold Administrators can use this 'NFL Teams' button to view, edit, and update NFL teams.  Make sure the teams are all in the correct Conference and Division.  Upload a nice looking logo for each team.  Any logo you upload will automatically be stored on your Amazon S3 account and will automatically be scaled to "Medium" (300x300) and "Thumbnail" (100x100) sizes.
       %p
         %a.btn.btn-primary{"ng-click" => "go('/nfl_teams')", role: "button"} NFL Teams »
     .col-md-4
       %h2.gold View All Weeks
-      %p.gold Administrators can use this 'Weeks' button to view, edit, and update weeks.  Make sure all of the dates are correct.  You must always enter and edit them in international format: yyyy-mm-dd.  Also, currently there is a bug where the timezone is messing up the weeks.  You may have to enter hours also:  yyyy-mm-dd hh:mm.  Jack and Dave will discuss.
+      %h4.gold Administrators can use this 'Weeks' button to view, edit, and update weeks.  Make sure all of the dates are correct.  You must always enter and edit them in international format: yyyy-mm-dd.  Also, currently there is a bug where the timezone is messing up the weeks.  You may have to enter hours also:  yyyy-mm-dd hh:mm.  Jack and Dave will discuss.
       %p
         %a.btn.btn-success{href: "#/seasons/{{web_state.season_id}}/weeks", role: "button"} View Weeks »
     .col-md-4
       %h2.gold Score Matchups
-      %p.gold Click here to score the matchups for this week!
+      %h4.gold Click here to score the matchups for this week!
       %p
         %a.btn.btn-info{href: "#/weeks/{{web_state.current_week.id}}/matchups/scoring", role: "button"} Score Matchups »
   .row
     .col-md-4
       %h2.gold Commissioner
-      %p.gold Commissioner maintenance page - for the commish only!  Lets you open/close a week for picks and also move to the next week.
+      %h4.gold Commissioner maintenance page - for the commish only!  Lets you open/close a week for picks and also move to the next week.
       %p
         %a.btn.btn-info{href: "#/commissioner/web_state", role: "button"} Commissioner »
     .col-md-4
       %h2.gold View All Entries
-      %p.gold Use this page to view all of the entries to the competition. You can mark specific teams as paid or unpaid here.
+      %h4.gold Use this page to view all of the entries to the competition. You can mark specific teams as paid or unpaid here.
       %p
         %a.btn.btn-info{href: "#/seasons/{{web_state.season_id}}/entries", role: "button"} View All Entries
 
     .col-md-4
       %h2.gold Database Management
-      %p.gold DB management page for updating specific tables.
+      %h4.gold DB management page for updating specific tables.
       %p
         %a.btn.btn-warning{href: "/admin/users", role: "button"} Database Management »
 

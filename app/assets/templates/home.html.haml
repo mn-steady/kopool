@@ -21,7 +21,7 @@
           %h4 Reset Password
       .col-lg-4{"ng-if" => "web_state.current_season.open_for_registration && !is_authorized()"}
         %a.btn.btn-warning.btn-lg.btn-block{href: "#/users/register", role: "button"}
-          %h3 New Users Only - Register »
+          %h4 New Users Only - Register »
         %br
       .col-lg-4{"ng-if" => "web_state.current_season.open_for_registration && is_authorized()"}
         %a.btn.btn-warning.btn-lg.btn-block{id: "add-entries", href: "#/seasons/{{web_state.current_season.id}}/add_pool_entries", role: "button"} 
@@ -47,12 +47,11 @@
       .col-md-4
         %h2.text-center.gold Purse
         %div.title-text.text-center.gold {{display_pot_amount() | currency}}
-
-.row
-  .col-md-12
-    %p.text-center.smaller-title.gold From the Office of the Commish:
-    .alert.alert-success.lead.text-center{"ng-show" => "is_authorized()"} {{web_state.broadcast_message}}
-    .alert.alert-success.lead.text-center{"ng-hide" => "is_authorized()"} Registration will open August 15th
+    .row
+      .col-md-12
+        %p.text-center.smaller-title.gold From the Office of the Commish:
+        .alert.alert-success.lead.text-center{"ng-show" => "is_authorized()"} {{web_state.broadcast_message}}
+        .alert.alert-success.lead.text-center{"ng-hide" => "is_authorized()"} Registration will open August 15th
 
 .row{"ng-show" => "is_authorized()"}
   .col-md-12{ "ng-controller" => "KopoolChartsCtrl" }

@@ -28,7 +28,7 @@ angular.module('kopoolCharts', ['ngResource', 'RailsApiResource', 'ui.bootstrap'
 			]
 			legend:
 				display: false
-				position: "left"
+				position: "center"
 			innerRadius: 0
 
 		$scope.getWebState = () ->

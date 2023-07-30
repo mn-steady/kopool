@@ -75,5 +75,5 @@
         %td
           %p {{ matchup.game_time | date : 'fullDate' }} {{ matchup.game_time | date : 'shortTime' }}
           %div{"ng-if" => "isSelectedMatchup(matchup)"}
-            %a.btn.btn-default{"id" => "save-matchup-{{matchup.id}}", "ng-click" => "savePick(matchup, editing_pool_entry)"} Save Pick
-            %a.btn.btn-info{"ng-click" => "cancelTeamSelection()"} Cancel
+            %a.btn.btn-info{"id" => "save-matchup-{{matchup.id}}", "ng-click" => "savePick(matchup, editing_pool_entry)"} Save Pick
+            %a.btn.btn-danger{"ng-click" => "cancelTeamSelection()"} Cancel

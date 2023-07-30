@@ -59,7 +59,7 @@
           %img{"ng-src" => "{{matchup.away_team.logo_url_small}}", "ng-class" => "{'unselected-matchup' : isSelectedTeam(matchup.home_team)}"}
         %td{"ng-hide"=>"matchup.locked"}
           %p.team-name {{ matchup.away_team.name}}
-          %a.btn.btn-success{"id" => "select-away-{{matchup.id}}", "ng-click" => "handleTeamSelection(matchup, matchup.away_team)", "ng-class" => "{'unselected-matchup' : isSelectedTeam(matchup.home_team)}"} Pick {{ matchup.away_team.name }} to win!
+          %a.btn.btn-success.btn-lg{"id" => "select-away-{{matchup.id}}", "ng-click" => "handleTeamSelection(matchup, matchup.away_team)", "ng-class" => "{'unselected-matchup' : isSelectedTeam(matchup.home_team)}"} Pick {{ matchup.away_team.name }} to win!
         %td{"ng-show"=>"matchup.locked"}
           %p.team-name {{ matchup.away_team.name}}
           %div Game is Locked!
@@ -68,12 +68,12 @@
         %td{"ng-hide"=>"matchup.locked"}
           %p.team-name {{ matchup.home_team.name}}
           %div
-            %a.btn.btn-success{"id" => "select-home-{{matchup.id}}", "ng-click" => "handleTeamSelection(matchup, matchup.home_team)", "ng-class" => "{'unselected-matchup' : isSelectedTeam(matchup.away_team)}"} Pick {{ matchup.home_team.name }} to win!
+            %a.btn.btn-success.btn-lg{"id" => "select-home-{{matchup.id}}", "ng-click" => "handleTeamSelection(matchup, matchup.home_team)", "ng-class" => "{'unselected-matchup' : isSelectedTeam(matchup.away_team)}"} Pick {{ matchup.home_team.name }} to win!
         %td{"ng-show"=>"matchup.locked"}
           %p.team-name {{ matchup.home_team.name}}
           %div Game is Locked!
         %td
           %p {{ matchup.game_time | date : 'fullDate' }} {{ matchup.game_time | date : 'shortTime' }}
           %div{"ng-if" => "isSelectedMatchup(matchup)"}
-            %a.btn.btn-info{"id" => "save-matchup-{{matchup.id}}", "ng-click" => "savePick(matchup, editing_pool_entry)"} Save Pick
-            %a.btn.btn-danger{"ng-click" => "cancelTeamSelection()"} Cancel
+            %a.btn.btn-info.btn-lg{"id" => "save-matchup-{{matchup.id}}", "ng-click" => "savePick(matchup, editing_pool_entry)"} Save Pick
+            %a.btn.btn-danger.btn-lg{"ng-click" => "cancelTeamSelection()"} Cancel

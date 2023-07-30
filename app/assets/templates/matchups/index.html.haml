@@ -49,9 +49,9 @@
       %tr
         %th.gold Away Team
         %th
-        %th Home Team
+        %th.gold Home Team
         %th
-        %th Game Time
+        %th.gold Game Time
     %tbody.gold{"ng-repeat" => "matchup in matchups"}
       %tr{"ng-class" => "{'unselected-matchup' : (hideMatchups && !isSelectedMatchup(matchup))}"}
         %td

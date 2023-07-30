@@ -16,8 +16,6 @@
         %a.btn.btn-warning.btn-lg.btn-block{"ng-show" => "is_authorized()", href: '#/weeks/{{web_state.current_week.id}}/results', role: "button"} 
           %h3 Results »
     .row
-      .alert.alert-success{"ng-if" => "web_state.current_season.open_for_registration && !is_authorized()"}
-          %h3 If you played in previous seasons, sign in to add new Pool Entries for the {{web_state.current_season.name}} Season.
       .col-lg-4
         %a.btn.btn-warning{href: "#/users/passwords/send", "ng-hide" => "is_authorized()" } 
           %h4 Reset Password
@@ -28,6 +26,8 @@
       .col-lg-4{"ng-if" => "web_state.current_season.open_for_registration && is_authorized()"}
         %a.btn.btn-warning.btn-lg.btn-block{id: "add-entries", href: "#/seasons/{{web_state.current_season.id}}/add_pool_entries", role: "button"} 
           %h3 Add/Edit Entries » 
+      .alert.alert-success{"ng-hide" => "is_authorized()" } 
+        %h3 If you played in previous seasons, sign in to add new Pool Entries for the {{web_state.current_season.name}} Season.
     .row
       .col-lg-4
       .col-lg-4{"ng-if" => "web_state.current_season.open_for_registration && is_authorized()"}

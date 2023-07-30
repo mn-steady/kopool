@@ -66,7 +66,7 @@
         %td
           %img{"ng-src" => "{{matchup.home_team.logo_url_small}}", "ng-class" => "{'unselected-matchup' : isSelectedTeam(matchup.away_team)}"}
         %td{"ng-hide"=>"matchup.locked"}
-          %h3.team-name {{ matchup.home_team.name}}
+          %h3 {{ matchup.home_team.name}}
           %div
             %a.btn.btn-success.btn-lg{"id" => "select-home-{{matchup.id}}", "ng-click" => "handleTeamSelection(matchup, matchup.home_team)", "ng-class" => "{'unselected-matchup' : isSelectedTeam(matchup.away_team)}"} Pick {{ matchup.home_team.name }} to win!
         %td{"ng-show"=>"matchup.locked"}

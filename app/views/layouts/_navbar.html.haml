@@ -13,7 +13,7 @@
         %input.form-control{:id => "sign_on_field", "ng-hide" => "isSignedIn()", "ng-model" => "login_user.email", placeholder: "Email", type: "text"}/
       .form-group
         %input.form-control{:id => "password_field", "ng-hide" => "isSignedIn()", "ng-model" => "login_user.password", placeholder: "Password", type: "password"}/
-      %button.btn.btn-warning{:id => "sign_in_button", "ng-click"=>"login_logout()", type: "submit"} {{button_sign_in_or_out()}}
+      %button.btn.btn-warning.btn-lg{:id => "sign_in_button", "ng-click"=>"login_logout()", type: "submit"} {{button_sign_in_or_out()}}
 
     .navbar-right.btn-group.navbar-group{"ng-show" => "isSignedIn()", :dropdown => ""}
       %button.btn.btn-warning.dropdown-toggle{:type => "button"} 

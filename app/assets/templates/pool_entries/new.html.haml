@@ -2,7 +2,7 @@
 .row
   .col-md-12
     .title-text.text-center.green{id: 'entry-count'} {{ pool_entries.length }} - {{ pool_entries.length * 50 | currency }}
-    %h3.text-center Pool Entries
+    %h3.gold.text-center Pool Entries
 
 .row
   .col-md-12
@@ -41,9 +41,9 @@
                 %h4
                   .text-center {{currentUser.username}}
             .text-center
-              Non-refundable - play at your own risk!
+              %h5 Non-refundable - play at your own risk!
           .text-center
-            %h3
+            %h3.gold
               $50.00
           .text-right
             %a.btn.btn-danger.btn-small{role: "button", "ng-click" => "remove_pool_entry(pool_entry)", "ng-attr-id" => "{{'remove-entry-' + $index}}"} Remove

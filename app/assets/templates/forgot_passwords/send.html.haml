@@ -16,8 +16,8 @@
                 %h3.gold.col-sm-2 Email
                 .col-sm-10
                   %input.form-control{"type" => "text", "ng-model" => "user_email", "placeholder"=>"Your Email Address"}
-                %br
-                %a.btn.btn-success.col-sm-offset-2{"ng-click" => "sendResetPasswordEmail()", role: "button"} Send Reset Password Email
+              %br
+              %a.btn.btn-success.col-sm-offset-2{"ng-click" => "sendResetPasswordEmail()", role: "button"} Send Reset Password Email
 
         .col-md-6{"ng-if" => "alert"}
           .alert.center{"class" => "alert-{{alert.type}}"}

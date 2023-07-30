@@ -41,7 +41,7 @@
               %h3.gold
                 $50.00
       .text-center
-        %a.btn-danger{"id" => "select-pick-{{pool_entry.id}}", "ng-click" => "set_editing_pool_entry($index)", "ng-class" => "pool_entry_button_class(pool_entry)", "ng-hide" => "weekIsClosed()", role: "button"} Select Pick for {{pool_entry.team_name}}
+        %a.btn-danger.btn-lg{"id" => "select-pick-{{pool_entry.id}}", "ng-click" => "set_editing_pool_entry($index)", "ng-class" => "pool_entry_button_class(pool_entry)", "ng-hide" => "weekIsClosed()", role: "button"} Select Pick for {{pool_entry.team_name}}
       %br
 
 .animate-show{"ng-show" => "showMatchups"}

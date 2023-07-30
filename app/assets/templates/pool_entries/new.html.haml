@@ -22,7 +22,7 @@
             {{pool_entry.team_name}}
           %a.btn.btn-success.btn-sm{role: "button", "ng-click" => "set_editing_entry(pool_entry)"} 
             %h5.white Edit Name
-        .panel-title{"ng-show" => "pool_entry.editing"}
+        .panel-title.text-center{"ng-show" => "pool_entry.editing"}
           %form
             %input.form-control{:placeholder => "Team Name", "ng-model" => "pool_entry.team_name", "ng-attr-id" => "{{'pool-entry-' + $index}}"}
           %a.btn.btn-success.btn-sm{role: "button", "ng-click" => "done_editing_entry(pool_entry)", "ng-attr-id" => "{{'save-entry-' + $index}}"} 

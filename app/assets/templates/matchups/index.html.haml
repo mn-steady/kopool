@@ -21,9 +21,9 @@
         .panel-body
           .text-center
             %span
-              %p This week's pick:
+              %p.gold This week's pick:
               %img{"ng-src" => "{{pool_entry.nfl_team.logo_url_small}}" }
-              %h4 {{pool_entry.nfl_team.nfl_team_name}}
+              %h4.gold {{pool_entry.nfl_team.nfl_team_name}}
           %br
             .text-center
               %h2{"ng-hide"=>"pool_entry.locked"}
@@ -36,10 +36,10 @@
                 %em
                   %h4
                     .text-center {{currentUser.username}}
-              .text-center
+              .text-center.gold
                 Non-refundable - play at your own risk!
             .text-center
-              %h3
+              %h3.gold
                 $50.00
       .text-center
         %a.btn{"id" => "select-pick-{{pool_entry.id}}", "ng-click" => "set_editing_pool_entry($index)", "ng-class" => "pool_entry_button_class(pool_entry)", "ng-hide" => "weekIsClosed()", role: "button"} Select Pick for {{pool_entry.team_name}}

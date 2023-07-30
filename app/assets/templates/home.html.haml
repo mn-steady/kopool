@@ -18,10 +18,10 @@
     .row
       .col-lg-4
         %a.btn.btn-warning{href: "#/users/passwords/send", "ng-hide" => "is_authorized()" } 
-          $h3 Reset Password
+          %h3 Reset Password
       .col-lg-4{"ng-if" => "web_state.current_season.open_for_registration && !is_authorized()"}
         %a.btn.btn-warning.btn-lg.btn-block{href: "#/users/register", role: "button"}
-          %h3 New Users Only - Register »
+          %h4 New Users Only - Register »
         %br
         .alert.alert-success 
           %h4 If you played in previous seasons, sign in to add new Pool Entries for the {{web_state.current_season.name}} Season.

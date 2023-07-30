@@ -24,7 +24,7 @@
         %br
         .alert.alert-success If you played in previous seasons, sign in to add new Pool Entries for the 2023 Season.
       .col-lg-4{"ng-if" => "web_state.current_season.open_for_registration && is_authorized()"}
-        %a.btn.btn-warning.btn-lg.btn-block{id: "add-entries", href: "#/seasons/{{web_state.current_season.id}}/add_pool_entries", role: "button"} 
+        %a.btn.btn-warning.btn-lg.{id: "add-entries", href: "#/seasons/{{web_state.current_season.id}}/add_pool_entries", role: "button"} 
           %h4 Add/Edit Entries - {{web_state.current_season.name}} » 
     .row
       .col-lg-4

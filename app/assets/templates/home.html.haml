@@ -17,12 +17,14 @@
           %h3 Results »
     .row
       .col-lg-4
-        %a.btn.btn-warning{href: "#/users/passwords/send", "ng-hide" => "is_authorized()" } Reset Password
+        %a.btn.btn-warning{href: "#/users/passwords/send", "ng-hide" => "is_authorized()" } 
+          $h3 Reset Password
       .col-lg-4{"ng-if" => "web_state.current_season.open_for_registration && !is_authorized()"}
         %a.btn.btn-warning.btn-lg.btn-block{href: "#/users/register", role: "button"}
           %h3 New Users Only - Register »
         %br
-        .alert.alert-success If you played in previous seasons, sign in to add new Pool Entries for the 2023 Season.
+        .alert.alert-success 
+          %h4 If you played in previous seasons, sign in to add new Pool Entries for the {{web_state.current_season.name}} Season.
       .col-lg-4{"ng-if" => "web_state.current_season.open_for_registration && is_authorized()"}
         %a.btn.btn-warning.btn-lg.btn-block{id: "add-entries", href: "#/seasons/{{web_state.current_season.id}}/add_pool_entries", role: "button"} 
           %h3 Add/Edit Entries » 
@@ -30,7 +32,7 @@
       .col-lg-4
       .col-lg-4{"ng-if" => "web_state.current_season.open_for_registration && is_authorized()"}
         %a.btn.btn-warning.btn-lg.btn-block{id: "add-entries", href: "#/registration/rules", role: "button"}
-          %h3 {{web_state.current_season.name}} Rules » 
+          %h3 Rules » 
     
     
     .row{"ng-show" => "is_authorized()"}
@@ -97,6 +99,6 @@
 
 %hr/
 %footer
-  %h5.gold © Dave Fugh {{web_state.current_season.name}}
+  %h5.gold © Dave Fugh 2023
 
 

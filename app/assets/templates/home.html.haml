@@ -26,6 +26,7 @@
       .col-lg-4{"ng-if" => "web_state.current_season.open_for_registration && is_authorized()"}
         %a.btn.btn-warning.btn-lg.btn-block{id: "add-entries", href: "#/seasons/{{web_state.current_season.id}}/add_pool_entries", role: "button"} 
           %h3 Add/Edit Entries » 
+    .row
       .alert.alert-success{"ng-hide" => "is_authorized()" } 
         %h3 If you played in previous seasons, sign in to add new Pool Entries for the {{web_state.current_season.name}} Season.
     .row

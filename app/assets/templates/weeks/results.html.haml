@@ -17,15 +17,15 @@
                   Week {{week.week_number}} Results
     .row
       .col-md-4
-        %p.text-center.gold KO'd This Week
+        %h3.text-center.gold KO'd This Week
         %div.title-text.text-center.text-danger {{knocked_out_this_week_count()}}
         
       .col-md-4
-        %p.text-center.gold Still Alive
+        %h3.text-center.gold Still Alive
         %div.title-text.text-center.green {{still_alive_count()}}
         
       .col-md-4
-        %p.text-center.gold KO'd Previously
+        %h3.text-center.gold KO'd Previously
         %div.title-text.text-center.purple {{knocked_out_previously_count()}}
 
     .row

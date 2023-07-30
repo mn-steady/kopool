@@ -2,7 +2,7 @@
   .container
     .row
       .col-sm-8
-        %h3 {{results_header()}}
+        %h3.gold {{results_header()}}
 
       .col-sm-4
         .div.text-center
@@ -17,15 +17,15 @@
                   Week {{week.week_number}} Results
     .row
       .col-md-4
-        %p.text-center KO'd This Week
+        %p.text-center.gold KO'd This Week
         %div.title-text.text-center.text-danger {{knocked_out_this_week_count()}}
         
       .col-md-4
-        %p.text-center Still Alive
+        %p.text-center.gold Still Alive
         %div.title-text.text-center.green {{still_alive_count()}}
         
       .col-md-4
-        %p.text-center KO'd Previously
+        %p.text-center.gold KO'd Previously
         %div.title-text.text-center.purple {{knocked_out_previously_count()}}
 
     .row
@@ -38,7 +38,7 @@
 
     .row
       .col-md-12
-        %h3 Teams Chosen This Week:
+        %h3.gold Teams Chosen This Week:
         %table.table
           %thead
             %tr
@@ -56,7 +56,7 @@
   .col-sm-12.text-center
     .alert{"class" => "alert alert-{{alert.type}}"} {{alert.msg}}
 
-%h4 Knocked Out This Week:
+%h4.gold Knocked Out This Week:
 
 %table.table
   %thead
@@ -71,7 +71,7 @@
       %td
         %img{"ng-src" => "{{pool_entry.nfl_team.logo_url_small}}" }
 
-%h4 Still Alive!
+%h4.gold Still Alive!
 %p Teams returned here are those still alive currently. At this time we are not able to show who was alive during a given week - only those who were knocked out during a given week. This feature will be added in the future.
 
 %table.table

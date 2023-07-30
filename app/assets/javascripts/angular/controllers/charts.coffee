@@ -21,7 +21,6 @@ angular.module('kopoolCharts', ['ngResource', 'RailsApiResource', 'ui.bootstrap'
 
 		$scope.pie_config =
 			title: "Picks This Week"
-				position: "center"
 			tooltips: true
 			labels: false
 			colors: [

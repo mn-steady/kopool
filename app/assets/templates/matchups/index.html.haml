@@ -52,12 +52,12 @@
         %th Home Team
         %th
         %th Game Time
-    %tbody{"ng-repeat" => "matchup in matchups"}
+    %tbody.gold{"ng-repeat" => "matchup in matchups"}
       %tr{"ng-class" => "{'unselected-matchup' : (hideMatchups && !isSelectedMatchup(matchup))}"}
         %td
           %img{"ng-src" => "{{matchup.away_team.logo_url_small}}", "ng-class" => "{'unselected-matchup' : isSelectedTeam(matchup.home_team)}"}
         %td{"ng-hide"=>"matchup.locked"}
-          %p.gold.team-name {{ matchup.away_team.name}}
+          %p.team-name {{ matchup.away_team.name}}
           %a.btn.btn-success{"id" => "select-away-{{matchup.id}}", "ng-click" => "handleTeamSelection(matchup, matchup.away_team)", "ng-class" => "{'unselected-matchup' : isSelectedTeam(matchup.home_team)}"} Pick {{ matchup.away_team.name }} to win!
         %td{"ng-show"=>"matchup.locked"}
           %p.team-name {{ matchup.away_team.name}}

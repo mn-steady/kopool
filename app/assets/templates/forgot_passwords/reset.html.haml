@@ -12,12 +12,12 @@
             %form.form-horizontal{"name" => "passwordForm"}
 
               .form-group
-                %label.gold.col-md-4 New Password
+                %h3.gold.col-md-4 New Password
                 .col-md-5{"ng-class" => "password_is_valid(updating_user.password)"}
                   %input.form-control{"type" => "password", "ng-model" => "updating_user.password"}
 
               .form-group
-                %label.gold.col-md-4 Confirm New Password
+                %h3.gold.col-md-4 Confirm New Password
                 .col-md-5{"ng-class" => "password_is_valid(updating_user.password_confirmation)"}
                   %input.form-control{"type" => "password", "ng-model" => "updating_user.password_confirmation"}
 

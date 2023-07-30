@@ -21,6 +21,7 @@ angular.module('kopoolCharts', ['ngResource', 'RailsApiResource', 'ui.bootstrap'
 
 		$scope.pie_config =
 			title: "Picks This Week"
+				position: "center"
 			tooltips: true
 			labels: false
 			colors: [
@@ -28,7 +29,7 @@ angular.module('kopoolCharts', ['ngResource', 'RailsApiResource', 'ui.bootstrap'
 			]
 			legend:
 				display: false
-				position: "center"
+				position: "left"
 			innerRadius: 0
 
 		$scope.getWebState = () ->

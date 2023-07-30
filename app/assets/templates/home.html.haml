@@ -50,8 +50,8 @@
     .row
       .col-md-12
         %p.text-center.smaller-title.gold From the Office of the Commish:
-  .alert.alert-success.lead.text-center{"ng-show" => "is_authorized()"} {{web_state.broadcast_message}}
-  .alert.alert-success.lead.text-center{"ng-hide" => "is_authorized()"} Registration will open August 15th
+.alert.alert-success.lead.text-center{"ng-show" => "is_authorized()"} {{web_state.broadcast_message}}
+.alert.alert-success.lead.text-center{"ng-hide" => "is_authorized()"} Registration will open August 15th
 
 .row{"ng-show" => "is_authorized()"}
   .col-md-12{ "ng-controller" => "KopoolChartsCtrl" }

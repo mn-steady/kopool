@@ -19,17 +19,17 @@
 		%tr{"ng-hide" => "matchupCompleted(matchup)"}
 			%td
 				%p
-				%a{"id" => "select-tie-{{matchup.id}}", "ng-click" => "selectTie(matchup)", "ng-class" => "tie_button_class(matchup)"} Tie Game!
+				%a.btn.btn-success{"id" => "select-tie-{{matchup.id}}", "ng-click" => "selectTie(matchup)", "ng-class" => "tie_button_class(matchup)"} Tie Game!
 			%td
 				%img{"ng-src" => "{{matchup.away_team.logo_url_small}}" }
 			%td
 				%p.team_name {{ matchup.away_team.name}}
-				%a{"id" => "select-away-{{matchup.id}}", "ng-click" => "selectAwayTeamWin(matchup)", "ng-class" => "away_button_class(matchup)"} {{ matchup.away_team.name }} won!
+				%a.btn.btn-success{"id" => "select-away-{{matchup.id}}", "ng-click" => "selectAwayTeamWin(matchup)", "ng-class" => "away_button_class(matchup)"} {{ matchup.away_team.name }} won!
 			%td
 				%img{"ng-src" => "{{matchup.home_team.logo_url_small}}" }
 			%td
 				%p.team_name {{ matchup.home_team.name}}
-				%a{"id" => "select-home-{{matchup.id}}", "ng-click" => "selectHomeTeamWin(matchup)", "ng-class" => "home_button_class(matchup)"} {{ matchup.home_team.name }} won!
+				%a.btn.btn-success{"id" => "select-home-{{matchup.id}}", "ng-click" => "selectHomeTeamWin(matchup)", "ng-class" => "home_button_class(matchup)"} {{ matchup.home_team.name }} won!
 			%td
 				%p {{ matchup.game_time | date : 'fullDate' }} {{ matchup.game_time | date : 'shortTime' }}
 				%a.btn.btn-info{"ng-href" => "#/weeks/{{week_id}}/matchups/{{matchup.id}}", "ng-show" => "displayMatchupEditButtons(matchup)", role: "button"} Edit

@@ -21,7 +21,7 @@
   .row
     .col-sm-6.col-sm-offset-3.text-center
 
-      %button.btn.btn-success.btn-lg{"ng-click"=>"close_or_reopen_picks()", type: "submit"} {{close_or_open_button_text()}}
+      %button.btn.btn-info.btn-lg{"ng-click"=>"close_or_reopen_picks()", type: "submit"} {{close_or_open_button_text()}}
       %button.btn.btn-danger.btn-lg{"ng-click"=>"open('')", type: "submit"} Move to Next Week
 
   %br
@@ -41,8 +41,8 @@
   .matchup-select.col-md-6
     %select.form-control#lock-select{"ng-model"=>"matchupToLock", "ng-options"=>"matchup as (matchup | matchupDisplay | orderBy: 'game_time') for matchup in matchups"}
   .col-md-6
-    %button.btn.btn-danger.btn-lg{"ng-click"=>"updateMatchupLock(true)"} LOCK Matchup
-    %button.btn.btn-info.btn-lg{"ng-click"=>"updateMatchupLock(false)"} UNLOCK Matchup
+    %button.btn.btn-info.btn-lg{"ng-click"=>"updateMatchupLock(true)"} LOCK Matchup
+    %button.btn.btn-danger.btn-lg{"ng-click"=>"updateMatchupLock(false)"} UNLOCK Matchup
 
 %br
 

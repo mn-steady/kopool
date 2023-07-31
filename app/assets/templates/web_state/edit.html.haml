@@ -27,12 +27,12 @@
   %br
 
   .row
-    .col-sm-2.gold
+    .col-sm-3.gold
       %h3 Current Broadcast Message
-    .col-sm-10
+    .col-sm-9
       %textarea.form-control{"rows" => "3", "ng-model" => "web_state.broadcast_message"}
   .row
-    .col-sm-2.col-sm-offset-2
+    .col-sm-3.col-sm-offset-2
       %button.btn.btn-info.btn-lg{"ng-click"=>"save(web_state)", type: "submit"} Save Broadcast Message
 
 %h3.gold Lock a Matchup

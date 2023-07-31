@@ -18,7 +18,7 @@
 	%tbody.gold{"ng-repeat" => "matchup in filtered_matchups"}
 		%tr{"ng-hide" => "matchupCompleted(matchup)"}
 			%td
-				%p
+				%br
 				%a.btn.btn-success.btn-lg{"id" => "select-tie-{{matchup.id}}", "ng-click" => "selectTie(matchup)", "ng-class" => "tie_button_class(matchup)"} Tie Game!
 			%td
 				%img{"ng-src" => "{{matchup.away_team.logo_url_small}}" }

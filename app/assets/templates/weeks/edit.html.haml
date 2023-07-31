@@ -1,11 +1,11 @@
-%h2 Edit a Week
+%h2.gold.text-center Edit a Week
 
-%a.btn.btn-primary{"ng-href" => "#/seasons/{{week.season_id}}/weeks", role: "button"} View All Weeks
+%a.btn.btn-primary.btn-lg{"ng-href" => "#/seasons/{{week.season_id}}/weeks", role: "button"} View All Weeks
 
 %br
 %br
 
-%form.form-horizontal
+%form.form-horizontal.gold
 
   .form-group
     %label.col-sm-2 Season ID
@@ -33,4 +33,4 @@
       %input.form-control{"type" => "text", "ng-model" => "week.deadline", "placeholder" => "YYYY-mm-dd"}
 
 
-  %button.btn.btn-success{"ng-click"=>"save(week)", type: "submit"} Save
+  %button.btn.btn-success.btn-lg{"ng-click"=>"save(week)", type: "submit"} Save

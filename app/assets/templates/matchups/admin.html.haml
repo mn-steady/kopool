@@ -1,7 +1,7 @@
-%h3 Matchups - Admin
+%h3.gold.text-center Matchups - Admin
 
 %br
-%a.btn.btn-primary{"ng-href" => "#/weeks/{{week_id}}/matchups/new", role: "button"} Create New Matchup This Week
+%a.btn.btn-info.btn-lg{"ng-href" => "#/weeks/{{week_id}}/matchups/new", role: "button"} Create New Matchup This Week
 %br
 
 %table.table.table-striped
@@ -13,7 +13,7 @@
 			%th Away Team
 			%th 
 			%th Game Time (EASTERN)
-	%tbody{"ng-repeat" => "matchup in all_matchups"}
+	%tbody.gold{"ng-repeat" => "matchup in all_matchups"}
 		%tr
 			%td
 			%td
@@ -26,8 +26,8 @@
 				%p.team-name {{ matchup.away_team.name}}
 			%td
 				%p {{ matchup.game_time | date : 'fullDate' }} {{ matchup.game_time | date : 'shortTime' }}
-				%a.btn.btn-info{"ng-href" => "#/weeks/{{week_id}}/matchups/{{matchup.id}}", "ng-hide" => "matchupCompleted(matchup)", role: "button"} Edit
-				%a.btn.btn-danger{"ng-hide" => "matchupCompleted(matchup)", "ng-click" => "deleteMatchup(matchup)"} Delete
+				%a.btn.btn-info.btn-lg{"ng-href" => "#/weeks/{{week_id}}/matchups/{{matchup.id}}", "ng-hide" => "matchupCompleted(matchup)", role: "button"} Edit
+				%a.btn.btn-danger.btn-lg{"ng-hide" => "matchupCompleted(matchup)", "ng-click" => "deleteMatchup(matchup)"} Delete
 				%p.team-name{"ng-show" => "matchupCompleted(matchup)"} 
 					GAME COMPLETED
 				%p.team-name{"ng-show" => "matchupCompleted(matchup)"} 

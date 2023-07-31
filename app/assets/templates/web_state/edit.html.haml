@@ -1,11 +1,11 @@
-%h2 Commissioner's Maintenance Page
+%h2.gold.text-center Commissioner's Maintenance Page
 
 %br
 
 .container
   .row
     .col-sm-12.text-center
-      .alert.alert-success
+      .alert.alert-info
         %br
         You are currently in
         %span.badge {{web_state.current_season.name}}
@@ -16,13 +16,13 @@
 
   .row
     .col-sm-6.col-sm-offset-3.text-center
-      .alert.alert-info This Week is {{current_week_status()}}
+      .alert.alert-success This Week is {{current_week_status()}}
 
   .row
     .col-sm-6.col-sm-offset-3.text-center
 
-      %button.btn.btn-warning{"ng-click"=>"close_or_reopen_picks()", type: "submit"} {{close_or_open_button_text()}}
-      %button.btn.btn-danger{"ng-click"=>"open('')", type: "submit"} Move to Next Week
+      %button.btn.btn-success.btn-lg{"ng-click"=>"close_or_reopen_picks()", type: "submit"} {{close_or_open_button_text()}}
+      %button.btn.btn-danger.btn-lg{"ng-click"=>"open('')", type: "submit"} Move to Next Week
 
   %br
 
@@ -32,7 +32,7 @@
       %textarea.form-control{"rows" => "3", "ng-model" => "web_state.broadcast_message"}
   .row
     .col-sm-2.col-sm-offset-2
-      %button.btn.btn-info{"ng-click"=>"save(web_state)", type: "submit"} Save Broadcast Message
+      %button.btn.btn-info.btn-lg{"ng-click"=>"save(web_state)", type: "submit"} Save Broadcast Message
 
 %h3 Lock a Matchup
 %p No one will be able to change their pick to or from this game once it is locked.
@@ -41,8 +41,8 @@
   .matchup-select.col-md-6
     %select.form-control#lock-select{"ng-model"=>"matchupToLock", "ng-options"=>"matchup as (matchup | matchupDisplay | orderBy: 'game_time') for matchup in matchups"}
   .col-md-6
-    %button.btn.btn-danger{"ng-click"=>"updateMatchupLock(true)"} LOCK Matchup
-    %button.btn.btn-info{"ng-click"=>"updateMatchupLock(false)"} UNLOCK Matchup
+    %button.btn.btn-danger.btn-lg{"ng-click"=>"updateMatchupLock(true)"} LOCK Matchup
+    %button.btn.btn-info.btn-lg{"ng-click"=>"updateMatchupLock(false)"} UNLOCK Matchup
 
 %br
 
@@ -89,7 +89,7 @@
     .default-matchup-select.col-md-6
       %select.form-control{"ng-model"=>"poolEntryToDefault", "ng-options"=>"matchup as (matchup | matchupDisplay | orderBy: 'game_time') for matchup in matchups"}
     .col-md-6
-      %button.btn.btn-warning{"ng-click"=>"beginDefaultUnpickedPoolEntry()"} Default unpicked pool entries
+      %button.btn.btn-danger.btn-lg{"ng-click"=>"beginDefaultUnpickedPoolEntry()"} Default unpicked pool entries
 
   .row{"style" => "margin-top: 10px;"}
     .col-sm-12.default-matchup-select
@@ -106,5 +106,5 @@
     .modal-body
       %p You cannot move weeks backwards!
     .modal-footer
-      %button.btn.btn-primary{"ng-click" => "ok()"} Advance Week
-      %button.btn.btn-warning{"ng-click" => "cancel()"} Cancel
+      %button.btn.btn-success.btn-lg{"ng-click" => "ok()"} Advance Week
+      %button.btn.btn-danger.btn-lg{"ng-click" => "cancel()"} Cancel

@@ -6,7 +6,8 @@
         %span.icon-bar
         %span.icon-bar
         %span.icon-bar
-      %a.btn-lg.navbar-brand{href: "#"} KO Pool
+      %a.navbar-brand{href: "#"}
+        %h3 KO Pool
 
     %form.navbar-form.navbar-right{"ng-hide" => "isSignedIn()", role: "form"}
       .form-group
@@ -19,7 +20,7 @@
       %button.btn.btn-warning.btn-lg.dropdown-toggle{:type => "button"} 
         {{display_name()}}
         %span.caret
-      %ul.gold.dropdown-menu{:role => "menu"}
+      %ul.dropdown-menu{:role => "menu"}
         %li
           %a{"ng-click"=>"login_logout()", type: "submit", :role => "menuitem"} {{button_sign_in_or_out()}}
         %li.divider

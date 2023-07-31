@@ -16,13 +16,13 @@
         %input.form-control{:id => "password_field", "ng-hide" => "isSignedIn()", "ng-model" => "login_user.password", placeholder: "Password", type: "password"}/
       %button.btn.btn-warning.btn-lg{:id => "sign_in_button", "ng-click"=>"login_logout()", type: "submit"} {{button_sign_in_or_out()}}
 
-    %form.navbar-right.btn-group.navbar-group{"ng-show" => "isSignedIn()", :dropdown => ""}
+    .navbar-right.btn-group.navbar-group{"ng-show" => "isSignedIn()", :dropdown => ""}
       %button.btn.btn-warning.btn-lg.dropdown-toggle{:type => "button"} 
         {{display_name()}}
         %span.caret
       %ul.dropdown-menu{:role => "menu"}
         %li
-          %a.btn-lg{"ng-click"=>"login_logout()", type: "submit", :role => "menuitem"} {{button_sign_in_or_out()}}
+          %a.gold.btn-lg{"ng-click"=>"login_logout()", type: "submit", :role => "menuitem"} {{button_sign_in_or_out()}}
         %li.divider
         %li
           %a.btn-lg{href: "#/registration/rules"} Rules

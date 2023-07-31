@@ -34,8 +34,8 @@
     .col-sm-2.col-sm-offset-2
       %button.btn.btn-info.btn-lg{"ng-click"=>"save(web_state)", type: "submit"} Save Broadcast Message
 
-%h3 Lock a Matchup
-%p No one will be able to change their pick to or from this game once it is locked.
+%h3.gold Lock a Matchup
+%p.gold No one will be able to change their pick to or from this game once it is locked.
 
 .row
   .matchup-select.col-md-6
@@ -46,17 +46,17 @@
 
 %br
 
-%h3 Locked Picks
+%h3.gold Locked Picks
 .container
   .row
     %table.table.table-striped
-      %thead
+      %thead.gold
         %tr
           %th Pick #
           %th Person Name
           %th Pool Entry Name
           %th Picked Team
-      %tbody{"ng-repeat" => "pick in lockedPicks | orderBy : 'team_id' "}
+      %tbody.gold{"ng-repeat" => "pick in lockedPicks | orderBy : 'team_id' "}
         %tr
           %td {{$index+1}}
           %td {{pick.user.name}}
@@ -65,25 +65,25 @@
 
 %br
 
-%h3 Unpicked Pool Entries
+%h3.gold Unpicked Pool Entries
 
 .container{"ng-controller" => "AdminPoolEntriesCtrl"}
   .row
     %table.table.table-striped
-      %thead
+      %thead.gold
         %tr
           %th Person Name
           %th Pool Entry Name
           %th Phone Number
           %th Email
-      %tbody{"ng-repeat" => "pool_entry in unpicked_pool_entries | orderBy : 'user.name' "}
+      %tbody.gold{"ng-repeat" => "pool_entry in unpicked_pool_entries | orderBy : 'user.name' "}
         %tr
           %td {{pool_entry.user.name}}
           %td {{pool_entry.team_name}}
           %td {{pool_entry.user.phone}}
           %td {{pool_entry.user.email}}
 
-%h3 Default Entries
+%h3.gold Default Entries
 .container{"ng-controller" => "AdminPoolEntriesCtrl"}
   .row
     .default-matchup-select.col-md-6

@@ -1,13 +1,13 @@
-%h3 Matchups - Admin
+%h3.gold.text-center Matchups - Admin
 
 .row{"ng-if" => "error_message"}
 	.col-sm-12.text-center
 		.alert.alert-danger {{error_message}}
 
-%h4 Filtered Matchups - These Matchups Have At Least 1 Pick Associated With Them
+%h4.gold.text-center Filtered Matchups - These Matchups Have At Least 1 Pick Associated With Them
 
 %table.table.table-striped
-	%thead
+	%thead.gold
 		%tr
 			%th
 			%th Away Team
@@ -15,7 +15,7 @@
 			%th Home Team
 			%th
 			%th Game Time (EASTERN)
-	%tbody{"ng-repeat" => "matchup in filtered_matchups"}
+	%tbody.gold{"ng-repeat" => "matchup in filtered_matchups"}
 		%tr{"ng-hide" => "matchupCompleted(matchup)"}
 			%td
 				%p

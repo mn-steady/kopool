@@ -1,7 +1,7 @@
-%h3 All Pool Entries for This Season
+%h3.gold.text-center All Pool Entries for This Season
 
 %table.table.table-striped
-	%thead
+	%thead.gold
 		%tr
 			%th Person Name
 			%th Team Name
@@ -9,7 +9,7 @@
 			%th Phone
 			%th Paid?
 			%th 
-	%tbody{"ng-repeat" => "pool_entry in pool_entries | orderBy : 'user.name' "}
+	%tbody.gold{"ng-repeat" => "pool_entry in pool_entries | orderBy : 'user.name' "}
 		%tr
 			%td {{pool_entry.user.name}}
 			%td {{pool_entry.team_name}}
@@ -17,7 +17,7 @@
 			%td {{pool_entry.user.phone}}
 			%td{"ng-class" => "getPaidTextClass(pool_entry)"}	{{getPaidOrUnpaidStatusText(pool_entry)}}
 			%td
-				%a.btn.btn-default{"ng-click" => "open('', pool_entry)"} Mark as {{getPaidOrUnpaidButtonText(pool_entry)}}
+				%a.btn.btn-success{"ng-click" => "open('', pool_entry)"} Mark as {{getPaidOrUnpaidButtonText(pool_entry)}}
 				
 %div
 	%script{:id => "confirmPaymentModal.html", :type => "text/ng-template"}
@@ -26,5 +26,5 @@
 		.modal-body
 			%p This will mark {{pool_entry.user.name}} as {{pool_entry.paid ? "Not Paid" : "Paid"}}. Is that correct?
 		.modal-footer
-			%button.btn.btn-primary{"ng-click" => "cancel()"} Cancel
+			%button.btn.btn-danger{"ng-click" => "cancel()"} Cancel
 			%button.btn.btn-info{"ng-click" => "ok()"} Mark as {{pool_entry.paid ? "Not Paid" : "Paid"}}

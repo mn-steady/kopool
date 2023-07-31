@@ -26,5 +26,5 @@
 		.modal-body
 			%p.gold This will mark {{pool_entry.user.name}} as {{pool_entry.paid ? "Not Paid" : "Paid"}}. Is that correct?
 		.modal-footer
-			%button.btn.btn-danger.btn-lg{"ng-click" => "cancel()"} Cancel
 			%button.btn.btn-info.btn-lg{"ng-click" => "ok()"} Mark as {{pool_entry.paid ? "Not Paid" : "Paid"}}
+			%button.btn.btn-danger.btn-lg{"ng-click" => "cancel()"} Cancel

@@ -1,4 +1,4 @@
-%h2 Weeks Index for season {{season_id}}
+%h2.gold.text-center Weeks Index for season {{season_id}}
 
 %br
 
@@ -6,26 +6,27 @@
 %br
 
 %table.table.table-striped
-  %tr
-    %th Season
-    %th Week #
-    %th Start Date
-    %th End Date
-    %th Deadline
-    %th Week Actions
-    %th Matchup Actions
-  %tr{"ng-repeat" => "week in weeks"}
-    %td {{ week.season_id }}
-    %td {{ week.week_number }}
-    %td {{ week.start_date | date : 'shortDate' }}
-    %td {{ week.end_date | date : 'shortDate' }}
-    %td {{ week.deadline | date : 'shortDate' }}
-    %td
-      %a.btn.btn-primary{"id" => "select-edit-{{week.id}}", "ng-href" => "#/seasons/{{season_id}}/weeks/{{week.id}}", role: "button"} Edit
-      %a.btn.btn-danger{"id" => "select-delete-{{week.id}}", "ng-click" => "open('', week)", role: "button"} Delete
-    %td
-      %a.btn.btn-info{"ng-href" => "#weeks/{{week.id}}/matchups/admin"} Create/Edit Matchups
-      %a.btn.btn-success{"ng-href" => "#weeks/{{week.id}}/matchups/scoring"} Score Matchups for Week {{week.week_number}}
+  %tbody.gold
+    %tr
+      %th Season
+      %th Week #
+      %th Start Date
+      %th End Date
+      %th Deadline
+      %th Week Actions
+      %th Matchup Actions
+    %tr{"ng-repeat" => "week in weeks"}
+      %td {{ week.season_id }}
+      %td {{ week.week_number }}
+      %td {{ week.start_date | date : 'shortDate' }}
+      %td {{ week.end_date | date : 'shortDate' }}
+      %td {{ week.deadline | date : 'shortDate' }}
+      %td
+        %a.btn.btn-info.btn-lg{"id" => "select-edit-{{week.id}}", "ng-href" => "#/seasons/{{season_id}}/weeks/{{week.id}}", role: "button"} Edit
+        %a.btn.btn-danger.btn-lg{"id" => "select-delete-{{week.id}}", "ng-click" => "open('', week)", role: "button"} Delete
+      %td
+        %a.btn.btn-info.btn-lg{"ng-href" => "#weeks/{{week.id}}/matchups/admin"} Create/Edit Matchups
+        %a.btn.btn-success.btn-lg{"ng-href" => "#weeks/{{week.id}}/matchups/scoring"} Score Matchups for Week {{week.week_number}}
       
 
 %a.btn.btn-primary{"ng-href" => "#/seasons/{{season_id}}/weeks/new", role: "button"} Create New week in Season {{season_id}}
@@ -37,5 +38,5 @@
     .modal-body
       %p This will permanently delete this week! Bad things will happen if this week is completed!
     .modal-footer
-      %button.btn.btn-primary{"ng-click" => "ok()"} Delete Week
-      %button.btn.btn-warning{"ng-click" => "cancel()"} Cancel
+      %button.btn.btn-primary.btn-lg{"ng-click" => "ok()"} Delete Week
+      %button.btn.btn-warning.btn-lg{"ng-click" => "cancel()"} Cancel

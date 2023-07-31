@@ -1,4 +1,4 @@
-%h2 Edit a Matchup
+%h2.gold.text-center Edit a Matchup
 
 %br
 %br
@@ -6,20 +6,20 @@
 %form.form-horizontal
 
   .form-group
-    %label.col-sm-2 Home Team
+    %label.gold.col-sm-2 Home Team
     .col-sm-10
       %select{"ng-model" => "matchup.selected_home_team", "ng-options" => "nfl_team as nfl_team.name for nfl_team in nfl_teams | orderBy:'name'"}
 
   .form-group
-    %label.col-sm-2 Away Team
+    %label.gold.col-sm-2 Away Team
     .col-sm-10
       %select{"ng-model" => "matchup.selected_away_team", "ng-options" => "nfl_team as nfl_team.name for nfl_team in nfl_teams | orderBy:'name'"}
 
   .form-group
-    %label.col-sm-2 Game Time
+    %label.gold.col-sm-2 Game Time
     .col-sm-10
       -# %p Selected Date is : {{dt | date:'fullDate'}}
       -# %datepicker.well.well-sm{"ng-model" => "dt"}
       %input.form-control{"type" => "text", "ng-model" => "matchup.selected_game_time"}
 
-  %button.btn.btn-success{"ng-click"=>"save(matchup)", type: "submit"} Save
+  %button.btn.btn-info.btn-lg{"ng-click"=>"save(matchup)", type: "submit"} Save

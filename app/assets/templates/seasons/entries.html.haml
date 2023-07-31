@@ -17,14 +17,14 @@
 			%td {{pool_entry.user.phone}}
 			%td{"ng-class" => "getPaidTextClass(pool_entry)"}	{{getPaidOrUnpaidStatusText(pool_entry)}}
 			%td
-				%a.btn.btn-success{"ng-click" => "open('', pool_entry)"} Mark as {{getPaidOrUnpaidButtonText(pool_entry)}}
+				%a.btn.btn-success.btn-lg{"ng-click" => "open('', pool_entry)"} Mark as {{getPaidOrUnpaidButtonText(pool_entry)}}
 				
 %div
 	%script{:id => "confirmPaymentModal.html", :type => "text/ng-template"}
 		.modal-header
-			%h3.modal-title Mark {{pool_entry.user.name}} as {{pool_entry.paid ? "Not Paid" : "Paid"}}
+			%h3.gold Mark {{pool_entry.user.name}} as {{pool_entry.paid ? "Not Paid" : "Paid"}}
 		.modal-body
-			%p This will mark {{pool_entry.user.name}} as {{pool_entry.paid ? "Not Paid" : "Paid"}}. Is that correct?
+			%p.gold This will mark {{pool_entry.user.name}} as {{pool_entry.paid ? "Not Paid" : "Paid"}}. Is that correct?
 		.modal-footer
-			%button.btn.btn-danger{"ng-click" => "cancel()"} Cancel
-			%button.btn.btn-info{"ng-click" => "ok()"} Mark as {{pool_entry.paid ? "Not Paid" : "Paid"}}
+			%button.btn.btn-danger.btn-lg{"ng-click" => "cancel()"} Cancel
+			%button.btn.btn-info.btn-lg{"ng-click" => "ok()"} Mark as {{pool_entry.paid ? "Not Paid" : "Paid"}}

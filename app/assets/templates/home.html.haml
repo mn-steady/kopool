@@ -34,20 +34,17 @@
       .col-lg-4{"ng-if" => "web_state.current_season.open_for_registration && is_authorized()"}
         %a.btn.btn-warning.btn-lg.btn-block{id: "add-entries", href: "#/registration/rules", role: "button"}
           %h3 Rules » 
-    
-    
     .row{"ng-show" => "is_authorized()"}
       .col-md-4
         %h2.text-center.gold Round
         %div.title-text.text-center.text-info {{display_round_number()}}
-        
       .col-md-4
         %h2.text-center.gold Remaining
         %div.title-text.text-center.green {{active_pool_entries_count}}
-        
       .col-md-4
         %h2.text-center.gold Purse
         %div.title-text.text-center.gold {{display_pot_amount() | currency}}
+    %br    
     .row
       .col-md-12
         %h2.text-center.smaller-title.gold From the Office of the Commish:
@@ -55,11 +52,12 @@
       .col-md-12
         .alert.alert-success.lead.text-center{"ng-show" => "is_authorized()"} {{web_state.broadcast_message}}
         .alert.alert-success.lead.text-center{"ng-hide" => "is_authorized()"} Registration will open August 15th
-  .row{"ng-show" => "is_authorized()"}
-    .col-md-12{ "ng-controller" => "KopoolChartsCtrl" }
-      %div{ "ng-if" => "loaded && is_authorized()" }
-      %div.text-center{ "style" => "height: 360px; width: 100%;" }
-        %img{ "ng-src" => "{{main_page_image_url}}", "alt" => "main-page-image" }
+
+.row{"ng-show" => "is_authorized()"}
+  .col-md-12{ "ng-controller" => "KopoolChartsCtrl" }
+    %div{ "ng-if" => "loaded && is_authorized()" }
+    %div.text-center{ "style" => "height: 360px; width: 100%;" }
+      %img{ "ng-src" => "{{main_page_image_url}}", "alt" => "main-page-image" }
 
 .admin-panel{"ng-show" => "is_admin()"}
   .row

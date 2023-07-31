@@ -1,4 +1,4 @@
-%h3 NFL Teams Index
+%h3.gold NFL Teams Index
 
 %br
 Click a team row for more information
@@ -9,7 +9,7 @@ Controller: {{controller}}
 %br
 
 %table.table.table-striped{"ng-controller" => "NflTeamsCtrl"}
-  %tbody{"ng-repeat" => "nfl_team in nfl_teams", "ng-click" => "selectTeam(nfl_team)", "ng-switch" => "on=isSelected(nfl_team)"}
+  %tbody.gold{"ng-repeat" => "nfl_team in nfl_teams", "ng-click" => "selectTeam(nfl_team)", "ng-switch" => "on=isSelected(nfl_team)"}
     %tr
       %td{"width" => "15%"}
         %img{"src" => "{{nfl_team.logo_url_small}}" }
@@ -22,7 +22,7 @@ Controller: {{controller}}
       %td Abbreviation: {{ nfl_team.abbreviation }}
       %td Home Field:{{ nfl_team.home_field }}
       %td
-        %a.btn.btn-primary{"ng-href" => "#/nfl_teams/{{nfl_team.id}}", role: "button"} Edit
-        %a.btn.btn-danger{"ng-click" => "deleteTeam(nfl_team)", role: "button"} Delete
+        %a.btn.btn-info.btn-lg{"ng-href" => "#/nfl_teams/{{nfl_team.id}}", role: "button"} Edit
+        %a.btn.btn-danger.btn-lg{"ng-click" => "deleteTeam(nfl_team)", role: "button"} Delete
 
-%a.btn.btn-primary{"ng-href" => "#/nfl_teams/new", role: "button"} Create New Team
+%a.btn.btn-info.btn-lg{"ng-href" => "#/nfl_teams/new", role: "button"} Create New Team

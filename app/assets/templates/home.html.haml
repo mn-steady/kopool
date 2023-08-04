@@ -52,12 +52,11 @@
       .col-md-12
         .alert.alert-success.lead.text-center{"ng-show" => "is_authorized()"} {{web_state.broadcast_message}}
         .alert.alert-success.lead.text-center{"ng-hide" => "is_authorized()"} Registration will open August 15th
-
-.row{"ng-show" => "is_authorized()"}
-  .col-md-12{ "ng-controller" => "KopoolChartsCtrl" }
-    %div{ "ng-if" => "loaded && is_authorized()" }
-    %div.text-center{ "style" => "height: 360px; width: 100%;" }
-      %img{ "ng-src" => "{{main_page_image_url}}", "alt" => "main-page-image" }
+    .row{"ng-show" => "is_authorized()"}
+      .col-md-12{ "ng-controller" => "KopoolChartsCtrl" }
+        %div{ "ng-if" => "loaded && is_authorized()" }
+        %div.text-center{ "style" => "height: 360px; width: 100%;" }
+          %img{ "ng-src" => "{{main_page_image_url}}", "alt" => "main-page-image" }
 
 .admin-panel{"ng-show" => "is_admin()"}
   .row

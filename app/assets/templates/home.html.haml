@@ -49,7 +49,7 @@
         %div{ "ng-if" => "loaded && is_authorized()" }
         %div.text-center{ "style" => "height: 327px; width: 100%;" }
           %img{ "ng-src" => "{{main_page_image_url}}", "alt" => "main-page-image" }   
-    .row
+    .row{"ng-show" => "is_authorized()"}
       .col-md-12
         %h2.text-center.smaller-title.gold From the Office of the Commish:
     .row

@@ -5,7 +5,7 @@ class MainPageBubble < ApplicationRecord
 
   def image_url
     begin
-      image.variant(resize_to_fill: [858, 457] ).processed.url
+      image.variant(resize_to_fill: [715, 381] ).processed.url
     rescue => e
       Rails.logger.error "Error generating thumbnail URL: #{e.message}"
       MainPageBubble.default_image_url

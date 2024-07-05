@@ -22,7 +22,7 @@ angular.module('kopool').controller('homeController', ['$scope', '$rootScope', '
 			'#809D39'	,'#B7DE56','#C4E17C','#4B6214','#4C5F20'
 		]
 		legend:
-			display: false
+			display: true
 			position: "left"
 		innerRadius: 0
 

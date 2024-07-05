@@ -27,7 +27,7 @@ angular.module('kopoolCharts', ['ngResource', 'RailsApiResource', 'ui.bootstrap'
 				'#7a8288','#5bc0de','#f89406','#62c462','#ee5f5b','#3a3f44'
 			]
 			legend:
-				display: false
+				display: true
 				position: "left"
 			innerRadius: 0
 

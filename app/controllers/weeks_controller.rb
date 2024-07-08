@@ -133,7 +133,7 @@ class WeeksController < ApplicationController
         @pool_entries_knocked_out_previously = []
         @unmatched_pool_entries = []
 
-        @pool_entries_this_season = PoolEntry.where(season_id: @season.id).order('team_name ASC')
+        @pool_entries_this_season = PoolEntry.includes(:picks).where(season_id: @season.id).distinct.order('picks.id ASC')
         @pool_entries_this_season.each do |pool_entry|
 
           @returned_pool_entry = {}
@@ -153,7 +153,8 @@ class WeeksController < ApplicationController
             @pool_entries_knocked_out_previously.push(@returned_pool_entry)
           end
         end
-
+        @pool_entries_knocked_out_previously = @pool_entries_knocked_out_previously.sort_by { |entry| entry[:team_name] }
+        @unmatched_pool_entries = @unmatched_pool_entries.sort_by { |entry| entry[:team_name] }
         @week_results = [@pool_entries_still_alive, @pool_entries_knocked_out_this_week, @pool_entries_knocked_out_previously, @unmatched_pool_entries]
 
         respond_to do | format |
@@ -172,7 +173,7 @@ class WeeksController < ApplicationController
 
       @season = @week.season
       Rails.logger.debug("(weeks_controller.week_results) checking seasion #{@season.id} week id:#{@week.id}")
-      @pool_entries_this_season = PoolEntry.where(season_id: @season.id).order('team_name ASC')
+      @pool_entries_this_season = PoolEntry.includes(:picks).where(season_id: @season.id).distinct.order('picks.id ASC')
       Rails.logger.debug("(weeks_controller.week_results) have #{@pool_entries_this_season.count} pool entries")
 
       @pool_entries_this_season.each do |pool_entry|
@@ -195,6 +196,8 @@ class WeeksController < ApplicationController
         end
 
       end
+      @pool_entries_knocked_out_previously = @pool_entries_knocked_out_previously.sort_by { |entry| entry[:team_name] }
+      @unmatched_pool_entries = @unmatched_pool_entries.sort_by { |entry| entry[:team_name] }
       @week_results = [@pool_entries_still_alive, @pool_entries_knocked_out_this_week, @pool_entries_knocked_out_previously, @unmatched_pool_entries]
 
       respond_to do | format |

@@ -120,11 +120,11 @@ class WeeksController < ApplicationController
     if @week.week_number > @webstate.current_week.week_number
       Rails.logger.error("ERROR can't look at a future week's results")
       error_message = "You cannot view the results of a future week. Nice try!"
-      render :json => [:error => error_message], :status => :bad_request
-    elsif @week.open_for_picks == true
+      render json: { error: error_message }, status: :bad_request
+    elsif @week.open_for_picks
       @season = @week.season
       locked_matchups = Matchup.where(week_id: @week.id, locked: true)
-      @locked_picks = Pick.includes(:pool_entry).where(pool_entries: {season_id: @season.id}).where(matchup_id: locked_matchups.map(&:id))
+      @locked_picks = Pick.includes(:pool_entry).where(pool_entries: { season_id: @season.id }).where(matchup_id: locked_matchups.map(&:id))
 
       if @locked_picks.present?
         locked_pool_entry_ids = @locked_picks.pluck(:pool_entry_id)
@@ -133,37 +133,32 @@ class WeeksController < ApplicationController
         @pool_entries_knocked_out_previously = []
         @unmatched_pool_entries = []
 
-        @pool_entries_this_season = PoolEntry.includes(:picks).where(season_id: @season.id).distinct.order('picks.team_id ASC')
+        @pool_entries_this_season = PoolEntry.where(season_id: @season.id).order('team_name ASC')
         @pool_entries_this_season.each do |pool_entry|
+          @returned_pool_entry = {
+            id: pool_entry.id,
+            team_name: pool_entry.team_name,
+            nfl_team: locked_pool_entry_ids.include?(pool_entry.id) ? pool_entry.most_recent_picks_nfl_team(@week) : {}
+          }
 
-          @returned_pool_entry = {}
-          @returned_pool_entry[:id] = pool_entry.id
-          @returned_pool_entry[:team_name] = pool_entry.team_name
-          if locked_pool_entry_ids.include?(pool_entry.id)
-            @returned_pool_entry[:nfl_team] = pool_entry.most_recent_picks_nfl_team(@week)
-          end
-
-          @pool_entries_still_alive.push(@returned_pool_entry) unless pool_entry.knocked_out
-
-          if pool_entry.knocked_out and pool_entry.knocked_out_week_id == @week.id
+          if pool_entry.knocked_out && pool_entry.knocked_out_week_id == @week.id
             @pool_entries_knocked_out_this_week.push(@returned_pool_entry)
-          end
-
-          if pool_entry.knocked_out and pool_entry.knocked_out_week_id != @week.id
+          elsif pool_entry.knocked_out
             @pool_entries_knocked_out_previously.push(@returned_pool_entry)
+          else
+            @pool_entries_still_alive.push(@returned_pool_entry)
           end
         end
-        @pool_entries_knocked_out_previously = @pool_entries_knocked_out_previously.sort_by { |entry| entry[:team_name] }
-        @unmatched_pool_entries = @unmatched_pool_entries.sort_by { |entry| entry[:team_name] }
-        @week_results = [@pool_entries_still_alive, @pool_entries_knocked_out_this_week, @pool_entries_knocked_out_previously, @unmatched_pool_entries]
 
-        respond_to do | format |
-          format.json {render :json => @week_results.to_json}
+        @week_results = sort_week_results(@pool_entries_still_alive, @pool_entries_knocked_out_this_week, @pool_entries_knocked_out_previously, @unmatched_pool_entries)
+
+        respond_to do |format|
+          format.json { render json: @week_results.to_json }
         end
       else
         Rails.logger.error("ERROR can't see this weeks results until the week is closed for picks")
         error_message = "You can't see the results for this week until this week's games have started."
-        render :json => [:error => error_message], :status => :bad_request
+        render json: { error: error_message }, status: :bad_request
       end
     else
       @pool_entries_knocked_out_this_week = []
@@ -173,37 +168,42 @@ class WeeksController < ApplicationController
 
       @season = @week.season
       Rails.logger.debug("(weeks_controller.week_results) checking seasion #{@season.id} week id:#{@week.id}")
-      @pool_entries_this_season = PoolEntry.includes(:picks).where(season_id: @season.id).distinct.order('picks.team_id ASC')
+      @pool_entries_this_season = PoolEntry.where(season_id: @season.id).order('team_name ASC')
       Rails.logger.debug("(weeks_controller.week_results) have #{@pool_entries_this_season.count} pool entries")
 
       @pool_entries_this_season.each do |pool_entry|
-
         Rails.logger.debug("(weeks_controller.week_results) Examining Pool Entry #{pool_entry.id}")
 
-        @returned_pool_entry = {}
-        @returned_pool_entry[:id] = pool_entry.id
-        @returned_pool_entry[:team_name] = pool_entry.team_name
-        @returned_pool_entry[:nfl_team] = pool_entry.most_recent_picks_nfl_team(@week)
+        @returned_pool_entry = {
+          id: pool_entry.id,
+          team_name: pool_entry.team_name,
+          nfl_team: pool_entry.most_recent_picks_nfl_team(@week)
+        }
 
-        @pool_entries_still_alive.push(@returned_pool_entry) unless pool_entry.knocked_out
-
-        if pool_entry.knocked_out and pool_entry.knocked_out_week_id == @week.id
+        if pool_entry.knocked_out && pool_entry.knocked_out_week_id == @week.id
           @pool_entries_knocked_out_this_week.push(@returned_pool_entry)
-        end
-
-        if pool_entry.knocked_out and pool_entry.knocked_out_week_id != @week.id
+        elsif pool_entry.knocked_out
           @pool_entries_knocked_out_previously.push(@returned_pool_entry)
+        else
+          @pool_entries_still_alive.push(@returned_pool_entry)
         end
-
       end
-      @pool_entries_knocked_out_previously = @pool_entries_knocked_out_previously.sort_by { |entry| entry[:team_name] }
-      @unmatched_pool_entries = @unmatched_pool_entries.sort_by { |entry| entry[:team_name] }
-      @week_results = [@pool_entries_still_alive, @pool_entries_knocked_out_this_week, @pool_entries_knocked_out_previously, @unmatched_pool_entries]
 
-      respond_to do | format |
-        format.json {render :json => @week_results.to_json}
+      @week_results = sort_week_results(@pool_entries_still_alive, @pool_entries_knocked_out_this_week, @pool_entries_knocked_out_previously, @unmatched_pool_entries)
+
+      respond_to do |format|
+        format.json { render json: @week_results.to_json }
       end
     end
+  end
+
+  def sort_week_results(still_alive, knocked_out_this_week, knocked_out_previously, unmatched)
+    [
+      still_alive.sort_by { |entry| entry[:nfl_team][:nfl_team_id] || Float::INFINITY },
+      knocked_out_this_week.sort_by { |entry| entry[:nfl_team][:nfl_team_id] || Float::INFINITY },
+      knocked_out_previously,
+      unmatched
+    ]
   end
 
   def unpicked

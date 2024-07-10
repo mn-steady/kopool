@@ -119,51 +119,49 @@ class PicksController < ApplicationController
 	def sorted_picks
 		@week = Week.find(params[:week_id])
 
-		if @week.open_for_picks == true
+		if @week.open_for_picks?
 			@season = @week.season
 			locked_matchups = Matchup.where(week_id: @week.id, locked: true)
-			@locked_picks = Pick.includes(:pool_entry).where(pool_entries: {season_id: @season.id}).where(matchup_id: locked_matchups.map(&:id))
+			@locked_picks = Pick.includes(:pool_entry).where(pool_entries: { season_id: @season.id }).where(matchup_id: locked_matchups.pluck(:id))
 
 			if @locked_picks.present?
 				@picks_per_team_hash = {}
 
 				@locked_picks.each do |pick|
-					if @picks_per_team_hash.has_key?(pick.nfl_team.name)
-						@picks_per_team_hash[pick.nfl_team.name] += 1
-					else
-						@picks_per_team_hash[pick.nfl_team.name] = 1
-					end
+					team_name = pick.nfl_team.name
+					@picks_per_team_hash[team_name] ||= 0
+					@picks_per_team_hash[team_name] += 1
 				end
 
-				@sorted_picks = @picks_per_team_hash.sort_by{|k,v| -v}
+				@sorted_picks = @picks_per_team_hash.sort_by { |_k, v| -v }
+
+				@formatted_data = @sorted_picks.map { |team_name, count| [team_name, count] }
 
 				respond_to do |format|
-					format.json { render :json => @sorted_picks }
+					format.json { render json: @formatted_data }
 				end
 			else
-				Rails.logger.error("ERROR you can't view the sorted picks for a week before it is closed!")
 				error_message = "You cannot view the sorted picks for this week until the games start!"
-				render :json => [:error => error_message], :status => :bad_request
+				render json: { error: error_message }, status: :bad_request
 			end
 		else
 			@this_weeks_picks = Pick.where(week_id: params[:week_id])
 			@picks_per_team_hash = {}
 
 			@this_weeks_picks.each do |pick|
-				if @picks_per_team_hash.has_key?(pick.nfl_team.name)
-					@picks_per_team_hash[pick.nfl_team.name] += 1
-				else
-					@picks_per_team_hash[pick.nfl_team.name] = 1
-				end
+				team_name = pick.nfl_team.name
+				@picks_per_team_hash[team_name] ||= 0
+				@picks_per_team_hash[team_name] += 1
 			end
 
-			@sorted_picks = @picks_per_team_hash.sort_by{|k,v| -v}
+			@sorted_picks = @picks_per_team_hash.sort_by { |_k, v| -v }
+
+			@formatted_data = @sorted_picks.map { |team_name, count| [team_name, count] }
 
 			respond_to do |format|
-				format.json { render :json => @sorted_picks }
+				format.json { render json: @formatted_data }
 			end
 		end
-
 	end
 
 	private

@@ -2,3 +2,4 @@
 //= link application.js
 //= link application.css
 //= link administrate-field-active_storage/application.css
+//= link chartkick.js

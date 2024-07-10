@@ -33,10 +33,9 @@
         %img{ src: "{{bubble_image_url}}", height: "300", width: "300", alt: "bubble-image" }
 
       .col-md-6{"ng-controller" => "KopoolChartsCtrl"}
-        %div{"ng-if" => "loaded"}
-          %h3 Picks This Week
-          %div#pie-chart{style: 'height: 300px;'}
-            %chart{"data" => "pie_data", "config" => "pie_config", "id" => "pie-chart", "type" => "pie"}
+        %h3 Picks This Week
+        %div#pie-chart{style: 'height: 300px;'}
+          %chart{"data" => "pie_data", "config" => "pie_config", "id" => "pie-chart", "type" => "pie"}
     .row
       .col-md-12
         %h3.gold Teams Chosen This Week:

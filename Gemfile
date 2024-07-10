@@ -31,6 +31,9 @@ gem 'administrate', '~> 0.18.0'
 # Administrate fields for active storage
 gem 'administrate-field-active_storage', '~> 0.4.2'
 
+# Create beautiful JavaScript charts with one line of Ruby
+gem 'chartkick', '~> 5.0', '>= 5.0.7'
+
 group :development, :test do
   gem 'rspec-rails', '5.1.2'
 	gem 'jasmine-rails', '~> 0.15.0'

@@ -19,17 +19,17 @@ angular.module('kopoolCharts', ['ngResource', 'RailsApiResource', 'ui.bootstrap'
 			lineLegend: "traditional" 
 			colors: ['#5bc0de']
 
-		$scope.pie_config =
-			title: "Picks This Week"
-			tooltips: true
-			labels: false
-			colors: [
-				'#7a8288','#5bc0de','#f89406','#62c462','#ee5f5b','#3a3f44'
-			]
-			legend:
-				display: false
-				position: "left"
-			innerRadius: 0
+#		$scope.pie_config =
+#			title: "Picks This Week"
+#			tooltips: true
+#			labels: false
+#			colors: [
+#				'#7a8288','#5bc0de','#f89406','#62c462','#ee5f5b','#3a3f44'
+#			]
+#			legend:
+#				display: false
+#				position: "left"
+#			innerRadius: 0
 
 		$scope.getWebState = () ->
 			$scope.loaded = false
@@ -79,18 +79,9 @@ angular.module('kopoolCharts', ['ngResource', 'RailsApiResource', 'ui.bootstrap'
 			SortedPicks.nested_query($scope.week_id).then(
 				(sorted_picks) ->
 					console.log("Have sorted picks")
-					$scope.pie_values = []
-					for pick in sorted_picks
-						team_count = 
-							x: pick[0] # I don't think this does anything since we are hiding the legend, but is required for the chart
-							y: [pick[1]]
-							tooltip: pick[0] # The tooltip is what actually shows the team name when we hide the legend
-						$scope.pie_values.push(team_count)
-					
-					console.log("Successfully received sorted picks for the pie chart")
-					$scope.series = ""
-					$scope.pie_data = {"series":[$scope.series],"data":$scope.pie_values}
+					$scope.pie_data = sorted_picks
 					$scope.loaded = true
+					new Chartkick.PieChart("pie-chart", $scope.pie_data)
 				(json_error_data) ->
 					console.log("(PoolEntriesCtrl.getSortedPicks) Cannot get sorted picks")
 					$scope.error_message = json_error_data.data[0].error

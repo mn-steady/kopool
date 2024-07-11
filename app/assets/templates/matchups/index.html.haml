@@ -77,6 +77,6 @@
           %div Game is Locked!
         %td
           %p {{ matchup.game_time | date : 'fullDate' }} {{ matchup.game_time | date : 'shortTime' }}
-          %div{"ng-if" => "isSelectedMatchup(matchup)"}
-            %a.btn.btn-info.btn-lg{"id" => "save-matchup-{{matchup.id}}", "ng-click" => "savePick(matchup, editing_pool_entry)"} Save Pick
-            %a.btn.btn-danger.btn-lg{"ng-click" => "cancelTeamSelection()"} Cancel
+          -# %div{"ng-if" => "isSelectedMatchup(matchup)"}
+          -#   %a.btn.btn-info.btn-lg{"id" => "save-matchup-{{matchup.id}}", "ng-click" => "savePick(matchup, editing_pool_entry)"} Save Pick
+          -#   %a.btn.btn-danger.btn-lg{"ng-click" => "cancelTeamSelection()"} Cancel

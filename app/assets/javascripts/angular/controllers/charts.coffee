@@ -79,17 +79,31 @@ angular.module('kopoolCharts', ['ngResource', 'RailsApiResource', 'ui.bootstrap'
 			SortedPicks.nested_query($scope.week_id).then(
 				(sorted_picks) ->
 					console.log("Have sorted picks")
-					$scope.pie_data = sorted_picks
+					final_data = $scope.splitTeams(sorted_picks)
+
+					$scope.pie_data = final_data
 					$scope.loaded = true
 					new Chartkick.PieChart("pie-chart", $scope.pie_data)
-				(json_error_data) ->
-					console.log("(PoolEntriesCtrl.getSortedPicks) Cannot get sorted picks")
-					$scope.error_message = json_error_data.data[0].error
-			)
+					(json_error_data) ->
+						console.log("(PoolEntriesCtrl.getSortedPicks) Cannot get sorted picks")
+						$scope.error_message = json_error_data.data[0].error
+					)
 
 		$scope.$on 'auth-login-success', ((event) ->
 			console.log("(KopoolChartsCtrl) Caught auth-login-success broadcasted event!!")
 			$scope.getWebState()
 		)
 
+		$scope.splitTeams = (sorted_picks) ->
+			if sorted_picks.length > 7
+				initial = sorted_picks.slice(0, 7)
+				remaining = sorted_picks.slice(7, sorted_picks.length)
+				others_sum = remaining.reduce((sum, team) ->
+					sum + team[1]
+				, 0)
+				others = ['Others', others_sum]
+				initial.push(others)
+				initial
+			else
+				sorted_picks
 	]

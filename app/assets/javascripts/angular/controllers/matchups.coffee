@@ -156,6 +156,7 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 			console.log("Pick selection is " + $scope.selectedPick.name)
 			console.log("Value of selectedMatchup: " + $scope.selectedMatchup.home_team.name)
 			$scope.hideMatchups = true
+			$scope.savePick(matchup, $scope.editing_pool_entry)
 
 		$scope.isSelectedMatchup = (matchup) ->
 			$scope.selectedMatchup == matchup

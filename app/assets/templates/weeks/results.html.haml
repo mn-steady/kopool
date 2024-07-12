@@ -85,17 +85,3 @@
         %p {{ pool_entry.team_name}} 
       %td 
         %img{"ng-src" => "{{pool_entry.nfl_team.logo_url_small}}" }
-
-%h4.gold Knocked Out During a Different Week
-
-%table.table.gold
-  %thead
-    %tr
-      %th{"width" => "40%"} Team Name
-      %th{"width" => "60%"} 
-
-  %tbody{"ng-repeat" => "pool_entry in pool_entries_knocked_out_previously"}
-    %tr
-      %td
-        %p {{ pool_entry.team_name}} 
-      %td 

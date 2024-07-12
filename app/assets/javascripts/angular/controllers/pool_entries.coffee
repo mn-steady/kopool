@@ -124,6 +124,6 @@ angular.module('PoolEntries', ['ngResource', 'RailsApiResource'])
 			if parseInt($scope.week_id) == $scope.current_week.id
 				"Live Results (Round " + $scope.current_week.week_number + ")"
 			else
-				#"Knock Outs From Previous Weeks"
+				"Previous Results"
 
 	]

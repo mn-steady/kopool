@@ -122,7 +122,8 @@ angular.module('PoolEntries', ['ngResource', 'RailsApiResource'])
 		$scope.results_header = ->
 			console.log("(matchup_header) week_id:" + parseInt($scope.week_id) + " current_week.id:" + $scope.current_week.id)
 			if parseInt($scope.week_id) == $scope.current_week.id
-				"Live Results (Week " + $scope.current_week.week_number + ")"
+				"Live Results"
+				#"Live Results This Round (Week " + $scope.current_week.week_number + ")"
 			else
 				#"Knock Outs From Previous Weeks"
 

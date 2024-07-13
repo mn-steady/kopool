@@ -2,7 +2,7 @@
   .container
     .row
       .col-sm-4
-        %h3.text-center.gold {{results_header()}}
+        
       .col-sm-4
       .col-sm-4
         .div.text-center
@@ -14,7 +14,7 @@
             %ul.dropdown-menu{:role => "menu"}
               %li{"ng-repeat"=>"week in season_weeks"}
                 %a{href:"#/weeks/{{week.id}}/results"}
-                  Week {{week.week_number}} Results
+                  Round {{week.week_number}} Results
     .row
       .col-md-4
         %h3.text-center.gold KO'd This Round

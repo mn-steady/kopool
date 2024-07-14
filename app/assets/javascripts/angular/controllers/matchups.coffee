@@ -110,7 +110,7 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 		$scope.matchup_header = ->
 			console.log("(matchup_header) week_id:" + parseInt($scope.week_id) + " current_week.id:" + $scope.current_week.id)
 			if parseInt($scope.week_id) == $scope.current_week.id
-				"Choose Your Pick For This Week (Week " + $scope.current_week.week_number + ")"
+				"Choose Your Pick For This Round (Round " + $scope.current_week.week_number + ")"
 			else
 				"Matchups for a different week"
 

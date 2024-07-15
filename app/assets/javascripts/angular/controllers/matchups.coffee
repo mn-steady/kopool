@@ -95,7 +95,7 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 						$scope.load_season_weeks()
 						$scope.loadMatchups()
 						console.log "*** Have pool entries, picks, teams, and season-weeks ***"
-						$scope.alert = { type: "success", msg: "You must click on “SAVE”, before you exit.   When the team logo appears, it confirms your pick." }
+						$scope.alert = { type: "success", msg: "Select the team you would like to pick for the week.   When the team logo appears, it confirms your pick." }
 					(json_error_data) ->
 						console.log("Error or unauthorized request to PoolEntriesAndPicks")
 						$scope.alert = { type: "danger", msg: json_error_data.data.error }
@@ -110,7 +110,7 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 		$scope.matchup_header = ->
 			console.log("(matchup_header) week_id:" + parseInt($scope.week_id) + " current_week.id:" + $scope.current_week.id)
 			if parseInt($scope.week_id) == $scope.current_week.id
-				"Choose Your Pick For This Round (Round " + $scope.current_week.week_number + ")"
+				"Choose Your Team For This Round (Round " + $scope.current_week.week_number + ")"
 			else
 				"Matchups for a different week"
 

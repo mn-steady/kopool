@@ -95,7 +95,7 @@ angular.module('Matchups', ['ngResource', 'RailsApiResource', 'ui.bootstrap'])
 						$scope.load_season_weeks()
 						$scope.loadMatchups()
 						console.log "*** Have pool entries, picks, teams, and season-weeks ***"
-						$scope.alert = { type: "success", msg: "Select the team you would like to pick for this round. When the team logo appears, it confirms your pick." }
+						$scope.alert = { type: "success", msg: "Select the team you would like to pick this round. When the team logo appears, it confirms your pick." }
 					(json_error_data) ->
 						console.log("Error or unauthorized request to PoolEntriesAndPicks")
 						$scope.alert = { type: "danger", msg: json_error_data.data.error }

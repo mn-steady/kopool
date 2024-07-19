@@ -48,6 +48,7 @@ angular.module('PoolEntries', ['ngResource', 'RailsApiResource'])
 			SeasonWeeks.nested_query($scope.web_state.current_season.id).then((season_weeks) ->
 				console.log("(PoolEntriesCtrl.load_season_weeks) *** Have All Season Weeks ***")
 				$scope.season_weeks = season_weeks
+				localStorage.setItem('season_weeks', JSON.stringify(season_weeks))
 				$scope.getWeeklyResults()
 			)
 
@@ -127,5 +128,13 @@ angular.module('PoolEntries', ['ngResource', 'RailsApiResource'])
 			if parseInt($scope.week_id) == $scope.current_week.id
 				"Live Results (Round " + $scope.current_week.week_number + ")"
 			else
-				"Previous Results "
+				weeks = localStorage.getItem('season_weeks')
+				if weeks && weeks.length > 0
+					previous_week = JSON.parse(weeks).filter (e) -> e.id == $scope.week_id
+					if previous_week.length > 0
+						"Previous Results (Round " + previous_week[0].week_number + ")"
+					else
+						"Previous Results"
+				else
+					"Previous Results"
 ]

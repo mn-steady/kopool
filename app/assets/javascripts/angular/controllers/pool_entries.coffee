@@ -22,6 +22,7 @@ angular.module('PoolEntries', ['ngResource', 'RailsApiResource'])
 		console.log("The passed-in week's ID is: " + $scope.week_id)
 		$scope.current_week = {}
 		$scope.season_weeks = {}
+		$scope.other_slice = false
 
 
 		$scope.getWebState = () ->
@@ -93,6 +94,7 @@ angular.module('PoolEntries', ['ngResource', 'RailsApiResource'])
 			SortedPicks.nested_query($scope.week_id).then(
 				(sorted_picks) ->
 					if sorted_picks.length > 7
+						$scope.other_slice = true
 						$scope.sorted_picks = sorted_picks.slice(7)
 					else
 						$scope.sorted_picks = []

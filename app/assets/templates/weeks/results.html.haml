@@ -34,7 +34,7 @@
       .col-md-6{"ng-controller" => "KopoolChartsCtrl"}
         %div#pie-chart{style: 'height: 300px;'}
           %chart{"data" => "pie_data", "config" => "pie_config", "id" => "pie-chart", "type" => "pie"}
-    .row
+    .row{"ng-if" => "other_slice"}
       .col-md-12
         %h3.gold Teams Chosen This Week:
         %table.table.gold

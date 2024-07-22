@@ -95,7 +95,7 @@ angular.module('PoolEntries', ['ngResource', 'RailsApiResource'])
 					if sorted_picks.length > 7
 						$scope.sorted_picks = sorted_picks.slice(7)
 					else
-						$scope.sorted_picks = sorted_picks
+						$scope.sorted_picks = []
 					console.log("Successfully received sorted picks")
 				(json_error_data) ->
 					console.log("(PoolEntriesCtrl.getSortedPicks) Cannot get sorted picks")

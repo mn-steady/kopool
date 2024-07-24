@@ -83,7 +83,7 @@ angular.module('kopoolCharts', ['ngResource', 'RailsApiResource', 'ui.bootstrap'
 
 					$scope.pie_data = final_data
 					$scope.loaded = true
-					new Chartkick.PieChart("pie-chart", $scope.pie_data, {legend: "bottom", textStyle: { fontSize: 16, color: "#b9b85f"} })
+					new Chartkick.PieChart("pie-chart", $scope.pie_data, {legend: "bottom" })
 					(json_error_data) ->
 						console.log("(PoolEntriesCtrl.getSortedPicks) Cannot get sorted picks")
 						$scope.error_message = json_error_data.data[0].error

@@ -1,4 +1,5 @@
 .jumbotron
+  .container
   .row{"ng-if" => "session_message"}
     .col-sm-12.text-center
       .alert.alert-danger {{session_message}}
@@ -47,7 +48,7 @@
     .col-md-12{ "ng-controller" => "KopoolChartsCtrl" }
       %div{ "ng-if" => "loaded && is_authorized()" }
       %div.text-center{ "style" => "height: 327px; width: 100%;" }
-        %img{ "ng-src" => "{{main_page_image_url}}", "alt" => "main-page-image" }   
+        %img{ "ng-src" => "{{main_page_image_url}}", "alt" => "main-page-image", "height" =>"600px", "width" =>"100%"  } 
   .row{"ng-show" => "is_authorized()"}
     .col-md-12{ "style" => "width: 613;" }
       %h2.text-center.smaller-title.gold From the Office of the Commish:
@@ -92,13 +93,7 @@
         %h4.gold DB management page for updating specific tables.
         %p
           %a.btn.btn-danger.btn-lg{href: "/admin/users", role: "button"} Database Management »
-%hr/
-%footer
-  %h5.gold © Dave Fugh 2024
-
-.row{"ng-show" => "is_authorized()"}
-  .col-md-12{ "ng-controller" => "KopoolChartsCtrl" }
-    %div{ "ng-if" => "loaded && is_authorized()" }
-    %div.text-center{ "style" => "height: 600px; width: 1000px;" }
-      %img{ "ng-src" => "{{main_page_image_url}}", "alt" => "main-page-image", "height" =>"600px", "width" =>"100%"  }    
+  %hr/
+  %footer
+    %h5.gold © Dave Fugh 2024 
 

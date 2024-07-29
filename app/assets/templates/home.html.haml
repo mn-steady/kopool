@@ -47,8 +47,8 @@
     .row{"ng-show" => "is_authorized()"}
       .col-md-12{ "ng-controller" => "KopoolChartsCtrl" }
         %div{ "ng-if" => "loaded && is_authorized()" }
-        %div.text-center{ "style" => "height: 327px; width: 100%;" }
-          %img{ "ng-src" => "{{main_page_image_url}}", "alt" => "main-page-image" }   
+        %div.text-center{ "style" => "height: 600px; width: 100%;" }
+          %img{ "ng-src" => "{{main_page_image_url}}", "alt" => "main-page-image", "height" =>"600px", "width" =>"100%"  }    
     .row{"ng-show" => "is_authorized()"}
       .col-md-12{ "style" => "width: 613;" }
         %h2.text-center.smaller-title.gold From the Office of the Commish:
@@ -98,9 +98,4 @@
     %footer
       %h5.gold © Dave Fugh 2024
 
-.row{"ng-show" => "is_authorized()"}
-  .col-md-12{ "ng-controller" => "KopoolChartsCtrl" }
-    %div{ "ng-if" => "loaded && is_authorized()" }
-    %div.text-center{ "style" => "height: 600px; width: 1000px;" }
-      %img{ "ng-src" => "{{main_page_image_url}}", "alt" => "main-page-image", "height" =>"600", "width" =>"1000"  }    
 

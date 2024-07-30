@@ -44,11 +44,11 @@
     .col-md-4
       %h2.text-center.gold Purse
       %div.title-text.text-center.gold {{display_pot_amount() | currency}}
-.row{"ng-show" => "is_authorized()"}
-  .col-md-12{ "ng-controller" => "KopoolChartsCtrl" }
-    %div{ "ng-if" => "loaded && is_authorized()" }
-    %div.text-center{ "style" => "height: 450; width: 800px;" }
-      %img{ "ng-src" => "{{main_page_image_url}}", "alt" => "main-page-image", "height" =>"425px", "width" =>"750px" } 
+  .row{"ng-show" => "is_authorized()"}
+    .col-md-12{ "ng-controller" => "KopoolChartsCtrl" }
+      %div{ "ng-if" => "loaded && is_authorized()" }
+      %div.text-center{ "style" => "height: 450; width: 800px;" }
+        %img{ "ng-src" => "{{main_page_image_url}}", "alt" => "main-page-image", "height" =>"425px", "width" =>"750px" } 
 
 .row{"ng-show" => "is_authorized()"}
   .col-md-12{ "style" => "width: 613;" }

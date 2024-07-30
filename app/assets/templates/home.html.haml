@@ -55,8 +55,7 @@
     .col-md-12{ "ng-controller" => "KopoolChartsCtrl" }
       %div{ "ng-if" => "loaded && is_authorized()" }
       %div.text-center{ "style" => "height: 450; width: 800px;" }
-        %img{ "ng-src" => "{{main_page_image_url}}", "alt" => "main-page-image", "height" =>"425px", "width" =>"750px" } 
-  %img{ "ng-src" => "{{main_page_image_url}}", "alt" => "main-page-image", "height" =>"425px", "width" =>"750px", "class" =>"center" } 
+        %img.center{ "ng-src" => "{{main_page_image_url}}", "alt" => "main-page-image", "height" =>"425px", "width" =>"750px" } 
  
 .admin-panel{"ng-show" => "is_admin()"}
   .row

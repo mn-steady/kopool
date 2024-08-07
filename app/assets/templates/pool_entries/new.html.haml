@@ -10,7 +10,7 @@
       %a.btn.btn-info.btn-lg{id: 'add-entry', role: "button", "ng-click" => "add_pool_entry()"} Add Pool Entry 
     .text-center
       %a.btn.btn-success.btn-lg{id: 'save-and-return', role: "button", "ng-if" => "pool_entries.length > 0", "ng-click" => "save_and_return()",  "ng-disabled" => "disable_save()"} Save and Return
-      .alert.alert-danger.inline-alert{"ng-if" => "disable_save()"} Save all names and fix all errors before returning
+      - .alert.alert-danger.inline-alert{"ng-if" => "disable_save()"} Save all names and fix all errors before returning
     
 %br
 .row
